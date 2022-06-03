@@ -44,8 +44,8 @@ export const AuthContextProvider: React.FC = ({ children }) => {
   const userIsLoggedIn = !!token;
 
   const logoutHandler = useCallback(() => {
-    setToken(null);
     setRole(null);
+    setToken(null);
     localStorage.removeItem('accessToken');
   }, []);
 
@@ -54,8 +54,8 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     if (!matchedRole) {
       throw new Error('Ви не можете авторизуватися на цьому сайті');
     }
-    setToken(token);
     setRole(matchedRole);
+    setToken(token);
     localStorage.setItem('accessToken', token);
   };
 

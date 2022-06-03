@@ -37,7 +37,7 @@ const RegisterForm = () => {
         toastContext.notify(response.message, toastRef.current);
         break;
       case RequestStatus.Success:
-        const { accountId, jwtToken, role } = response.data;
+        const { jwtToken, role } = response.data;
         auth.login(jwtToken, role);
         router.push('/offers');
         break;

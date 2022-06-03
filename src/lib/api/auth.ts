@@ -106,7 +106,6 @@ export const sendRefreshTokenRequest = (callback: CallbackFn) => {
     credentials: 'include',
   })
     .then(async (response) => {
-      callback({ status: RequestStatus.ResponseRecieved });
       if (response.ok) {
         return response.json();
       }
