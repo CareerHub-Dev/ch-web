@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { GetStaticPropsContext } from 'next';
 import FormWrapper from '@/components/auth/FormWrapper';
 import ForgotPasswordForm from '@/components/auth/forms/ForgotPasswordForm';
 import RegisterForm from '@/components/auth/forms/RegisterForm';
@@ -6,19 +6,18 @@ import LoginForm from '@/components/auth/forms/LoginForm';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import classes from '@/styles/auth.module.scss';
 
-const AuthPage = () => {
-  const router = useRouter();
-  const form = router.query.form as string;
+type Props = {
+  form: string;
+};
 
+const AuthPage = ({ form }: Props) => {
   let displayedForm;
   switch (form) {
     case 'forgot-password':
       displayedForm = <ForgotPasswordForm />;
       break;
     case 'register':
-      displayedForm = (
-        <RegisterForm />
-      );
+      displayedForm = <RegisterForm />;
       break;
     case 'login':
       displayedForm = <LoginForm />;
@@ -37,3 +36,34 @@ const AuthPage = () => {
 };
 
 export default AuthPage;
+
+export const getStaticProps = async (context: GetStaticPropsContext) => {
+  return {
+    props: {
+      form: context.params?.form,
+    },
+  };
+};
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [
+      {
+        params: {
+          form: 'forgot-password',
+        },
+      },
+      {
+        params: {
+          form: 'register',
+        },
+      },
+      {
+        params: {
+          form: 'login',
+        },
+      },
+    ],
+    fallback: false,
+  };
+};
