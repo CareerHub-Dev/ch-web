@@ -1,0 +1,396 @@
+$blueAccent: #0040d2;
+$lightGrey: #ccc;
+$whiteBg: #eff5ff;
+$blueBg: #dff5ff;
+$lightOrange: #fbe8d2;
+
+.label {
+  margin-bottom: 12px;
+}
+
+.label-invalid {
+  color: red;
+}
+
+.label-disabled {
+  color: $lightGrey;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 12px;
+
+  i {
+    color: red;
+  }
+}
+
+.checkbox-wrapper {
+  margin-bottom: 12px;
+
+  input {
+    transform: scale(1.6);
+    margin-right: 8px;
+  }
+}
+
+.checkbox-small {
+  margin-right: 8px;
+}
+
+.input {
+  min-height: 1.6rem;
+  max-width: 16rem;
+  max-height: 100%;
+  margin-bottom: 12px;
+  padding: 0.4rem 0.8rem;
+  box-sizing: border-box;
+  border: 1px solid $lightGrey;
+  border-radius: 4px;
+  background-color: #fff;
+  resize: none;
+  overflow: auto;
+
+  &:hover {
+    border-color: $blueAccent;
+  }
+
+  &:focus {
+    border-color: $blueAccent;
+  }
+}
+
+.input-invalid {
+  border-color: red;
+  margin-bottom: 0px;
+
+  &:hover,
+  &:focus {
+    border-color: red;
+    background-color: $lightOrange;
+  }
+}
+
+.input-disabled {
+  background-color: $lightGrey;
+  border-color: $lightGrey;
+
+  &:hover {
+    background-color: $lightGrey;
+    border-color: $lightGrey;
+  }
+}
+
+.select {
+  min-height: 1.6rem;
+  max-width: 16rem;
+  max-height: 100%;
+  margin-bottom: 12px;
+  padding: 0.4rem 0.8rem;
+  box-sizing: border-box;
+  border: 1px solid $lightGrey;
+  border-radius: 4px;
+  background-color: #fff;
+  resize: none;
+  overflow: auto;
+
+  &:hover {
+    border-color: $blueAccent;
+  }
+
+  &:focus {
+    border-color: $blueAccent;
+  }
+}
+
+.select-invalid {
+  border-color: red;
+  margin-bottom: 0px;
+
+  &:hover,
+  &:focus {
+    background-color: $lightOrange;
+    border-color: red;
+  }
+}
+
+.select-disabled {
+  background-color: $lightGrey;
+  border-color: $lightGrey;
+  color: $lightGrey;
+
+  &:hover {
+    background-color: $lightGrey;
+    border-color: $lightGrey;
+    color: $lightGrey;
+  }
+}
+
+.textarea {
+  padding: 2px;
+  min-height: 12rem;
+  padding: 0.4rem 0.8rem;
+  box-sizing: border-box;
+  border: 1px solid $lightGrey;
+  border-radius: 4px;
+  background-color: #fff;
+  resize: none;
+  overflow: auto;
+  margin-bottom: 12px;
+
+  &:hover {
+    border-color: $blueAccent;
+  }
+
+  &:focus {
+    border-color: $blueAccent;
+  }
+}
+
+.textarea-invalid {
+  border-color: red;
+  margin-bottom: 0px;
+
+  &:hover,
+  &:focus {
+    border-color: red;
+    background-color: $lightOrange;
+  }
+}
+
+// alternative form styles
+
+@mixin field-base {
+  min-height: 1.6rem;
+  max-height: 100%;
+  padding: 0.4rem 0.8rem;
+  box-sizing: border-box;
+  border: 1px solid $lightGrey;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  resize: none;
+  overflow: auto;
+
+  &:hover {
+    border-color: $blueAccent;
+  }
+
+  &:focus {
+    border-color: $blueAccent;
+    background-color: $blueBg;
+  }
+}
+
+.field {
+  @include field-base;
+  max-width: 20rem;
+  min-width: 10rem;
+  width: auto;
+}
+
+.field-date {
+  @include field-base;
+}
+
+.image-upload-wrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+
+  label {
+    @include field-base;
+    max-width: 20rem;
+    min-width: 10rem;
+    width: auto;
+  }
+
+  img {
+    margin: 1.6rem;
+    border: 4px solid $lightGrey;
+    border-radius: 8px;
+  }
+
+  button {
+    &:hover {
+      color: red;
+    }
+  }
+}
+
+.invalid {
+  border-color: #b40e0e !important;
+  background-color: #fddddd !important;
+}
+
+.invalid:hover {
+  border-color: #ff8800 !important;
+  background-color: #fbe8d2 !important;
+}
+
+.invalid:focus {
+  border-color: #ff8800 !important;
+  background-color: #fbe8d2 !important;
+}
+
+.image-preview {
+  margin: 1.6rem;
+  border: 4px solid #ccc;
+  border-radius: 8px;
+  max-width: 12rem;
+  max-height: 12rem;
+}
+
+.image-clear:hover {
+  color: #b40e0e;
+}
+
+.image-section-hidden {
+  display: none;
+}
+
+.hidden {
+  visibility: hidden;
+  display: none;
+}
+
+.validation {
+  display: flex;
+  color: #b40e0e;
+}
+
+.description-section-title {
+  color: #000e2e;
+  font-size: 24px;
+  align-self: center;
+}
+
+.hr {
+  width: 100%;
+  background-color: #aaa;
+  height: 2px;
+}
+
+.hr-wrap {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.tags-control {
+  width: 100%;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  min-height: 38px;
+  transition: all 100ms ease 0s;
+  box-sizing: border-box;
+}
+
+.tags {
+  align-items: center;
+  display: flex;
+  flex: 1 1 0%;
+  flex-wrap: wrap;
+  padding: 2px 8px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.tag {
+  background-color: #ccc;
+  border-radius: 4px;
+  display: flex;
+  margin: 2px;
+  min-width: 0px;
+  box-sizing: border-box;
+  transition: color 150ms ease 0s;
+}
+
+.tag-label {
+  border-radius: 2px;
+  font-size: 85%;
+  overflow: hidden;
+  padding: 3px 3px 3px 6px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.remove-tag {
+  cursor: pointer;
+  align-items: center;
+  border-radius: 2px;
+  display: flex;
+  padding-left: 4px;
+  padding-right: 4px;
+  box-sizing: border-box;
+
+  &:hover {
+    background-color: #ffc0af;
+    color: #fff;
+
+    svg {
+      fill: red;
+      stroke: red;
+    }
+  }
+
+  svg {
+    display: inline-block;
+    fill: #000e2e;
+    line-height: 1;
+    stroke: #000e2e;
+    transform: scale(0.7);
+  }
+}
+
+.tags-actions {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex-shrink: 0;
+  box-sizing: border-box;
+
+  div {
+    cursor: pointer;
+  }
+}
+
+.tags-action {
+  max-width: 40px;
+  max-height: 40px;
+  color: #ccc;
+  display: flex;
+  padding: 8px;
+  transition: color 150ms ease 0s;
+  box-sizing: border-box;
+
+  &:hover {
+    color: #000e2e;
+  }
+
+  svg {
+    display: inline-block;
+    line-height: 1;
+  }
+}
+
+.tags-actions-separator {
+  align-self: stretch;
+  background-color: #ccc;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  width: 1px;
+  box-sizing: border-box;
+}
+
+.tag-insert {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

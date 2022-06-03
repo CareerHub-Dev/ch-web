@@ -1,0 +1,50 @@
+#body {
+  max-width: 100%;
+}
+
+#appBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  overflow: hidden;
+}
+
+.g__center {
+  margin: auto;
+  text-align: center;
+}
+
+.g__display-none {
+  display: none !important;
+}
+
+.g__text-bold {
+  font-weight: bold;
+}
+
+hr {
+  background-color: #aaa;
+  height: 2px;
+}
+
+@font-face {
+  font-family: Rancho;
+  src: url('~@/assets/fonts/Rancho-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url('~@/assets/fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Sans';
+  src: url('~@/assets/fonts/NotoSans-Regular.ttf') format('truetype');
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

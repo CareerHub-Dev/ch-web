@@ -1,0 +1,18 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-family: 'Rancho';
+  font-size: 92px;
+  text-align: center;
+}
+
+@media (max-width: 500px) {
+  .title {
+    font-size: 72px;
+    max-width: 90vw;
+    width: 100%;
+  }
+}

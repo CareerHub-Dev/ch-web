@@ -1,0 +1,64 @@
+$blueAccent: #0040d2;
+$whiteBg: #eff5ff;
+$blueBg: #dff5ff;
+$darkBlue: #000e2e96;
+$darkBlueAccent: #002477;
+
+.stage-controls {
+  display: flex;
+  justify-content: flex-start;
+  margin: 8px 0px 8px 0px;
+
+  button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 8px 4px 8px;
+    margin: 0px;
+    width: 200px;
+    border-radius: 14px;
+    background: #000e2e;
+    border: 1px solid #000e2e;
+    transition: all ease-in-out 250ms;
+    text-align: center;
+    color: #fff;
+  }
+
+  button:hover {
+    transition: all ease-in-out 300ms;
+    background: #002477;
+    border-color: #002477;
+    color: #fff;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+    background: #000e2e96;
+    border-color: #000e2e96;
+  }
+
+  button:disabled:hover {
+    background: #000e2e96;
+    border-color: #000e2e96;
+  }
+}
+
+.stage-controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.save-button {
+  font-weight: bold;
+  color: #000e2e;
+  margin-bottom: 8px;
+  border-bottom: 2px solid #000e2e;
+  padding: 4px;
+}
+
+.save-button:hover {
+  transition: all ease-in-out 300ms;
+  color: #0040d2;
+  border-bottom: 2px solid #0040d2;
+}

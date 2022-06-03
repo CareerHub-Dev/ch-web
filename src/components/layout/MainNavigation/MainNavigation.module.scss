@@ -1,0 +1,140 @@
+$navbar-height: 80px;
+
+.hidden {
+  display: none;
+}
+
+.nav {
+  background: white;
+  min-height: $navbar-height;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 5px 1px 5px 0px rgba(0, 0, 0, 0.4);
+
+  a:hover,
+  a:active,
+  a.active {
+    color: #0040d2;
+  }
+}
+
+.logo {
+  color: #000e2e;
+  font-family: 'Rancho';
+  font-size: 32px;
+  justify-self: flex-start;
+  margin-left: 32px;
+  margin-right: 32px;
+  display: none;
+}
+@media (min-width: 600px) {
+  .logo {
+    display: inline;
+  }
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-gap: 2rem;
+  list-style: none;
+  text-align: center;
+  width: 70vw;
+  justify-content: flex-start;
+}
+
+.fa-bars {
+  color: #000e2e;
+}
+
+.fa-times {
+  color: #000e2e;
+}
+
+.burger {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  $horizontalMargin: 20px;
+
+  .nav {
+    height: $navbar-height;
+    display: flex;
+    position: fixed;
+    top: 0;
+    justify-content: space-between;
+    z-index: 30;
+  }
+
+  .logo {
+    position: fixed;
+    margin: 0;
+    left: $horizontalMargin;
+  }
+
+  .list {
+    display: none;
+  }
+
+  .list.active {
+    display: flex;
+    flex-direction: column;
+    top: $navbar-height;
+    height: auto;
+    width: 100%;
+    position: fixed;
+    background: #fff;
+  }
+
+  .nav-link {
+    text-align: center;
+    padding: 1rem;
+    width: 100%;
+    display: table;
+  }
+
+  .burger {
+    display: inline;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    justify-self: center;
+    order: 2;
+  }
+
+  .nav-user-menu {
+    right: $horizontalMargin;
+    display: flex;
+    position: fixed;
+  }
+
+  .button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    width: auto;
+    border-radius: 14px;
+    background: #000e2e;
+    border: 2px solid #000e2e;
+    transition: all ease-in-out 250ms;
+    font-family: 'Noto Sans', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 27px;
+    text-align: center;
+    letter-spacing: -0.015em;
+    color: #fff;
+  }
+}
+
+.active-link {
+  color: #0040d2;
+}

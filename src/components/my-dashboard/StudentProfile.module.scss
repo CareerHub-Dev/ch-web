@@ -1,0 +1,70 @@
+$blueAccent: #0040d2;
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+
+  div {
+    padding: 1rem;
+  }
+}
+
+.avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+  }
+}
+
+.name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+.info {
+  vertical-align: middle;
+  display: inline-block;
+  svg {
+    margin-right: 0.4rem;
+  }
+
+  span {
+    font-size: 1.5rem;
+  }
+}
+
+.button {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 40px 8px 40px;
+  width: auto;
+  border-radius: 14px;
+  background: $blueAccent;
+  transition: all ease-in-out 250ms;
+  font-style: normal;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: -0.015em;
+  color: #fff;
+
+  &:hover {
+    transition: all ease-in-out 600ms;
+    background: #002477;
+    color: #fff;
+  }
+}

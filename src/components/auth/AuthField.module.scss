@@ -1,0 +1,86 @@
+$baseBorder: #3fa2ff;
+$baseBg: #f5f8fc;
+$invalidBorder: rgb(255, 41, 112);
+$invalidBorderFocused: rgb(255, 128, 43);
+
+.field {
+  display: flex;
+  transition: all ease-in-out 200ms;
+  border: 1.75px solid rgb(66, 66, 66);
+  border-radius: 10px;
+  padding: 4px;
+  align-items: center;
+  background: $baseBg;
+  justify-content: space-between;
+}
+
+.field:focus-within {
+  transition: all ease-in-out 200ms;
+  border: 1.75px solid $baseBorder;
+}
+
+.input {
+  background: $baseBg;
+  font-family: 'Noto Sans';
+}
+.input:focus {
+  background: $baseBg;
+  outline: none;
+}
+
+.invalid {
+  border: 1.75px solid $invalidBorder;
+}
+
+.invalid:focus-within {
+  transition: all ease-in-out 200ms;
+  border: 1.75px solid $invalidBorderFocused;
+}
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #f5f8fc inset !important;
+  box-shadow: 0 0 0 30px #f5f8fc inset !important;
+}
+.label {
+  margin: 2px 10px 2px 5px;
+  color: #000e2e;
+  font-size: 24px;
+}
+.field-eye {
+  margin: 2px 5px 2px 10px;
+  color: #000e2e;
+  font-size: 24px;
+}
+//BUG: [CEH-273] When eye is hidden, email field is cut off
+.field-eye.hidden {
+  display: inline;
+  visibility: hidden;
+}
+.validation.hidden {
+  display: none;
+  visibility: hidden;
+}
+
+@media (max-width: 500px) {
+  .field {
+    max-width: 90vw;
+    width: 100%;
+  }
+  .input {
+    max-width: 90vw;
+    width: 100%;
+  }
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+.validation {
+  display: flex;
+  justify-content: center;
+  color: rgb(255, 41, 112);
+}

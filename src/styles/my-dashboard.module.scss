@@ -1,0 +1,17 @@
+.container {
+  margin: 1rem;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 260px auto;
+  column-gap: 2rem;
+  row-gap: 2rem;
+}
+
+.dashboard {
+  padding: 1rem;
+  transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14),
+    0 7px 10px -5px rgba(39, 53, 176, 0.4);
+}

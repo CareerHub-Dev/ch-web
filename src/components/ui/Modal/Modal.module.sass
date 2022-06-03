@@ -1,0 +1,30 @@
+.root
+    width: 100%
+    height: 100%
+    position: fixed
+    top: 0
+    left: 0
+    background: rgba(10, 102, 194, 0.5)
+    backdrop-filter: blur(20px)
+    visibility: hidden
+    opacity: 0
+    transition: all 0.25s ease-in-out
+    z-index: 40
+    display: flex
+    justify-content: center
+    align-items: center
+    animation: slide-down 300ms ease-out forwards
+
+.root.open
+    opacity: 1
+    visibility: visible
+    overflow: hidden
+
+    @keyframes slide-down
+    from:
+        opacity: 0
+        transform: translateY(-3rem)
+
+    to:
+        opacity: 1
+        transform: translateY(0)

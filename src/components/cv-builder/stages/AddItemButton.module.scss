@@ -1,0 +1,43 @@
+$light-grey: #ccc;
+
+.add-item-button {
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 36px 8px 36px;
+  border-radius: 14px;
+  background: #000e2e;
+  border: 1px solid #000e2e;
+  transition: all ease-in-out 250ms;
+  line-height: 20px;
+  color: #fff;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+
+  &:hover {
+    transition: all ease-in-out 300ms;
+    background: #002477;
+    border-color: #002477;
+    color: #fff;
+  }
+
+  i {
+    margin-right: 4px;
+  }
+  p {
+    padding-bottom: 2px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background: #000e2e96;
+    border-color: #000e2e96;
+  }
+
+  &:disabled:hover {
+    background: #000e2e96;
+    border-color: #000e2e96;
+  }
+}

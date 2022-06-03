@@ -1,0 +1,87 @@
+.wrapper {
+  font-family: 'Noto Sans';
+
+  display: grid;
+  color: #000e2e;
+  place-items: center;
+  h1 {
+    padding: 20px;
+    font-size: x-large;
+  }
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+
+  .button {
+    background: linear-gradient(to right, #ff8fc3, #0a66c2);
+    width: 75%;
+    font-size: 1.5rem;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+
+    button {
+      border-radius: 10px;
+      width: 100%;
+      padding: 10px 40px;
+      background: transparent;
+      transition: all 100ms linear;
+
+      &:hover {
+        background: #000e2e;
+      }
+    }
+  }
+}
+
+.text404 {
+  font-size: 8rem;
+  display: flex;
+  h2 {
+    animation: bounceUpDown 5s infinite;
+
+    &:first-child {
+      margin-top: 30px;
+      animation-delay: 0.3s;
+    }
+    &:nth-child(2) {
+      animation: 5.4s bounceUpDown infinite;
+      animation-delay: 0.5s;
+    }
+    &:last-child {
+      margin-top: 50px;
+      animation-delay: 0.3s;
+    }
+  }
+}
+
+@media (min-width: 450px) {
+  .text404 {
+    top: -100px;
+    font-size: 16rem;
+  }
+}
+
+@media (min-width: 700px) {
+  .wrapper {
+    h1 {
+      font-size: xx-large;
+    }
+  }
+  .row .button {
+    width: 100%;
+    font-size: 1.75rem;
+  }
+}
+
+@keyframes bounceUpDown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(50px);
+  }
+}

@@ -1,0 +1,21 @@
+.more {
+  margin: 3rem auto;
+  width: 90%;
+  max-width: 40rem;
+  text-align: center;
+}
+
+.more button {
+  font: inherit;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  color: #0040d2;
+  border: 1px solid #0040d2;
+  cursor: pointer;
+}
+
+.more button:hover,
+.more button:active {
+  background-color: #eef4ff;
+}

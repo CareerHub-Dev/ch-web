@@ -1,0 +1,24 @@
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  button {
+    font-family: 'Noto Sans';
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: -0.015em;
+    width: fit-content;
+    align-self: center;
+    word-break: keep-all;
+    border-bottom: 2px solid #000;
+
+    &:hover {
+      $hoverColor: #0040d2;
+      color: $hoverColor;
+      border-bottom: 2px solid $hoverColor;
+
+      transition: all ease-in-out 200ms;
+    }
+  }
+}
