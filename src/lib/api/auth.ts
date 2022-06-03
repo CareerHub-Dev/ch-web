@@ -1,6 +1,6 @@
 import type { CallbackFn } from '@/lib/util/callback/types';
 import RequestStatus from '@/model/enums/RequestStatus';
-import gateway, { baseURL } from '.';
+import gateway, { baseURL, retrieveErrorMessage } from '.';
 
 export const sendAuthRequest = (
   email: string,
@@ -27,18 +27,12 @@ export const sendAuthRequest = (
     credentials: 'include',
   })
     .then(async (res) => {
-      console.log(res);
-
       callback({ status: RequestStatus.ResponseRecieved });
       if (res.ok) {
         return res.json();
       }
       const data = await res.json();
-      let errorMessage = 'Невідома помилка';
-      if (data && data.error && data.error.message) {
-        errorMessage = data.error.message;
-      }
-      throw new Error(errorMessage);
+      throw new Error(retrieveErrorMessage(data));
     })
     .then((data) => {
       callback({ status: RequestStatus.Success, data });
@@ -95,5 +89,34 @@ export const sendResetPasswordRequest = (
     })
     .catch((error) => {
       callback({ status: RequestStatus.Error, message: error.message });
+    });
+};
+
+export const sendRefreshTokenRequest = (callback: CallbackFn) => {
+  const url = `${baseURL}Accounts/refresh-token-web`;
+  fetch(url, {
+    method: 'POST',
+    body: JSON.stringify({
+      token: null,
+    }),
+    headers: {
+      Accept: 'text/plain',
+      'Content-Type': 'application/json-patch+json',
+    },
+    credentials: 'include',
+  })
+    .then(async (response) => {
+      callback({ status: RequestStatus.ResponseRecieved });
+      if (response.ok) {
+        return response.json();
+      }
+      const data = await response.json();
+      throw new Error(retrieveErrorMessage(data));
+    })
+    .then((data) => {
+      callback({ status: RequestStatus.Success, data });
+    })
+    .catch((err) => {
+      callback({ status: RequestStatus.Error, message: err.message });
     });
 };

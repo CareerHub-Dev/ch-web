@@ -21,13 +21,14 @@ const CompanyDetailsPage: NextPage = () => {
 
   return (
     <>
-      <CompanyHeader
+      <h1>Company Details</h1>
+      {/* <CompanyHeader
         onTabChange={handleTabChange}
         currentTab={currentTab}
         primaryColor="#c20a0a"
         secondaryColor="#ffc8c8"
       />
-      <CompanyBody currentTab={currentTab} />
+      <CompanyBody currentTab={currentTab} /> */}
     </>
   );
 };

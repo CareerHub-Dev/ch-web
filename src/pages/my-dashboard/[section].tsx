@@ -3,7 +3,6 @@ import SidePanel from '@/components/my-dashboard/SidePanel';
 import StudentProfile from '@/components/my-dashboard/StudentProfile';
 import CVBoard from '@/components/my-dashboard/CVBoard';
 import classes from '@/styles/my-dashboard.module.scss';
-import { GetServerSidePropsContext } from 'next';
 
 type DummyProps = {
   kuk: string;
@@ -30,28 +29,28 @@ const MyDashBoardPage = (props: DummyProps) => {
   );
 };
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const { query } = context;
-  const { section } = query;
-  const cookies = context.req.cookies;
-  console.log(cookies);
-  
-  // TODO: check if user is logged in
-  if (!cookies.refreshToken) {
-    return {
-      redirect: {
-        destination: '/auth/login',
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {
-      kuk: 'mde',
-    },
-  };
-};
-
 export default MyDashBoardPage;
+
+// export const getServerSideProps = async (
+//   context: GetServerSidePropsContext
+// ) => {
+//   const { query } = context;
+//   const { section } = query;
+//   const cookies = context.req.cookies;
+//   console.log(cookies);
+
+//   // TODO: check if user is logged in
+//   if (!cookies.refreshToken) {
+//     return {
+//       redirect: {
+//         destination: '/auth/login',
+//         permanent: false,
+//       },
+//     };
+//   }
+//   return {
+//     props: {
+//       kuk: 'mde',
+//     },
+//   };
+// };

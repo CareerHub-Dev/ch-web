@@ -5,6 +5,19 @@ type Headers = {
   [key: string]: string;
 };
 
+export const retrieveErrorMessage = (responseData: any) => {
+  if (responseData.message) {
+    return responseData.message;
+  }
+  if (responseData.detail) {
+    return responseData.detail;
+  }
+  if (responseData.exceptionDetails && responseData.exceptionDetails.message) {
+    return responseData.exceptionDetails.message;
+  }
+  return 'Невідома помилка';
+};
+
 export const serverUrl = 'https://careerhubv2.azurewebsites.net';
 export const baseURL = `${serverUrl}/api/`;
 export const defaultTimeout = 10000;
@@ -12,13 +25,11 @@ export const defaultTimeoutErrorMessage = 'Сервер мовчить';
 export const defaultHeaders = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Credentials': 'true',
 };
 export const defaultAxiosConfig = {
   baseURL,
   timeout: defaultTimeout,
   timeoutErrorMessage: defaultTimeoutErrorMessage,
-  withCredentials: true,
   headers: defaultHeaders,
 };
 
@@ -48,3 +59,11 @@ export const getRequestHeadersWithAccessToken = () => {
 
 const gateway = axios.create(defaultAxiosConfig);
 export default gateway;
+
+export const privateGateway = axios.create({
+  baseURL,
+  timeout: defaultTimeout,
+  timeoutErrorMessage: defaultTimeoutErrorMessage,
+  headers: defaultHeaders,
+  withCredentials: true,
+});

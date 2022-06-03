@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { NextPage } from 'next';
 import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
 import FeedWrapper from '@/components/layout/FeedWrapper';
 import LoadMoreSection from '@/components/layout/LoadMoreSection';
@@ -39,7 +38,7 @@ const DUMMY_DATA = [
   },
 ];
 
-const CompaniesFeedPage: NextPage = () => {
+const CompaniesFeedPage = () => {
   const [companies, setCompanies] = useState(DUMMY_DATA);
 
   return (

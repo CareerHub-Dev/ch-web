@@ -1,7 +1,7 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
+import useAuth from '@/hooks/useAuth';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 import { useRouter } from 'next/router';
-import AuthContext from '@/store/auth-context';
 import BurgerMenu from './BurgerMenu';
 import ProfileIcon from './ProfileIcon';
 import Link from 'next/link';
@@ -14,11 +14,11 @@ import classes from './MainNavigation.module.scss';
 
 const MainNavigation = () => {
   const router = useRouter();
-  const authCtx = useContext(AuthContext);
+  const auth = useAuth();
   const [isBurgerOpened, setIsBurgerOpened] = useState(false);
   const { width } = useWindowDimensions();
 
-  const isLoggedIn = authCtx.isLoggedIn;
+  const isLoggedIn = auth.isLoggedIn;
   const isPhoneScreen = width !== null && width < 600;
 
   const burgerOpenHandler = () => {
@@ -26,7 +26,7 @@ const MainNavigation = () => {
   };
 
   const logoutClickHandler = () => {
-    authCtx.logout();
+    auth.logout();
     router.replace('/');
   };
 
@@ -53,14 +53,14 @@ const MainNavigation = () => {
                     classes['active-link']
                 )}
               >
-                <Link href={'/companies/feed'}>Компанії</Link>
+                <Link href={'/companies'}>Компанії</Link>
               </li>
               <li
                 className={cn(
                   router.pathname.includes('/offers') && classes['active-link']
                 )}
               >
-                <Link href={'/offers/feed'}>Робота</Link>
+                <Link href={'/offers'}>Робота</Link>
               </li>
             </>
           )}

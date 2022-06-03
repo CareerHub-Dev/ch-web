@@ -1,11 +1,7 @@
-import { NextPage } from 'next';
 import Link from 'next/link';
-
 import classes from '@/styles/404.module.scss';
 
-interface Props {}
-
-const NotFound: NextPage<Props> = () => {
+const NotFound = () => {
   return (
     <div>
       <div className={classes.wrapper}>
@@ -28,5 +24,4 @@ const NotFound: NextPage<Props> = () => {
     </div>
   );
 };
-
 export default NotFound;

@@ -13,7 +13,7 @@ $navbar-height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 5px 1px 5px 0px rgba(0, 0, 0, 0.4);
+  border-bottom: 2px solid #ccc;
 
   a:hover,
   a:active,
@@ -31,6 +31,7 @@ $navbar-height: 80px;
   margin-right: 32px;
   display: none;
 }
+
 @media (min-width: 600px) {
   .logo {
     display: inline;

@@ -1,4 +1,3 @@
-import { NextPage } from 'next';
 import Head from 'next/head';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import GeneralInfo from '@/components/offers/details/GeneralInfo';
@@ -22,7 +21,7 @@ const DUMMY_DATA = {
     '## Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
 };
 
-const JobOfferDetailPage: NextPage = () => {
+const JobOfferDetailPage = () => {
   const jobOffer = DUMMY_DATA;
 
   if (!jobOffer) {
@@ -60,5 +59,4 @@ const JobOfferDetailPage: NextPage = () => {
     </>
   );
 };
-
 export default JobOfferDetailPage;

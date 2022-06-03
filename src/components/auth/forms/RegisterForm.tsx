@@ -1,4 +1,5 @@
-import { FormEventHandler, useContext, useRef, useState } from 'react';
+import { FormEventHandler, useRef, useState } from 'react';
+import useAuth from '@/hooks/useAuth';
 import useInput from '@/hooks/useInput';
 import { getStudentEmailValidity, getPasswordValidity } from '@/lib/util';
 import AuthField from '../AuthField';
@@ -7,7 +8,6 @@ import { faKey } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { CallbackFn } from '@/lib/util/callback/types';
 import RequestStatus from '@/model/enums/RequestStatus';
-import AuthContext from '@/store/auth-context';
 import { useRouter } from 'next/router';
 import ToastContext from '@/lib/util/toasts/ToastContext';
 import ErrorToastStrategy from '@/lib/util/toasts/strategies/ErrorToastStrategy';
@@ -16,8 +16,8 @@ import ModalLoading from '@/components/ui/Modal/ModalLoading';
 import classes from './forms.module.scss';
 
 const RegisterForm = () => {
-  const authCtx = useContext(AuthContext);
   const router = useRouter();
+  const auth = useAuth();
   const toastRef = useRef<any>(null);
   const [isProcessingRequest, setIsProcessingRequest] = useState(false);
   const emailInput = useInput(getStudentEmailValidity);
@@ -37,11 +37,9 @@ const RegisterForm = () => {
         toastContext.notify(response.message, toastRef.current);
         break;
       case RequestStatus.Success:
-        const { userId, jwtToken, role } = response.data;
-        const now = new Date();
-        const expiresAt = new Date(now.setHours(now.getHours() + 24 * 7));
-        authCtx.login(jwtToken, expiresAt.toISOString());
-        router.push('/offers/feed');
+        const { accountId, jwtToken, role } = response.data;
+        auth.login(jwtToken, role);
+        router.push('/offers');
         break;
       default:
         break;
