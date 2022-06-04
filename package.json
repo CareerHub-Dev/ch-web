@@ -38,6 +38,7 @@
     "draft-js": "^0.11.7",
     "generate-password": "^1.7.0",
     "jsonwebtoken": "^8.5.1",
+    "jwt-promisify": "^1.1.5",
     "localized-strings": "^0.2.4",
     "lodash": "^4.17.21",
     "markdown-to-jsx": "^7.1.3",

@@ -29,7 +29,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           role: matchedRole,
           authorityToken,
         };
-        console.log(extendedData);
 
         res.status(201).json(extendedData);
         break;

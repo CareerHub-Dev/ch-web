@@ -7,7 +7,7 @@ const ProfileIcon: React.FC<{ src?: string }> = ({
   src = 'https://i.imgur.com/TCemmcW.png',
 }) => {
   return (
-    <Link href={'/my-dashboard/profile'}>
+    <Link href={'/my-profile'}>
       <a>
         <Image
           width={64}

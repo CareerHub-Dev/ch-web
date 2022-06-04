@@ -44,6 +44,11 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     setRole(null);
     localStorage.removeItem('ch-accessToken');
     localStorage.removeItem('ch-authorityToken');
+    fetch('/api/auth/signout', { method: 'POST' }).then((response) => {
+      if (!response.ok) {
+        console.error('Error while signing out');
+      }
+    });
   }, []);
 
   const loginHandler = (

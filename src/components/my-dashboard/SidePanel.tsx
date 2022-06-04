@@ -6,7 +6,7 @@ import classes from './SidePanel.module.scss';
 const dashboardItems = [
   {
     title: 'Мій профіль',
-    query: 'profile',
+    query: 'overview',
   },
   {
     title: 'Резюме',
