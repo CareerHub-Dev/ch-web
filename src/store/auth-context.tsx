@@ -44,8 +44,8 @@ export const AuthContextProvider: React.FC = ({ children }) => {
   const userIsLoggedIn = !!token;
 
   const logoutHandler = useCallback(() => {
-    setRole(null);
     setToken(null);
+    setRole(null);
     localStorage.removeItem('accessToken');
   }, []);
 
