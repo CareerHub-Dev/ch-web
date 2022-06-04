@@ -1,4 +1,3 @@
-import RequestStatus from '@/model/enums/RequestStatus';
 import axios from 'axios';
 
 type Headers = {

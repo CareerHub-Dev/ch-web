@@ -2,10 +2,11 @@ import { useRouter } from 'next/router';
 import SidePanel from '@/components/my-dashboard/SidePanel';
 import StudentProfile from '@/components/my-dashboard/StudentProfile';
 import CVBoard from '@/components/my-dashboard/CVBoard';
+import { GetServerSidePropsContext } from 'next';
 import classes from '@/styles/my-dashboard.module.scss';
 
 type DummyProps = {
-  kuk: string;
+  kuk: any;
 };
 
 const MyDashBoardPage = (props: DummyProps) => {
@@ -16,6 +17,8 @@ const MyDashBoardPage = (props: DummyProps) => {
   const displayedSectionChangeHandler = (newSection: string) => {
     router.push(newSection);
   };
+
+  console.log(props.kuk);
 
   return (
     <div id="dashBoardGridContainer" className={classes.container}>
@@ -31,26 +34,24 @@ const MyDashBoardPage = (props: DummyProps) => {
 
 export default MyDashBoardPage;
 
-// export const getServerSideProps = async (
-//   context: GetServerSidePropsContext
-// ) => {
-//   const { query } = context;
-//   const { section } = query;
-//   const cookies = context.req.cookies;
-//   console.log(cookies);
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const { query } = context;
+  const { section } = query;
+  const cookies = context.req.cookies;
 
-//   // TODO: check if user is logged in
-//   if (!cookies.refreshToken) {
-//     return {
-//       redirect: {
-//         destination: '/auth/login',
-//         permanent: false,
-//       },
-//     };
-//   }
-//   return {
-//     props: {
-//       kuk: 'mde',
-//     },
-//   };
-// };
+  // TODO: check if user is logged in
+  if (!cookies.refreshToken) {
+    return {
+      props: {
+        kuk: cookies,
+      },
+    };
+  }
+  return {
+    props: {
+      kuk: 'mde',
+    },
+  };
+};
