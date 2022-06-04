@@ -1,6 +1,6 @@
 import type { CallbackFn } from '@/lib/util/callback/types';
 import RequestStatus from '@/model/enums/RequestStatus';
-import gateway, { baseURL, retrieveErrorMessage } from '.';
+import gateway, { baseURL, retrieveErrorMessage } from '../remote';
 
 export const sendAuthRequest = (
   email: string,
@@ -27,7 +27,6 @@ export const sendAuthRequest = (
     credentials: 'include',
   })
     .then(async (res) => {
-      callback({ status: RequestStatus.ResponseRecieved });
       if (res.ok) {
         return res.json();
       }

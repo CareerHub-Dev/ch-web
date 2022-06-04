@@ -3,7 +3,7 @@ import useAuth from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
 import useInput from '@/hooks/useInput';
 import { getStudentEmailValidity, getPasswordValidity } from '@/lib/util';
-import { sendAuthRequest } from '@/lib/api/auth';
+import { sendLocalGatewayAuthRequest } from '@/lib/api/local/auth';
 import RequestStatus from '@/model/enums/RequestStatus';
 import type { CallbackFn } from '@/lib/util/callback/types';
 import AuthField from '../AuthField';
@@ -37,8 +37,8 @@ const LoginForm = () => {
         toastContext.notify(response.message, toastRef.current);
         break;
       case RequestStatus.Success:
-        const { jwtToken, role } = response.data;
-        auth.login(jwtToken, role);
+        const { jwtToken, authorityToken, role } = response.data;
+        auth.login(jwtToken, authorityToken, role);
         router.push('/offers');
         break;
       default:
@@ -59,7 +59,7 @@ const LoginForm = () => {
       return;
     }
     setIsProcessingRequest(true);
-    sendAuthRequest(
+    sendLocalGatewayAuthRequest(
       emailInput.value,
       passwordInput.value,
       true,

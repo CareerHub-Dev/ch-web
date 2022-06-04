@@ -11,7 +11,7 @@ import RequestStatus from '@/model/enums/RequestStatus';
 import { useRouter } from 'next/router';
 import ToastContext from '@/lib/util/toasts/ToastContext';
 import ErrorToastStrategy from '@/lib/util/toasts/strategies/ErrorToastStrategy';
-import { sendAuthRequest } from '@/lib/api/auth';
+import { sendLocalGatewayAuthRequest } from '@/lib/api/local/auth';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
 import classes from './forms.module.scss';
 
@@ -37,8 +37,8 @@ const RegisterForm = () => {
         toastContext.notify(response.message, toastRef.current);
         break;
       case RequestStatus.Success:
-        const { jwtToken, role } = response.data;
-        auth.login(jwtToken, role);
+        const { jwtToken, authorityToken, role } = response.data;
+        auth.login(jwtToken, authorityToken, role);
         router.push('/offers');
         break;
       default:
@@ -59,7 +59,7 @@ const RegisterForm = () => {
       return;
     }
     setIsProcessingRequest(true);
-    sendAuthRequest(
+    sendLocalGatewayAuthRequest(
       emailInput.value,
       passwordInput.value,
       false,

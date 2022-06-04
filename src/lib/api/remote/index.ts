@@ -14,10 +14,14 @@ export const retrieveErrorMessage = (responseData: any) => {
   if (responseData.exceptionDetails && responseData.exceptionDetails.message) {
     return responseData.exceptionDetails.message;
   }
+  if (responseData.title) {
+    return responseData.title;
+  }
   return 'Невідома помилка';
 };
 
-export const serverUrl = 'https://careerhubv2.azurewebsites.net';
+export const serverUrl =
+  process.env.BACKEND_SERVER_URL || 'https://careerhubv2.azurewebsites.net';
 export const baseURL = `${serverUrl}/api/`;
 export const defaultTimeout = 10000;
 export const defaultTimeoutErrorMessage = 'Сервер мовчить';

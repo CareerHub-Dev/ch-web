@@ -1,66 +1,66 @@
 import UserRole from '@/model/enums/UserRole';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 
 type AuthContextData = {
-  token: string | null;
+  accessToken: string | null;
+  authorityToken: string | null;
   role: UserRole | null;
   isLoggedIn: boolean;
-  login: (token: string, role: string) => void;
+  login: (accessToken: string, authorityToken: string, role: string) => void;
   logout: () => void;
 };
 
 const AuthContext = React.createContext<AuthContextData>({
-  token: null,
+  accessToken: null,
+  authorityToken: null,
   role: null,
   isLoggedIn: false,
   login: () => {},
   logout: () => {},
 });
 
-const retrieveTokenFromLocalStorage = () => {
+const retrieveItemFromLocalStorage = (key: string) => {
   if (typeof localStorage === 'undefined') {
     return null;
   }
-  const storedToken = localStorage.getItem('accessToken');
+  const storedToken = localStorage.getItem(key);
   return storedToken;
 };
 
-const matchRole = (role: string) => {
-  const upperCaseRole = role.toUpperCase();
-  switch (upperCaseRole) {
-    case 'STUDENT':
-      return UserRole.Student;
-    case 'COMPANY':
-      return UserRole.Company;
-    default:
-      return null;
-  }
-};
-
 export const AuthContextProvider: React.FC = ({ children }) => {
-  const storedToken = retrieveTokenFromLocalStorage();
-  const [token, setToken] = useState(storedToken);
+  const storedAccessToken = retrieveItemFromLocalStorage('ch-accessToken');
+  const storedAuthorityToken =
+    retrieveItemFromLocalStorage('ch-authorityToken');
+
+  const [accessToken, setAccessToken] = useState(storedAccessToken);
+  const [authorityToken, setAuthorityToken] = useState(storedAuthorityToken);
+
   const [role, setRole] = useState<UserRole | null>(null);
-  const userIsLoggedIn = !!token;
+  const userIsLoggedIn = !!accessToken && !!authorityToken;
 
   const logoutHandler = useCallback(() => {
-    setToken(null);
+    setAccessToken(null);
+    setAuthorityToken(null);
     setRole(null);
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem('ch-accessToken');
+    localStorage.removeItem('ch-authorityToken');
   }, []);
 
-  const loginHandler = (token: string, role: string) => {
-    const matchedRole = matchRole(role);
-    if (!matchedRole) {
-      throw new Error('Ви не можете авторизуватися на цьому сайті');
-    }
-    setRole(matchedRole);
-    setToken(token);
-    localStorage.setItem('accessToken', token);
+  const loginHandler = (
+    accessToken: string,
+    authorityToken: string,
+    role: UserRole
+  ) => {
+    setRole(role);
+    setAccessToken(accessToken);
+    setAuthorityToken(authorityToken);
+    localStorage.setItem('ch-accessToken', accessToken);
+    localStorage.setItem('ch-authorityToken', authorityToken);
   };
 
   const contextValue = {
-    token: token,
+    accessToken: accessToken,
+    authorityToken: authorityToken,
     role,
     isLoggedIn: userIsLoggedIn,
     login: loginHandler,

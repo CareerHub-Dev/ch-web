@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import {
   sendForgotPasswordRequest,
   sendResetPasswordRequest,
-} from '@/lib/api/auth';
+} from '@/lib/api/remote/auth';
 import RequestStatus from '@/model/enums/RequestStatus';
 import AuthField from '../AuthField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
