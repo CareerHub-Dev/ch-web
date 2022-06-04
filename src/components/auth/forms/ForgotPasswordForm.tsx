@@ -11,7 +11,7 @@ import {
   sendForgotPasswordRequest,
   sendResetPasswordRequest,
 } from '@/lib/api/remote/auth';
-import RequestStatus from '@/model/enums/RequestStatus';
+import RequestStatus from '@/models/enums/RequestStatus';
 import AuthField from '../AuthField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';

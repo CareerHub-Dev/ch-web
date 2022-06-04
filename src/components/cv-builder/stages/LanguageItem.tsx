@@ -1,7 +1,7 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
 import { removeLanguage } from '@/store/cv-constructor';
-import IndexedObject from '@/model/IndexedObject';
-import Language from '@/model/CV/Language';
+import IndexedObject from '@/models/IndexedObject';
+import Language from '@/models/CV/Language';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 

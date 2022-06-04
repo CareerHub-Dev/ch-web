@@ -4,8 +4,9 @@ import GeneralInfo from '@/components/offers/details/GeneralInfo';
 import JobOfferTitle from '@/components/offers/details/JobOfferTitle';
 import JobOfferContent from '@/components/offers/details/JobOfferContent';
 import { GetServerSidePropsContext } from 'next';
-import UserRole from '@/model/enums/UserRole';
+import UserRole from '@/models/enums/UserRole';
 import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
+import verifySessionData from '@/lib/api/local/helpers/verify-session-data';
 
 const DUMMY_DATA = {
   id: '1',
@@ -67,7 +68,8 @@ export default JobOfferDetailPage;
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const accessAllowed = await verifyAuthority(context.req, [UserRole.Student]);
+  const sessionData = await verifySessionData(context.req);
+  const accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
 
   if (!accessAllowed) {
     return {

@@ -1,4 +1,4 @@
-import RequestStatus from '@/model/enums/RequestStatus';
+import RequestStatus from '@/models/enums/RequestStatus';
 
 export type CallbackParams =
   | { status: RequestStatus.Error; message: string }

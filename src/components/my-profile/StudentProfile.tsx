@@ -1,5 +1,6 @@
-import useSWR from 'swr';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectProfileData, selectProfilePhoto } from '@/store/student';
 import useInput from '@/hooks/useInput';
 import Image from 'next/image';
 import Card from '../ui/Card';
@@ -10,20 +11,15 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import classes from './StudentProfile.module.scss';
 
-const DUMMY_DATA = {
-  firstName: 'Сергій',
-  lastName: 'Бурцев',
-  email: 'serii.burtsev@nure.ua',
-  group: 'ПЗПІи-19-1',
-  avatar: 'https://picsum.photos/200/300',
-};
-
 const StudentProfile = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const uploadedImage = useInput();
 
-  const student = DUMMY_DATA;
-  const displayedName = `${student.firstName} ${student.lastName}`;
+  const profileData = useSelector(selectProfileData);
+  const displayedName = `${profileData.firstName} ${profileData.lastName}`;
+
+  const profilePhoto = useSelector(selectProfilePhoto);
+  const profilePhotoIsSet = profilePhoto.length !== 0;
 
   const imageLoadHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     uploadedImage.valueChangeHandler(event);
@@ -40,11 +36,11 @@ const StudentProfile = () => {
         <Card className={classes.card}>
           <span className={classes.info}>
             <FontAwesomeIcon icon={faEnvelope} />
-            <span>{student.email}</span>
+            <span>{profileData.email}</span>
           </span>
           <span className={classes.info}>
             <FontAwesomeIcon icon={faUser} />
-            <span>{student.group}</span>
+            <span>{profileData.groupId}</span>
           </span>
         </Card>
       </div>
@@ -59,7 +55,11 @@ const StudentProfile = () => {
           />
         ) : (
           <Image
-            src={student.avatar}
+            src={
+              profilePhotoIsSet
+                ? profilePhoto
+                : 'https://i.imgur.com/TCemmcW.png'
+            }
             alt="user-profile"
             width={300}
             height={300}

@@ -1,4 +1,4 @@
-import UserRole from '@/model/enums/UserRole';
+import UserRole from '@/models/enums/UserRole';
 
 /**
  * Matches a string to a UserRole

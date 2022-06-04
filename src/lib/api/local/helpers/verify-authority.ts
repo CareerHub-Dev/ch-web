@@ -1,26 +1,15 @@
-import UserRole from '@/model/enums/UserRole';
-import { GetServerSidePropsContext } from 'next';
-import jwt from 'jwt-promisify';
+import UserRole from '@/models/enums/UserRole';
+import SessionData from '@/models/SessionData';
 
 /**
  * Verifies the authority token,
- * @param request - a `req` property from `NextApiRequest`
- * @return the token validation result
+ * @param sessionData - an object containing the current session's data
+ * @return if session role is in the allowed to access
  */
-const verifyAuthority = async (
-  request: GetServerSidePropsContext['req'],
+const verifyAuthority = (
+  sessionData: SessionData,
   rolesAllowed: Array<UserRole>
 ) => {
-  const authorityCookie = request.cookies['ch-authority'];
-  const parsedAuthorityObj = JSON.parse(authorityCookie);
-  if (!parsedAuthorityObj || !parsedAuthorityObj.token) {
-    return false;
-  }
-  const decoded = await jwt.verify(
-    parsedAuthorityObj.token,
-    String(process.env.JWT_SECRET)
-  );
-
-  return rolesAllowed.includes(decoded.role as UserRole);
+  return rolesAllowed.includes(sessionData.role);
 };
 export default verifyAuthority;

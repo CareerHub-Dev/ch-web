@@ -1,4 +1,4 @@
-import UserRole from '@/model/enums/UserRole';
+import UserRole from '@/models/enums/UserRole';
 import { serialize, CookieSerializeOptions } from 'cookie';
 import { NextApiResponse } from 'next';
 import matchUserRole from '../helpers/match-user-role';
@@ -74,9 +74,10 @@ const cookieMiddleware = (res: NextApiResponse, backendResponse: any) => {
   }
   const authorityToken = signAuthorityToken(matchedRole);
   const cookieObj = {
-    token: authorityToken,
-    selfId: backendResponse.data.id,
+    authorityToken,
+    selfId: backendResponse.data.accountId,
     entityId: null,
+    accessToken: backendResponse.data.jwtToken,
   };
   if ([UserRole.Company, UserRole.Student].includes(matchedRole)) {
     cookieObj.entityId = backendResponse.data[`${matchedRole}Id`];
@@ -86,7 +87,7 @@ const cookieMiddleware = (res: NextApiResponse, backendResponse: any) => {
   const extendedData = {
     ...backendResponse.data,
     role: matchedRole,
-    authority: cookieObj,
+    sessionData: cookieObj,
   };
 
   res.status(201).json(extendedData);

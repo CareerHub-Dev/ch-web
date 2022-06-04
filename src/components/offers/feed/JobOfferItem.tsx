@@ -1,4 +1,4 @@
-import type { JobOffersFeedItemProps } from '@/model/JobOffer';
+import type { JobOffersFeedItemProps } from '@/models/JobOffer';
 import { getReadableDateFromString } from '@/lib/util';
 import Image from 'next/image';
 import LinkButton from '@/components/ui/LinkButton';

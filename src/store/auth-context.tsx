@@ -1,4 +1,4 @@
-import UserRole from '@/model/enums/UserRole';
+import UserRole from '@/models/enums/UserRole';
 import React, { useState, useCallback } from 'react';
 
 type AuthContextData = {

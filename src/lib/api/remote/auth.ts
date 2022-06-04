@@ -1,6 +1,6 @@
 import type { CallbackFn } from '@/lib/util/callback/types';
-import RequestStatus from '@/model/enums/RequestStatus';
-import gateway, { baseURL, retrieveErrorMessage } from '../remote';
+import RequestStatus from '@/models/enums/RequestStatus';
+import gateway, { baseURL, retrieveErrorMessage } from '.';
 
 export const sendAuthRequest = (
   email: string,

@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import useTags from '@/hooks/useTags';
 import useMultipleSelection from '@/hooks/useMultipleSelection';
 import type { AnyFn } from '@/lib/util/types';
-import JobOfferFormat from '@/model/enums/JobOfferFormat';
-import JobType from '@/model/enums/JobType';
+import JobOfferFormat from '@/models/enums/JobOfferFormat';
+import JobType from '@/models/enums/JobType';
 import LinkButton from '@/components/ui/LinkButton';
 import FormMultipleSelection from '@/components/ui/form/FormMutipleSelection';
 import FormTags from '@/components/ui/form/FormTags';
@@ -57,7 +57,7 @@ const JobOffersFilters = ({ onApply, applied }: Props) => {
     formatSelection.reset();
     categorySelection.reset();
     enteredTags.reset();
-  }
+  };
 
   return (
     <div className={classes.filters}>

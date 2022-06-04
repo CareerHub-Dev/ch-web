@@ -1,6 +1,6 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import Education from '@/model/CV/Education';
-import IndexedObject from '@/model/IndexedObject';
+import Education from '@/models/CV/Education';
+import IndexedObject from '@/models/IndexedObject';
 import { removeEducation } from '@/store/cv-constructor';
 
 import classes from './ListItem.module.scss';

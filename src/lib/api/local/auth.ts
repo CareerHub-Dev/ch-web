@@ -1,5 +1,5 @@
 import { CallbackFn } from '@/lib/util/callback/types';
-import RequestStatus from '@/model/enums/RequestStatus';
+import RequestStatus from '@/models/enums/RequestStatus';
 
 const localGatewayUrl = '/api/auth';
 

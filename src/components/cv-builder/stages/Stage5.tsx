@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useInput from '@/hooks/useInput';
-import { ProficiencyLevel } from '@/model/CV/Language';
+import { ProficiencyLevel } from '@/models/CV/Language';
 import AssistantTip from './AssistantTip';
 import AddItemButton from './AddItemButton';
 import AddLanguageForm from './AddLanguageForm';

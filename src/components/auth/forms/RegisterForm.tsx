@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { CallbackFn } from '@/lib/util/callback/types';
-import RequestStatus from '@/model/enums/RequestStatus';
+import RequestStatus from '@/models/enums/RequestStatus';
 import { useRouter } from 'next/router';
 import ToastContext from '@/lib/util/toasts/ToastContext';
 import ErrorToastStrategy from '@/lib/util/toasts/strategies/ErrorToastStrategy';
@@ -37,8 +37,10 @@ const RegisterForm = () => {
         toastContext.notify(response.message, toastRef.current);
         break;
       case RequestStatus.Success:
-        const { jwtToken, authority, role } = response.data;
-        auth.login(jwtToken, authority.token, role);
+        const { sessionData, role } = response.data;
+        console.log(response.data);
+
+        auth.login(sessionData.accessToken, sessionData.authorityToken, role);
         router.push('/offers');
         break;
       default:

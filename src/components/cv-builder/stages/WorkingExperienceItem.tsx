@@ -1,6 +1,6 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import IndexedObject from '@/model/IndexedObject';
-import WorkingExperience from '@/model/CV/WorkingExperience';
+import IndexedObject from '@/models/IndexedObject';
+import WorkingExperience from '@/models/CV/WorkingExperience';
 import { removeWorkingExperience } from '@/store/cv-constructor';
 import { getFormattedDate } from '@/lib/util';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

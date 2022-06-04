@@ -1,7 +1,7 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
 import { removeLink } from '@/store/cv-constructor';
-import IndexedObject from '@/model/IndexedObject';
-import Link from '@/model/CV/Link';
+import IndexedObject from '@/models/IndexedObject';
+import Link from '@/models/CV/Link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 

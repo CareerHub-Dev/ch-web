@@ -1,5 +1,5 @@
 import type { CallbackFn, CallbackMap } from './types';
-import RequestStatus from '@/model/enums/RequestStatus';
+import RequestStatus from '@/models/enums/RequestStatus';
 
 class CallbackMapper {
   private callbacks: CallbackMap = [];

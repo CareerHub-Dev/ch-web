@@ -3,7 +3,8 @@ import { GetServerSidePropsContext, NextPage } from 'next';
 import CompanyHeader from '@/components/companies/details/CompanyHeader';
 import CompanyBody from '@/components/companies/details/CompanyBody';
 import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
-import UserRole from '@/model/enums/UserRole';
+import verifySessionData from '@/lib/api/local/helpers/verify-session-data';
+import UserRole from '@/models/enums/UserRole';
 
 const DUMMY_DATA = {
   companyId: '1',
@@ -39,7 +40,8 @@ export default CompanyDetailsPage;
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const accessAllowed = await verifyAuthority(context.req, [UserRole.Student]);
+  const sessionData = await verifySessionData(context.req);
+  const accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
 
   if (!accessAllowed) {
     return {

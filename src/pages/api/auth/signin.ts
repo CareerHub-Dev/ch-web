@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { sendAuthRequest } from '@/lib/api/remote/auth';
-import RequestStatus from '@/model/enums/RequestStatus';
+import RequestStatus from '@/models/enums/RequestStatus';
 import cookieMiddleware from '@/lib/api/local/middleware/cookieMiddleware';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

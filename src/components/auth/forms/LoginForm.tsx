@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import useInput from '@/hooks/useInput';
 import { getStudentEmailValidity, getPasswordValidity } from '@/lib/util';
 import { sendLocalGatewayAuthRequest } from '@/lib/api/local/auth';
-import RequestStatus from '@/model/enums/RequestStatus';
+import RequestStatus from '@/models/enums/RequestStatus';
 import type { CallbackFn } from '@/lib/util/callback/types';
 import AuthField from '../AuthField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -37,10 +37,10 @@ const LoginForm = () => {
         toastContext.notify(response.message, toastRef.current);
         break;
       case RequestStatus.Success:
-        const { jwtToken, authority, role } = response.data;
+        const { sessionData, role } = response.data;
         console.log(response.data);
 
-        auth.login(jwtToken, authority.token, role);
+        auth.login(sessionData.accessToken, sessionData.authorityToken, role);
         router.push('/offers');
         break;
       default:
