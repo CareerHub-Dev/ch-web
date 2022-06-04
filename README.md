@@ -1,9 +1,9 @@
 ## Getting Started
 
 Before you run the projects you may define these Environment Variables:
-*BACKEND_SERVER_URL,
-*JWT_SECRET
-*NODE_ENV
+* BACKEND_SERVER_URL,
+* JWT_SECRET
+* NODE_ENV
 
 ##### Note: NextJS has a built-in support for this, you just need to create a file named `.env.local` in project's root directory
 
