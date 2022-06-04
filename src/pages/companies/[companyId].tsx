@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { NextPage } from 'next';
+import { GetServerSidePropsContext, NextPage } from 'next';
 import CompanyHeader from '@/components/companies/details/CompanyHeader';
 import CompanyBody from '@/components/companies/details/CompanyBody';
+import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
+import UserRole from '@/model/enums/UserRole';
 
 const DUMMY_DATA = {
   companyId: '1',
@@ -33,3 +35,21 @@ const CompanyDetailsPage: NextPage = () => {
   );
 };
 export default CompanyDetailsPage;
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const accessAllowed = await verifyAuthority(context.req, [UserRole.Student]);
+
+  if (!accessAllowed) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};

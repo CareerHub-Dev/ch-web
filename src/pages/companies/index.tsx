@@ -2,6 +2,9 @@ import { useState } from 'react';
 import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
 import FeedWrapper from '@/components/layout/FeedWrapper';
 import LoadMoreSection from '@/components/layout/LoadMoreSection';
+import { GetServerSidePropsContext } from 'next';
+import UserRole from '@/model/enums/UserRole';
+import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
 
 const DUMMY_DATA = [
   {
@@ -51,3 +54,21 @@ const CompaniesFeedPage = () => {
   );
 };
 export default CompaniesFeedPage;
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const accessAllowed = await verifyAuthority(context.req, [UserRole.Student]);
+
+  if (!accessAllowed) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};

@@ -3,6 +3,9 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import GeneralInfo from '@/components/offers/details/GeneralInfo';
 import JobOfferTitle from '@/components/offers/details/JobOfferTitle';
 import JobOfferContent from '@/components/offers/details/JobOfferContent';
+import { GetServerSidePropsContext } from 'next';
+import UserRole from '@/model/enums/UserRole';
+import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
 
 const DUMMY_DATA = {
   id: '1',
@@ -60,3 +63,21 @@ const JobOfferDetailPage = () => {
   );
 };
 export default JobOfferDetailPage;
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const accessAllowed = await verifyAuthority(context.req, [UserRole.Student]);
+
+  if (!accessAllowed) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};

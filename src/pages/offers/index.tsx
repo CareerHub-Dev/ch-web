@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { NextPage } from 'next';
+import { GetServerSidePropsContext, NextPage } from 'next';
 import LoadMoreSection from '@/components/layout/LoadMoreSection';
 import FeedWrapper from '@/components/layout/FeedWrapper';
 import JobOffersFilters from '@/components/offers/feed/JobOffersFilters';
 import JobOffersList from '@/components/offers/feed/JobOffersList';
 import Head from 'next/head';
+import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
+import UserRole from '@/model/enums/UserRole';
 
 const DUMMY_DATA = [
   {
@@ -115,3 +117,21 @@ const JobOffersFeedPage: NextPage = () => {
   );
 };
 export default JobOffersFeedPage;
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const accessAllowed = await verifyAuthority(context.req, [UserRole.Student]);
+
+  if (!accessAllowed) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};
