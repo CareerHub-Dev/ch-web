@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import AuthContext from '@/store/auth-context';
 import { sendRefreshTokenRequest } from '@/lib/api/auth';
@@ -5,6 +6,7 @@ import RequestStatus from '@/model/enums/RequestStatus';
 
 const useAuth = () => {
   const auth = useContext(AuthContext);
+  const router = useRouter();
 
   const refreshHandler = () => {
     sendRefreshTokenRequest((response) => {
@@ -15,12 +17,13 @@ const useAuth = () => {
           break;
         default:
           auth.logout();
+          router.push('/auth/login');
           break;
       }
     });
   };
 
-  if (auth.isLoggedIn && !auth.role) {
+  if (typeof window !== 'undefined' && auth.isLoggedIn && !auth.role) {
     console.log('refreshing');
     refreshHandler();
   }
