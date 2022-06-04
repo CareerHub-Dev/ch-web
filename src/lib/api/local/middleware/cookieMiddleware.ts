@@ -1,5 +1,8 @@
+import UserRole from '@/model/enums/UserRole';
 import { serialize, CookieSerializeOptions } from 'cookie';
 import { NextApiResponse } from 'next';
+import matchUserRole from '../helpers/match-user-role';
+import signAuthorityToken from '../helpers/sign-authority-token';
 
 /**
  * Sets `cookie` using the `res` object.
@@ -17,7 +20,7 @@ const setCookie = (
   options: CookieSerializeOptions = {}
 ) => {
   const stringValue =
-    typeof value === 'object' ? 'j:' + JSON.stringify(value) : String(value);
+    typeof value === 'object' ? JSON.stringify(value) : String(value);
 
   options.secure = process.env.NODE_ENV === 'production';
   options.httpOnly = true;
@@ -28,14 +31,64 @@ const setCookie = (
     options.expires = new Date(Date.now() + options.maxAge!);
     options.maxAge! /= 1000;
   }
-
   res.setHeader('Set-Cookie', serialize(name, stringValue, options));
 };
-export default setCookie;
 
-export const deleteCookie = (res: NextApiResponse, name: string) => {
+/**
+ * Deletes cookie that matches `name`.
+ * @param res - the response object
+ * @param name - the name of the cookie to delete
+ */
+const deleteCookie = (res: NextApiResponse, name: string) => {
   res.setHeader(
     'Set-Cookie',
     `${name}=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`
   );
 };
+
+/**
+ * Deletes the authority cookie.
+ * @param res - the response object
+ */
+export const cleanSessionCookies = (res: NextApiResponse) => {
+  deleteCookie(res, 'ch-authority');
+};
+
+/**
+ * Cookie middleware function.
+ * If the user's role matched successfully:
+ * * Sets `ch-authority` cookie
+ * * Sets `ch-selfId` cookie
+ * * Sets `ch-entityId` cookie if user is not Admin
+ * If failed to match user's role:
+ * returns 500 status code
+ * @param res - the response object
+ * @param backendResponse - the response object from the remote backend
+ */
+const cookieMiddleware = (res: NextApiResponse, backendResponse: any) => {
+  const matchedRole = matchUserRole(backendResponse.data.role);
+  if (!matchedRole) {
+    return res.status(500).json({
+      message: 'Не вдалося визначити роль користувача',
+    });
+  }
+  const authorityToken = signAuthorityToken(matchedRole);
+  const cookieObj = {
+    token: authorityToken,
+    selfId: backendResponse.data.id,
+    entityId: null,
+  };
+  if ([UserRole.Company, UserRole.Student].includes(matchedRole)) {
+    cookieObj.entityId = backendResponse.data[`${matchedRole}Id`];
+  }
+  setCookie(res, 'ch-authority', cookieObj);
+
+  const extendedData = {
+    ...backendResponse.data,
+    role: matchedRole,
+    authority: cookieObj,
+  };
+
+  res.status(201).json(extendedData);
+};
+export default cookieMiddleware;

@@ -1,5 +1,10 @@
 import UserRole from '@/model/enums/UserRole';
 
+/**
+ * Matches a string to a UserRole
+ * @param role - a string representing the role
+ * @return the `UserRole` if matched, otherwise `null`
+ */
 const matchUserRole = (role: string) => {
   const upperCaseRole = role.toUpperCase();
   switch (upperCaseRole) {

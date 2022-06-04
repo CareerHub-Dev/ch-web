@@ -1,3 +1,5 @@
+import useAuth from '@/hooks/useAuth';
+import { useRouter } from 'next/router';
 import NureLogo from '@/assets/logos/NureLogo.svg';
 import CareerLogo from '@/assets/logos/CareerLogo.svg';
 import Head from 'next/head';
@@ -5,6 +7,13 @@ import Head from 'next/head';
 import classes from '@/styles/index.module.scss';
 
 const LandingPage = () => {
+  const router = useRouter();
+  const auth = useAuth();
+
+  const routingHandler = (path: string) => {
+    router.push(path);
+  };
+
   return (
     <>
       <Head>
@@ -21,6 +30,25 @@ const LandingPage = () => {
         </div>
         <div className={classes.content}>
           <h1 className={classes.title}>CareerHub</h1>
+
+          {!auth.isLoggedIn && (
+            <div className={classes.actions}>
+              <button
+                className={classes.register}
+                type="button"
+                onClick={routingHandler.bind(null, '/auth/register')}
+              >
+                Зареєструватися
+              </button>
+              <button
+                className={classes.login}
+                type="button"
+                onClick={routingHandler.bind(null, '/auth/login')}
+              >
+                Увійти
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

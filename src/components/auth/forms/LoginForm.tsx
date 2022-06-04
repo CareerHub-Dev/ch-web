@@ -37,8 +37,10 @@ const LoginForm = () => {
         toastContext.notify(response.message, toastRef.current);
         break;
       case RequestStatus.Success:
-        const { jwtToken, authorityToken, role } = response.data;
-        auth.login(jwtToken, authorityToken, role);
+        const { jwtToken, authority, role } = response.data;
+        console.log(response.data);
+
+        auth.login(jwtToken, authority.token, role);
         router.push('/offers');
         break;
       default:
