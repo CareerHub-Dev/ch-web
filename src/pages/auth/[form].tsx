@@ -5,26 +5,14 @@ import RegisterForm from '@/components/auth/forms/RegisterForm';
 import LoginForm from '@/components/auth/forms/LoginForm';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import classes from '@/styles/auth.module.scss';
+import React from 'react';
 
 type Props = {
   form: string;
 };
 
 const AuthPage = ({ form }: Props) => {
-  let displayedForm;
-  switch (form) {
-    case 'forgot-password':
-      displayedForm = <ForgotPasswordForm />;
-      break;
-    case 'register':
-      displayedForm = <RegisterForm />;
-      break;
-    case 'login':
-      displayedForm = <LoginForm />;
-      break;
-    default:
-      displayedForm = <LoadingSpinner />;
-  }
+  const displayedForm = AuthFormFactory(form);
 
   return (
     <div className={classes.root}>
@@ -66,4 +54,15 @@ export const getStaticPaths = async () => {
     ],
     fallback: false,
   };
+};
+
+const AuthFormFactory = (form: string): JSX.Element => {
+  const options: { [key: string]: JSX.Element } = {
+    'forgot-password': <ForgotPasswordForm />,
+    register: <RegisterForm />,
+    login: <LoginForm />,
+    loading: <LoadingSpinner />,
+  };
+
+  return options[form];
 };
