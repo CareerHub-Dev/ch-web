@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import classes from './style.module.scss';
 export type Props = {
-  isOpen: boolean;
+  isOpen?: boolean;
   onClick?: (isOpen: boolean) => void;
   theme?: 'dark' | 'light';
 };

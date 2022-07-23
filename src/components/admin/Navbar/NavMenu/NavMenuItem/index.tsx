@@ -16,6 +16,7 @@ const NavMenuItem: FC<Props> = ({
 }: Props) => {
   return (
     <li className={classes.wrapper}>
+      <div className={classes.current} />
       {icon && <FontAwesomeIcon icon={icon} />}
       <span>{label}</span>
     </li>
