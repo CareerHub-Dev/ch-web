@@ -1,0 +1,56 @@
+$lineWidth: 50px;
+$lineGap: $lineWidth * 2;
+
+.iconWrapper {
+  display: grid;
+  place-items: center;
+  width: 3 * $lineWidth + 2 * $lineGap;
+  aspect-ratio: 1;
+  cursor: url(https://cdn.custom-cursor.com/db/6695/32/among-us-red-character-and-mini-crewmate-pointer.png),
+    pointer !important;
+}
+
+.iconWrapper,
+.iconWrapper:hover {
+  outline: none;
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+  border-radius: $lineWidth;
+  position: relative;
+  background: black;
+  display: block;
+  width: 100%;
+  height: $lineWidth;
+  transition: all 0.3s ease-in-out;
+}
+.hamburger::after,
+.hamburger::before {
+  content: '';
+  position: absolute;
+}
+.hamburger::before {
+  top: -$lineGap;
+}
+.hamburger::after {
+  top: $lineGap;
+}
+
+.isActive.hamburger::before,
+.isActive.hamburger::after {
+  top: 0px;
+}
+.isActive.hamburger::before {
+  transform: rotate(45deg);
+}
+.isActive.hamburger::after {
+  transform: rotate(-45deg);
+}
+.isActive.hamburger {
+  transform: rotate(0);
+  background: transparent;
+}
