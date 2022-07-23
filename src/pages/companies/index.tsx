@@ -10,8 +10,6 @@ import UserRole from '@/models/enums/UserRole';
 import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
 import verifySessionData from '@/lib/api/local/helpers/verify-session-data';
 
-const DEFAULT_PAGE_SIZE = 50;
-
 const CompaniesFeedPage = () => {
   const { accessToken } = useAuth();
   const [page, setPage] = useState(1);
@@ -22,7 +20,6 @@ const CompaniesFeedPage = () => {
     fetchCompanies({
       token: accessToken as string,
       pageNumber: page,
-      pageSize: DEFAULT_PAGE_SIZE,
       searchTerm,
     }),
     {

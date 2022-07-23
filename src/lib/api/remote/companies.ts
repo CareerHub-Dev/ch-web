@@ -4,12 +4,12 @@ export const fetchCompanies =
   ({
     token,
     pageNumber,
-    pageSize,
-    searchTerm,
+    pageSize = 50,
+    searchTerm = '',
   }: {
     token: string;
     pageNumber: number;
-    pageSize: number;
+    pageSize?: number;
     searchTerm?: string;
   }) =>
   async () => {

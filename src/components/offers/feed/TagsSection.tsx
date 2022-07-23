@@ -1,15 +1,13 @@
 import classes from './TagsSection.module.scss';
 
-type Props = {
-  tags?: Array<string>;
-};
-
-const TagsSection = ({ tags }: Props) => (
+const TagsSection: React.FC<{
+  tags: Array<Tag>;
+}> = ({ tags }) => (
   <section className={classes.tags}>
     {tags &&
       tags.map((tag) => (
-        <div key={tag} className={classes.tag}>
-          {tag}
+        <div key={tag.id} className={classes.tag}>
+          {tag.title}
         </div>
       ))}
   </section>
