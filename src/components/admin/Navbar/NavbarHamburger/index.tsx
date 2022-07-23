@@ -7,9 +7,9 @@ export type Props = {
 };
 
 const NavbarHamburger: FC<Props> = ({
-  isOpen = true,
+  isOpen = false,
   onClick,
-  theme = 'dark',
+  theme = 'light',
 }) => {
   const handleClick = () => {
     if (onClick) {
