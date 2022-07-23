@@ -3,6 +3,8 @@ $secondColor: #aa63ea;
 $navbarPadding: 10px;
 $navbarWidth: 200px;
 $borderRadius: 10px;
+
+$navbarInnerWidth: $navbarWidth - $navbarPadding;
 $backgroundGradient: linear-gradient(
   to bottom left,
   $firstColor 40%,
@@ -16,7 +18,7 @@ $backgroundGradient: linear-gradient(
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: $navbarWidth - $navbarPadding;
+  max-width: $navbarInnerWidth;
   background: $backgroundGradient;
   align-items: center;
   height: 100vh;

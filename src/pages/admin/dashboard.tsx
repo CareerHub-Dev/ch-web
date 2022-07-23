@@ -6,6 +6,9 @@ const AdminDashboard = () => {
   return (
     <div className={classes.root}>
       <AdminNavbar />
+      <div className={classes.workspace}>
+        {new Array(10).fill(<div className={classes.gridItem}>134</div>)}
+      </div>
     </div>
   );
 };
