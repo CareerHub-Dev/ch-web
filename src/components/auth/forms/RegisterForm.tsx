@@ -14,6 +14,7 @@ import ErrorToastStrategy from '@/lib/util/toasts/strategies/ErrorToastStrategy'
 import { sendLocalGatewayAuthRequest } from '@/lib/api/local/auth';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
 import classes from './forms.module.scss';
+import UserRole from '@/models/enums/UserRole';
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -65,6 +66,7 @@ const RegisterForm = () => {
       emailInput.value,
       passwordInput.value,
       false,
+      UserRole.Student, // TODO: выпилить этот костыль
       requestCallback
     );
   };

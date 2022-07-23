@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { sendAuthRequest } from '@/lib/api/remote/auth';
 import RequestStatus from '@/models/enums/RequestStatus';
 import cookieMiddleware from '@/lib/api/local/middleware/cookieMiddleware';
+import UserRole from '@/models/enums/UserRole';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
@@ -10,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { email, password } = JSON.parse(req.body);
 
-  sendAuthRequest(email, password, true, (response) => {
+  sendAuthRequest(email, password, UserRole.Student, true, (response) => {
     switch (response.status) {
       case RequestStatus.Success:
         cookieMiddleware(res, response);

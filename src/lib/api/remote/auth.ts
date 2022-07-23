@@ -1,16 +1,18 @@
 import type { CallbackFn } from '@/lib/util/callback/types';
 import RequestStatus from '@/models/enums/RequestStatus';
+import UserRole from '@/models/enums/UserRole';
 import gateway, { baseURL, retrieveErrorMessage } from '.';
 
 export const sendAuthRequest = (
   email: string,
   password: string,
+  role: UserRole,
   isLogin: boolean,
   callback: CallbackFn
 ) => {
   let url;
   if (isLogin) {
-    url = `${baseURL}Accounts/authenticate-web`;
+    url = `${baseURL}Accounts/authenticate-${role}`;
   } else {
     url = `${baseURL}Accounts/register/student`;
   }

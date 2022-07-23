@@ -1,5 +1,6 @@
 import { CallbackFn } from '@/lib/util/callback/types';
 import RequestStatus from '@/models/enums/RequestStatus';
+import UserRole from '@/models/enums/UserRole';
 
 const localGatewayUrl = '/api/auth';
 
@@ -13,6 +14,7 @@ export const sendLocalGatewayAuthRequest = (
   email: string,
   password: string,
   isLogin: boolean,
+  role: UserRole,
   callback: CallbackFn
 ) => {
   const url = isLogin
@@ -23,6 +25,7 @@ export const sendLocalGatewayAuthRequest = (
     body: JSON.stringify({
       email,
       password,
+      role,
     }),
     headers: {
       Accept: 'text/plain',

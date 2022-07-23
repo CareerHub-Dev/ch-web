@@ -8,9 +8,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(404).json({ message: 'Метод запиту не підтримується' });
   }
 
-  const { email, password } = JSON.parse(req.body);
+  const { email, password, role } = JSON.parse(req.body);
 
-  sendAuthRequest(email, password, true, (response) => {
+  sendAuthRequest(email, password, role, true, (response) => {
     switch (response.status) {
       case RequestStatus.Success:
         cookieMiddleware(res, response);

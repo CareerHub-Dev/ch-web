@@ -13,6 +13,8 @@ import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
 import ToastContext from '@/lib/util/toasts/ToastContext';
 import ErrorToastStrategy from '@/lib/util/toasts/strategies/ErrorToastStrategy';
+import RoleSelect from '../RoleSelect';
+import UserRole from '@/models/enums/UserRole';
 import classes from './forms.module.scss';
 
 const LoginForm = () => {
@@ -20,6 +22,7 @@ const LoginForm = () => {
   const router = useRouter();
   const toastRef = useRef<any>(null);
   const [isProcessingRequest, setIsProcessingRequest] = useState(false);
+  const selectedRoleRef = useRef<HTMLSelectElement>(null);
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const emailInput = useInput(getStudentEmailValidity);
@@ -65,6 +68,7 @@ const LoginForm = () => {
       emailInput.value,
       passwordInput.value,
       true,
+      selectedRoleRef.current!.value as UserRole,
       requestCallback
     );
   };
@@ -73,6 +77,7 @@ const LoginForm = () => {
     <form onSubmit={formSubmissionHandler} id="loginForm">
       {isProcessingRequest && <ModalLoading />}
       <div className={classes.fields} id="authFieldsDiv">
+        <RoleSelect id="role" refObject={selectedRoleRef} />
         <AuthField
           ref={emailInputRef}
           id="email"
