@@ -2,6 +2,7 @@ $lineWidth: 50px;
 $lineGap: $lineWidth * 2;
 
 .iconWrapper {
+  // margin: 0 auto;
   display: grid;
   place-items: center;
   width: 3 * $lineWidth + 2 * $lineGap;
@@ -28,6 +29,13 @@ $lineGap: $lineWidth * 2;
   height: $lineWidth;
   transition: all 0.3s ease-in-out;
 }
+
+.dark.hamburger,
+.dark.hamburger::before,
+.dark.hamburger::after {
+  background: white;
+}
+
 .hamburger::after,
 .hamburger::before {
   content: '';
