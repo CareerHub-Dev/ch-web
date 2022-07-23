@@ -1,5 +1,4 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import FeedControls from '@/components/offers/feed/FeedControls';
 import JobOfferItem from './JobOfferItem';
 import classes from './JobOffersList.module.scss';
 
@@ -13,10 +12,13 @@ const JobOffersList: React.FC<{
   if (isError) {
     return <div>{`Помилка :(`}</div>;
   }
+  console.log(data);
+
+  const jobOffers = (data || []) as Array<JobOffersFeed.JobOffer>;
 
   return (
     <ul className={classes.list}>
-      {data.map((item: JobOffersFeed.JobOffer) => (
+      {jobOffers.map((item) => (
         <JobOfferItem key={item.id} item={item} />
       ))}
     </ul>

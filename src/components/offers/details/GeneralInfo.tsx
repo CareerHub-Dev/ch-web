@@ -7,40 +7,36 @@ import PeopleIcon from '@/components/ui/icons/PeopleIcon';
 import LinkButton from '@/components/ui/LinkButton';
 import CheckIcon from '@/components/ui/icons/CheckIcon';
 import classes from './GeneralInfo.module.scss';
+import SubscribersInfo from './SubscribersInfo';
 
-type Props = {
+const GeneralInfo: React.FC<{
   jobOfferId: string;
   companyName: string;
   startDate: string;
   endDate: string;
-  image: string;
-  subscribersCount: number;
-  isSubscribed: boolean;
-};
-
-const GeneralInfo = ({
-  jobOfferId,
-  companyName,
-  startDate,
-  endDate,
-  image,
-  subscribersCount,
-  isSubscribed,
-}: Props) => {
+}> = ({ jobOfferId, companyName, startDate, endDate }) => {
   const readableStartDate = getReadableDateFromString(startDate);
   const readableEndDate = getReadableDateFromString(endDate);
 
   const subscriptionHandler = () => {};
 
-  const subscriptionButton = isSubscribed ? (
-    <LinkButton onClick={subscriptionHandler} style="dark-blue-secondary" additionalClasses={classes.btn}>
+  const subscriptionButton = false ? ( // TODO - implement subscription button
+    <LinkButton
+      onClick={subscriptionHandler}
+      style="dark-blue-secondary"
+      additionalClasses={classes.btn}
+    >
       <span className={classes.span}>
         <CheckIcon />
         {'Підписаний'}
       </span>
     </LinkButton>
   ) : (
-    <LinkButton onClick={subscriptionHandler} style="light-blue-primary" additionalClasses={classes.btn}>
+    <LinkButton
+      onClick={subscriptionHandler}
+      style="light-blue-primary"
+      additionalClasses={classes.btn}
+    >
       {'Підписатися'}
     </LinkButton>
   );
@@ -49,7 +45,7 @@ const GeneralInfo = ({
     <section className={classes.info}>
       <div className={classes.image}>
         <Image
-          src={image}
+          src={'https://i.imgur.com/XqY6xjq.png'}
           alt={'Зображення до вакансії'}
           width={400}
           height={400}
@@ -64,12 +60,11 @@ const GeneralInfo = ({
             <time>{`${readableStartDate} - ${readableEndDate}`}</time>
           </span>
         </InfoItem>
-        <InfoItem icon={PeopleIcon}>
-          <span>{`Підписки: ${subscribersCount}`}</span>
-        </InfoItem>
-
+        <SubscribersInfo jobOfferId={jobOfferId} />
         {subscriptionButton}
-        <LinkButton style='lgbt' additionalClasses={classes.btn}>{'Подати Резюме'}</LinkButton>
+        <LinkButton style="lgbt" additionalClasses={classes.btn}>
+          {'Подати Резюме'}
+        </LinkButton>
       </ul>
     </section>
   );

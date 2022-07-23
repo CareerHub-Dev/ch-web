@@ -30,16 +30,91 @@ export const fetchJobOffers =
       url += `&JobPositionId=${filter.jobPositionId}`;
     }
 
-    return fetch(url, {
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         Accept: 'text/plain',
         'Content-Type': 'application/json-patch+json',
         Authorization: `Bearer ${token}`,
       },
-    })
-      .then((response) => response.json())
-      .catch((error) => {
-        throw new Error(retrieveErrorMessage(error));
-      });
+    });
+    if (response.ok) {
+      return response.json();
+    }
+    const data = await response.json();
+    throw new Error(retrieveErrorMessage(data));
   };
+
+export const fetchJobOfferDetails =
+  ({ token, jobOfferId }: { token: string; jobOfferId: string }) =>
+  async () => {
+    const response = await fetch(`${baseURL}JobOffers/${jobOfferId}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'text/plain',
+        'Content-Type': 'application/json-patch+json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.ok) {
+      return response.json();
+    }
+    const data = await response.json();
+    throw new Error(retrieveErrorMessage(data));
+  };
+
+const fetchJobOfferSubResource =
+  ({
+    token,
+    jobOfferId,
+    resource,
+  }: {
+    token: string;
+    jobOfferId: string;
+    resource: string;
+  }) =>
+  async () => {
+    const response = await fetch(
+      `${baseURL}JobOffers/${jobOfferId}/${resource}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'text/plain',
+          'Content-Type': 'application/json-patch+json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.ok) {
+      return response.json();
+    }
+    const data = await response.json();
+    throw new Error(retrieveErrorMessage(data));
+  };
+
+export const fetchJobOfferSubscribedStudentsAmount = ({
+  token,
+  jobOfferId,
+}: {
+  token: string;
+  jobOfferId: string;
+}) =>
+  fetchJobOfferSubResource({
+    token,
+    jobOfferId,
+    resource: 'amount-student-subscribers',
+  });
+
+export const fetchJobOfferAppliedCvsAmount = ({
+  token,
+  jobOfferId,
+}: {
+  token: string;
+  jobOfferId: string;
+}) => {
+  return fetchJobOfferSubResource({
+    token,
+    jobOfferId,
+    resource: 'amount-applied-cvs',
+  });
+};

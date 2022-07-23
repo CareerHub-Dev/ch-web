@@ -26,4 +26,23 @@ declare global {
       tags: Array<Tag>;
     }
   }
+
+  namespace JobOfferDetails {
+    interface JobOffer {
+      id: string;
+      companyId: string;
+      companyName: string;
+      title: string;
+      overview: string;
+      requirements: string;
+      responsibilities: string;
+      startDate: string;
+      endDate: string;
+      jobPositionId: string;
+      jobType: string;
+      workFormat: string;
+      experienceLevel: string;
+      tags: Array<Tag>;
+    }
+  }
 }

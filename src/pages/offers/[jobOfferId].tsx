@@ -1,3 +1,7 @@
+import useAuth from '@/hooks/useAuth';
+import { useQuery } from '@tanstack/react-query';
+import { fetchJobOfferDetails } from '@/lib/api/remote/jobOffers';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import GeneralInfo from '@/components/offers/details/GeneralInfo';
@@ -8,33 +12,39 @@ import UserRole from '@/models/enums/UserRole';
 import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
 import verifySessionData from '@/lib/api/local/helpers/verify-session-data';
 
-const DUMMY_DATA = {
-  id: '1',
-  title: 'JavaScript trainee',
-  companyName: 'Google',
-  startDate: '2020-01-01',
-  endDate: '2020-01-01',
-  image: 'https://i.imgur.com/TCemmcW.png',
-  subscribersCount: 0,
-  isSubscribed: false,
-  overview:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  requirements:
-    '# Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  responsibilities:
-    '## Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-};
-
 const JobOfferDetailPage = () => {
-  const jobOffer = DUMMY_DATA;
+  const { accessToken } = useAuth();
+  const { jobOfferId } = useRouter().query;
+  const jobOfferQuery = useQuery(
+    ['jobOfferDetails', jobOfferId],
+    fetchJobOfferDetails({
+      token: accessToken as string,
+      jobOfferId: jobOfferId as string,
+    }),
+    {
+      enabled: !!accessToken,
+      onError: (err: any) =>
+        alert(err.message || 'Помилка при завантаженні вакансії'),
+    }
+  );
 
-  if (!jobOffer) {
+  if (jobOfferQuery.isLoading) {
     return (
       <div className="g__center">
         <LoadingSpinner />
       </div>
     );
   }
+
+  if (jobOfferQuery.isError) {
+    return (
+      <div className="g__center">
+        <p>Помилка при завантаженні вакансії</p>
+      </div>
+    );
+  }
+
+  const jobOffer = jobOfferQuery.data as JobOfferDetails.JobOffer;
 
   return (
     <>
@@ -51,9 +61,6 @@ const JobOfferDetailPage = () => {
         companyName={jobOffer.companyName}
         startDate={jobOffer.startDate}
         endDate={jobOffer.endDate}
-        subscribersCount={jobOffer.subscribersCount}
-        isSubscribed={jobOffer.isSubscribed}
-        image={jobOffer.image}
       />
       <JobOfferContent
         overview={jobOffer.overview}
