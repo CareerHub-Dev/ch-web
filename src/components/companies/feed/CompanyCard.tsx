@@ -1,42 +1,34 @@
-import Image from 'next/image';
 import CompanyInfoBlock from './CompanyInfoBlock';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import LinkButton from '@/components/ui/LinkButton';
+import CompanyLogo from './CompanyLogo';
 import classes from './CompanyCard.module.scss';
-
-type Props = {
-  company: {
-    companyId: string;
-    companyName: string;
-    companyDescription: string;
-    companyLogo: string;
-    totalSubscribers: number;
-    totalJobOffers: number;
-  };
-};
 
 const UsersIcon = <FontAwesomeIcon icon={faUsers} />;
 const BriefcaseIcon = <FontAwesomeIcon icon={faBriefcase} />;
 
-const CompanyCard = ({ company }: Props) => {
+const CompanyCard: React.FC<{
+  company: {
+    id: string;
+    companyName: string;
+    companyDescription: string;
+    companyLogo: string;
+    amountSubscribers: number;
+    amountActiveJobOffers: number;
+  };
+}> = ({ company }) => {
   return (
     <div className={classes.root}>
       <div className={classes['card-header']}>
-        <Image
-          className={classes.logo}
-          src={company.companyLogo}
-          width={400}
-          height={400}
-          alt={company.companyName}
-        />
+        <CompanyLogo companyId={company.id} companyName={company.companyName} />
         <div className={classes['info-column']}>
           <CompanyInfoBlock
-            value={company.totalSubscribers.toString()}
+            value={company.amountSubscribers.toString()}
             icon={UsersIcon}
           />
           <CompanyInfoBlock
-            value={company.totalJobOffers.toString()}
+            value={company.amountActiveJobOffers.toString()}
             icon={BriefcaseIcon}
           />
         </div>
@@ -47,7 +39,7 @@ const CompanyCard = ({ company }: Props) => {
         <p className={classes.description}>{company.companyDescription}</p>
         <LinkButton
           style="light-blue-primary"
-          link={`/companies/${company.companyId}`}
+          link={`/companies/${company.id}`}
         >
           Більше
         </LinkButton>

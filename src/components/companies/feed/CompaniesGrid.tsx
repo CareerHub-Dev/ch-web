@@ -1,22 +1,26 @@
+import type { UseQueryResult } from '@tanstack/react-query';
 import CompanyCard from './CompanyCard';
 import classes from './CompaniesGrid.module.scss';
 
-type Props = {
-  companies: Array<{
-    companyId: string;
-    companyName: string;
-    companyDescription: string;
-    companyLogo: string;
-    totalSubscribers: number;
-    totalJobOffers: number;
-  }>;
-};
+const CompaniesGrid: React.FC<{
+  query: UseQueryResult<any, any>;
+}> = ({ query }) => {
+  const { data, isLoading, isError } = query;
+  if (isLoading) {
+    return <div>Завантажуємо...</div>;
+  }
+  if (isError) {
+    return <div>{`Помилка :(`}</div>;
+  }
 
-const CompaniesGrid = ({ companies }: Props) => (
-  <div className={classes.grid}>
-    {companies.map((company) => (
-      <CompanyCard key={company.companyId} company={company} />
-    ))}
-  </div>
-);
+  console.log(data);
+
+  return (
+    <div className={classes.grid}>
+      {data.map((company: any) => (
+        <CompanyCard key={company.id} company={company} />
+      ))}
+    </div>
+  );
+};
 export default CompaniesGrid;

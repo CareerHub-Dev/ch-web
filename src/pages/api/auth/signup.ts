@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { email, password } = JSON.parse(req.body);
 
-  sendAuthRequest(email, password, UserRole.Student, true, (response) => {
+  sendAuthRequest(email, password, UserRole.Student, false, (response) => {
     switch (response.status) {
       case RequestStatus.Success:
         cookieMiddleware(res, response);

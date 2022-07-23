@@ -66,6 +66,8 @@ export const cleanSessionCookies = (res: NextApiResponse) => {
  * @param backendResponse - the response object from the remote backend
  */
 const cookieMiddleware = (res: NextApiResponse, backendResponse: any) => {
+  console.log(backendResponse.data);
+
   const matchedRole = matchUserRole(backendResponse.data.role);
   if (!matchedRole) {
     return res.status(500).json({

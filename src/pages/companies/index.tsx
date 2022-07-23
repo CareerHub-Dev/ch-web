@@ -1,4 +1,7 @@
+import useAuth from '@/hooks/useAuth';
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchCompanies } from '@/lib/api/remote/companies';
 import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
 import FeedWrapper from '@/components/layout/FeedWrapper';
 import LoadMoreSection from '@/components/layout/LoadMoreSection';
@@ -7,48 +10,32 @@ import UserRole from '@/models/enums/UserRole';
 import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
 import verifySessionData from '@/lib/api/local/helpers/verify-session-data';
 
-const DUMMY_DATA = [
-  {
-    companyId: '1',
-    companyName: 'Company 1',
-    companyDescription: 'Spinner Vape kuk',
-    companyLogo: 'https://i.imgur.com/XqY6xjq.png',
-    totalSubscribers: 12,
-    totalJobOffers: 2,
-  },
-  {
-    companyId: '2',
-    companyName: 'Company 2',
-    companyDescription: 'Spinner Vape kuk2',
-    companyLogo: 'https://i.imgur.com/XqY6xjq.png',
-    totalSubscribers: 0,
-    totalJobOffers: 0,
-  },
-  {
-    companyId: '3',
-    companyName: 'Company 3',
-    companyDescription: 'Spinner Vape kuk3',
-    companyLogo: 'https://i.imgur.com/XqY6xjq.png',
-    totalSubscribers: 3,
-    totalJobOffers: 3,
-  },
-  {
-    companyId: '4',
-    companyName: 'Company 4',
-    companyDescription: 'Spinner Vape kuk4',
-    companyLogo: 'https://i.imgur.com/XqY6xjq.png',
-    totalSubscribers: 0,
-    totalJobOffers: 4,
-  },
-];
+const DEFAULT_PAGE_SIZE = 50;
 
 const CompaniesFeedPage = () => {
-  const [companies, setCompanies] = useState(DUMMY_DATA);
+  const { accessToken } = useAuth();
+  const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const companiesQuery = useQuery(
+    ['companies', page, searchTerm],
+    fetchCompanies({
+      token: accessToken as string,
+      pageNumber: page,
+      pageSize: DEFAULT_PAGE_SIZE,
+      searchTerm,
+    }),
+    {
+      enabled: accessToken !== null,
+      onError: (err: any) =>
+        alert(err.message || 'Помилка при завантаженні компаній'),
+    }
+  );
 
   return (
     <>
       <FeedWrapper>
-        <CompaniesGrid companies={companies} />
+        <CompaniesGrid query={companiesQuery} />
       </FeedWrapper>
       <LoadMoreSection />
     </>
