@@ -1,0 +1,59 @@
+.social {
+  max-width: 20vw;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 150px;
+
+  div,
+  button {
+    border-radius: 20px;
+  }
+}
+
+.blocks {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  height: 60%;
+}
+
+.follow {
+  font-weight: 700;
+  letter-spacing: 0.3ch;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  height: 40%;
+  gap: 5px;
+  transition: all 300ms ease-in-out;
+}
+
+@media (max-width: 800px) {
+  .social {
+
+    div,
+    button {
+      border-radius: 10px;
+      padding: 2px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .blocks {
+    display: none;
+  }
+
+  .follow {
+    max-height: 50%;
+    justify-self: center;
+
+    p {
+      display: none;
+    }
+  }
+
+}

@@ -7,6 +7,7 @@ declare global {
     experienceLevel?: string;
     withTags?: boolean;
     jobPositionId?: string;
+    searchTerm?: string;
   }
 
   interface Tag {

@@ -64,16 +64,7 @@ export const fetchJobOfferDetails =
   };
 
 const fetchJobOfferSubResource =
-  ({
-    token,
-    jobOfferId,
-    resource,
-  }: {
-    token: string;
-    jobOfferId: string;
-    resource: string;
-  }) =>
-  async () => {
+  (token: string, jobOfferId: string, resource: string) => async () => {
     const response = await fetch(
       `${baseURL}JobOffers/${jobOfferId}/${resource}`,
       {
@@ -98,12 +89,7 @@ export const fetchJobOfferSubscribedStudentsAmount = ({
 }: {
   token: string;
   jobOfferId: string;
-}) =>
-  fetchJobOfferSubResource({
-    token,
-    jobOfferId,
-    resource: 'amount-student-subscribers',
-  });
+}) => fetchJobOfferSubResource(token, jobOfferId, 'amount-student-subscribers');
 
 export const fetchJobOfferAppliedCvsAmount = ({
   token,
@@ -112,9 +98,5 @@ export const fetchJobOfferAppliedCvsAmount = ({
   token: string;
   jobOfferId: string;
 }) => {
-  return fetchJobOfferSubResource({
-    token,
-    jobOfferId,
-    resource: 'amount-applied-cvs',
-  });
+  return fetchJobOfferSubResource(token, jobOfferId, 'amount-applied-cvs');
 };

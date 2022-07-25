@@ -40,10 +40,9 @@ const blobToBase64 = (blob: Blob) => {
   });
 };
 
-export const fetchCompanyLogo =
-  ({ token, companyId }: { token: string; companyId: string }) =>
-  async () => {
-    const url = `${baseURL}Companies/${companyId}/logo`;
+const fetchCompanySubResource =
+  (token: string, companyId: string, subResource: string) => async () => {
+    const url = `${baseURL}Companies/${companyId}/${subResource}`;
     const response = await fetch(url, {
       headers: {
         Accept: 'text/plain',
@@ -55,5 +54,40 @@ export const fetchCompanyLogo =
       return await response.blob().then((blob) => blobToBase64(blob));
     }
     const data = await response.json();
+    throw new Error(retrieveErrorMessage(data));
+  };
+
+export const fetchCompanyLogo = ({
+  token,
+  companyId,
+}: {
+  token: string;
+  companyId: string;
+}) => fetchCompanySubResource(token, companyId, 'logo');
+
+export const fetchCompanyBanner = ({
+  token,
+  companyId,
+}: {
+  token: string;
+  companyId: string;
+}) => fetchCompanySubResource(token, companyId, 'banner');
+
+export const fetchCompanyDetails =
+  ({ token, companyId }: { token: string; companyId: string }) =>
+  async () => {
+    const url = `${baseURL}Companies/${companyId}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'text/plain',
+        'Content-Type': 'application/json-patch+json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    }
     throw new Error(retrieveErrorMessage(data));
   };

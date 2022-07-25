@@ -1,10 +1,12 @@
 import classes from './CompanyBody.module.scss';
 
-const CompanyBody = () => {
+const CompanyBody: React.FC<{
+  description: string;
+}> = ({ description }) => {
   return (
-    <div id="companyBodyWraper" className={classes['body-wrapper']}>
+    <div id="companyBodyWraper" className={classes.wapper}>
       <div id="companyBodyContent" className={classes.body}>
-        {'contents'}
+        {description}
       </div>
     </div>
   );

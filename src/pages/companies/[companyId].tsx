@@ -1,37 +1,49 @@
-import { useState } from 'react';
+import useAuth from '@/hooks/useAuth';
 import { GetServerSidePropsContext, NextPage } from 'next';
+import { useQuery } from '@tanstack/react-query';
+import { fetchCompanyDetails } from '@/lib/api/remote/companies';
+import { useRouter } from 'next/router';
 import CompanyHeader from '@/components/companies/details/CompanyHeader';
 import CompanyBody from '@/components/companies/details/CompanyBody';
 import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
 import verifySessionData from '@/lib/api/local/helpers/verify-session-data';
 import UserRole from '@/models/enums/UserRole';
 
-const DUMMY_DATA = {
-  companyId: '1',
-  companyName: 'Company 1',
-  companyDescription: 'Spinner Vape kuk',
-  companyLogo: 'https://i.imgur.com/XqY6xjq.png',
-  totalSubscribers: 12,
-  totalJobOffers: 2,
-};
+const CompanyDetailsPage = () => {
+  const companyId = useRouter().query.companyId as string;
+  const { accessToken } = useAuth();
+  const companyQuery = useQuery(
+    ['company', companyId],
+    fetchCompanyDetails({
+      token: accessToken as string,
+      companyId,
+    }),
+    {
+      enabled: accessToken !== null,
+      onError: (err: any) =>
+        alert(err.message || 'Помилка при завантаженні компанії'),
+    }
+  );
 
-const CompanyDetailsPage: NextPage = () => {
-  const [currentTab, setCurrentTab] = useState('info');
-
-  const handleTabChange = (newTab: string) => {
-    setCurrentTab(newTab);
-  };
+  if (companyQuery.isLoading) {
+    return <div>Завантаження компанії...</div>;
+  }
+  if (companyQuery.isError) {
+    return <div>Помилка при завантаженні компанії</div>;
+  }
+  const { id, companyName, companyMoto, companyDescription } =
+    companyQuery.data;
 
   return (
     <>
-      <h1>Company Details</h1>
-      {/* <CompanyHeader
-        onTabChange={handleTabChange}
-        currentTab={currentTab}
-        primaryColor="#c20a0a"
-        secondaryColor="#ffc8c8"
+      <CompanyHeader
+        id={id}
+        name={companyName}
+        moto={companyMoto}
+        links={[]}
+        isFollowed={false}
       />
-      <CompanyBody currentTab={currentTab} /> */}
+      <CompanyBody description={companyDescription} />
     </>
   );
 };

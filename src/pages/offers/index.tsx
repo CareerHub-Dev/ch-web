@@ -15,6 +15,7 @@ import { fetchJobOffers } from '@/lib/api/remote/jobOffers';
 const JobOffersFeedPage: NextPage = () => {
   const { accessToken } = useAuth();
   const [page, setPage] = useState(1);
+  const [searchParameter, setSearchParameter] = useState('');
   const [filterApplied, setFilterApplied] = useState(false);
   const jobOffersQuery = useQuery(
     ['jobOffers', page],

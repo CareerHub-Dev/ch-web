@@ -27,12 +27,10 @@ const categoryOptions = [
   { label: 'Підтримка', value: JobType.CustomerService },
 ];
 
-type Props = {
+const JobOffersFilters: React.FC<{
   onApply: AnyFn;
   applied: boolean;
-};
-
-const JobOffersFilters = ({ onApply, applied }: Props) => {
+}> = ({ onApply, applied }) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const companyNameRef = useRef<HTMLInputElement>(null);
   const formatSelection = useMultipleSelection<JobOfferFormat>();
