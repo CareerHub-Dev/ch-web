@@ -43,7 +43,12 @@ const LoginForm = () => {
         const { sessionData, role } = response.data;
         console.log(response.data);
 
-        auth.login(sessionData.accessToken, sessionData.authorityToken, role);
+        auth.login(
+          sessionData.accessToken,
+          sessionData.authorityToken,
+          sessionData.accountId,
+          role
+        );
         router.push('/offers');
         break;
       default:

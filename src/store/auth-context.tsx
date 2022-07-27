@@ -4,14 +4,21 @@ import React, { useState, useCallback } from 'react';
 type AuthContextData = {
   accessToken: string | null;
   authorityToken: string | null;
+  accountId: string | null;
   role: UserRole | null;
   isLoggedIn: boolean;
-  login: (accessToken: string, authorityToken: string, role: string) => void;
+  login: (
+    accessToken: string,
+    authorityToken: string,
+    accountId: string,
+    role: string
+  ) => void;
   logout: () => void;
 };
 
 const AuthContext = React.createContext<AuthContextData>({
   accessToken: null,
+  accountId: null,
   authorityToken: null,
   role: null,
   isLoggedIn: false,
@@ -31,16 +38,18 @@ export const AuthContextProvider: React.FC = ({ children }) => {
   const storedAccessToken = retrieveItemFromLocalStorage('ch-accessToken');
   const storedAuthorityToken =
     retrieveItemFromLocalStorage('ch-authorityToken');
+  const storedAccountId = retrieveItemFromLocalStorage('ch-accountId');
 
   const [accessToken, setAccessToken] = useState(storedAccessToken);
   const [authorityToken, setAuthorityToken] = useState(storedAuthorityToken);
-
+  const [accountId, setAccountId] = useState(storedAccountId);
   const [role, setRole] = useState<UserRole | null>(null);
   const userIsLoggedIn = !!accessToken && !!authorityToken;
 
   const logoutHandler = useCallback(() => {
     setAccessToken(null);
     setAuthorityToken(null);
+    setAccountId(null);
     setRole(null);
     localStorage.removeItem('ch-accessToken');
     localStorage.removeItem('ch-authorityToken');
@@ -54,18 +63,22 @@ export const AuthContextProvider: React.FC = ({ children }) => {
   const loginHandler = (
     accessToken: string,
     authorityToken: string,
+    accountId: string,
     role: UserRole
   ) => {
     setRole(role);
     setAccessToken(accessToken);
+    setAccountId(accountId);
     setAuthorityToken(authorityToken);
     localStorage.setItem('ch-accessToken', accessToken);
+    localStorage.setItem('ch-acccountId', accountId);
     localStorage.setItem('ch-authorityToken', authorityToken);
   };
 
   const contextValue = {
-    accessToken: accessToken,
-    authorityToken: authorityToken,
+    accessToken,
+    authorityToken,
+    accountId,
     role,
     isLoggedIn: userIsLoggedIn,
     login: loginHandler,

@@ -16,7 +16,7 @@ const verifySessionData = async (request: GetServerSidePropsContext['req']) => {
   if (
     !parsedSessionDataObj ||
     !parsedSessionDataObj.authorityToken ||
-    !parsedSessionDataObj.selfId ||
+    !parsedSessionDataObj.accountId ||
     !parsedSessionDataObj.accessToken
   ) {
     throw new AuthorizationError('Не вдалося отримати дані авторизації');
@@ -29,11 +29,8 @@ const verifySessionData = async (request: GetServerSidePropsContext['req']) => {
     role: decoded.role as UserRole,
     authorityToken: parsedSessionDataObj.authorityToken,
     accessToken: parsedSessionDataObj.accessToken,
-    selfId: parsedSessionDataObj.selfId,
+    accountId: parsedSessionDataObj.accountId,
   };
-  if (parsedSessionDataObj.entityId) {
-    sessionData.entityId = parsedSessionDataObj.entityId;
-  }
 
   return sessionData;
 };

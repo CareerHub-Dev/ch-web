@@ -66,8 +66,6 @@ export const cleanSessionCookies = (res: NextApiResponse) => {
  * @param backendResponse - the response object from the remote backend
  */
 const cookieMiddleware = (res: NextApiResponse, backendResponse: any) => {
-  console.log(backendResponse.data);
-
   const matchedRole = matchUserRole(backendResponse.data.role);
   if (!matchedRole) {
     return res.status(500).json({
@@ -75,15 +73,13 @@ const cookieMiddleware = (res: NextApiResponse, backendResponse: any) => {
     });
   }
   const authorityToken = signAuthorityToken(matchedRole);
+  const { jwtToken, refreshToken, accountId } = backendResponse.data;
   const cookieObj = {
     authorityToken,
-    selfId: backendResponse.data.accountId,
-    entityId: null,
-    accessToken: backendResponse.data.jwtToken,
+    selfId: accountId,
+    accessToken: jwtToken,
+    refreshToken,
   };
-  if ([UserRole.Company, UserRole.Student].includes(matchedRole)) {
-    cookieObj.entityId = backendResponse.data[`${matchedRole}Id`];
-  }
   setCookie(res, 'ch-authority', cookieObj);
 
   const extendedData = {

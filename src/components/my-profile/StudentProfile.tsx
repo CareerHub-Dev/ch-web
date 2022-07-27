@@ -1,6 +1,7 @@
+import useAuth from '@/hooks/useAuth';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectProfileData, selectProfilePhoto } from '@/store/student';
+import { fetchStudent } from '@/lib/api/remote/student';
 import useInput from '@/hooks/useInput';
 import Image from 'next/image';
 import Card from '../ui/Card';
@@ -10,16 +11,36 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import classes from './StudentProfile.module.scss';
+import LoadingSpinner from '../ui/LoadingSpinner';
 
 const StudentProfile = () => {
+  const { accessToken, accountId } = useAuth();
   const [isEditMode, setIsEditMode] = useState(false);
   const uploadedImage = useInput();
-
-  const profileData = useSelector(selectProfileData);
-  const displayedName = `${profileData.firstName} ${profileData.lastName}`;
-
-  const profilePhoto = useSelector(selectProfilePhoto);
-  const profilePhotoIsSet = profilePhoto.length !== 0;
+  const studentQuery = useQuery(
+    ['student', accountId, accessToken],
+    fetchStudent({
+      accountId: accountId as string,
+      accessToken: accessToken as string,
+    }),
+    {
+      enabled: !!accessToken && !!accountId,
+      onError: (error: any) =>
+        alert(error.message || 'Помилка звернення до серверу'),
+    }
+  );
+  if (studentQuery.isLoading) {
+    return <LoadingSpinner />;
+  }
+  if (studentQuery.isError) {
+    return <div>Помилка звернення до серверу</div>;
+  }
+  console.log(studentQuery.data);
+  // TODO: make it work
+  const profileData: any = {};
+  const profilePhoto: any = {};
+  const displayedName = ``;
+  const profilePhotoIsSet = 0 !== 0;
 
   const imageLoadHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     uploadedImage.valueChangeHandler(event);

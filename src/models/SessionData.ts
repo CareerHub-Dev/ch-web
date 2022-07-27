@@ -4,7 +4,6 @@ interface SessionData {
   role: UserRole;
   authorityToken: string;
   accessToken: string;
-  selfId: string;
-  entityId?: string;
+  accountId: string;
 }
 export default SessionData;

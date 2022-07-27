@@ -18,19 +18,17 @@ const JobOfferItem: React.FC<{ item: JobOffersFeed.JobOffer }> = ({ item }) => {
 
   return (
     <li className={classes.item}>
-      <Image
-        src={'https://i.imgur.com/XqY6xjq.png'}
-        alt={title}
-        width={250}
-        height={160}
-      />
+      <Image src={'/general.jpg'} alt={title} width={250} height={160} />
       <div className={classes.content}>
         <div className={classes.summary}>
           <h2>{title}</h2>
           <CompanyLink companyId={companyId} companyName={companyName} />
           <div className={classes.date}>
             <DateIcon />
-            <time>{humanReadableExpirationDate}</time>
+            <p>
+              {'Закінчується: '}
+              <time>{humanReadableExpirationDate}</time>
+            </p>
           </div>
           {tags.length !== 0 && <TagsSection tags={tags} />}
         </div>
