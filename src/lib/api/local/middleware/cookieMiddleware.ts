@@ -58,8 +58,7 @@ export const cleanSessionCookies = (res: NextApiResponse) => {
  * Cookie middleware function.
  * If the user's role matched successfully:
  * * Sets `ch-authority` cookie
- * * Sets `ch-selfId` cookie
- * * Sets `ch-entityId` cookie if user is not Admin
+ * * Sets `ch-accountId` cookie
  * If failed to match user's role:
  * returns 500 status code
  * @param res - the response object
@@ -76,7 +75,7 @@ const cookieMiddleware = (res: NextApiResponse, backendResponse: any) => {
   const { jwtToken, refreshToken, accountId } = backendResponse.data;
   const cookieObj = {
     authorityToken,
-    selfId: accountId,
+    accountId,
     accessToken: jwtToken,
     refreshToken,
   };

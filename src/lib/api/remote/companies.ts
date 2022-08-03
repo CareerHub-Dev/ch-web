@@ -91,3 +91,25 @@ export const fetchCompanyDetails =
     }
     throw new Error(retrieveErrorMessage(data));
   };
+
+export const fetchCompanyLinks =
+  ({
+    accessToken,
+    companyId,
+  }: {
+    accessToken: string | null;
+    companyId: string;
+  }) =>
+  async () => {
+    const url = `${baseURL}Companies/${companyId}/AdditionalLinks`;
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    }
+    throw new Error(retrieveErrorMessage(data));
+  };

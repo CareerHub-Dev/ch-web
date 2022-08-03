@@ -1,5 +1,4 @@
 import { createPortal } from 'react-dom';
-import type { AnyFn } from '@/lib/util/types';
 import classes from './ModalWithBackdrop.module.scss';
 
 const Backdrop: React.FC<{ onClose: AnyFn; overrideClassName?: string }> = ({

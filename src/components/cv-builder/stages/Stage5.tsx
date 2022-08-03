@@ -17,7 +17,7 @@ import Modal from '@/components/ui/Modal';
 
 import classes from './Stage.module.scss';
 
-const Stage5: React.FC = () => {
+const Stage5 = () => {
   const addedLanguages = useSelector(selectLanguages);
   const isAssistEnabled = useSelector(selectIsAssistEnabled);
   const [addLanguageModalIsOpen, setAddLanguageModalIsOpen] = useState(false);

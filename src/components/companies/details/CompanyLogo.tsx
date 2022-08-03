@@ -1,29 +1,20 @@
-import useAuth from '@/hooks/useAuth';
-import { useQuery } from '@tanstack/react-query';
-import { fetchCompanyLogo } from '@/lib/api/remote/companies';
+import useImageFetch from '@/hooks/useImageFetch';
 import Image from 'next/image';
 import classes from './CompanyLogo.module.scss';
 
 const CompanyLogo: React.FC<{
-  companyId: string;
-}> = ({ companyId }) => {
-  const { accessToken } = useAuth();
-  const logoQuery = useQuery(
-    ['companyLogo', companyId],
-    fetchCompanyLogo({ token: accessToken as string, companyId }),
-    { enabled: accessToken !== null }
-  );
+  imageId: string;
+}> = ({ imageId }) => {
+  const logoQuery = useImageFetch({
+    imageId,
+  });
 
   const logo = (logoQuery.data as string) || '/company-dummy-logo.png';
 
   return (
-    <Image
-      alt="Company Logo"
-      className={classes.logo}
-      src={logo}
-      width={400}
-      height={400}
-    />
+    <div className={classes.wrapper}>
+      <img alt="Company Logo" src={logo} />
+    </div>
   );
 };
 export default CompanyLogo;

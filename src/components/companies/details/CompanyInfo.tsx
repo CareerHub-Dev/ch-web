@@ -1,28 +1,16 @@
 import classes from './CompanyInfo.module.scss';
+import CompanyLinks from './CompanyLinks';
 
 const CompanyInfo: React.FC<{
+  companyId: string;
   name: string;
   moto?: string;
-  links: Array<{ title: string; url: string }>;
-}> = ({ name, moto, links }) => {
-  const linksAvailable = links.length === 0;
-
+}> = ({ companyId, name, moto }) => {
   return (
     <div className={classes.info}>
       <h1 className={classes.title}>{name}</h1>
-      {moto && <h2 className={classes.moto}>{moto}</h2>}
-
-      {linksAvailable && (
-        <ul className={classes.links}>
-          {links.map((link, index) => (
-            <li key={index}>
-              <a href={link.url} target="_blank" rel="noreferrer">
-                {link.title}
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
+      {moto && <h2 className={classes.moto}>{`"${moto}"`}</h2>}
+      <CompanyLinks companyId={companyId} />
     </div>
   );
 };

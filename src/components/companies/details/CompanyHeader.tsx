@@ -2,27 +2,56 @@ import CompanyBanner from './CompanyBanner';
 import CompanyInfo from './CompanyInfo';
 import CompanyLogo from './CompanyLogo';
 import CompanySocials from './CompanySocials';
+import TabHeader from './TabHeader';
 import classes from './CompanyHeader.module.scss';
 
 const CompanyHeader: React.FC<{
   id: string;
   name: string;
   moto?: string;
-  links: Array<{ title: string; url: string }>;
   isFollowed: boolean;
-}> = ({ id, name, moto, links, isFollowed }) => {
+  companyLogo: string;
+  companyBanner: string;
+}> = ({ id, name, moto, companyLogo, companyBanner, isFollowed }) => {
+  const currentTab = 'INFO';
+
+  const tabSwitchHandler = (tabId: string) => {
+    //
+  };
+
   return (
-    <div className={classes.header}>
-      <CompanyBanner companyId={id} />
-      <div>
+    <>
+      <CompanyBanner imageId={companyBanner} />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+        }}
+      >
         <div className={classes.header}>
-          <CompanyLogo companyId={id} />
-          <CompanyInfo name={name} moto={moto} links={links} />
+          <CompanyLogo imageId={companyLogo} />
+          <CompanyInfo companyId={id} name={name} moto={moto} />
           <CompanySocials companyId={id} />
         </div>
       </div>
-      <hr />
-    </div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div className={classes.tabs}>
+          <TabHeader
+            label="Про компанію"
+            tabId="INFO"
+            currentTab={currentTab}
+            onClick={tabSwitchHandler}
+          />
+          <TabHeader
+            tabId="OFFERS"
+            label="Вакансії"
+            currentTab={currentTab}
+            onClick={tabSwitchHandler}
+          />
+        </div>
+      </div>
+    </>
   );
 };
 

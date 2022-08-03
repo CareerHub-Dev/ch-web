@@ -16,12 +16,15 @@ export const sendAuthRequest = (
   } else {
     url = `${baseURL}Accounts/register/student`;
   }
+  const body = JSON.stringify({
+    email,
+    password,
+  });
+  console.log(body);
+
   fetch(url, {
     method: 'POST',
-    body: JSON.stringify({
-      email,
-      password,
-    }),
+    body,
     headers: {
       Accept: 'text/plain',
       'Content-Type': 'application/json-patch+json',

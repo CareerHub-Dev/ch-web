@@ -1,11 +1,15 @@
 import {
   selectJobType,
+  selectJobPosition,
   selectTemplateLanguage,
   selectIsAssistEnabled,
   setJobType,
+  setJobPosition,
   setTemplateLanguage,
   setIsAssistEnabled,
 } from '@/store/cv-constructor';
+import useAuth from '@/hooks/useAuth';
+import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import useReduxStringInput from '@/hooks/useReduxStringInput';
 import useAppDispatch from '@/hooks/useAppDispatch';
@@ -17,6 +21,8 @@ import FormSelect from '@/components/ui/form/FormSelect';
 import FormCheckbox from '@/components/ui/form/FormCheckbox';
 
 import classes from './Stage.module.scss';
+import { fetchJobPositions } from '@/lib/api/remote/jobPositions';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
@@ -34,19 +40,42 @@ const templateLanguageOptions = [
   { value: CVTemplateLanguage.Ua, text: 'Українська' },
 ];
 
-const Stage0: React.FC = () => {
+const Stage0 = () => {
+  const dispatch = useAppDispatch();
+  const { accessToken } = useAuth();
   const jobTypeInput = useReduxStringInput(selectJobType, setJobType);
+  const jobPositionInput = useReduxStringInput(
+    selectJobPosition,
+    setJobPosition
+  );
   const templateLanguageInput = useReduxStringInput(
     selectTemplateLanguage,
     setTemplateLanguage
   );
   const isAssistEnabled = useSelector(selectIsAssistEnabled);
-
-  const dispatch = useAppDispatch();
+  const jobPositionsQuery = useQuery(
+    ['jobPositions'],
+    fetchJobPositions({
+      accessToken: accessToken as string,
+    }),
+    {
+      enabled: !!accessToken,
+      onError: (err: any) => alert(err?.message || err || 'Невідома помилка'),
+      onSuccess: (data: any) => {
+        dispatch(setJobPosition(data[0]['id']));
+      },
+    }
+  );
 
   const isAssistEnabledChangeHandler = (event: InputChangeEvent) => {
     dispatch(setIsAssistEnabled(event.target.checked));
   };
+
+  const jobPositionOptions =
+    jobPositionsQuery.data?.map((item: any) => ({
+      value: item['id'],
+      text: item['name'],
+    })) || [];
 
   return (
     <>
@@ -72,6 +101,17 @@ const Stage0: React.FC = () => {
             </p>
           </AssistantTip>
         )}
+        {jobPositionsQuery.isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <FormSelect
+            id="jobPosition"
+            selectionState={jobPositionInput}
+            options={jobPositionOptions}
+            label="Виберіть цільову посаду:"
+          />
+        )}
+
         <FormSelect
           id="templateLanguage"
           selectionState={templateLanguageInput}

@@ -21,6 +21,7 @@ type CvStore = {
   progress: number;
   isAssistEnabled: boolean;
   noWorkingExperience: boolean;
+  saveModalIsOpen: boolean;
 };
 
 const initialConstructorState: CvStore = {
@@ -28,14 +29,21 @@ const initialConstructorState: CvStore = {
   progress: 0,
   isAssistEnabled: true,
   noWorkingExperience: false,
+  saveModalIsOpen: false,
 };
 
 const cvConstructorSlice = createSlice({
   name: 'cvConstructor',
   initialState: initialConstructorState,
   reducers: {
+    setTitle: (state, action: PayloadAction<string>) => {
+      setStringInputValue(state.cvState.title, action.payload);
+    },
     setJobType: (state, action: PayloadAction<string>) => {
       setStringInputValue(state.cvState.jobType, action.payload);
+    },
+    setJobPosition: (state, action: PayloadAction<string>) => {
+      setStringInputValue(state.cvState.jobPosition, action.payload);
     },
     setTemplateLanguage: (state, action: PayloadAction<string>) => {
       setStringInputValue(state.cvState.templateLanguage, action.payload);
@@ -109,6 +117,7 @@ const cvConstructorSlice = createSlice({
       switch (action.payload) {
         case 0:
           enforceInputValidation(state.cvState.jobType);
+          enforceInputValidation(state.cvState.jobPosition);
           return;
         case 1:
           enforceInputValidation(state.cvState.name);
@@ -135,6 +144,9 @@ const cvConstructorSlice = createSlice({
         default:
           return;
       }
+    },
+    setSaveModalIsOpen: (state, action: PayloadAction<boolean>) => {
+      state.saveModalIsOpen = action.payload;
     },
   },
 });
@@ -174,18 +186,20 @@ const getInputValidityAndError = (input: StringInput | ArrayInput<any>) => ({
 export const selectEntireCVState = (state: RootState) => {
   const cvState = state.cvConstructor.cvState;
   return {
+    title: cvState.title.value,
     jobType: cvState.jobType.value,
-    name: cvState.name.value,
-    surname: cvState.surname.value,
+    jobPositionId: cvState.jobPosition.value,
+    firstName: cvState.name.value,
+    lastName: cvState.surname.value,
     photo: cvState.photo.value.length === 0 ? null : cvState.photo.value,
     goals: cvState.goals.value,
     skillsAndTechnologies: cvState.skillsAndTechnologies.value,
-    languages: cvState.languages.value,
-    workingExperience: state.cvConstructor.noWorkingExperience
+    foreignLanguages: cvState.languages.value,
+    experiences: state.cvConstructor.noWorkingExperience
       ? null
       : cvState.workingExperience.value,
     otherExperience: cvState.otherExperience.value,
-    links: cvState.links.value,
+    projectLinks: cvState.links.value,
     education: cvState.education.value,
     templateLanguage: cvState.templateLanguage.value,
   };
@@ -195,7 +209,9 @@ export const selectStageErrors = (stage: number) => (state: RootState) => {
   const cvState = state.cvConstructor.cvState;
   switch (stage) {
     case 0:
-      return [getInputValidityAndError(cvState.jobType)];
+      return [cvState.jobType, cvState.jobPosition].map((item) =>
+        getInputValidityAndError(item)
+      );
     case 1:
       return [cvState.name, cvState.surname].map((item) =>
         getInputValidityAndError(item)
@@ -222,8 +238,12 @@ export const selectIsAssistEnabled = (state: RootState) =>
   state.cvConstructor.isAssistEnabled;
 export const selectNoWorkingExperience = (state: RootState) =>
   state.cvConstructor.noWorkingExperience;
+export const selectTitle = (state: RootState) =>
+  getTransformedStringInput(state.cvConstructor.cvState.title);
 export const selectJobType = (state: RootState) =>
   getTransformedStringInput(state.cvConstructor.cvState.jobType);
+export const selectJobPosition = (state: RootState) =>
+  getTransformedStringInput(state.cvConstructor.cvState.jobPosition);
 export const selectTemplateLanguage = (state: RootState) =>
   getTransformedStringInput(state.cvConstructor.cvState.templateLanguage);
 export const selectName = (state: RootState) =>
@@ -246,9 +266,13 @@ export const selectLinks = (state: RootState) =>
   getTransformedArrayInput(state.cvConstructor.cvState.links);
 export const selectEducation = (state: RootState) =>
   getTransformedArrayInput(state.cvConstructor.cvState.education);
+export const selectSaveModalIsOpen = (state: RootState) =>
+  state.cvConstructor.saveModalIsOpen;
 
 export const {
+  setTitle,
   setJobType,
+  setJobPosition,
   setTemplateLanguage,
   setIsAssistEnabled,
   setNoWorkingExperience,
@@ -268,6 +292,7 @@ export const {
   removeEducation,
   setProgress,
   enforceStageValidation,
+  setSaveModalIsOpen,
 } = cvConstructorSlice.actions;
 
 export default cvConstructorSlice.reducer;

@@ -15,7 +15,7 @@ import classes from './Stage.module.scss';
 
 type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
-const Stage2: React.FC = () => {
+const Stage2 = () => {
   const photo = useSelector(selectPhoto);
   const isAssistEnabled = useSelector(selectIsAssistEnabled);
 

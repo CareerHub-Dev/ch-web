@@ -1,6 +1,5 @@
 import FormLabel from './FormLabel';
 import FormErrorMessage from './FormErrorMessage';
-import type { AnyFn } from '@/lib/util/types';
 import cn from 'classnames';
 import classes from './Form.module.scss';
 

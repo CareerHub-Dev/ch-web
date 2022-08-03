@@ -31,8 +31,15 @@ const CompanyDetailsPage = () => {
   if (companyQuery.isError) {
     return <div>Помилка при завантаженні компанії</div>;
   }
-  const { id, companyName, companyMoto, companyDescription } =
-    companyQuery.data;
+  const {
+    id,
+    companyName,
+    companyMoto,
+    companyDescription,
+    companyLogo,
+    companyBanner,
+  } = companyQuery.data;
+  console.log(companyQuery.data);
 
   return (
     <>
@@ -40,7 +47,8 @@ const CompanyDetailsPage = () => {
         id={id}
         name={companyName}
         moto={companyMoto}
-        links={[]}
+        companyLogo={companyLogo}
+        companyBanner={companyBanner}
         isFollowed={false}
       />
       <CompanyBody description={companyDescription} />

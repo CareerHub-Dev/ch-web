@@ -1,6 +1,6 @@
 enum CVTemplateLanguage {
-  En = 'en',
-  Ua = 'ua',
+  En = 'EN',
+  Ua = 'UA',
 }
 
 export default CVTemplateLanguage;

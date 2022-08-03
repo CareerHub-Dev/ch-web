@@ -26,7 +26,7 @@ import classes from './Stage.module.scss';
 
 const toggleState = (prevState: boolean) => !prevState;
 
-const Stage6: React.FC = () => {
+const Stage6 = () => {
   const dispatch = useAppDispatch();
   const isAssistEnabled = useSelector(selectIsAssistEnabled);
   const noWorkingExperience = useSelector(selectNoWorkingExperience);

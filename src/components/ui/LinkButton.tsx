@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import type { AnyFn } from '@/lib/util/types';
 import cn from 'classnames';
 import classes from './LinkButton.module.scss';
 
@@ -14,14 +13,20 @@ const LinkButton: React.FC<{
   onClick?: AnyFn;
   style?: ButtonStyle;
   additionalClasses?: string | Array<string>;
+  disabled?: boolean;
 }> = ({
   link,
   onClick,
   style = 'dark-blue-primary',
   additionalClasses,
   children,
+  disabled = false,
 }) => {
-  const allClasses = cn(classes[style], additionalClasses);
+  const allClasses = cn(
+    classes[style],
+    additionalClasses,
+    disabled && classes.disabled
+  );
 
   if (link) {
     return (
@@ -32,7 +37,7 @@ const LinkButton: React.FC<{
   }
 
   return (
-    <button className={allClasses} onClick={onClick}>
+    <button className={allClasses} onClick={onClick} disabled={disabled}>
       {children}
     </button>
   );

@@ -6,7 +6,7 @@ type StringInput = {
 
 export default StringInput;
 
-export const getStringInut = (
+export const getStringInput = (
   value: string = '',
   isValid: boolean = false,
   isTouched: boolean = false

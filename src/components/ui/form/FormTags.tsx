@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import type { AnyFn } from '@/lib/util/types';
 import ChervonDownIcon from '../icons/ChevronDownIcon';
 import RemoveIcon from '../icons/RemoveIcon';
 import cn from 'classnames';
@@ -25,7 +24,7 @@ const FormTags = ({ tags, onAdd, onRemove, onReset }: Props) => {
     const tag = tagInsertionInputRef.current?.value;
     onAdd(tag);
     tagInsertionInputRef.current!.value = '';
-  }
+  };
 
   return (
     <>

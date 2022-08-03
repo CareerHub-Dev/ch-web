@@ -24,6 +24,10 @@ const dashboardItems = [
     title: 'Контакти',
     query: 'contacts',
   },
+  {
+    title: 'Налаштування',
+    query: 'settings',
+  },
 ];
 
 const SidePanel: React.FC<{

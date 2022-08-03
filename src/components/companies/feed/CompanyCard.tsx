@@ -13,15 +13,18 @@ const CompanyCard: React.FC<{
     id: string;
     companyName: string;
     companyDescription: string;
-    companyLogo: string;
     amountSubscribers: number;
     amountActiveJobOffers: number;
+    companyLogo: string;
   };
 }> = ({ company }) => {
   return (
     <div className={classes.root}>
       <div className={classes['card-header']}>
-        <CompanyLogo companyId={company.id} companyName={company.companyName} />
+        <CompanyLogo
+          imageId={company.companyLogo}
+          companyName={company.companyName}
+        />
         <div className={classes['info-column']}>
           <CompanyInfoBlock
             value={company.amountSubscribers.toString()}

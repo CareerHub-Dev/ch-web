@@ -11,7 +11,7 @@ import FormTextArea from '@/components/ui/form/FormTextArea';
 
 import classes from './Stage.module.scss';
 
-const Stage3: React.FC = () => {
+const Stage3 = () => {
   const goals = useReduxStringInput(selectGoals, setGoals);
   const isAssistEnabled = useSelector(selectIsAssistEnabled);
 

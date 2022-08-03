@@ -1,4 +1,3 @@
-import type { AnyFn } from '@/lib/util/types';
 import classes from './Form.module.scss';
 
 type Option = {

@@ -1,0 +1,90 @@
+$blueAccent: #0040d2;
+
+.overlay {
+  position: fixed;
+  top: 20vh;
+  left: 5%;
+  width: 90%;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  z-index: 30;
+  animation: slide-down 300ms ease-out forwards;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 40px 8px 40px;
+    width: 100%;
+    border-radius: 14px;
+    margin-top: 0.5rem;
+    border: 1px solid transparent;
+    transition: all ease-in-out 100ms;
+    font-style: normal;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: -0.015em;
+
+    &:hover {
+      transition: all ease-in-out 200ms;
+    }
+  }
+}
+
+.delete {
+  background: red;
+  color: #fff;
+
+  &:hover {
+    background: rgb(168, 0, 0);
+  }
+}
+
+.download {
+  color: black;
+  background: transparent;
+
+  &:hover {
+    color: #002477;
+    border: 1px solid #002477;
+  }
+}
+
+.edit {
+  background: $blueAccent;
+  color: #fff;
+
+  &:hover {
+    background: #002477;
+  }
+}
+
+@media (min-width: 768px) {
+  .overlay {
+    width: 20rem;
+    left: calc(50% - 10rem);
+  }
+}
+
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

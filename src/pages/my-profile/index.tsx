@@ -8,6 +8,7 @@ import UserRole from '@/models/enums/UserRole';
 import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
 import verifySessionData from '@/lib/api/local/helpers/verify-session-data';
 import classes from '@/styles/my-dashboard.module.scss';
+import SettingsPanel from '@/components/my-profile/SettingsPanel';
 
 const MyDashBoardPage = (_props: object) => {
   const router = useRouter();
@@ -34,6 +35,7 @@ const MyDashBoardPage = (_props: object) => {
       <section className={classes.dashboard}>
         {section === 'overview' && <StudentProfile />}
         {section === 'cvs' && <CVBoard />}
+        {section === 'settings' && <SettingsPanel />}
       </section>
     </div>
   );

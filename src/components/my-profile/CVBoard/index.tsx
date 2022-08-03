@@ -1,47 +1,73 @@
+import useAuth from '@/hooks/useAuth';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import ModalWithBackdrop from '@/components/ui/Modal/ModalWithBackdrop';
+import { fetchStudentCvs } from '@/lib/api/remote/student';
+import LinkButton from '@/components/ui/LinkButton';
 import CVItem from './CVItem';
+import CVActions from './CVActions';
 
 import classes from './CVBoard.module.scss';
 
-const dummyItems = [
-  {
-    id: '1',
-    title: 'C++',
-    creationDate: '2020-01-01',
-    lastEditingDate: '2020-01-02',
-  },
-];
-
-const CVBoard: React.FC<{}> = () => {
+const CVBoard = () => {
+  const { accessToken, accountId } = useAuth();
   const [actionModalIsOpen, setActionModalIsOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState('');
-  const selectedItem = dummyItems.find((item) => item.id === selectedItemId);
+  const cvsQuery = useQuery(
+    ['cvs', accountId],
+    fetchStudentCvs({
+      accessToken: accessToken as string,
+      accountId: accountId as string,
+    }),
+    {
+      enabled: accessToken !== null,
+      onError: (err: any) =>
+        console.log(err.message || 'Помилка при завантаженні резюме'),
+    }
+  );
+  const cvs = cvsQuery.data || [];
+  const selectedItem =
+    cvs.find((item: any) => item.id === selectedItemId) || null;
 
   const openActionModalHandler = (id: string) => {
     setSelectedItemId(id);
     setActionModalIsOpen(true);
   };
 
-  const closeActionModalHandler = () => {
+  const closeActionModalHandler = (deleted?: boolean) => {
     setActionModalIsOpen(false);
+    if (deleted) {
+      cvsQuery.refetch();
+    }
   };
+
+  console.log(cvs);
 
   return (
     <>
       {actionModalIsOpen && (
-        <ModalWithBackdrop onClose={closeActionModalHandler} overrideOverlayClass={classes.overlay}>
-          <div className={classes.actions}>
-            <h2>{selectedItem?.title}</h2>
-            <button id="editButton">Редагувати</button>
-            <button id="downloadButton">Скачати файл</button>
-          </div>
-        </ModalWithBackdrop>
+        <CVActions
+          title={selectedItem?.title}
+          cvId={selectedItem?.id}
+          onClose={closeActionModalHandler}
+        />
       )}
       <div className={classes.wrapper}>
-        {dummyItems.map((item) => (
-          <CVItem key={item.title} {...item} onClick={openActionModalHandler} />
-        ))}
+        <LinkButton link="/cv-builder">Додати</LinkButton>
+        <div className={classes.items}>
+          {cvsQuery.isLoading ? (
+            <p>...</p>
+          ) : cvs.length === 0 ? (
+            <p>Немає резюме</p>
+          ) : (
+            cvs.map((item: any) => (
+              <CVItem
+                key={item.id}
+                {...item}
+                onClick={openActionModalHandler}
+              />
+            ))
+          )}
+        </div>
       </div>
     </>
   );

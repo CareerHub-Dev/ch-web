@@ -2,14 +2,17 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import {
+  selectSaveModalIsOpen,
   selectStageErrors,
   enforceStageValidation,
+  setSaveModalIsOpen,
 } from '@/store/cv-constructor';
 import ProgressBar from './ProgressBar';
 import StageDisplay from './StageDisplay';
 import Card from '@/components/ui/Card';
 
 import classes from './CVControls.module.scss';
+import SaveModal from './SaveModal';
 
 const getProgressEstimation = (currentStage: number) =>
   [0, 5, 10, 20, 35, 50, 75, 90, 100][currentStage];
@@ -22,6 +25,7 @@ const CVControls: React.FC = () => {
   const [currentStage, setCurrentStage] = useState(0);
   const progress = getProgressEstimation(currentStage);
   const currentStageInputs = useSelector(selectStageErrors(currentStage));
+  const saveModalIsOpen = useSelector(selectSaveModalIsOpen);
   const currentStageHasInvalidInputs = currentStageInputs.some(
     (item) => !item.isValid
   );
@@ -44,27 +48,45 @@ const CVControls: React.FC = () => {
     setCurrentStage(currentStage - 1);
   };
 
+  const saveModalOpenHandler = (event: any) => {
+    event.preventDefault();
+    dispatch(setSaveModalIsOpen(true));
+  };
+
   return (
-    <div>
-      <Card>
-        {currentStage !== 0 && (
-          <button className={classes['save-button']}>Зберегти та вийти</button>
-        )}
-        <ProgressBar completed={progress} bgColor="#0040d2" />
-        <div className={classes['stage-controls']}>
-          <button onClick={previousClickHandler} disabled={currentStage === 0}>
-            Назад
-          </button>
-          <button
-            onClick={nextClickHandler}
-            disabled={currentStageHasErrors || currentStage >= completionStage}
-          >
-            Далі
-          </button>
-        </div>
-      </Card>
-      <StageDisplay stage={currentStage} />
-    </div>
+    <>
+      {saveModalIsOpen && <SaveModal />}
+      <div>
+        <Card>
+          {currentStage !== 0 && (
+            <button
+              className={classes['save-button']}
+              onClick={saveModalOpenHandler}
+            >
+              Зберегти та вийти
+            </button>
+          )}
+          <ProgressBar completed={progress} bgColor="#0040d2" />
+          <div className={classes['stage-controls']}>
+            <button
+              onClick={previousClickHandler}
+              disabled={currentStage === 0}
+            >
+              Назад
+            </button>
+            <button
+              onClick={nextClickHandler}
+              disabled={
+                currentStageHasErrors || currentStage >= completionStage
+              }
+            >
+              Далі
+            </button>
+          </div>
+        </Card>
+        <StageDisplay stage={currentStage} />
+      </div>
+    </>
   );
 };
 

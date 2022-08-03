@@ -12,14 +12,14 @@ import classes from './CVPreview.module.scss';
 const CVPreview: React.FC = () => {
   const {
     jobType,
-    name,
-    surname,
+    firstName,
+    lastName,
     goals,
     skillsAndTechnologies,
-    languages,
-    workingExperience,
+    foreignLanguages,
+    experiences,
     otherExperience,
-    links,
+    projectLinks,
     education,
     templateLanguage,
   } = useSelector(selectEntireCVState);
@@ -29,10 +29,10 @@ const CVPreview: React.FC = () => {
   return (
     <div className={classes['doc-preview']}>
       <Title text={matchJobTypeToLocalizedString(jobType)} />
-      {notEmpty(name) && notEmpty(surname) && (
+      {notEmpty(firstName) && notEmpty(lastName) && (
         <>
           <h1>{`${cvTemplateLocalization.name}, ${cvTemplateLocalization.surname}:`}</h1>
-          <p>{`${name} ${surname}`}</p>
+          <p>{`${firstName} ${lastName}`}</p>
           <hr />
         </>
       )}
@@ -41,11 +41,11 @@ const CVPreview: React.FC = () => {
         title={cvTemplateLocalization.skillsAndTechnologies}
         text={skillsAndTechnologies}
       />
-      {notEmpty(languages) && (
+      {notEmpty(foreignLanguages) && (
         <>
           <h1>{`${cvTemplateLocalization.foreignLanguages}:`}</h1>
           <ul>
-            {languages.map((x) => (
+            {foreignLanguages.map((x) => (
               <li key={x.id}>{`${x.object.name}: ${
                 x.object.proficiencyLevel as string
               }`}</li>
@@ -53,11 +53,11 @@ const CVPreview: React.FC = () => {
           </ul>
         </>
       )}
-      {notEmpty(workingExperience) && (
+      {notEmpty(experiences) && (
         <>
           <h1>{`${cvTemplateLocalization.workingExperience}:`}</h1>
           <ul>
-            {workingExperience!.map((x) => {
+            {experiences!.map((x) => {
               const exp = x.object;
               const endDate = exp.jobIsCurrent
                 ? 'досі'
@@ -80,11 +80,11 @@ const CVPreview: React.FC = () => {
         title={cvTemplateLocalization.otherExperience}
         text={otherExperience}
       />
-      {notEmpty(links) && (
+      {notEmpty(projectLinks) && (
         <>
           <h2>{`${cvTemplateLocalization.links}:`}</h2>
           <ul>
-            {links.map((x) => (
+            {projectLinks.map((x) => (
               <li key={x.id}>
                 <a href={x.object.url} target="_blank" rel="noreferrer">
                   {x.object.title}

@@ -1,34 +1,18 @@
-import useAuth from '@/hooks/useAuth';
-import { useQuery } from '@tanstack/react-query';
+import useImageFetch from '@/hooks/useImageFetch';
 import Image from 'next/image';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import { fetchCompanyLogo } from '@/lib/api/remote/companies';
 import classes from './CompanyLogo.module.scss';
 
 const CompanyLogo: React.FC<{
-  companyId: string;
+  imageId: string;
   companyName: string;
-}> = ({ companyId, companyName }) => {
-  const { accessToken } = useAuth();
-  const { data, isLoading, isError } = useQuery(
-    ['companyLogo', companyId],
-    fetchCompanyLogo({
-      token: accessToken as string,
-      companyId,
-    }),
-    {
-      enabled: accessToken !== null,
-      useErrorBoundary: true,
-      onError: (err: any) =>
-        alert(err.message || 'Помилка при завантаженні логотипу компанії'),
-    }
-  );
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-  const loadedImage = isError
-    ? 'https://i.imgur.com/XqY6xjq.png'
-    : (data as string);
+}> = ({ imageId, companyName }) => {
+  const { data } = useImageFetch({
+    imageId,
+    onError: (err: any) =>
+      console.log(err.message || 'Помилка при завантаженні логотипу компанії'),
+  });
+
+  const loadedImage = (data as string) || '/company-dummy-logo.png';
 
   return (
     <Image

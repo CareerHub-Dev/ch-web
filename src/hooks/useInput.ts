@@ -7,6 +7,7 @@ type InputState = {
 
 type InputAction =
   | { type: 'INPUT'; value: string }
+  | { type: 'FORCE'; value: string }
   | { type: 'BLUR' }
   | { type: 'RESET' };
 
@@ -30,6 +31,9 @@ const inputStateReducer = (state: InputState, action: InputAction) => {
   }
   if (action.type === 'RESET') {
     return { value: '', isTouched: false };
+  }
+  if (action.type === 'FORCE') {
+    return { value: action.value, isTouched: false };
   }
 
   return initialInputState;
@@ -59,6 +63,10 @@ const useInput = (
     dispatch({ type: 'RESET' });
   };
 
+  const force = (value: string) => {
+    dispatch({ type: 'FORCE', value });
+  };
+
   return {
     value: inputState.value,
     isValid: valueIsValid,
@@ -66,6 +74,7 @@ const useInput = (
     valueChangeHandler,
     inputBlurHandler,
     reset,
+    force,
   };
 };
 

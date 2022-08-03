@@ -4,7 +4,7 @@ import Image from 'next/image';
 import classes from './ProfileIcon.module.scss';
 
 const ProfileIcon: React.FC<{ src?: string }> = ({
-  src = 'https://i.imgur.com/TCemmcW.png',
+  src = '/default-avatar.png',
 }) => {
   return (
     <Link href={'/my-profile'}>

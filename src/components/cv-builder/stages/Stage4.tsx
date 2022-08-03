@@ -11,7 +11,7 @@ import FormTextArea from '@/components/ui/form/FormTextArea';
 
 import classes from './Stage.module.scss';
 
-const Stage4: React.FC = () => {
+const Stage4 = () => {
   const skillsAndTechnologies = useReduxStringInput(
     selectSkillsAndTechnologies,
     setSkillsAndTechnologies

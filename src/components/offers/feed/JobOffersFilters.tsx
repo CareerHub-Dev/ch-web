@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import useTags from '@/hooks/useTags';
 import useMultipleSelection from '@/hooks/useMultipleSelection';
-import type { AnyFn } from '@/lib/util/types';
 import JobOfferFormat from '@/models/enums/JobOfferFormat';
 import JobType from '@/models/enums/JobType';
 import LinkButton from '@/components/ui/LinkButton';

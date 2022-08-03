@@ -7,7 +7,7 @@ import EducationList from './EducationList';
 
 import classes from './Stage.module.scss';
 
-const Stage7: React.FC = () => {
+const Stage7 = () => {
   const [addEducationModalIsOpen, setAddEducationModalIsOpen] = useState(false);
 
   const addEducationModalToggleHandler = () => {

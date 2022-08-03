@@ -23,6 +23,7 @@ const useReduxStringInput = (
       dispatch(setAction(event.target.value)),
     inputBlurHandler: () => dispatch(setAction(inputState.value)),
     reset: () => dispatch(setAction('')),
+    force: (value: string) => dispatch(setAction(value)),
   };
 };
 

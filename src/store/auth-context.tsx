@@ -53,6 +53,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     setRole(null);
     localStorage.removeItem('ch-accessToken');
     localStorage.removeItem('ch-authorityToken');
+    localStorage.removeItem('ch-accountId');
     fetch('/api/auth/signout', { method: 'POST' }).then((response) => {
       if (!response.ok) {
         console.error('Error while signing out');
@@ -71,7 +72,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     setAccountId(accountId);
     setAuthorityToken(authorityToken);
     localStorage.setItem('ch-accessToken', accessToken);
-    localStorage.setItem('ch-acccountId', accountId);
+    localStorage.setItem('ch-accountId', accountId);
     localStorage.setItem('ch-authorityToken', authorityToken);
   };
 

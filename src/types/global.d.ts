@@ -46,4 +46,6 @@ declare global {
       tags: Array<Tag>;
     }
   }
+
+  type AnyFn = (...args: any[]) => any;
 }

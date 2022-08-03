@@ -45,6 +45,9 @@ const MainNavigation = () => {
             [classes[`active`]]: isPhoneScreen && isBurgerOpened,
           })}
         >
+          <li>
+            <Link href={'/'}>Головна</Link>
+          </li>
           {isLoggedIn && (
             <>
               <li
