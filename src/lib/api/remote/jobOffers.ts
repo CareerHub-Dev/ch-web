@@ -38,10 +38,13 @@ export const fetchJobOffers =
         Authorization: `Bearer ${token}`,
       },
     });
-    if (response.ok) {
-      return response.json();
-    }
     const data = await response.json();
+    if (response.ok) {
+      return {
+        items: data,
+        nextPage: data.length < pageSize ? null : pageNumber + 1,
+      };
+    }
     throw new Error(retrieveErrorMessage(data));
   };
 
@@ -100,3 +103,36 @@ export const fetchJobOfferAppliedCvsAmount = ({
 }) => {
   return fetchJobOfferSubResource(token, jobOfferId, 'amount-applied-cvs');
 };
+
+export const fetchJobOfferSubscriptionStatus = ({
+  token,
+  jobOfferId,
+}: {
+  token: string;
+  jobOfferId: string;
+}) => fetchJobOfferSubResource(token, jobOfferId, 'subscribe');
+
+export const changeSubscriptionStatus =
+  ({
+    accessToken,
+    jobOfferId,
+    currentSubscriptionStatus,
+  }: {
+    accessToken: string | null;
+    jobOfferId: string;
+    currentSubscriptionStatus: boolean;
+  }) =>
+  async () => {
+    const url = `${baseURL}JobOffers/${jobOfferId}/subscribe`;
+    const response = await fetch(url, {
+      method: currentSubscriptionStatus ? 'DELETE' : 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    }
+    throw new Error(retrieveErrorMessage(data));
+  };

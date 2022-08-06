@@ -6,12 +6,12 @@ const InfoItem: React.FC<{
   const Icon = icon;
 
   return (
-    <li className={classes.item}>
+    <div className={classes.item}>
       <span className={classes.icon}>
         <Icon />
       </span>
       <span className={classes.content}>{children}</span>
-    </li>
+    </div>
   );
 };
 

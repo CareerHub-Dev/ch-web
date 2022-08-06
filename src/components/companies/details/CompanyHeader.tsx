@@ -8,17 +8,20 @@ import classes from './CompanyHeader.module.scss';
 const CompanyHeader: React.FC<{
   id: string;
   name: string;
-  moto?: string;
-  isFollowed: boolean;
+  motto?: string;
   companyLogo: string;
   companyBanner: string;
-}> = ({ id, name, moto, companyLogo, companyBanner, isFollowed }) => {
-  const currentTab = 'INFO';
-
-  const tabSwitchHandler = (tabId: string) => {
-    //
-  };
-
+  currentSection: string;
+  changeSection: (section: string) => void;
+}> = ({
+  id,
+  name,
+  motto,
+  companyLogo,
+  companyBanner,
+  changeSection,
+  currentSection,
+}) => {
   return (
     <>
       <CompanyBanner imageId={companyBanner} />
@@ -31,7 +34,7 @@ const CompanyHeader: React.FC<{
       >
         <div className={classes.header}>
           <CompanyLogo imageId={companyLogo} />
-          <CompanyInfo companyId={id} name={name} moto={moto} />
+          <CompanyInfo companyId={id} name={name} motto={motto} />
           <CompanySocials companyId={id} />
         </div>
       </div>
@@ -39,15 +42,15 @@ const CompanyHeader: React.FC<{
         <div className={classes.tabs}>
           <TabHeader
             label="Про компанію"
-            tabId="INFO"
-            currentTab={currentTab}
-            onClick={tabSwitchHandler}
+            tabId="about"
+            currentTab={currentSection}
+            onClick={changeSection}
           />
           <TabHeader
-            tabId="OFFERS"
+            tabId="offers"
             label="Вакансії"
-            currentTab={currentTab}
-            onClick={tabSwitchHandler}
+            currentTab={currentSection}
+            onClick={changeSection}
           />
         </div>
       </div>

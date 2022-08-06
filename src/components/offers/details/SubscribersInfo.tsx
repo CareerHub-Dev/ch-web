@@ -6,16 +6,14 @@ import PeopleIcon from '@/components/ui/icons/PeopleIcon';
 
 const SubscribersInfo: React.FC<{ jobOfferId: string }> = ({ jobOfferId }) => {
   const { accessToken } = useAuth();
-  const { data, isLoading, isError } = useQuery(
-    ['jobOfferDetails', jobOfferId, 'subscribers-amount'],
+  const { data, isLoading } = useQuery(
+    ['jobOffer', jobOfferId, 'subscriptions', 'amount'],
     fetchJobOfferSubscribedStudentsAmount({
       token: accessToken as string,
       jobOfferId,
     }),
     {
       enabled: !!accessToken,
-      onError: (err: any) =>
-        alert(err.message || 'Помилка при завантаженні кількості підписників'),
     }
   );
   const subscribersAmount = isLoading ? '...' : (data as number);

@@ -2,14 +2,14 @@ import { baseURL, retrieveErrorMessage } from '.';
 
 export const fetchCompanies =
   ({
-    token,
+    accessToken,
     pageNumber,
-    pageSize = 50,
+    pageSize,
     searchTerm = '',
   }: {
-    token: string;
+    accessToken: string | null;
     pageNumber: number;
-    pageSize?: number;
+    pageSize: number;
     searchTerm?: string;
   }) =>
   async () => {
@@ -22,56 +22,18 @@ export const fetchCompanies =
       headers: {
         Accept: 'text/plain',
         'Content-Type': 'application/json-patch+json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     const data = await response.json();
     if (response.ok) {
-      return data;
+      return {
+        companies: data,
+        nextPage: data.length === pageSize ? pageNumber + 1 : null,
+      };
     }
     throw new Error(retrieveErrorMessage(data));
   };
-
-const blobToBase64 = (blob: Blob) => {
-  return new Promise((resolve, _) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result);
-    reader.readAsDataURL(blob);
-  });
-};
-
-const fetchCompanySubResource =
-  (token: string, companyId: string, subResource: string) => async () => {
-    const url = `${baseURL}Companies/${companyId}/${subResource}`;
-    const response = await fetch(url, {
-      headers: {
-        Accept: 'text/plain',
-        'Content-Type': 'application/json-patch+json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (response.ok) {
-      return await response.blob().then((blob) => blobToBase64(blob));
-    }
-    const data = await response.json();
-    throw new Error(retrieveErrorMessage(data));
-  };
-
-export const fetchCompanyLogo = ({
-  token,
-  companyId,
-}: {
-  token: string;
-  companyId: string;
-}) => fetchCompanySubResource(token, companyId, 'logo');
-
-export const fetchCompanyBanner = ({
-  token,
-  companyId,
-}: {
-  token: string;
-  companyId: string;
-}) => fetchCompanySubResource(token, companyId, 'banner');
 
 export const fetchCompanyDetails =
   ({ token, companyId }: { token: string; companyId: string }) =>
@@ -92,17 +54,100 @@ export const fetchCompanyDetails =
     throw new Error(retrieveErrorMessage(data));
   };
 
-export const fetchCompanyLinks =
+export const fetchCompanySubResource =
   ({
     accessToken,
     companyId,
+    resourceName,
+    resourceId,
   }: {
     accessToken: string | null;
     companyId: string;
+    resourceName: string;
+    resourceId?: string;
   }) =>
   async () => {
-    const url = `${baseURL}Companies/${companyId}/AdditionalLinks`;
+    const url = `${baseURL}Companies/${companyId}/${resourceName}${
+      resourceId ? '/' + resourceId : ''
+    }`;
     const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    }
+    throw new Error(retrieveErrorMessage(data));
+  };
+
+export const fetchCompanyLinks = ({
+  accessToken,
+  companyId,
+}: {
+  accessToken: string | null;
+  companyId: string;
+}) =>
+  fetchCompanySubResource({
+    accessToken,
+    companyId,
+    resourceName: 'AdditionalLinks',
+  });
+
+export const fetchCompanyJobOffersAmount = ({
+  accessToken,
+  companyId,
+}: {
+  accessToken: string | null;
+  companyId: string;
+}) =>
+  fetchCompanySubResource({
+    accessToken,
+    companyId,
+    resourceName: 'amount-jobOffers',
+  });
+
+export const fetchCompanySubscribersAmount = ({
+  accessToken,
+  companyId,
+}: {
+  accessToken: string | null;
+  companyId: string;
+}) =>
+  fetchCompanySubResource({
+    accessToken,
+    companyId,
+    resourceName: 'amount-subscribers',
+  });
+
+export const fetchCompanySubscriptionStatus = ({
+  accessToken,
+  companyId,
+}: {
+  accessToken: string | null;
+  companyId: string;
+}) =>
+  fetchCompanySubResource({
+    accessToken,
+    companyId,
+    resourceName: 'subscribe',
+  });
+
+export const changeSubscriptionStatus =
+  ({
+    accessToken,
+    companyId,
+    subscriptionStatus,
+  }: {
+    accessToken: string | null;
+    companyId: string;
+    subscriptionStatus: boolean;
+  }) =>
+  async () => {
+    const url = `${baseURL}Companies/${companyId}/subscribe`;
+    const response = await fetch(url, {
+      method: subscriptionStatus ? 'DELETE' : 'POST',
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

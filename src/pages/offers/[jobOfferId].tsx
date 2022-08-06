@@ -23,8 +23,9 @@ const JobOfferDetailPage = () => {
     }),
     {
       enabled: !!accessToken,
-      onError: (err: any) =>
-        alert(err.message || 'Помилка при завантаженні вакансії'),
+      onError: (err: any) => {
+        alert && alert(err.message);
+      },
     }
   );
 
@@ -45,6 +46,7 @@ const JobOfferDetailPage = () => {
   }
 
   const jobOffer = jobOfferQuery.data as JobOfferDetails.JobOffer;
+  console.log(jobOffer);
 
   return (
     <>
@@ -58,9 +60,13 @@ const JobOfferDetailPage = () => {
       <JobOfferTitle title={jobOffer.title} />
       <GeneralInfo
         jobOfferId={jobOffer.id}
+        companyId={jobOffer.companyId}
         companyName={jobOffer.companyName}
         startDate={jobOffer.startDate}
         endDate={jobOffer.endDate}
+        tags={jobOffer.tags}
+        workFormat={jobOffer.workFormat}
+        experienceLevel={jobOffer.experienceLevel}
       />
       <JobOfferContent
         overview={jobOffer.overview}
@@ -75,9 +81,13 @@ export default JobOfferDetailPage;
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const sessionData = await verifySessionData(context.req);
-  const accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
-
+  let accessAllowed = false;
+  try {
+    const sessionData = await verifySessionData(context.req);
+    accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
+  } catch {
+    accessAllowed = false;
+  }
   if (!accessAllowed) {
     return {
       redirect: {

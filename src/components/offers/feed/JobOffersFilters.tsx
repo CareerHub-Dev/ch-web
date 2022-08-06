@@ -1,4 +1,6 @@
 import React, { useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { selectFilterApplied } from '@/store/job-offers-feed';
 import useTags from '@/hooks/useTags';
 import useMultipleSelection from '@/hooks/useMultipleSelection';
 import JobOfferFormat from '@/models/enums/JobOfferFormat';
@@ -26,10 +28,8 @@ const categoryOptions = [
   { label: 'Підтримка', value: JobType.CustomerService },
 ];
 
-const JobOffersFilters: React.FC<{
-  onApply: AnyFn;
-  applied: boolean;
-}> = ({ onApply, applied }) => {
+const JobOffersFilters = () => {
+  const filterApplied = useSelector(selectFilterApplied);
   const titleRef = useRef<HTMLInputElement>(null);
   const companyNameRef = useRef<HTMLInputElement>(null);
   const formatSelection = useMultipleSelection<JobOfferFormat>();
@@ -38,22 +38,10 @@ const JobOffersFilters: React.FC<{
 
   const submissionHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    onApply({
-      title: titleRef.current!.value,
-      companyName: companyNameRef.current!.value,
-      formats: formatSelection.selected as Array<string>,
-      categories: categorySelection.selected as Array<string>,
-      tags: enteredTags.tags,
-    });
   };
 
   const resetHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    titleRef.current!.value = '';
-    companyNameRef.current!.value = '';
-    formatSelection.reset();
-    categorySelection.reset();
-    enteredTags.reset();
   };
 
   return (
@@ -101,7 +89,9 @@ const JobOffersFilters: React.FC<{
         </div>
 
         <LinkButton onClick={submissionHandler}>Пошук</LinkButton>
-        {applied && <LinkButton onClick={resetHandler}>Очистити</LinkButton>}
+        {filterApplied && (
+          <LinkButton onClick={resetHandler}>Очистити</LinkButton>
+        )}
       </form>
     </div>
   );

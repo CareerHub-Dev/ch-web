@@ -1,6 +1,5 @@
 import useAuth from '@/hooks/useAuth';
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchCompanies } from '@/lib/api/remote/companies';
 import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
 import FeedWrapper from '@/components/layout/FeedWrapper';
@@ -9,32 +8,38 @@ import { GetServerSidePropsContext } from 'next';
 import UserRole from '@/models/enums/UserRole';
 import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
 import verifySessionData from '@/lib/api/local/helpers/verify-session-data';
+const defaultPageSize = 50;
 
 const CompaniesFeedPage = () => {
   const { accessToken } = useAuth();
-  const [page, setPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const companiesQuery = useQuery(
-    ['companies', page, searchTerm],
-    fetchCompanies({
-      token: accessToken as string,
-      pageNumber: page,
-      searchTerm,
-    }),
+  const searchTerm = ''; // dummy value
+  const companiesQuery = useInfiniteQuery(
+    ['companies'],
+    async ({ pageParam = 1 }) =>
+      await fetchCompanies({
+        accessToken,
+        pageNumber: pageParam,
+        pageSize: defaultPageSize,
+        searchTerm,
+      })(),
     {
       enabled: accessToken !== null,
-      onError: (err: any) =>
-        alert(err.message || 'Помилка при завантаженні компаній'),
+      getNextPageParam: (lastPage) => lastPage.nextPage,
+      onError: alert,
     }
   );
+
+  const loadMore = (event: any) => {
+    event.preventDefault();
+    companiesQuery.hasNextPage && companiesQuery.fetchNextPage();
+  };
 
   return (
     <>
       <FeedWrapper>
         <CompaniesGrid query={companiesQuery} />
       </FeedWrapper>
-      <LoadMoreSection />
+      {companiesQuery.hasNextPage && <LoadMoreSection onClick={loadMore} />}
     </>
   );
 };
@@ -43,9 +48,13 @@ export default CompaniesFeedPage;
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const sessionData = await verifySessionData(context.req);
-  const accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
-
+  let accessAllowed = false;
+  try {
+    const sessionData = await verifySessionData(context.req);
+    accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
+  } catch {
+    accessAllowed = false;
+  }
   if (!accessAllowed) {
     return {
       redirect: {

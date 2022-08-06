@@ -1,31 +1,27 @@
+import { useRouter } from 'next/router';
+import useAuth from '@/hooks/useAuth';
 import { GetStaticPropsContext } from 'next';
 import FormWrapper from '@/components/auth/FormWrapper';
 import ForgotPasswordForm from '@/components/auth/forms/ForgotPasswordForm';
 import RegisterForm from '@/components/auth/forms/RegisterForm';
 import LoginForm from '@/components/auth/forms/LoginForm';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
+
 import classes from '@/styles/auth.module.scss';
 
-type Props = {
-  form: string;
-};
-
-const AuthPage = ({ form }: Props) => {
-  let displayedForm;
-  switch (form) {
-    case 'forgot-password':
-      displayedForm = <ForgotPasswordForm />;
-      break;
-    case 'register':
-      displayedForm = <RegisterForm />;
-      break;
-    case 'login':
-      displayedForm = <LoginForm />;
-      break;
-    default:
-      displayedForm = <LoadingSpinner />;
+const AuthPage = ({ form }: { form: string }) => {
+  const router = useRouter();
+  const authStatus = useAuth();
+  if (authStatus.isLoggedIn) {
+    router.push('/my-profile');
   }
-
+  const displayedForm =
+    form === 'login' ? (
+      <LoginForm />
+    ) : form === 'register' ? (
+      <RegisterForm />
+    ) : (
+      <ForgotPasswordForm />
+    );
   return (
     <div className={classes.root}>
       <div className={classes.form}>

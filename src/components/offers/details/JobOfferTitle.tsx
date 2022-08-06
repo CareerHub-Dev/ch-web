@@ -1,8 +1,6 @@
 import classes from './JobOfferTitle.module.scss';
 
-type Props = { title: string };
-
-const JobOfferTitle = ({ title }: Props) => (
+const JobOfferTitle = ({ title }: { title: string }) => (
   <section className={classes.title}>
     <h1>{title}</h1>
   </section>

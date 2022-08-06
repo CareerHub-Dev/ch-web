@@ -37,8 +37,13 @@
   flex-direction: column;
 }
 
-.info address {
+.info h2 {
   white-space: pre;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 }
 
 @media (min-width: 768px) {
@@ -67,6 +72,13 @@
 
 .btn {
   width: 100%;
+}
+
+.btn-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .span {

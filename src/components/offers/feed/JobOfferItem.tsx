@@ -2,18 +2,15 @@ import { getReadableDateFromString } from '@/lib/util';
 import Image from 'next/image';
 import LinkButton from '@/components/ui/LinkButton';
 import DateIcon from '@/components/ui/icons/DateIcon';
-import MailAtIcon from '@/components/ui/icons/MailAtIcon';
 import ArrowRightIcon from '@/components/ui/icons/ArrowRightIcon';
-import classes from './JobOfferItem.module.scss';
-import TagsSection from './TagsSection';
-import Link from 'next/link';
 import CompanyLink from './CompanyLink';
+import JobOfferTags from '../common/JobOfferTags';
+
+import classes from './JobOfferItem.module.scss';
 
 const JobOfferItem: React.FC<{ item: JobOffersFeed.JobOffer }> = ({ item }) => {
   const { id, title, endDate, companyName, companyId, tags } = item;
-
   const humanReadableExpirationDate = getReadableDateFromString(endDate);
-
   const exploreLink = `/offers/${id}`;
 
   return (
@@ -30,7 +27,7 @@ const JobOfferItem: React.FC<{ item: JobOffersFeed.JobOffer }> = ({ item }) => {
               <time>{humanReadableExpirationDate}</time>
             </p>
           </div>
-          {tags.length !== 0 && <TagsSection tags={tags} />}
+          {tags.length !== 0 && <JobOfferTags tags={tags} variant="dark" />}
         </div>
         <div className={classes.actions}>
           <LinkButton link={exploreLink} style="light-blue-primary">

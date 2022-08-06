@@ -12,6 +12,9 @@ import SessionData from '@/models/SessionData';
  */
 const verifySessionData = async (request: GetServerSidePropsContext['req']) => {
   const authorityCookie = request.cookies['ch-authority'];
+  if (!authorityCookie) {
+    throw new AuthorizationError('Не вдалося отримати дані авторизації');
+  }
   const parsedSessionDataObj = JSON.parse(authorityCookie);
   if (
     !parsedSessionDataObj ||

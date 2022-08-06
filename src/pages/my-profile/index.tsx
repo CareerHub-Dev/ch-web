@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import useSections from '@/hooks/useSections';
 import SidePanel from '@/components/my-profile/SidePanel';
 import StudentProfile from '@/components/my-profile/StudentProfile';
 import CVBoard from '@/components/my-profile/CVBoard';
@@ -11,31 +12,18 @@ import classes from '@/styles/my-dashboard.module.scss';
 import SettingsPanel from '@/components/my-profile/SettingsPanel';
 
 const MyDashBoardPage = (_props: object) => {
-  const router = useRouter();
-  const section = router.query.section as string;
-  useEffect(() => {
-    console.log('useEffect 1');
-    if (!section || section.length === 0) {
-      router.push('/my-profile/?section=overview', undefined, {
-        shallow: true,
-      });
-    }
-  }, [router, section]);
-
-  const displayedSectionChangeHandler = (newSection: string) => {
-    router.push(`/my-profile/?section=${newSection}`, undefined, {
-      shallow: true,
-    });
-  };
+  const { currentSection, changeSection } = useSections({
+    url: '/my-profile',
+    defaultSection: 'overview',
+  });
 
   return (
     <div id="dashBoardGridContainer" className={classes.container}>
-      <SidePanel onSectionClick={displayedSectionChangeHandler} />
-
+      <SidePanel onSectionClick={changeSection} />
       <section className={classes.dashboard}>
-        {section === 'overview' && <StudentProfile />}
-        {section === 'cvs' && <CVBoard />}
-        {section === 'settings' && <SettingsPanel />}
+        {currentSection === 'overview' && <StudentProfile />}
+        {currentSection === 'cvs' && <CVBoard />}
+        {currentSection === 'settings' && <SettingsPanel />}
       </section>
     </div>
   );
@@ -46,9 +34,13 @@ export default MyDashBoardPage;
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const sessionData = await verifySessionData(context.req);
-  const accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
-
+  let accessAllowed = false;
+  try {
+    const sessionData = await verifySessionData(context.req);
+    accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
+  } catch {
+    accessAllowed = false;
+  }
   if (!accessAllowed) {
     return {
       redirect: {
@@ -57,7 +49,6 @@ export const getServerSideProps = async (
       },
     };
   }
-
   return {
     props: {},
   };

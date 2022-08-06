@@ -19,9 +19,13 @@ export default CVBuilderPage;
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const sessionData = await verifySessionData(context.req);
-  const accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
-
+  let accessAllowed = false;
+  try {
+    const sessionData = await verifySessionData(context.req);
+    accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
+  } catch {
+    accessAllowed = false;
+  }
   if (!accessAllowed) {
     return {
       redirect: {

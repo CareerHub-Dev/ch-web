@@ -1,7 +1,17 @@
 import FollowIcon from '@/components/ui/icons/FollowIcon';
+import useAuth from '@/hooks/useAuth';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  fetchCompanySubscriptionStatus,
+  changeSubscriptionStatus,
+} from '@/lib/api/remote/companies';
 import classes from './FollowButton.module.scss';
 
 const unFollowedStyle = {
+  color: `#c20a0a`,
+  background: `#ffc8c8`,
+};
+const undefinedStyle = {
   color: `#c20a0a`,
   background: `#ffc8c8`,
 };
@@ -11,14 +21,109 @@ const followedStyle = {
 };
 
 const FollowButton: React.FC<{
-  onClick: AnyFn;
-  isFollowed: boolean;
-}> = ({ onClick, isFollowed }) => {
-  const activeStyle = isFollowed ? followedStyle : unFollowedStyle;
+  companyId: string;
+}> = ({ companyId }) => {
+  const { accessToken } = useAuth();
+  const queryClient = useQueryClient();
+  const subscriptionStatusQuery = useQuery(
+    ['company', companyId, 'subscriptions', 'self'],
+    fetchCompanySubscriptionStatus({
+      accessToken,
+      companyId,
+    })
+  );
+  const isFollowed = subscriptionStatusQuery.data;
+
+  const subscriptionMutation = useMutation(
+    ['company', companyId, 'subscribe'],
+    changeSubscriptionStatus({
+      accessToken,
+      companyId,
+      subscriptionStatus: isFollowed,
+    }),
+    {
+      onError: (_error, _variables, restoreCache) => {
+        restoreCache && restoreCache();
+      },
+      onMutate: () => {
+        const cachedStatus = queryClient.getQueryData([
+          'company',
+          companyId,
+          'subscriptions',
+          'self',
+        ]);
+        const cachedAmount = queryClient.getQueryData([
+          'company',
+          companyId,
+          'subscriptions',
+          'amount',
+        ]);
+        const newStatus = !cachedStatus;
+        queryClient.setQueryData(
+          ['company', companyId, 'subscriptions', 'self'],
+          newStatus
+        );
+        queryClient.setQueryData(
+          ['company', companyId, 'subscriptions', 'amount'],
+          (_: any) =>
+            cachedStatus
+              ? --(cachedAmount as number)
+              : ++(cachedAmount as number)
+        );
+
+        return () => {
+          queryClient.setQueryData(
+            ['company', companyId, 'subscriptions', 'self'],
+            cachedStatus
+          );
+          queryClient.setQueryData(
+            ['company', companyId, 'subscriptions', 'amount'],
+            cachedAmount
+          );
+        };
+      },
+      onSuccess: (_data, _variables, restoreCache) => {
+        restoreCache && restoreCache();
+        queryClient.setQueryData(
+          ['company', companyId, 'subscriptions', 'self'],
+          (prev: any) => !(prev as boolean)
+        );
+        queryClient.setQueryData(
+          ['company', companyId, 'subscriptions', 'amount'],
+          (prev: any) => (isFollowed ? --(prev as number) : ++(prev as number))
+        );
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries(['company', companyId, 'subscriptions']);
+      },
+    }
+  );
+  const buttonText =
+    subscriptionStatusQuery.isLoading || subscriptionMutation.isLoading
+      ? '...'
+      : isFollowed
+      ? 'Відписатись'
+      : 'Підписатись';
+  const activeStyle =
+    subscriptionStatusQuery.isLoading || subscriptionMutation.isLoading
+      ? undefinedStyle
+      : isFollowed
+      ? followedStyle
+      : unFollowedStyle;
+
+  const clickHandler = (event: any) => {
+    event.preventDefault();
+    subscriptionMutation.mutate();
+  };
+
   return (
-    <button style={activeStyle} onClick={onClick} className={classes.follow}>
+    <button
+      style={activeStyle}
+      onClick={clickHandler}
+      className={classes.follow}
+    >
       <FollowIcon fill={activeStyle.color} />
-      <p>{isFollowed ? 'Відписатись' : 'Підписатись'}</p>
+      <p>{buttonText}</p>
     </button>
   );
 };
