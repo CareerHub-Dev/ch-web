@@ -1,31 +1,28 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
+import JobType from '@/models/enums/_JobType';
+import WorkFormat from '@/models/enums/WorkFormat';
+import ExperienceLevel from '@/models/enums/ExperienceLevel';
 
 type JobOffersFeedState = {
-  jobOffers: JobOffersFeed.JobOffer[];
-  currentPageNumber: number;
-  pageSize: number;
   searchTerm: string;
-  jobType: string | null;
-  workFormat: string | null;
-  experienceLevel: string | null;
-  jobPositionId: string | null;
-  tagIds: string[];
-  pageIsLoading: boolean;
+  jobType: Nullable<JobType>;
+  workFormat: Nullable<WorkFormat>;
+  experienceLevel: Nullable<ExperienceLevel>;
+  jobPositionId: Nullable<string>;
+  tags: Tag[];
+  appliedValues: Nullable<JobOfferFilter>;
   filterApplied: boolean;
 };
 
 const initialJobOffersFeedState: JobOffersFeedState = {
-  jobOffers: [],
-  currentPageNumber: 1,
-  pageSize: 100,
   searchTerm: '',
   jobType: null,
   workFormat: null,
   experienceLevel: null,
   jobPositionId: null,
-  tagIds: [],
-  pageIsLoading: true,
+  tags: [],
+  appliedValues: null,
   filterApplied: false,
 };
 
@@ -33,50 +30,53 @@ const jobOffersFeedSlice = createSlice({
   name: 'jobOffersFeed',
   initialState: initialJobOffersFeedState,
   reducers: {
-    setPageIsLoading: (state, action: PayloadAction<boolean>) => {
-      state.pageIsLoading = action.payload;
-    },
-    loadNextPage: (state) => {
-      ++state.currentPageNumber;
-      state.pageIsLoading = true;
-    },
-    addJobOffers: (state, action: PayloadAction<JobOffersFeed.JobOffer[]>) => {
-      state.jobOffers = [...state.jobOffers, ...action.payload];
-      state.pageIsLoading = false;
-    },
     setSearchTerm: (state, action: PayloadAction<string>) => {
       state.searchTerm = action.payload;
     },
-    setJobType: (state, action: PayloadAction<string>) => {
+    setJobType: (state, action: PayloadAction<Nullable<JobType>>) => {
       state.jobType = action.payload;
     },
-    setWorkFormat: (state, action: PayloadAction<string>) => {
+    setWorkFormat: (state, action: PayloadAction<Nullable<WorkFormat>>) => {
       state.workFormat = action.payload;
     },
-    setExperienceLevel: (state, action: PayloadAction<string>) => {
+    setExperienceLevel: (
+      state,
+      action: PayloadAction<Nullable<ExperienceLevel>>
+    ) => {
       state.experienceLevel = action.payload;
     },
     setJobPositionId: (state, action: PayloadAction<string>) => {
       state.jobPositionId = action.payload;
     },
-    resetPages: (state) => {
-      state.currentPageNumber = 1;
-      state.pageIsLoading = true;
-      state.jobOffers = [];
+    addTag: (state, action: PayloadAction<Tag>) => {
+      const tags = state.tags;
+      if (!tags.find((tag) => tag.id === action.payload.id)) {
+        tags.push(action.payload);
+      }
     },
     setFilterApplied: (state, action: PayloadAction<boolean>) => {
       const val = action.payload;
-      state.filterApplied = val;
+      if (val) {
+        state.filterApplied = val;
+        state.appliedValues = {
+          searchTerm: state.searchTerm,
+          jobType: state.jobType as string,
+          tagIds: state.tags.map((tag) => tag.id),
+        };
+      }
+    },
+    reset: (state) => {
+      console.log('resetting');
+      state.searchTerm = initialJobOffersFeedState.searchTerm;
+      state.jobPositionId = initialJobOffersFeedState.jobPositionId;
+      state.experienceLevel = initialJobOffersFeedState.experienceLevel;
+      state.filterApplied = initialJobOffersFeedState.filterApplied;
+      state.jobType = initialJobOffersFeedState.jobType;
+      state.tags = initialJobOffersFeedState.tags;
     },
   },
 });
 
-export const selectJobOffers = (state: RootState) =>
-  state.jobOffersFeed.jobOffers;
-export const selectCurrentPage = (state: RootState) =>
-  state.jobOffersFeed.currentPageNumber;
-export const selectPageSize = (state: RootState) =>
-  state.jobOffersFeed.pageSize;
 export const selectSearchTerm = (state: RootState) =>
   state.jobOffersFeed.searchTerm;
 export const selectJobType = (state: RootState) => state.jobOffersFeed.jobType;
@@ -86,11 +86,19 @@ export const selectExperienceLevel = (state: RootState) =>
   state.jobOffersFeed.experienceLevel;
 export const selectJobPositionId = (state: RootState) =>
   state.jobOffersFeed.jobPositionId;
-export const selectTagIds = (state: RootState) => state.jobOffersFeed.tagIds;
-export const selectPageIsLoading = (state: RootState) =>
-  state.jobOffersFeed.pageIsLoading;
+export const selectTags = (state: RootState) => state.jobOffersFeed.tags;
 export const selectFilterApplied = (state: RootState) =>
   state.jobOffersFeed.filterApplied;
+export const selectFilterOptions: (state: RootState) => {
+  filter: Nullable<JobOfferFilter>;
+  isApplied: boolean;
+} = (state: RootState) => {
+  const slice = state.jobOffersFeed;
+  return {
+    isApplied: slice.filterApplied,
+    filter: slice.appliedValues,
+  };
+};
 
 export const {
   setExperienceLevel,
@@ -98,10 +106,9 @@ export const {
   setJobType,
   setSearchTerm,
   setWorkFormat,
-  loadNextPage,
-  addJobOffers,
-  setPageIsLoading,
-  resetPages,
+  addTag,
+  setFilterApplied,
+  reset,
 } = jobOffersFeedSlice.actions;
 
 export default jobOffersFeedSlice.reducer;

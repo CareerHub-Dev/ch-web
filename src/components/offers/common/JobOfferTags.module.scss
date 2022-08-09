@@ -13,20 +13,24 @@
   font-size: 0.75rem;
   font-weight: 600;
   border-radius: 999px;
-  border: solid 1px;
   text-align: left;
 }
 
 .light {
-  background-color: rgba(0, 255, 255, 0.2);
+  border: 1px solid cyan;
   color: cyan;
   border-color: cyan;
 }
 
 .dark {
-  background-color: rgba(185, 185, 185, 0.2);
-  color: #002477;
-  border-color: #002477;
+  border: 1px solid #0040d2;
+  color: white;
+  background-color: #0040d2;
+
+  &:hover {
+    background-color: #002477;
+    color: white;
+  }
 }
 
 .wrapper {
@@ -34,4 +38,8 @@
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+}
+
+.clickable:hover {
+  cursor: pointer;
 }

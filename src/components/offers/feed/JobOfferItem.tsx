@@ -1,3 +1,5 @@
+import useAppDispatch from '@/hooks/useAppDispatch';
+import { addTag } from '@/store/job-offers-feed';
 import { getReadableDateFromString } from '@/lib/util';
 import Image from 'next/image';
 import LinkButton from '@/components/ui/LinkButton';
@@ -9,9 +11,13 @@ import JobOfferTags from '../common/JobOfferTags';
 import classes from './JobOfferItem.module.scss';
 
 const JobOfferItem: React.FC<{ item: JobOffersFeed.JobOffer }> = ({ item }) => {
+  const dispatch = useAppDispatch();
   const { id, title, endDate, companyName, companyId, tags } = item;
   const humanReadableExpirationDate = getReadableDateFromString(endDate);
   const exploreLink = `/offers/${id}`;
+  const tagClickHandler = (tag: Tag) => {
+    dispatch(addTag(tag));
+  };
 
   return (
     <li className={classes.item}>
@@ -27,7 +33,13 @@ const JobOfferItem: React.FC<{ item: JobOffersFeed.JobOffer }> = ({ item }) => {
               <time>{humanReadableExpirationDate}</time>
             </p>
           </div>
-          {tags.length !== 0 && <JobOfferTags tags={tags} variant="dark" />}
+          {tags.length !== 0 && (
+            <JobOfferTags
+              tags={tags}
+              onClick={tagClickHandler}
+              variant="dark"
+            />
+          )}
         </div>
         <div className={classes.actions}>
           <LinkButton link={exploreLink} style="light-blue-primary">

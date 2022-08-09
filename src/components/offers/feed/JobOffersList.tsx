@@ -2,6 +2,7 @@ import React from 'react';
 import type { UseInfiniteQueryResult } from '@tanstack/react-query';
 import JobOfferItem from './JobOfferItem';
 import classes from './JobOffersList.module.scss';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 const JobOffersList: React.FC<{
   query: UseInfiniteQueryResult<
@@ -12,14 +13,18 @@ const JobOffersList: React.FC<{
     any
   >;
 }> = ({ query }) => {
-  const { status, data, error, isFetchingNextPage } = query;
+  const { status, data, error } = query;
 
   return (
     <>
       {status === 'loading' ? (
-        <p>...</p>
+        <div className="g__center">
+          <LoadingSpinner />
+        </div>
       ) : status === 'error' ? (
         <span>Помилка: {error.message}</span>
+      ) : data.pages[0].items.length === 0 ? (
+        <div className="g__center">Нічого не знайдено</div>
       ) : (
         <ul className={classes.list}>
           {data.pages.map((page) => (

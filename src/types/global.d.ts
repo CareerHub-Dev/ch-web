@@ -2,12 +2,12 @@ export {};
 
 declare global {
   interface JobOfferFilter {
+    searchTerm?: string;
     jobType?: string;
     workFormat?: string;
     experienceLevel?: string;
-    withTags?: boolean;
     jobPositionId?: string;
-    searchTerm?: string;
+    tagIds: Array<string>;
   }
 
   interface Tag {
@@ -48,4 +48,5 @@ declare global {
   }
 
   type AnyFn = (...args: any[]) => any;
+  type Nullable<T> = T | null;
 }

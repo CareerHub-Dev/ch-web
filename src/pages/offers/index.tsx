@@ -1,9 +1,11 @@
 import useAuth from '@/hooks/useAuth';
+import { useSelector } from 'react-redux';
+import { selectFilterOptions } from '@/store/job-offers-feed';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { GetServerSidePropsContext, NextPage } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import LoadMoreSection from '@/components/layout/LoadMoreSection';
 import FeedWrapper from '@/components/layout/FeedWrapper';
-import JobOffersFilters from '@/components/offers/feed/JobOffersFilters';
+import JobOffersFilters from '@/components/offers/feed/JobOfferFilters';
 import JobOffersList from '@/components/offers/feed/JobOffersList';
 import Head from 'next/head';
 import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
@@ -14,16 +16,22 @@ const defaultPageSize = 50;
 
 const JobOffersFeedPage = () => {
   const { accessToken } = useAuth();
+  const { filter, isApplied } = useSelector(selectFilterOptions);
+  const queryKey: Array<string | object> = ['jobOffers'];
+  if (isApplied && !!filter) {
+    queryKey.push(filter);
+  }
   const jobOffersQuery = useInfiniteQuery(
-    ['jobOffers'],
+    queryKey,
     async ({ pageParam = 1 }) =>
       await fetchJobOffers({
         token: accessToken as string,
         pageNumber: pageParam,
         pageSize: defaultPageSize,
+        filter: isApplied ? filter! : undefined,
       })(),
     {
-      enabled: accessToken !== null,
+      enabled: !!accessToken,
       getNextPageParam: (lastPage) => lastPage.nextPage,
       onError: (err: any) =>
         alert(err.message || 'Помилка при завантаженні вакансій'),

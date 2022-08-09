@@ -5,7 +5,7 @@ export const fetchJobOffers =
     token,
     pageNumber,
     pageSize = 50,
-    filter = {},
+    filter,
   }: {
     token: string;
     pageNumber: number;
@@ -14,20 +14,29 @@ export const fetchJobOffers =
   }) =>
   async () => {
     let url = `${baseURL}JobOffers?PageNumber=${pageNumber}&PageSize=${pageSize}`;
-    if (filter.jobType) {
-      url += `&JobType=${filter.jobType}`;
-    }
-    if (filter.workFormat) {
-      url += `&WorkFormat=${filter.workFormat}`;
-    }
-    if (filter.experienceLevel) {
-      url += `&ExperienceLevel=${filter.experienceLevel}`;
-    }
-    if (filter.withTags) {
-      url += `&WithTags=${filter.withTags}`;
-    }
-    if (filter.jobPositionId) {
-      url += `&JobPositionId=${filter.jobPositionId}`;
+    console.log(filter);
+
+    if (filter) {
+      if (filter.searchTerm) {
+        url += `&SearchTerm=${filter.searchTerm}`;
+      }
+      if (filter.jobType) {
+        url += `&JobType=${filter.jobType}`;
+      }
+      if (filter.workFormat) {
+        url += `&WorkFormat=${filter.workFormat}`;
+      }
+      if (filter.experienceLevel) {
+        url += `&ExperienceLevel=${filter.experienceLevel}`;
+      }
+      if (filter.jobPositionId) {
+        url += `&JobPositionId=${filter.jobPositionId}`;
+      }
+      if (filter.tagIds.length !== 0) {
+        for (const tagId of filter.tagIds) {
+          url += `&TagIds=${tagId}`;
+        }
+      }
     }
 
     const response = await fetch(url, {
