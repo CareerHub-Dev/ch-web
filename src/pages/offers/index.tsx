@@ -8,10 +8,9 @@ import FeedWrapper from '@/components/layout/FeedWrapper';
 import JobOffersFilters from '@/components/offers/feed/JobOfferFilters';
 import JobOffersList from '@/components/offers/feed/JobOffersList';
 import Head from 'next/head';
-import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
 import UserRole from '@/models/enums/UserRole';
-import verifySessionData from '@/lib/api/local/helpers/verify-session-data';
 import { fetchJobOffers } from '@/lib/api/remote/jobOffers';
+import withVerification from '@/lib/with-verification';
 const defaultPageSize = 50;
 
 const JobOffersFeedPage = () => {
@@ -62,25 +61,7 @@ const JobOffersFeedPage = () => {
 };
 export default JobOffersFeedPage;
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  let accessAllowed = false;
-  try {
-    const sessionData = await verifySessionData(context.req);
-    accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
-  } catch {
-    accessAllowed = false;
-  }
-  if (!accessAllowed) {
-    return {
-      redirect: {
-        destination: '/404',
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {},
-  };
-};
+export const getServerSideProps = withVerification(
+  (_context: GetServerSidePropsContext) => ({ props: {} }),
+  [UserRole.Student]
+);

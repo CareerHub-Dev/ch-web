@@ -10,7 +10,8 @@ const LandingPage = () => {
   const router = useRouter();
   const auth = useAuth();
 
-  const routingHandler = (path: string) => {
+  const routingHandler = (path: string) => (event: any) => {
+    event.preventDefault();
     router.push(path);
   };
 
@@ -36,14 +37,14 @@ const LandingPage = () => {
               <button
                 className={classes.register}
                 type="button"
-                onClick={routingHandler.bind(null, '/auth/register')}
+                onClick={routingHandler('/auth/register')}
               >
                 Зареєструватися
               </button>
               <button
                 className={classes.login}
                 type="button"
-                onClick={routingHandler.bind(null, '/auth/login')}
+                onClick={routingHandler('/auth/login')}
               >
                 Увійти
               </button>

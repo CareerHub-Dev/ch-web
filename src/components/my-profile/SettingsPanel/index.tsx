@@ -36,7 +36,7 @@ const SettingsPanel = () => {
     }
   };
 
-  if (studentQuery.isLoading) {
+  if (studentQuery.isLoading || studentQuery.isFetching) {
     return (
       <div className="g__center">
         <LoadingSpinner />

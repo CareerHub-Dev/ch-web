@@ -9,8 +9,7 @@ import JobOfferTitle from '@/components/offers/details/JobOfferTitle';
 import JobOfferContent from '@/components/offers/details/JobOfferContent';
 import { GetServerSidePropsContext } from 'next';
 import UserRole from '@/models/enums/UserRole';
-import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
-import verifySessionData from '@/lib/api/local/helpers/verify-session-data';
+import withVerification from '@/lib/with-verification';
 
 const JobOfferDetailPage = () => {
   const { accessToken } = useAuth();
@@ -78,25 +77,7 @@ const JobOfferDetailPage = () => {
 };
 export default JobOfferDetailPage;
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  let accessAllowed = false;
-  try {
-    const sessionData = await verifySessionData(context.req);
-    accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
-  } catch {
-    accessAllowed = false;
-  }
-  if (!accessAllowed) {
-    return {
-      redirect: {
-        destination: '/404',
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {},
-  };
-};
+export const getServerSideProps = withVerification(
+  (_context: GetServerSidePropsContext) => ({ props: {} }),
+  [UserRole.Student]
+);

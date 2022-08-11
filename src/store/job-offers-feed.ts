@@ -61,18 +61,16 @@ const jobOffersFeedSlice = createSlice({
         state.appliedValues = {
           searchTerm: state.searchTerm,
           jobType: state.jobType as string,
+          experienceLevel: state.experienceLevel as string,
+          workFormat: state.workFormat as string,
           tagIds: state.tags.map((tag) => tag.id),
         };
       }
     },
-    reset: (state) => {
-      console.log('resetting');
-      state.searchTerm = initialJobOffersFeedState.searchTerm;
-      state.jobPositionId = initialJobOffersFeedState.jobPositionId;
-      state.experienceLevel = initialJobOffersFeedState.experienceLevel;
-      state.filterApplied = initialJobOffersFeedState.filterApplied;
-      state.jobType = initialJobOffersFeedState.jobType;
-      state.tags = initialJobOffersFeedState.tags;
+    reset: (_) => {
+      return {
+        ...initialJobOffersFeedState,
+      };
     },
   },
 });

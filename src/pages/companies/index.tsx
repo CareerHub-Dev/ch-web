@@ -1,20 +1,26 @@
 import useAuth from '@/hooks/useAuth';
+import { useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchCompanies } from '@/lib/api/remote/companies';
 import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
 import FeedWrapper from '@/components/layout/FeedWrapper';
+import SearchPanel from '@/components/companies/feed/SearchPanel';
 import LoadMoreSection from '@/components/layout/LoadMoreSection';
 import { GetServerSidePropsContext } from 'next';
 import UserRole from '@/models/enums/UserRole';
-import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
-import verifySessionData from '@/lib/api/local/helpers/verify-session-data';
+import withVerification from '@/lib/with-verification';
 const defaultPageSize = 50;
 
 const CompaniesFeedPage = () => {
   const { accessToken } = useAuth();
-  const searchTerm = ''; // dummy value
+  const [searchTerm, setSearchTerm] = useState('');
   const companiesQuery = useInfiniteQuery(
-    ['companies'],
+    [
+      'companies',
+      {
+        searchTerm,
+      },
+    ],
     async ({ pageParam = 1 }) =>
       await fetchCompanies({
         accessToken,
@@ -36,6 +42,7 @@ const CompaniesFeedPage = () => {
 
   return (
     <>
+      <SearchPanel onChange={setSearchTerm} />
       <FeedWrapper>
         <CompaniesGrid query={companiesQuery} />
       </FeedWrapper>
@@ -45,25 +52,7 @@ const CompaniesFeedPage = () => {
 };
 export default CompaniesFeedPage;
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  let accessAllowed = false;
-  try {
-    const sessionData = await verifySessionData(context.req);
-    accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
-  } catch {
-    accessAllowed = false;
-  }
-  if (!accessAllowed) {
-    return {
-      redirect: {
-        destination: '/404',
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {},
-  };
-};
+export const getServerSideProps = withVerification(
+  (_context: GetServerSidePropsContext) => ({ props: {} }),
+  [UserRole.Student]
+);

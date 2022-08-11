@@ -1,15 +1,13 @@
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import useSections from '@/hooks/useSections';
 import SidePanel from '@/components/my-profile/SidePanel';
 import StudentProfile from '@/components/my-profile/StudentProfile';
 import CVBoard from '@/components/my-profile/CVBoard';
 import { GetServerSidePropsContext } from 'next';
 import UserRole from '@/models/enums/UserRole';
-import verifyAuthority from '@/lib/api/local/helpers/verify-authority';
-import verifySessionData from '@/lib/api/local/helpers/verify-session-data';
-import classes from '@/styles/my-dashboard.module.scss';
 import SettingsPanel from '@/components/my-profile/SettingsPanel';
+import withVerification from '@/lib/with-verification';
+
+import classes from '@/styles/my-dashboard.module.scss';
 
 const MyDashBoardPage = (_props: object) => {
   const { currentSection, changeSection } = useSections({
@@ -31,25 +29,7 @@ const MyDashBoardPage = (_props: object) => {
 
 export default MyDashBoardPage;
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  let accessAllowed = false;
-  try {
-    const sessionData = await verifySessionData(context.req);
-    accessAllowed = verifyAuthority(sessionData, [UserRole.Student]);
-  } catch {
-    accessAllowed = false;
-  }
-  if (!accessAllowed) {
-    return {
-      redirect: {
-        destination: '/404',
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {},
-  };
-};
+export const getServerSideProps = withVerification(
+  (_context: GetServerSidePropsContext) => ({ props: {} }),
+  [UserRole.Student]
+);
