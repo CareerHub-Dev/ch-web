@@ -21,8 +21,7 @@ export const retrieveErrorMessage = (responseData: any) => {
 };
 
 export const serverUrl =
-  process.env.BACKEND_SERVER_URL ||
-  'https://careerhub20220801001954.azurewebsites.net';
+  process.env.BACKEND_SERVER_URL || 'http://localhost:5000';
 export const baseURL = `${serverUrl}/api/`;
 export const defaultTimeout = 10000;
 export const defaultTimeoutErrorMessage = 'Сервер мовчить';

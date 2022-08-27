@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "prestart": "yarn",
-    "start": "next dev -H 127.0.0.1 -p 3000",
+    "start": "next dev -H localhost -p 3000",
     "build": "next build",
     "serve": "next start -H 127.0.0.1 -p 3000",
     "lint": "next lint",
