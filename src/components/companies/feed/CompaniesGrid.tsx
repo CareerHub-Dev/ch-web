@@ -22,7 +22,7 @@ const CompaniesGrid: React.FC<{
         </div>
       ) : status === 'error' ? (
         <span>Помилка: {error.message}</span>
-      ) : data.pages[0].companies.length === 0 ? (
+      ) : data?.pages[0]?.companies?.length ? (
         <div className="g__center">Нічого не знайдено</div>
       ) : (
         <div className={classes.grid}>
