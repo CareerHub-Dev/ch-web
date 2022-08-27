@@ -145,6 +145,11 @@ const cvConstructorSlice = createSlice({
           return;
       }
     },
+    reset: () => {
+      return {
+        ...initialConstructorState,
+      };
+    },
     setSaveModalIsOpen: (state, action: PayloadAction<boolean>) => {
       state.saveModalIsOpen = action.payload;
     },
@@ -293,6 +298,7 @@ export const {
   setProgress,
   enforceStageValidation,
   setSaveModalIsOpen,
+  reset,
 } = cvConstructorSlice.actions;
 
 export default cvConstructorSlice.reducer;

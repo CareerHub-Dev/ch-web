@@ -6,6 +6,7 @@ import {
   setSaveModalIsOpen,
   selectTitle,
   selectEntireCVState,
+  reset,
 } from '@/store/cv-constructor';
 import useAuth from '@/hooks/useAuth';
 import useAppDispatch from '@/hooks/useAppDispatch';
@@ -15,6 +16,7 @@ import { postCv } from '@/lib/api/remote/CVs';
 import useReduxStringInput from '@/hooks/useReduxStringInput';
 import { useRouter } from 'next/router';
 import ModalLoading from '../ui/Modal/ModalLoading';
+
 import classes from './SaveModal.module.scss';
 
 const SaveModal = () => {
@@ -25,10 +27,11 @@ const SaveModal = () => {
   const titleInput = useReduxStringInput(selectTitle, setTitle);
   const saveMutation = useMutation(postCv, {
     onError: (error: any) => {
-      alert(error?.message || error || 'Невідома помилка');
+      alert && alert(error?.message || 'Невідома помилка');
     },
     onSuccess: (_: any) => {
       dispatch(setSaveModalIsOpen(false));
+      dispatch(reset());
       router.push('/my-profile?section=cvs');
     },
   });

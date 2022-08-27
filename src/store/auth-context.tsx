@@ -51,14 +51,12 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     setAuthorityToken(null);
     setAccountId(null);
     setRole(null);
-    localStorage.removeItem('ch-accessToken');
-    localStorage.removeItem('ch-authorityToken');
-    localStorage.removeItem('ch-accountId');
-    fetch('/api/auth/signout', { method: 'POST' }).then((response) => {
-      if (!response.ok) {
-        console.error('Error while signing out');
-      }
-    });
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('ch-accessToken');
+      localStorage.removeItem('ch-authorityToken');
+      localStorage.removeItem('ch-accountId');
+    }
+    fetch('/api/auth/signout', { method: 'POST' });
   }, []);
 
   const loginHandler = (
@@ -71,9 +69,11 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     setAccessToken(accessToken);
     setAccountId(accountId);
     setAuthorityToken(authorityToken);
-    localStorage.setItem('ch-accessToken', accessToken);
-    localStorage.setItem('ch-accountId', accountId);
-    localStorage.setItem('ch-authorityToken', authorityToken);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('ch-accessToken', accessToken);
+      localStorage.setItem('ch-accountId', accountId);
+      localStorage.setItem('ch-authorityToken', authorityToken);
+    }
   };
 
   const contextValue = {

@@ -49,4 +49,10 @@ declare global {
 
   type AnyFn = (...args: any[]) => any;
   type Nullable<T> = T | null;
+  type AuthDataConsistency = 'ok' | 'error';
+
+  interface WithVerificationComponentProps<Props> {
+    authDataConsistency: AuthDataConsistency;
+    props: Props;
+  }
 }

@@ -2,7 +2,7 @@ import { FormEventHandler, useRef, useState } from 'react';
 import useAuth from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
 import useInput from '@/hooks/useInput';
-import { getStudentEmailValidity, getPasswordValidity } from '@/lib/util';
+import { getEmailValidity, getPasswordValidity } from '@/lib/util';
 import { sendLocalGatewayAuthRequest } from '@/lib/api/local/auth';
 import RequestStatus from '@/models/enums/RequestStatus';
 import type { CallbackFn } from '@/lib/util/callback/types';
@@ -25,7 +25,7 @@ const LoginForm = () => {
   const selectedRoleRef = useRef<HTMLSelectElement>(null);
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
-  const emailInput = useInput(getStudentEmailValidity);
+  const emailInput = useInput(getEmailValidity);
   const passwordInput = useInput(getPasswordValidity);
   const formIsValid = emailInput.isValid && passwordInput.isValid;
 

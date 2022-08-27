@@ -17,7 +17,9 @@ const CompanySocials: React.FC<{ companyId: string }> = ({ companyId }) => {
       companyId,
     }),
     {
-      onError: alert,
+      onError: (error: any) => {
+        alert && alert(error.message || 'Помилка при завантаженні компанії');
+      },
     }
   );
   const jobOffersQuery = useQuery(
@@ -27,7 +29,9 @@ const CompanySocials: React.FC<{ companyId: string }> = ({ companyId }) => {
       companyId,
     }),
     {
-      onError: alert,
+      onError: (error: any) => {
+        alert && alert(error.message || 'Помилка при завантаженні компанії');
+      },
     }
   );
 

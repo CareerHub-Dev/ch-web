@@ -3,11 +3,12 @@ import Image from 'next/image';
 
 import classes from './ProfileIcon.module.scss';
 
-const ProfileIcon: React.FC<{ src?: string }> = ({
+const ProfileIcon: React.FC<{ src?: string; link?: string }> = ({
   src = '/default-avatar.png',
+  link = '/my-profile',
 }) => {
   return (
-    <Link href={'/my-profile'}>
+    <Link href={link}>
       <a>
         <Image
           width={64}

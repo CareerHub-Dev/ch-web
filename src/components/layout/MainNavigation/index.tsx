@@ -9,6 +9,8 @@ import Button from '@/components/ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import LinkButton from '@/components/ui/LinkButton';
+import UserRole from '@/models/enums/UserRole';
+
 import cn from 'classnames';
 import classes from './MainNavigation.module.scss';
 
@@ -19,7 +21,10 @@ const MainNavigation = () => {
   const { width } = useWindowDimensions();
 
   const isLoggedIn = auth.isLoggedIn;
-  const isPhoneScreen = width !== null && width < 600;
+  const isStudent = isLoggedIn && auth.role === UserRole.Student;
+  const isCompany = isLoggedIn && auth.role === UserRole.Company;
+  const isPhoneScreen = width && width < 600;
+  const profileLink = isStudent ? '/my-profile' : '/my-dashboard';
 
   const burgerOpenHandler = () => {
     setIsBurgerOpened((prevState) => !prevState);
@@ -48,7 +53,7 @@ const MainNavigation = () => {
           <li>
             <Link href={'/'}>Головна</Link>
           </li>
-          {isLoggedIn && (
+          {isStudent ? (
             <>
               <li
                 className={cn(
@@ -66,11 +71,29 @@ const MainNavigation = () => {
                 <Link href={'/offers'}>Робота</Link>
               </li>
             </>
-          )}
+          ) : isCompany ? (
+            <>
+              <li
+                className={cn(
+                  router.pathname.includes('/CVs') && classes['active-link']
+                )}
+              >
+                <Link href={'/CVs'}>Резюме</Link>
+              </li>
+              <li
+                className={cn(
+                  router.pathname.includes('/add-offer') &&
+                    classes['active-link']
+                )}
+              >
+                <Link href={'/add-offer'}>Додати вакансію</Link>
+              </li>
+            </>
+          ) : null}
         </ul>
         {isLoggedIn ? (
           <>
-            <ProfileIcon />
+            <ProfileIcon link={profileLink} />
             <div className={classes['nav-user-menu']}>
               <Button
                 id="logoutButton"

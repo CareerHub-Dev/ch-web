@@ -14,16 +14,27 @@ const withVerification =
       const sessionData = await verifySessionData(context.req);
       accessAllowed = verifyAuthority(sessionData, allowedRoles);
     } catch {
-      accessAllowed = false;
+      return {
+        props: {
+          authDataConsistency: 'error',
+        },
+      };
     }
     if (!accessAllowed) {
       return {
         redirect: {
+          authDataConsistency: 'ok',
           destination: '/404',
           permanent: false,
         },
       };
     }
-    return getPropsFn(context);
+    const serverSideProps = getPropsFn(context);
+    return {
+      props: {
+        ...serverSideProps,
+        authDataConsistency: 'ok',
+      },
+    };
   };
 export default withVerification;
