@@ -1,4 +1,5 @@
 import useAuth from '@/hooks/useAuth';
+import useToast from '@/hooks/useToast';
 import { useMutation } from '@tanstack/react-query';
 import useEditor from '@/hooks/useEditor';
 import useInput from '@/hooks/useInput/v2';
@@ -11,24 +12,21 @@ import WorkFormat, { workFormatOptions } from '@/models/enums/WorkFormat';
 import ExperienceLevel, {
   experienceLevelOptions,
 } from '@/models/enums/ExperienceLevel';
-import ToastContext from '@/lib/toasts/ToastContext';
-import ErrorToastStrategy from '@/lib/toasts/strategies/ErrorToastStrategy';
-import SuccessToastStrategy from '@/lib/toasts/strategies/SuccessToastStrategy';
 
 import LoadedImage from '@/components/ui/LoadedImage';
-import Button from '@/components/ui/Button';
 import EditorsList from './EditorsList';
 import DatePicker from './DatePicker';
+import LinkButton from '@/components/ui/LinkButton';
 import Hr from '@/components/ui/Hr';
 import cn from 'classnames';
 
 import classes from './JobOfferForm.module.scss';
-import LinkButton from '@/components/ui/LinkButton';
 
 const maxDaysFrame = 60;
 const defaultMessage = "Це обов'язкове поле";
 
 const JobOfferForm = () => {
+  const toast = useToast();
   const titleInput = useInput({
     validator: (value) => value.trim().length !== 0,
   });
@@ -53,14 +51,10 @@ const JobOfferForm = () => {
       } else {
         msg = 'Не вдалося створити вакансію';
       }
-      const toastContext = new ToastContext();
-      toastContext.setStrategy(new ErrorToastStrategy());
-      toastContext.notify(msg);
+      toast.notify({ type: 'error', msg });
     },
     onSuccess: () => {
-      const toastContext = new ToastContext();
-      toastContext.setStrategy(new SuccessToastStrategy());
-      toastContext.notify(`\u2713 Вакансію ${titleInput.value} створено`);
+      toast.notify({ msg: `\u2713 Вакансію ${titleInput.value} створено` });
       titleInput.reset();
       uploadedImage.reset();
       overviewEditor.reset();
@@ -101,7 +95,8 @@ const JobOfferForm = () => {
     endDate.isValid &&
     dateFrameIsValid;
 
-  const formSubmissionHandler = () => {
+  const formSubmissionHandler = (event: MouseEvent) => {
+    event.preventDefault();
     titleInput.blur();
     overviewEditor.blur();
     requirementsEditor.blur();
