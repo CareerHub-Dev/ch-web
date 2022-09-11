@@ -4,7 +4,7 @@ import DefaultStrategy from './strategies/SuccessToastStrategy';
 class ToastContext {
   private strategy: IToastStrategy;
 
-  constructor(strategy?: IToastStrategy) {
+  public constructor(strategy?: IToastStrategy) {
     this.strategy = strategy || new DefaultStrategy();
   }
 

@@ -12,6 +12,8 @@ import {
 } from '@tanstack/react-query';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import 'react-toastify/dist/ReactToastify.css';
+
+import '@/styles/MarkdownEditor.scss';
 import '@/styles/globals.scss';
 
 function MyApp({ Component, pageProps }: AppProps) {

@@ -39,11 +39,14 @@ export const AuthContextProvider: React.FC = ({ children }) => {
   const storedAuthorityToken =
     retrieveItemFromLocalStorage('ch-authorityToken');
   const storedAccountId = retrieveItemFromLocalStorage('ch-accountId');
+  const storedRole = retrieveItemFromLocalStorage('ch-role');
 
   const [accessToken, setAccessToken] = useState(storedAccessToken);
   const [authorityToken, setAuthorityToken] = useState(storedAuthorityToken);
   const [accountId, setAccountId] = useState(storedAccountId);
-  const [role, setRole] = useState<UserRole | null>(null);
+  const [role, setRole] = useState<UserRole | null>(
+    storedRole as UserRole | null
+  );
   const userIsLoggedIn = !!accessToken && !!authorityToken;
 
   const logoutHandler = useCallback(() => {
@@ -55,6 +58,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
       localStorage.removeItem('ch-accessToken');
       localStorage.removeItem('ch-authorityToken');
       localStorage.removeItem('ch-accountId');
+      localStorage.removeItem('ch-role');
     }
     fetch('/api/auth/signout', { method: 'POST' });
   }, []);
@@ -73,6 +77,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
       localStorage.setItem('ch-accessToken', accessToken);
       localStorage.setItem('ch-accountId', accountId);
       localStorage.setItem('ch-authorityToken', authorityToken);
+      localStorage.setItem('ch-role', role);
     }
   };
 

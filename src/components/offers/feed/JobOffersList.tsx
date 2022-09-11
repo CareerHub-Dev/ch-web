@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import type { UseInfiniteQueryResult } from '@tanstack/react-query';
 import JobOfferItem from './JobOfferItem';
 import classes from './JobOffersList.module.scss';
@@ -22,17 +22,21 @@ const JobOffersList: React.FC<{
           <LoadingSpinner />
         </div>
       ) : status === 'error' ? (
-        <span>Помилка: {error.message}</span>
-      ) : data.pages[0].items.length === 0 ? (
-        <div className="g__center">Нічого не знайдено</div>
+        <div className="g__center">
+          <p>{`Помилка: ${error.message}`}</p>
+        </div>
+      ) : !data?.pages[0]?.items?.length ? (
+        <div className="g__center">
+          <p>{`Нічого не знайдено`}</p>
+        </div>
       ) : (
         <ul className={classes.list}>
           {data.pages.map((page) => (
-            <React.Fragment key={page.nextPage}>
+            <Fragment key={page.nextPage}>
               {page.items.map((jobOffer: JobOffersFeed.JobOffer) => (
                 <JobOfferItem key={jobOffer.id} item={jobOffer} />
               ))}
-            </React.Fragment>
+            </Fragment>
           ))}
         </ul>
       )}

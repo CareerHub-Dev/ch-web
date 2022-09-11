@@ -5,6 +5,7 @@ import FormWrapper from '@/components/auth/FormWrapper';
 import ForgotPasswordForm from '@/components/auth/forms/ForgotPasswordForm';
 import RegisterForm from '@/components/auth/forms/RegisterForm';
 import LoginForm from '@/components/auth/forms/LoginForm';
+import UserRole from '@/models/enums/UserRole';
 
 import classes from '@/styles/auth.module.scss';
 
@@ -12,7 +13,9 @@ const AuthPage = ({ form }: { form: string }) => {
   const router = useRouter();
   const authStatus = useAuth();
   if (authStatus.isLoggedIn) {
-    router.push('/my-profile');
+    router.push(
+      authStatus.role === UserRole.Student ? '/my-profile' : '/my-dashboard'
+    );
   }
   const displayedForm =
     form === 'login' ? (

@@ -9,21 +9,22 @@ import FormImageUpload from '@/components/ui/form/FormImageUpload';
 
 import classes from './SettingsPanel.module.scss';
 
-const SettingsPanel = () => {
-  const firstNameInput = useInput((value) => value.trim().length >= 2);
-  const lastNameInput = useInput((value) => value.trim().length >= 2);
+const SettingsPanel: React.FC<{
+  studentQuery: ReturnType<typeof useStudentQuery>;
+}> = ({ studentQuery }) => {
+  const studentData = studentQuery.data;
+  const firstNameInput = useInput(
+    (value) => value.trim().length >= 2,
+    studentData.firstName || ''
+  );
+  const lastNameInput = useInput(
+    (value) => value.trim().length >= 2,
+    studentData.lastName || ''
+  );
   const phoneInput = useInput((value) => {
     const len = value.trim().length;
     return len >= 10 || len === 0;
   });
-  const studentQuery = useStudentQuery({
-    onSuccess: (data) => {
-      firstNameInput.force(data?.firstName);
-      lastNameInput.force(data?.lastName);
-      phoneInput.force(data?.phone || '');
-    },
-  });
-
   const generalInfoUntouched =
     firstNameInput.value === studentQuery.data?.firstName &&
     lastNameInput.value === studentQuery.data?.lastName &&

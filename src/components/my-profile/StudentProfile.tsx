@@ -9,10 +9,9 @@ import DateIcon from '../ui/icons/DateIcon';
 import PhoneIcon from '../ui/icons/PhoneIcon';
 import classes from './StudentProfile.module.scss';
 
-const StudentProfile = () => {
-  const studentQuery = useStudentQuery({
-    onSuccess: (data) => console.log(data),
-  });
+const StudentProfile: React.FC<{
+  studentQuery: ReturnType<typeof useStudentQuery>;
+}> = ({ studentQuery }) => {
   if (studentQuery.isLoading) {
     return <LoadingSpinner />;
   }

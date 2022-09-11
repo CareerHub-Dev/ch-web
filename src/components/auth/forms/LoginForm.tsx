@@ -11,8 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
-import ToastContext from '@/lib/util/toasts/ToastContext';
-import ErrorToastStrategy from '@/lib/util/toasts/strategies/ErrorToastStrategy';
+import ToastContext from '@/lib/toasts/ToastContext';
+import ErrorToastStrategy from '@/lib/toasts/strategies/ErrorToastStrategy';
 import RoleSelect from '../RoleSelect';
 import UserRole from '@/models/enums/UserRole';
 import classes from './forms.module.scss';
@@ -49,7 +49,6 @@ const LoginForm = () => {
           sessionData.accountId,
           role
         );
-        router.push('/offers');
         break;
       default:
         break;

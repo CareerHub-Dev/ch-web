@@ -4,3 +4,10 @@ enum WorkFormat {
   Hybrid = 'Hybrid',
 }
 export default WorkFormat;
+
+export const workFormatOptions = [
+  { value: '', label: 'Не обрано' },
+  { label: 'Віддалено', value: WorkFormat.Remote },
+  { label: 'Офіс', value: WorkFormat.OnSite },
+  { label: 'Гібридний', value: WorkFormat.Hybrid },
+];

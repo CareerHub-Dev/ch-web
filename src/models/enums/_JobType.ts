@@ -4,3 +4,10 @@ enum JobType {
   Contract = 'Contract',
 }
 export default JobType;
+
+export const jobTypeOptions = [
+  { value: '', label: 'Не обрано' },
+  { value: JobType.FullTime, label: 'Full time' },
+  { value: JobType.PartTime, label: 'Part time' },
+  { value: JobType.Contract, label: 'Контракт' },
+];

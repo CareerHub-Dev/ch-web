@@ -28,10 +28,7 @@ const JobOfferItem: React.FC<{ item: JobOffersFeed.JobOffer }> = ({ item }) => {
           <CompanyLink companyId={companyId} companyName={companyName} />
           <div className={classes.date}>
             <DateIcon />
-            <p>
-              {'Закінчується: '}
-              <time>{humanReadableExpirationDate}</time>
-            </p>
+            <p>{`Закінчується: ${humanReadableExpirationDate}`}</p>
           </div>
           {tags.length !== 0 && (
             <JobOfferTags

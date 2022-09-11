@@ -1,14 +1,7 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import JobType from '@/models/enums/_JobType';
+import { jobTypeOptions } from '@/models/enums/_JobType';
 import { selectJobType, setJobType } from '@/store/job-offers-feed';
 import { useSelector } from 'react-redux';
-
-const jobTypeOptions = [
-  { value: '', label: 'Не обрано' },
-  { value: JobType.FullTime, label: 'Full time' },
-  { value: JobType.PartTime, label: 'Part time' },
-  { value: JobType.Contract, label: 'Контракт' },
-];
 
 const JobTypeSelect = () => {
   const dispatch = useAppDispatch();

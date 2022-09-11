@@ -9,7 +9,7 @@ import LoadMoreSection from '@/components/layout/LoadMoreSection';
 import { GetServerSidePropsContext } from 'next';
 import UserRole from '@/models/enums/UserRole';
 import withVerification from '@/lib/with-verification';
-import WithVerification from '@/lib/WithVerificationHOC';
+import WithVerification from '@/components/HOC/WithVerificationHOC';
 const defaultPageSize = 50;
 
 const CompaniesFeedPage = () => {
@@ -30,7 +30,7 @@ const CompaniesFeedPage = () => {
         searchTerm,
       })(),
     {
-      enabled: accessToken !== null,
+      enabled: !!accessToken,
       getNextPageParam: (lastPage) => lastPage.nextPage,
       onError: (error: any) => {
         alert && alert(error.message || 'Помилка при завантаженні компанії');

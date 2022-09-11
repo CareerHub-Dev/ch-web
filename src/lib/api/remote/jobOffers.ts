@@ -1,3 +1,4 @@
+import JobOfferForm from '@/components/offers/add/JobOfferForm';
 import { baseURL, retrieveErrorMessage } from '.';
 
 export const fetchJobOffers =
@@ -145,3 +146,33 @@ export const changeSubscriptionStatus =
     }
     throw new Error(retrieveErrorMessage(data));
   };
+
+export const createJobOffer = async ({
+  accessToken,
+  data,
+}: {
+  accessToken: string | null;
+  data: JobOfferForm.JobOffer;
+}) => {
+  const url = `${baseURL}JobOffers`;
+  const formData = new FormData();
+  for (const key in data) {
+    const value = (data as any)[key];
+    if (value) {
+      formData.append(key, value);
+    }
+  }
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: formData,
+  });
+  const reponseData = await response.json();
+  if (response.ok) {
+    return reponseData;
+  }
+  throw new Error(retrieveErrorMessage(reponseData));
+};

@@ -50,9 +50,21 @@ const jobOffersFeedSlice = createSlice({
     },
     addTag: (state, action: PayloadAction<Tag>) => {
       const tags = state.tags;
+      console.log('tags', tags, action.payload);
+
       if (!tags.find((tag) => tag.id === action.payload.id)) {
         tags.push(action.payload);
       }
+    },
+    removeTag: (state, action: PayloadAction<Tag>) => {
+      const tags = state.tags;
+      const index = tags.findIndex((tag) => tag.id === action.payload.id);
+      if (index !== -1) {
+        tags.splice(index, 1);
+      }
+    },
+    clearTags: (state) => {
+      state.tags = [];
     },
     setFilterApplied: (state, action: PayloadAction<boolean>) => {
       const val = action.payload;
@@ -105,6 +117,8 @@ export const {
   setSearchTerm,
   setWorkFormat,
   addTag,
+  removeTag,
+  clearTags,
   setFilterApplied,
   reset,
 } = jobOffersFeedSlice.actions;

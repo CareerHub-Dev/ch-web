@@ -1,14 +1,7 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import WorkFormat from '@/models/enums/WorkFormat';
-import { selectWorkFormat, setWorkFormat } from '@/store/job-offers-feed';
 import { useSelector } from 'react-redux';
-
-const workFormatOptions = [
-  { value: '', label: 'Не обрано' },
-  { label: 'Віддалено', value: WorkFormat.Remote },
-  { label: 'Офіс', value: WorkFormat.OnSite },
-  { label: 'Гібридний', value: WorkFormat.Hybrid },
-];
+import { workFormatOptions } from '@/models/enums/WorkFormat';
+import { selectWorkFormat, setWorkFormat } from '@/store/job-offers-feed';
 
 const WorkFormatSelect = () => {
   const dispatch = useAppDispatch();

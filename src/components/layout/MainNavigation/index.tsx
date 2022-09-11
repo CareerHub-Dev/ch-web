@@ -75,18 +75,18 @@ const MainNavigation = () => {
             <>
               <li
                 className={cn(
-                  router.pathname.includes('/CVs') && classes['active-link']
+                  router.pathname.includes('/cvs') && classes['active-link']
                 )}
               >
-                <Link href={'/CVs'}>Резюме</Link>
+                <Link href={'/cvs'}>Резюме</Link>
               </li>
               <li
                 className={cn(
-                  router.pathname.includes('/add-offer') &&
+                  router.pathname.includes('/offers/add') &&
                     classes['active-link']
                 )}
               >
-                <Link href={'/add-offer'}>Додати вакансію</Link>
+                <Link href={'/offers/add'}>Додати вакансію</Link>
               </li>
             </>
           ) : null}

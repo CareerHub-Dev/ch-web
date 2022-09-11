@@ -1,42 +1,42 @@
 import { useState } from 'react';
-import { EditorState, ContentState } from 'draft-js';
+import { EditorState, ContentState, convertToRaw } from 'draft-js';
+import { parseBlocksToMarkdown } from '@/lib/draft-editor';
 
-const createEditorState = (text?: string) => {
-  const initialText = text || '';
-  return EditorState.createWithContent(
-    ContentState.createFromText(initialText)
-  );
-};
+const getEmptyEditorState = () =>
+  EditorState.createWithContent(ContentState.createFromText(''));
 
-const useEditor = (initialText?: string) => {
-  const [editorState, setEditorState] = useState(
-    createEditorState(initialText)
-  );
+const useEditor = () => {
+  const [editorState, setEditorState] = useState(getEmptyEditorState());
   const [editorIsTouched, setEditorIsTouched] = useState(false);
   const content = editorState.getCurrentContent();
   const contentIsValid = content.hasText();
-  const editorInputIsInvalid = !contentIsValid && editorIsTouched;
+  const hasError = !contentIsValid && editorIsTouched;
 
   const inputBlurHandler = () => {
     setEditorIsTouched(true);
   };
 
   const reset = () => {
-    setEditorState(createEditorState());
+    setEditorState(getEmptyEditorState());
     setEditorIsTouched(false);
   };
 
+  const toMarkdown = () => {
+    return parseBlocksToMarkdown(convertToRaw(content).blocks);
+  };
+
   return {
-    editorState: {
-      state: editorState,
-      setState: setEditorState,
-    },
+    state: editorState,
+    set: setEditorState,
+    blur: inputBlurHandler,
     isValid: contentIsValid,
-    isInputInvalid: editorInputIsInvalid,
     content: content,
-    inputBlurHandler,
     reset,
+    hasError,
+    toMarkdown,
   };
 };
 
 export default useEditor;
+
+export type UseEditorResult = ReturnType<typeof useEditor>;

@@ -14,8 +14,8 @@ export default function useImageFetch({
   const { accessToken } = useAuth();
   return useQuery(['image', imageId], fetchImage({ accessToken, imageId }), {
     enabled: !!accessToken,
-    useErrorBoundary: !!onError,
     onError,
     onSuccess,
+    retry: false,
   });
 }

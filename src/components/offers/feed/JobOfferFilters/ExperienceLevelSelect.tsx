@@ -1,19 +1,10 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import ExperienceLevel from '@/models/enums/ExperienceLevel';
+import { experienceLevelOptions } from '@/models/enums/ExperienceLevel';
 import {
   selectExperienceLevel,
   setExperienceLevel,
 } from '@/store/job-offers-feed';
 import { useSelector } from 'react-redux';
-
-const experienceLevelOptions = [
-  { value: '', label: 'Не обрано' },
-  { label: 'Trainee', value: ExperienceLevel.Trainee },
-  { label: 'Intern', value: ExperienceLevel.Intern },
-  { label: 'Junior', value: ExperienceLevel.Junior },
-  { label: 'Middle', value: ExperienceLevel.Middle },
-  { label: 'Senior', value: ExperienceLevel.Senior },
-];
 
 const ExperienceLevelSelect = () => {
   const dispatch = useAppDispatch();

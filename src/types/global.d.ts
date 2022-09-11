@@ -47,6 +47,25 @@ declare global {
     }
   }
 
+  namespace JobOfferForm {
+    type JobOffer = {
+      title: string;
+      overview: string;
+      requirements: string;
+      responsibilities: string;
+      preferences: string;
+      imageFile: string;
+      startDate: string;
+      endDate: string;
+      jobType: string;
+      workFormat: string;
+      experienceLevel: string;
+      jobPositionId: string;
+      tagIds: Array<string>;
+    };
+  }
+
+  type ValueOf<T> = T[keyof T];
   type AnyFn = (...args: any[]) => any;
   type Nullable<T> = T | null;
   type AuthDataConsistency = 'ok' | 'error';

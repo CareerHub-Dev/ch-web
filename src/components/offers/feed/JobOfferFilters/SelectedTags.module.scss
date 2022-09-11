@@ -1,0 +1,64 @@
+.tags {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tags span {
+  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 999px;
+  text-align: left;
+  border: 1px solid #0040d2;
+  color: white;
+  background-color: #0040d2;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.tag-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+
+  padding: 3px 3px 3px 6px;
+}
+
+.tag-remove {
+  box-align: center;
+  align-items: center;
+  border-radius: 2px;
+  display: flex;
+  padding-left: 4px;
+  padding-right: 4px;
+  box-sizing: border-box;
+
+  svg {
+    display: inline-block;
+    fill: white;
+    line-height: 1;
+    stroke-width: 0;
+
+    height: 14;
+    width: 14;
+    overflow: hidden;
+  }
+}
+
+.tag-remove:hover {
+  svg {
+    fill: red;
+  }
+}
+
+
+.wrapper {
+  padding: 0;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}

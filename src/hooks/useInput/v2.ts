@@ -39,16 +39,19 @@ const inputStateReducer = (state: InputState, action: InputAction) => {
   return initialInputState;
 };
 
-const useInput = (
-  validateFunction: InputValidationFunction = valueIsNotEmpty,
-  initialValue: string = ''
-) => {
+const useInput = (options: {
+  validator?: InputValidationFunction;
+  initialValue?: string;
+}) => {
+  const validator = options.validator ?? valueIsNotEmpty;
+  const initialValue = options.initialValue ?? '';
+
   const [inputState, dispatch] = useReducer(inputStateReducer, {
     ...initialInputState,
     value: initialValue,
   });
 
-  const valueIsValid = validateFunction(inputState.value);
+  const valueIsValid = validator(inputState.value);
   const hasError = !valueIsValid && inputState.isTouched;
 
   const valueChangeHandler = (event: InputChangeEvent) => {
@@ -71,11 +74,13 @@ const useInput = (
     value: inputState.value,
     isValid: valueIsValid,
     hasError,
-    valueChangeHandler,
-    inputBlurHandler,
+    change: valueChangeHandler,
+    blur: inputBlurHandler,
     reset,
     force,
   };
 };
 
 export default useInput;
+
+export type UseInputResult = ReturnType<typeof useInput>;

@@ -1,0 +1,237 @@
+.DraftEditor-alignLeft .public-DraftEditorPlaceholder-root {
+  left: 0;
+  text-align: left;
+}
+
+.DraftEditor-alignCenter .public-DraftEditorPlaceholder-root {
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+.DraftEditor-alignRight .public-DraftEditorPlaceholder-root {
+  right: 0;
+  text-align: right;
+}
+
+.public-DraftEditorPlaceholder-root {
+  color: #9197a3;
+  position: absolute;
+  z-index: 1;
+}
+
+.public-DraftEditorPlaceholder-hasFocus {
+  color: #bdc1c9;
+}
+
+.DraftEditorPlaceholder-hidden {
+  display: none;
+}
+
+@mixin heading {
+  margin: 10px 0;
+  font-weight: bold;
+  line-height: 20px;
+  text-rendering: optimizelegibility;
+}
+
+@mixin topHeading {
+  @include heading;
+  line-height: 40px !important;
+}
+
+#rich-example h1 small,
+#rich-example h2 small,
+#rich-example h3 small,
+#rich-example h4 small,
+#rich-example h5 small,
+#rich-example h6 small {
+  font-weight: normal;
+  color: #7b7b7b;
+}
+
+#rich-example h1 {
+  font-size: 39px;
+}
+
+#rich-example h2 {
+  font-size: 31px;
+}
+
+#rich-example h3 {
+  font-size: 23px;
+}
+
+#rich-example h4 {
+  font-size: 17px;
+}
+
+#rich-example h5 {
+  font-size: 14px;
+}
+
+#rich-example h6 {
+  font-size: 11px;
+}
+
+#rich-example h1 small {
+  font-size: 24px;
+}
+
+#rich-example h2 small {
+  font-size: 18px;
+}
+
+#rich-example h3 small {
+  font-size: 16px;
+}
+
+#rich-example h4 small {
+  font-size: 14px;
+}
+
+.editor-wrapper {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  padding: 15px;
+}
+
+
+.wrapper-invalid {
+  border-color: #b40e0e !important;
+}
+
+.wrapper-invalid:hover {
+  border-color: #ff8800 !important;
+}
+
+.editor {
+  border-top: 1px solid #ddd;
+  cursor: text;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.editor .public-DraftEditorPlaceholder-root,
+.editor .public-DraftEditor-content {
+  margin: 0 -15px -15px;
+  padding: 15px;
+}
+
+.editor .public-DraftEditor-content {
+  min-height: 100px;
+}
+
+.placeholder-hidden .public-DraftEditorPlaceholder-root {
+  display: none;
+}
+
+.editor .public-DraftStyleDefault-pre {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+  font-size: 16px;
+  padding: 20px;
+}
+
+.RichEditor-controls {
+  font-family: sans-serif;
+  font-size: 14px;
+  margin-bottom: 5px;
+  user-select: none;
+}
+
+.RichEditor-styleButton {
+  color: #999;
+  cursor: pointer;
+  margin-right: 16px;
+  padding: 2px 0;
+  display: inline-block;
+}
+
+.RichEditor-activeButton {
+  color: #000e2e;
+}
+
+$baseFontSize: 25px;
+$smallFontSize: $baseFontSize - 5px;
+
+@mixin md {
+  font-family: 'Euclid Circular A';
+  text-align: justify;
+}
+
+.md-h1 {
+  @include md;
+  @include topHeading;
+  font-size: 39px;
+}
+
+.md-h2 {
+  @include md;
+  @include topHeading;
+  font-size: 31px;
+}
+
+.md-h3 {
+  @include md;
+  @include topHeading;
+  font-size: 23px;
+}
+
+.md-h4 {
+  @include md;
+  @include heading;
+  font-size: 17px;
+}
+
+.md-h5 {
+  @include md;
+  @include heading;
+  font-size: 14px;
+}
+
+.md-h6 {
+  @include md;
+  @include heading;
+  font-size: 11px;
+}
+
+.md {
+  ul {
+    @include md;
+    list-style-type: disc;
+    margin: 0 0 10px 25px;
+    padding: 0;
+  }
+}
+
+.md-p {
+  @include md;
+  font-size: $baseFontSize - 7px;
+}
+
+.md-li {
+  @include md;
+  font-size: $baseFontSize - 7px;
+  line-height: 20px;
+}
+
+@media (max-width: 800px) {
+  .markdown {
+    h1 {
+      font-size: $smallFontSize  !important;
+    }
+
+    h2 {
+      font-size: $smallFontSize - 5px !important;
+    }
+
+    p,
+    li {
+      font-size: $smallFontSize - 7px !important;
+    }
+  }
+}

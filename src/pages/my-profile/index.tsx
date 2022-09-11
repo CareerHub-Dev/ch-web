@@ -1,4 +1,5 @@
 import useSections from '@/hooks/useSections';
+import useStudentQuery from '@/hooks/useStudentData';
 import SidePanel from '@/components/my-profile/SidePanel';
 import StudentProfile from '@/components/my-profile/StudentProfile';
 import CVBoard from '@/components/my-profile/CVBoard';
@@ -14,14 +15,19 @@ const MyDashBoardPage = (_props: object) => {
     url: '/my-profile',
     defaultSection: 'overview',
   });
+  const studentQuery = useStudentQuery();
 
   return (
     <div id="dashBoardGridContainer" className={classes.container}>
       <SidePanel onSectionClick={changeSection} />
       <section className={classes.dashboard}>
-        {currentSection === 'overview' && <StudentProfile />}
+        {currentSection === 'overview' && (
+          <StudentProfile studentQuery={studentQuery} />
+        )}
         {currentSection === 'cvs' && <CVBoard />}
-        {currentSection === 'settings' && <SettingsPanel />}
+        {currentSection === 'settings' && (
+          <SettingsPanel studentQuery={studentQuery} />
+        )}
       </section>
     </div>
   );

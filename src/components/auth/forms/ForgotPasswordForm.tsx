@@ -3,9 +3,9 @@ import { FormEventHandler, useRef, useState } from 'react';
 import useInput from '@/hooks/useInput';
 import type { CallbackFn } from '@/lib/util/callback/types';
 import { getEmailValidity, getPasswordValidity } from '@/lib/util';
-import ErrorToastStrategy from '@/lib/util/toasts/strategies/ErrorToastStrategy';
-import SuccessToastStrategy from '@/lib/util/toasts/strategies/SuccessToastStrategy';
-import ToastContext from '@/lib/util/toasts/ToastContext';
+import ErrorToastStrategy from '@/lib/toasts/strategies/ErrorToastStrategy';
+import SuccessToastStrategy from '@/lib/toasts/strategies/SuccessToastStrategy';
+import ToastContext from '@/lib/toasts/ToastContext';
 import { toast } from 'react-toastify';
 import {
   sendForgotPasswordRequest,
