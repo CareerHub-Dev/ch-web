@@ -51,10 +51,13 @@ const JobOfferForm = () => {
       } else {
         msg = 'Не вдалося створити вакансію';
       }
-      toast.notify({ type: 'error', msg });
+      toast.notify({ type: 'error', msg, current: true });
     },
     onSuccess: () => {
-      toast.notify({ msg: `\u2713 Вакансію ${titleInput.value} створено` });
+      toast.notify({
+        msg: `\u2713 Вакансію ${titleInput.value} створено`,
+        current: true,
+      });
       titleInput.reset();
       uploadedImage.reset();
       overviewEditor.reset();
@@ -107,6 +110,7 @@ const JobOfferForm = () => {
     if (!formIsValid) {
       return;
     }
+    toast.setCurrent('Створення вакансії...');
 
     const requestBody: JobOfferForm.JobOffer = {
       title: titleInput.value,
