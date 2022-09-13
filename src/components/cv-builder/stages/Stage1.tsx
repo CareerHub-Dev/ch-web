@@ -7,7 +7,7 @@ import {
   setSurname,
 } from '@/store/cv-constructor';
 import { useSelector } from 'react-redux';
-import useStudentQuery from '@/hooks/useStudentData';
+import useStudentQuery from '@/hooks/useStudentQuery';
 import useReduxStringInput from '@/hooks/useReduxStringInput';
 import AssistantTip from './AssistantTip';
 import Card from '@/components/ui/Card';

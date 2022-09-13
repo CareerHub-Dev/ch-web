@@ -1,5 +1,5 @@
-import useSections from '@/hooks/useSections';
-import useStudentQuery from '@/hooks/useStudentData';
+import useShallowRoutes from '@/hooks/useShallowRoutes';
+import useStudentQuery from '@/hooks/useStudentQuery';
 import SidePanel from '@/components/my-profile/SidePanel';
 import StudentProfile from '@/components/my-profile/StudentProfile';
 import CVBoard from '@/components/my-profile/CVBoard';
@@ -11,7 +11,7 @@ import withVerification from '@/lib/with-verification';
 import classes from '@/styles/my-dashboard.module.scss';
 
 const MyDashBoardPage = (_props: object) => {
-  const { currentSection, changeSection } = useSections({
+  const { currentSection, changeSection } = useShallowRoutes({
     url: '/my-profile',
     defaultSection: 'overview',
   });

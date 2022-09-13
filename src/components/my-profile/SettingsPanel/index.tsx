@@ -2,7 +2,7 @@ import Card from '@/components/ui/Card';
 import FormInput from '@/components/ui/form/FormInput';
 import useInput from '@/hooks/useInput';
 import useImageUpload from '@/hooks/useImageUpload';
-import useStudentQuery from '@/hooks/useStudentData';
+import useStudentQuery from '@/hooks/useStudentQuery';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import LinkButton from '@/components/ui/LinkButton';
 import FormImageUpload from '@/components/ui/form/FormImageUpload';

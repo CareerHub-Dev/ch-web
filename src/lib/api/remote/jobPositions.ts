@@ -1,7 +1,7 @@
 import { baseURL, retrieveErrorMessage } from '.';
 
 export const fetchJobPositions =
-  ({ accessToken }: { accessToken: string }) =>
+  ({ accessToken }: { accessToken: Nullable<string> }) =>
   async () => {
     const url = `${baseURL}JobPositions`;
     const response = await fetch(url, {

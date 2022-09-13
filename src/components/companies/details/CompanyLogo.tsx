@@ -1,11 +1,11 @@
-import useImageFetch from '@/hooks/useImageFetch';
+import useImageQuery from '@/hooks/useImageQuery';
 import Image from 'next/image';
 import classes from './CompanyLogo.module.scss';
 
 const CompanyLogo: React.FC<{
   imageId: string;
 }> = ({ imageId }) => {
-  const logoQuery = useImageFetch({
+  const logoQuery = useImageQuery({
     imageId,
   });
 

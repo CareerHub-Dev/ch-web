@@ -1,4 +1,4 @@
-import useStudentQuery from '@/hooks/useStudentData';
+import useStudentQuery from '@/hooks/useStudentQuery';
 import Card from '../ui/Card';
 import LoadingSpinner from '../ui/LoadingSpinner';
 import StudentAvatar from './StudentAvatar';

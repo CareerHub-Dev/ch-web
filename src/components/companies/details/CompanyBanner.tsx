@@ -1,11 +1,11 @@
-import useImageFetch from '@/hooks/useImageFetch';
+import useImageQuery from '@/hooks/useImageQuery';
 import Image from 'next/image';
 import classes from './CompanyBanner.module.scss';
 
 const CompanyBanner: React.FC<{
   imageId: string;
 }> = ({ imageId }) => {
-  const bannerQuery = useImageFetch({ imageId });
+  const bannerQuery = useImageQuery({ imageId });
 
   const banner = (bannerQuery.data as string) || '/company-dummy-banner.png';
 

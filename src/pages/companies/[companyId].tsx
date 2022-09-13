@@ -1,5 +1,5 @@
 import useAuth from '@/hooks/useAuth';
-import useSections from '@/hooks/useSections';
+import useShallowRoutes from '@/hooks/useShallowRoutes';
 import { GetServerSidePropsContext } from 'next';
 import { useQuery } from '@tanstack/react-query';
 import { fetchCompanyDetails } from '@/lib/api/remote/companies';
@@ -25,7 +25,7 @@ const CompanyDetailsPage = () => {
         alert(err.message || 'Помилка при завантаженні компанії'),
     }
   );
-  const { currentSection, changeSection } = useSections({
+  const { currentSection, changeSection } = useShallowRoutes({
     url: `/companies/${companyId}`,
     defaultSection: 'about',
   });

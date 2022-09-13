@@ -8,8 +8,7 @@ import {
   setTemplateLanguage,
   setIsAssistEnabled,
 } from '@/store/cv-constructor';
-import useAuth from '@/hooks/useAuth';
-import { useQuery } from '@tanstack/react-query';
+import useJobPositionsQuery from '@/hooks/useJobPositionsQuery';
 import { useSelector } from 'react-redux';
 import useReduxStringInput from '@/hooks/useReduxStringInput';
 import useAppDispatch from '@/hooks/useAppDispatch';
@@ -19,10 +18,9 @@ import AssistantTip from './AssistantTip';
 import Card from '@/components/ui/Card';
 import FormSelect from '@/components/ui/form/FormSelect';
 import FormCheckbox from '@/components/ui/form/FormCheckbox';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 import classes from './Stage.module.scss';
-import { fetchJobPositions } from '@/lib/api/remote/jobPositions';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
@@ -42,7 +40,6 @@ const templateLanguageOptions = [
 
 const Stage0 = () => {
   const dispatch = useAppDispatch();
-  const { accessToken } = useAuth();
   const jobTypeInput = useReduxStringInput(selectJobType, setJobType);
   const jobPositionInput = useReduxStringInput(
     selectJobPosition,
@@ -53,29 +50,16 @@ const Stage0 = () => {
     setTemplateLanguage
   );
   const isAssistEnabled = useSelector(selectIsAssistEnabled);
-  const jobPositionsQuery = useQuery(
-    ['jobPositions'],
-    fetchJobPositions({
-      accessToken: accessToken as string,
-    }),
-    {
-      enabled: !!accessToken,
-      onError: (err: any) => alert(err?.message || err || 'Невідома помилка'),
-      onSuccess: (data: any) => {
-        dispatch(setJobPosition(data[0]['id']));
-      },
-    }
-  );
+  const jobPositionsQuery = useJobPositionsQuery({
+    onError: (err: any) => alert(err?.message || err || 'Невідома помилка'),
+    onSuccess: (data: any) => {
+      dispatch(setJobPosition(data[0]['id']));
+    },
+  });
 
   const isAssistEnabledChangeHandler = (event: InputChangeEvent) => {
     dispatch(setIsAssistEnabled(event.target.checked));
   };
-
-  const jobPositionOptions =
-    jobPositionsQuery.data?.map((item: any) => ({
-      value: item['id'],
-      text: item['name'],
-    })) || [];
 
   return (
     <>
@@ -107,7 +91,7 @@ const Stage0 = () => {
           <FormSelect
             id="jobPosition"
             selectionState={jobPositionInput}
-            options={jobPositionOptions}
+            options={jobPositionsQuery.options}
             label="Виберіть цільову посаду:"
           />
         )}

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-export default function useSections({
+export default function useShallowRoutes({
   url,
   defaultSection,
   sections,
@@ -13,7 +13,6 @@ export default function useSections({
   const router = useRouter();
   const section = router.query.section as string;
   useEffect(() => {
-    console.log('useSections');
     const sectionAllowed = sections?.includes(section) || !sections;
     if (!section || section.length === 0 || !sectionAllowed) {
       router.replace(`${url}/?section=${defaultSection}`, undefined, {
