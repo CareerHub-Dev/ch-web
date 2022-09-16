@@ -34,7 +34,11 @@ const retrieveItemFromLocalStorage = (key: string) => {
   return storedToken;
 };
 
-export const AuthContextProvider: React.FC = ({ children }) => {
+export const AuthContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const storedAccessToken = retrieveItemFromLocalStorage('ch-accessToken');
   const storedAuthorityToken =
     retrieveItemFromLocalStorage('ch-authorityToken');

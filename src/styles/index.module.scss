@@ -14,6 +14,7 @@
   border: 2px solid #000e2e;
   transition: all ease-in-out 250ms;
 }
+
 @mixin btnText($textColor) {
   font-family: 'Noto Sans';
   font-style: normal;
@@ -24,6 +25,7 @@
   letter-spacing: -0.015em;
   color: $textColor;
 }
+
 @mixin btnHover($bgColor, $textColor) {
   transition: all ease-in-out 300ms;
   background: $bgColor;
@@ -41,6 +43,7 @@
   width: 100vw;
   height: calc(100vh - 160px);
 }
+
 .title {
   font-family: 'Rancho';
   font-size: 150px;
@@ -50,6 +53,7 @@
   .title {
     font-size: 72px;
   }
+
   .actions {
     flex-direction: column;
   }
@@ -60,10 +64,12 @@
   gap: 15px;
   max-width: 100%;
 }
+
 .register {
   @include btn(#000e2e);
   @include btnText(#fff);
 }
+
 .register:hover {
   @include btnHover(#fff, #000e2e);
 }
@@ -72,6 +78,7 @@
   @include btn(#ffffff);
   @include btnText(#000e2e);
 }
+
 .login:hover {
   @include btnHover(#000e2e, #fff);
 }
@@ -92,11 +99,13 @@
   align-items: center;
   z-index: 10;
 
-  & > svg {
+  &>svg {
     height: min-content;
+
     &:nth-child(1) {
       width: clamp(75px, 20%, 125px);
     }
+
     &:nth-child(2) {
       width: clamp(125px, 30%, 225px);
     }

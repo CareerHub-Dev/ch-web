@@ -1,7 +1,7 @@
 dev:
-	yarn
-	yarn start
+	pnpm i
+	pnpm dev
 prod:
-	yarn
-	yarn build
-	yarn serve
+	pnpm i
+	pnpm build
+	pnpm start

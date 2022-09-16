@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   reactStrictMode: true,
+  swcMinify: true,
+  env: {
+    BACKEND_SERVER_URL: process.env.BACKEND_SERVER_URL,
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -9,7 +13,6 @@ module.exports = {
 
     return config;
   },
-  images: {
-    domains: ['picsum.photos', 'i.imgur.com'],
-  },
 };
+
+module.exports = nextConfig;

@@ -42,7 +42,7 @@ const LandingPage = () => {
                 Зареєструватися
               </button>
               <button
-                className={classes.login}
+                className={classes.register}
                 type="button"
                 onClick={routingHandler('/auth/login')}
               >

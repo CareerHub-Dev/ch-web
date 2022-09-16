@@ -1,7 +1,9 @@
+import { type ReactNode } from 'react';
 import classes from './InfoItem.module.scss';
 
 const InfoItem: React.FC<{
   icon: () => JSX.Element;
+  children: ReactNode;
 }> = ({ icon, children }) => {
   const Icon = icon;
 

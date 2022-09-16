@@ -1,7 +1,8 @@
+import { type ReactNode } from 'react';
 import AuthRouting from './AuthRouting';
 import classes from './FormWrapper.module.scss';
 
-const FormWrapper: React.FC = ({ children }) => (
+const FormWrapper = ({ children }: { children: ReactNode }) => (
   <div className={classes.wrapper}>
     <h1 className={classes.title} id="authFormTitle">
       CareerHub

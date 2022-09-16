@@ -1,11 +1,10 @@
-import { useEffect } from 'react';
-import { useWindowSize } from 'usehooks-ts';
+import { useWindowSize, useIsomorphicLayoutEffect } from 'usehooks-ts';
 import classes from './Background.module.scss';
 
 const Ovals = () => {
   const { width, height } = useWindowSize();
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const canvas = document.getElementsByTagName('canvas')[0].getContext('2d');
     const shiftStep = 5;
     const radiusStep = Math.round(
@@ -47,11 +46,7 @@ const Ovals = () => {
     }
   }, [width, height]);
 
-  if (typeof window !== 'undefined')
-    return (
-      <canvas className={classes.canvas} width={width!} height={height!} />
-    );
-  else return <canvas className={classes.canvas} />;
+  return <canvas className={classes.canvas} width={width} height={height} />;
 };
 
 export default Ovals;

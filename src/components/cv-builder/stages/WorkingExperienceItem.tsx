@@ -2,8 +2,7 @@ import useAppDispatch from '@/hooks/useAppDispatch';
 import WorkingExperience from '@/models/CV/WorkingExperience';
 import { removeWorkingExperience } from '@/store/cv-constructor';
 import { getFormattedDate } from '@/lib/util';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import TrashIcon from '@/components/ui/icons/TrashIcon';
 
 import classes from './ListItem.module.scss';
 
@@ -27,11 +26,9 @@ const WorkingExperienceItem: React.FC<{
           ? 'Досі'
           : getFormattedDate(item.endMonth, item.endYear)
       }`}</span>
-      <FontAwesomeIcon
-        icon={faTrash}
-        onClick={removeButtonClickHandler}
-        className={classes.remove}
-      />
+      <span onClick={removeButtonClickHandler} className={classes.remove}>
+        <TrashIcon />
+      </span>
     </li>
   );
 };

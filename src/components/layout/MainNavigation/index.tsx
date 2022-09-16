@@ -6,8 +6,7 @@ import BurgerMenu from './BurgerMenu';
 import ProfileIcon from './ProfileIcon';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import SigOutIcon from '@/components/ui/icons/SignOutIcon';
 import LinkButton from '@/components/ui/LinkButton';
 import UserRole from '@/models/enums/UserRole';
 
@@ -23,7 +22,7 @@ const MainNavigation = () => {
   const isLoggedIn = auth.isLoggedIn;
   const isStudent = isLoggedIn && auth.role === UserRole.Student;
   const isCompany = isLoggedIn && auth.role === UserRole.Company;
-  const isPhoneScreen = width && width < 600;
+  const isPhoneScreen = width < 600;
   const profileLink = isStudent ? '/my-profile' : '/my-dashboard';
 
   const burgerOpenHandler = () => {
@@ -47,7 +46,7 @@ const MainNavigation = () => {
         </div>
         <ul
           className={cn(classes.list, {
-            [classes[`active`]]: isPhoneScreen && isBurgerOpened,
+            [classes.active]: isPhoneScreen && isBurgerOpened,
           })}
         >
           <li>
@@ -102,11 +101,7 @@ const MainNavigation = () => {
                 })}
                 onClick={logoutClickHandler}
               >
-                {isPhoneScreen ? (
-                  <FontAwesomeIcon icon={faSignOutAlt} />
-                ) : (
-                  <span>Вийти</span>
-                )}
+                {isPhoneScreen ? <SigOutIcon /> : <span>Вийти</span>}
               </Button>
             </div>
           </>

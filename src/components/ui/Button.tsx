@@ -8,6 +8,7 @@ const Button: React.FC<{
   customClasses?: string;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
+  children: React.ReactNode;
 }> = ({
   children,
   id,

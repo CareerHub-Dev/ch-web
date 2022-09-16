@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 type Headers = {
   [key: string]: string;
 };
@@ -20,8 +18,7 @@ export const retrieveErrorMessage = (responseData: any) => {
   return 'Невідома помилка';
 };
 
-export const serverUrl =
-  process.env.BACKEND_SERVER_URL || 'http://localhost:5000';
+export const serverUrl = process.env.BACKEND_SERVER_URL;
 export const baseURL = `${serverUrl}/api/`;
 export const defaultTimeout = 10000;
 export const defaultTimeoutErrorMessage = 'Сервер мовчить';
@@ -59,14 +56,3 @@ export const getRequestHeadersWithAccessToken = () => {
   }
   return { headers };
 };
-
-const gateway = axios.create(defaultAxiosConfig);
-export default gateway;
-
-export const privateGateway = axios.create({
-  baseURL,
-  timeout: defaultTimeout,
-  timeoutErrorMessage: defaultTimeoutErrorMessage,
-  headers: defaultHeaders,
-  withCredentials: true,
-});
