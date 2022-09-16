@@ -1,4 +1,5 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
+import { useIsClient } from 'usehooks-ts';
 import { ContentBlock, Editor, RichUtils } from 'draft-js';
 import BlockStyleControls from './BlockStyleControls';
 import type { UseEditorResult } from '@/hooks/useEditor';
@@ -32,16 +33,11 @@ const getBlockStyle = (block: ContentBlock) => {
   return mapped || 'md-p';
 };
 
-/** Note: this component must be mounted before render
+/** Note: this component can be rendered only on client side
  *  since draft-js can only render at client side
  */
 const MarkdownEditor = ({ editor }: { editor: UseEditorResult }) => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
+  const isClient = useIsClient();
 
   const editorRef = useRef<Editor>(null);
   const editorContent = editor.content;
@@ -68,7 +64,7 @@ const MarkdownEditor = ({ editor }: { editor: UseEditorResult }) => {
     'wrapper-invalid': editor.hasError,
   });
 
-  if (!mounted) {
+  if (!isClient) {
     return null;
   }
 

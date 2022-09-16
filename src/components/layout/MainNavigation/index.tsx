@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useAuth from '@/hooks/useAuth';
-import useWindowDimensions from '@/hooks/useWindowDimensions';
+import { useWindowSize } from 'usehooks-ts';
 import { useRouter } from 'next/router';
 import BurgerMenu from './BurgerMenu';
 import ProfileIcon from './ProfileIcon';
@@ -18,7 +18,7 @@ const MainNavigation = () => {
   const router = useRouter();
   const auth = useAuth();
   const [isBurgerOpened, setIsBurgerOpened] = useState(false);
-  const { width } = useWindowDimensions();
+  const { width } = useWindowSize();
 
   const isLoggedIn = auth.isLoggedIn;
   const isStudent = isLoggedIn && auth.role === UserRole.Student;

@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import useWindowDimensions from '../../../hooks/useWindowDimensions';
+import { useWindowSize } from 'usehooks-ts';
 import classes from './Background.module.scss';
 
-const Ovals: React.FC = () => {
-  let { width, height } = useWindowDimensions();
+const Ovals = () => {
+  const { width, height } = useWindowSize();
 
   useEffect(() => {
     const canvas = document.getElementsByTagName('canvas')[0].getContext('2d');
