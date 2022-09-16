@@ -1,21 +1,33 @@
 import useAuth from './useAuth';
 import {
   useQuery,
+  type QueryFunction,
+  type UseQueryOptions,
+  type UseQueryResult,
   type QueryKey,
-  type QueryOptions,
 } from '@tanstack/react-query';
 
-type UseQueryParams = Parameters<typeof useQuery>;
-
-export default function useProtectedQuery(
-  queryKey: QueryKey,
-  queryFnCreator: (accessToken: Nullable<string>) => UseQueryParams[1],
-  options?: QueryOptions
-) {
+export default function useProtectedQuery<
+  TQueryFnData = unknown,
+  TError = unknown,
+  TData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey
+>(
+  queryKey: TQueryKey,
+  queryFnCreator: (
+    accessToken: string | null
+  ) => QueryFunction<TQueryFnData, TQueryKey>,
+  options: Omit<
+    UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
+    'queryFn' | 'queryKey'
+  >
+): UseQueryResult<TData, TError> {
   const { accessToken } = useAuth();
-  const q = useQuery(queryKey, queryFnCreator(accessToken), {
+  const q = useQuery({
+    queryKey,
     enabled: !!accessToken,
     ...options,
+    queryFn: queryFnCreator(accessToken),
   });
   return q;
 }

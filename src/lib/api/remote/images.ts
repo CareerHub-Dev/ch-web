@@ -8,8 +8,7 @@ const blobToBase64 = (blob: Blob) => {
   });
 };
 
-export const fetchImage =
-  ({ accessToken, imageId }: { accessToken: string | null; imageId: string }) =>
+export const fetchImage = (imageId: string) => (accessToken: Nullable<string>) =>
   async () => {
     const response = await fetch(`${baseURL}/Images/${imageId}`, {
       headers: {

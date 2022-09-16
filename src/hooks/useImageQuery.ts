@@ -1,5 +1,4 @@
-import useAuth from './useAuth';
-import { useQuery } from '@tanstack/react-query';
+import useProtectedQuery from './useProtectedQuery';
 import { fetchImage } from '@/lib/api/remote/images';
 
 export default function useImageQuery({
@@ -11,11 +10,10 @@ export default function useImageQuery({
   onError?: AnyFn;
   onSuccess?: AnyFn;
 }) {
-  const { accessToken } = useAuth();
-  return useQuery(['image', imageId], fetchImage({ accessToken, imageId }), {
-    enabled: !!accessToken,
+  const q = useProtectedQuery(['image', imageId], fetchImage(imageId), {
     onError,
     onSuccess,
     retry: false,
   });
+  return q;
 }
