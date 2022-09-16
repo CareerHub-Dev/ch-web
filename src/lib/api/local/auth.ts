@@ -1,4 +1,4 @@
-import { CallbackFn } from '@/lib/util/callback/types';
+import { CallbackFn } from '@/lib/callback/types';
 import RequestStatus from '@/models/enums/RequestStatus';
 import UserRole from '@/models/enums/UserRole';
 

@@ -6,7 +6,7 @@ import AuthField from '../AuthField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
-import { CallbackFn } from '@/lib/util/callback/types';
+import { CallbackFn } from '@/lib/callback/types';
 import RequestStatus from '@/models/enums/RequestStatus';
 import { useRouter } from 'next/router';
 import ToastContext from '@/lib/toasts/ToastContext';

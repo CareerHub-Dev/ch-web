@@ -1,4 +1,4 @@
-import type { CallbackFn } from '@/lib/util/callback/types';
+import type { CallbackFn } from '@/lib/callback/types';
 import RequestStatus from '@/models/enums/RequestStatus';
 import UserRole from '@/models/enums/UserRole';
 import gateway, { baseURL, retrieveErrorMessage } from '.';

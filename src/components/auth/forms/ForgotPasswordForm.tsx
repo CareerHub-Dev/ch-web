@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { FormEventHandler, useRef, useState } from 'react';
 import useInput from '@/hooks/useInput';
-import type { CallbackFn } from '@/lib/util/callback/types';
+import type { CallbackFn } from '@/lib/callback/types';
 import { getEmailValidity, getPasswordValidity } from '@/lib/util';
 import ErrorToastStrategy from '@/lib/toasts/strategies/ErrorToastStrategy';
 import SuccessToastStrategy from '@/lib/toasts/strategies/SuccessToastStrategy';

@@ -2,16 +2,14 @@ import Link from 'next/link';
 import cn from 'classnames';
 import classes from './LinkButton.module.scss';
 
-type ButtonStyle =
-  | 'dark-blue-primary'
-  | 'light-blue-primary'
-  | 'dark-blue-secondary'
-  | 'lgbt';
-
 const LinkButton: React.FC<{
   link?: string;
   onClick?: AnyFn;
-  style?: ButtonStyle;
+  style?:
+    | 'dark-blue-primary'
+    | 'light-blue-primary'
+    | 'dark-blue-secondary'
+    | 'lgbt';
   additionalClasses?: string | Array<string>;
   disabled?: boolean;
 }> = ({

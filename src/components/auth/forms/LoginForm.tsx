@@ -5,7 +5,7 @@ import useInput from '@/hooks/useInput';
 import { getEmailValidity, getPasswordValidity } from '@/lib/util';
 import { sendLocalGatewayAuthRequest } from '@/lib/api/local/auth';
 import RequestStatus from '@/models/enums/RequestStatus';
-import type { CallbackFn } from '@/lib/util/callback/types';
+import type { CallbackFn } from '@/lib/callback/types';
 import AuthField from '../AuthField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
