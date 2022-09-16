@@ -1,6 +1,6 @@
 import React, { useState, useRef, useImperativeHandle } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import EyeIcon from '../ui/icons/EyeIcon';
+import SlashedEyeIcon from '../ui/icons/SlashedEyeIcon';
 import cn from 'classnames';
 import classes from './AuthField.module.scss';
 
@@ -26,7 +26,7 @@ const AuthField = React.forwardRef<any, Props>(function AuthFieldComponent(
     onBlur,
     validationMessage,
   },
-  ref
+  ref,
 ) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputType, setInputType] = useState(type);
@@ -42,7 +42,7 @@ const AuthField = React.forwardRef<any, Props>(function AuthFieldComponent(
 
   const showPasswordHandler = () => {
     setInputType((prevState) =>
-      prevState === 'password' ? 'text' : 'password'
+      prevState === 'password' ? 'text' : 'password',
     );
   };
 
@@ -74,14 +74,10 @@ const AuthField = React.forwardRef<any, Props>(function AuthFieldComponent(
           onClick={showPasswordHandler}
           className={cn(
             classes['field-eye'],
-            type !== 'password' && classes.hidden
+            type !== 'password' && classes.hidden,
           )}
         >
-          {inputType === 'password' ? (
-            <FontAwesomeIcon icon={faEyeSlash} />
-          ) : (
-            <FontAwesomeIcon icon={faEye} />
-          )}
+          {inputType === 'password' ? <SlashedEyeIcon /> : <EyeIcon />}
         </button>
       </div>
       {isInputInvalid && (

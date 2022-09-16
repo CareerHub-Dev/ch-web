@@ -12,6 +12,7 @@ const LinkButton: React.FC<{
     | 'lgbt';
   additionalClasses?: string | Array<string>;
   disabled?: boolean;
+  children: React.ReactNode;
 }> = ({
   link,
   onClick,
@@ -23,7 +24,7 @@ const LinkButton: React.FC<{
   const allClasses = cn(
     classes[style],
     additionalClasses,
-    disabled && classes.disabled
+    disabled && classes.disabled,
   );
 
   if (link) {

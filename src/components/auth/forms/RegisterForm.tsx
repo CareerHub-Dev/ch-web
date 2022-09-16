@@ -3,9 +3,8 @@ import useAuth from '@/hooks/useAuth';
 import useInput from '@/hooks/useInput';
 import { getStudentEmailValidity, getPasswordValidity } from '@/lib/util';
 import AuthField from '../AuthField';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faKey } from '@fortawesome/free-solid-svg-icons';
-import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import KeyIcon from '@/components/ui/icons/KeyIcon';
+import EnvelopeIcon from '@/components/ui/icons/EnvelopeIcon';
 import { CallbackFn } from '@/lib/callback/types';
 import RequestStatus from '@/models/enums/RequestStatus';
 import { useRouter } from 'next/router';
@@ -45,7 +44,7 @@ const RegisterForm = () => {
           sessionData.accessToken,
           sessionData.authorityToken,
           sessionData.accountId,
-          role
+          role,
         );
         router.push('/offers');
         break;
@@ -72,7 +71,7 @@ const RegisterForm = () => {
       passwordInput.value,
       false,
       UserRole.Student, // TODO: выпилить этот костыль
-      requestCallback
+      requestCallback,
     );
   };
 
@@ -90,7 +89,7 @@ const RegisterForm = () => {
           onBlur={emailInput.inputBlurHandler}
           validationMessage="Перевірте чи ваша пошта є у домені nure.ua та не містить невалідних символів"
         >
-          <FontAwesomeIcon id="newPasswordIcon" icon={faEnvelope} />
+          <EnvelopeIcon />
         </AuthField>
         <AuthField
           ref={passwordInputRef}
@@ -102,7 +101,7 @@ const RegisterForm = () => {
           onBlur={passwordInput.inputBlurHandler}
           validationMessage="Пароль повинен бути від 8 до 33 символів серед яких: літери верхнього й нижнього регістру, хоча б одна цифра або спеціальний символ"
         >
-          <FontAwesomeIcon id="newPasswordIcon" icon={faKey} />
+          <KeyIcon />
         </AuthField>
         <input
           id="submitButton"

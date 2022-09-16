@@ -1,12 +1,9 @@
 import CompanyInfoBlock from './CompanyInfoBlock';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import PeopleIcon from '@/components/ui/icons/PeopleIcon';
+import BriefCaseIcon from '@/components/ui/icons/BriefCaseIcon';
 import LinkButton from '@/components/ui/LinkButton';
 import CompanyLogo from './CompanyLogo';
 import classes from './CompanyCard.module.scss';
-
-const UsersIcon = <FontAwesomeIcon icon={faUsers} />;
-const BriefcaseIcon = <FontAwesomeIcon icon={faBriefcase} />;
 
 const CompanyCard: React.FC<{
   company: {
@@ -28,11 +25,11 @@ const CompanyCard: React.FC<{
         <div className={classes['info-column']}>
           <CompanyInfoBlock
             value={company.amountSubscribers.toString()}
-            icon={UsersIcon}
+            icon={PeopleIcon}
           />
           <CompanyInfoBlock
             value={company.amountActiveJobOffers.toString()}
-            icon={BriefcaseIcon}
+            icon={BriefCaseIcon}
           />
         </div>
       </div>

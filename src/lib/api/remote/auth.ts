@@ -1,14 +1,14 @@
 import type { CallbackFn } from '@/lib/callback/types';
 import RequestStatus from '@/models/enums/RequestStatus';
 import UserRole from '@/models/enums/UserRole';
-import gateway, { baseURL, retrieveErrorMessage } from '.';
+import { baseURL, retrieveErrorMessage } from '.';
 
 export const sendAuthRequest = (
   email: string,
   password: string,
   role: UserRole,
   isLogin: boolean,
-  callback: CallbackFn
+  callback: CallbackFn,
 ) => {
   let url;
   if (isLogin) {
@@ -48,13 +48,17 @@ export const sendAuthRequest = (
 
 export const sendForgotPasswordRequest = (
   email: string,
-  callback: CallbackFn
+  callback: CallbackFn,
 ) => {
-  gateway
-    .post('Accounts/forgot-password', {
-      email,
-    })
-    .then((response) => {
+  fetch(`${baseURL}Accounts/forgot-password`, {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+    headers: {
+      Accept: 'text/plain',
+      'Content-Type': 'application/json-patch+json',
+    },
+  })
+    .then((response: Response) => {
       if (!response) {
         throw new Error('Немає відопвіді серверу');
       }
@@ -63,7 +67,7 @@ export const sendForgotPasswordRequest = (
         message: 'Перевірте пошту!',
       });
     })
-    .catch((error) => {
+    .catch((error: Error) => {
       callback({ status: RequestStatus.Error, message: error.message });
     });
 };
@@ -71,15 +75,17 @@ export const sendForgotPasswordRequest = (
 export const sendResetPasswordRequest = (
   password: string,
   token: string,
-  callback: CallbackFn
+  callback: CallbackFn,
 ) => {
-  gateway
-    .post('Accounts/reset-password', {
-      token,
-      password,
-      confirmPassword: password,
-    })
-    .then((response) => {
+  fetch(`${baseURL}Accounts/reset-password`, {
+    method: 'POST',
+    body: JSON.stringify({ password, token, confirmPassword: password }),
+    headers: {
+      Accept: 'text/plain',
+      'Content-Type': 'application/json-patch+json',
+    },
+  })
+    .then((response: Response) => {
       if (!response) {
         callback({
           status: RequestStatus.Error,
@@ -91,7 +97,7 @@ export const sendResetPasswordRequest = (
         message: 'Пароль успішно оновлено!',
       });
     })
-    .catch((error) => {
+    .catch((error: Error) => {
       callback({ status: RequestStatus.Error, message: error.message });
     });
 };

@@ -10,13 +10,12 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
-import '@fortawesome/fontawesome-svg-core/styles.css';
-import 'react-toastify/dist/ReactToastify.css';
 
+import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/MarkdownEditor.scss';
 import '@/styles/globals.scss';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps<any>) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
@@ -36,7 +35,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-                style={{ zIndex: 50 }}
+                style={{ zIndex: 1000 }}
               />
             </CommonLayout>
           </Hydrate>

@@ -13,9 +13,9 @@ import {
 } from '@/lib/api/remote/auth';
 import RequestStatus from '@/models/enums/RequestStatus';
 import AuthField from '../AuthField';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
-import { faKey } from '@fortawesome/free-solid-svg-icons';
+import KeyIcon from '@/components/ui/icons/KeyIcon';
+import EnvelopeIcon from '@/components/ui/icons/EnvelopeIcon';
+
 import classes from './forms.module.scss';
 
 const ForgotPasswordForm = () => {
@@ -27,7 +27,7 @@ const ForgotPasswordForm = () => {
   const newPasswordInput = useInput(getPasswordValidity);
   const newPasswordRepeatInputRef = useRef<HTMLInputElement>(null);
   const newPasswordRepeatInput = useInput(
-    (value: string) => value === newPasswordInput.value
+    (value: string) => value === newPasswordInput.value,
   );
 
   const [verificationRequestPassed, setVerificationRequestPassed] =
@@ -37,7 +37,7 @@ const ForgotPasswordForm = () => {
   const resetTokenInput = useInput();
 
   const createCallback: (onSuccess: () => void) => CallbackFn = (
-    onSuccess: () => void
+    onSuccess: () => void,
   ) => {
     return ({
       status,
@@ -61,17 +61,17 @@ const ForgotPasswordForm = () => {
       }
       toastContext.notify(
         message ? message : 'Невідома помилка',
-        toastRef.current
+        toastRef.current,
       );
     };
   };
 
   const verificationRequestCallback = createCallback(
-    setVerificationRequestPassed.bind(null, true)
+    setVerificationRequestPassed.bind(null, true),
   );
 
   const resetPasswordRequestCallback = createCallback(
-    router.push.bind(null, '/auth/login')
+    router.push.bind(null, '/auth/login'),
   );
 
   const validationHandler = () => {
@@ -98,7 +98,7 @@ const ForgotPasswordForm = () => {
       sendResetPasswordRequest(
         newPasswordInput.value,
         resetTokenInput.value,
-        resetPasswordRequestCallback
+        resetPasswordRequestCallback,
       );
     } else if (!resetTokenInput.isValid) {
       resetTokenInputRef.current!.focus();
@@ -132,7 +132,7 @@ const ForgotPasswordForm = () => {
             onBlur={emailInput.inputBlurHandler}
             validationMessage="Перевірте коректність поштової адреси"
           >
-            <FontAwesomeIcon id="emailIcon" icon={faEnvelope} />
+            <EnvelopeIcon />
           </AuthField>
         )}
 
@@ -158,7 +158,7 @@ const ForgotPasswordForm = () => {
               onBlur={newPasswordInput.inputBlurHandler}
               validationMessage="Пароль повинен бути від 8 до 33 символів серед яких: літери верхнього й нижнього регістру, хоча б одна цифра або спеціальний символ"
             >
-              <FontAwesomeIcon id="newPasswordIcon" icon={faKey} />
+              <KeyIcon />
             </AuthField>
             <AuthField
               ref={newPasswordRepeatInputRef}
@@ -170,7 +170,7 @@ const ForgotPasswordForm = () => {
               onBlur={newPasswordRepeatInput.inputBlurHandler}
               validationMessage="Паролі мають бути однаковими"
             >
-              <FontAwesomeIcon id="repeatNewPasswordIcon" icon={faKey} />
+              <KeyIcon />
             </AuthField>
           </>
         )}

@@ -1,14 +1,17 @@
 import classes from './CompanyCard.module.scss';
 
 type Props = {
-  icon: JSX.Element;
+  icon: React.FC;
   value: string;
 };
 
 const CompanyInfoBlock = ({ icon, value }: Props) => {
+  const Icon = icon;
   return (
     <p className={classes.info}>
-      <span>{icon}</span>
+      <span>
+        <Icon />
+      </span>
       <span>{value}</span>
     </p>
   );

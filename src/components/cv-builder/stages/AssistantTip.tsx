@@ -1,9 +1,10 @@
 import cn from 'classnames';
+import { type ReactNode } from 'react';
 import classes from './AssistantTip.module.scss';
 
 type TipType = 'default' | 'good-example' | 'bad-example';
 
-const AssistantTip: React.FC<{ type?: TipType }> = ({
+const AssistantTip: React.FC<{ type?: TipType; children: ReactNode }> = ({
   type = 'default',
   children,
 }) => {

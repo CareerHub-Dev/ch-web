@@ -7,9 +7,8 @@ import { sendLocalGatewayAuthRequest } from '@/lib/api/local/auth';
 import RequestStatus from '@/models/enums/RequestStatus';
 import type { CallbackFn } from '@/lib/callback/types';
 import AuthField from '../AuthField';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faKey } from '@fortawesome/free-solid-svg-icons';
-import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import KeyIcon from '@/components/ui/icons/KeyIcon';
+import EnvelopeIcon from '@/components/ui/icons/EnvelopeIcon';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
 import ToastContext from '@/lib/toasts/ToastContext';
 import ErrorToastStrategy from '@/lib/toasts/strategies/ErrorToastStrategy';
@@ -47,7 +46,7 @@ const LoginForm = () => {
           sessionData.accessToken,
           sessionData.authorityToken,
           sessionData.accountId,
-          role
+          role,
         );
         break;
       default:
@@ -73,7 +72,7 @@ const LoginForm = () => {
       passwordInput.value,
       true,
       selectedRoleRef.current!.value as UserRole,
-      requestCallback
+      requestCallback,
     );
   };
 
@@ -92,7 +91,7 @@ const LoginForm = () => {
           onBlur={emailInput.inputBlurHandler}
           validationMessage="Перевірте коректність поштової адреси"
         >
-          <FontAwesomeIcon id="newPasswordIcon" icon={faEnvelope} />
+          <EnvelopeIcon />
         </AuthField>
         <AuthField
           ref={passwordInputRef}
@@ -104,7 +103,7 @@ const LoginForm = () => {
           onBlur={passwordInput.inputBlurHandler}
           validationMessage="Пароль повинен бути від 8 до 33 символів серед яких: літери верхнього й нижнього регістру, хоча б одна цифра або спеціальний символ"
         >
-          <FontAwesomeIcon id="newPasswordIcon" icon={faKey} />
+          <KeyIcon />
         </AuthField>
 
         <input

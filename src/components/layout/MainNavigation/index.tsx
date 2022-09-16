@@ -6,8 +6,7 @@ import BurgerMenu from './BurgerMenu';
 import ProfileIcon from './ProfileIcon';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import SigOutIcon from '@/components/ui/icons/SignOutIcon';
 import LinkButton from '@/components/ui/LinkButton';
 import UserRole from '@/models/enums/UserRole';
 
@@ -58,14 +57,14 @@ const MainNavigation = () => {
               <li
                 className={cn(
                   router.pathname.includes('/companies') &&
-                    classes['active-link']
+                    classes['active-link'],
                 )}
               >
                 <Link href={'/companies'}>Компанії</Link>
               </li>
               <li
                 className={cn(
-                  router.pathname.includes('/offers') && classes['active-link']
+                  router.pathname.includes('/offers') && classes['active-link'],
                 )}
               >
                 <Link href={'/offers'}>Робота</Link>
@@ -75,7 +74,7 @@ const MainNavigation = () => {
             <>
               <li
                 className={cn(
-                  router.pathname.includes('/cvs') && classes['active-link']
+                  router.pathname.includes('/cvs') && classes['active-link'],
                 )}
               >
                 <Link href={'/cvs'}>Резюме</Link>
@@ -83,7 +82,7 @@ const MainNavigation = () => {
               <li
                 className={cn(
                   router.pathname.includes('/offers/add') &&
-                    classes['active-link']
+                    classes['active-link'],
                 )}
               >
                 <Link href={'/offers/add'}>Додати вакансію</Link>
@@ -102,11 +101,7 @@ const MainNavigation = () => {
                 })}
                 onClick={logoutClickHandler}
               >
-                {isPhoneScreen ? (
-                  <FontAwesomeIcon icon={faSignOutAlt} />
-                ) : (
-                  <span>Вийти</span>
-                )}
+                {isPhoneScreen ? <SigOutIcon /> : <span>Вийти</span>}
               </Button>
             </div>
           </>
