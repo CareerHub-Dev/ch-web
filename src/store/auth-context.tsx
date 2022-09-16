@@ -11,7 +11,7 @@ type AuthContextData = {
     accessToken: string,
     authorityToken: string,
     accountId: string,
-    role: string,
+    role: string
   ) => void;
   logout: () => void;
 };
@@ -49,7 +49,7 @@ export const AuthContextProvider = ({
   const [authorityToken, setAuthorityToken] = useState(storedAuthorityToken);
   const [accountId, setAccountId] = useState(storedAccountId);
   const [role, setRole] = useState<UserRole | null>(
-    storedRole as UserRole | null,
+    storedRole as UserRole | null
   );
   const userIsLoggedIn = !!accessToken && !!authorityToken;
 
@@ -71,7 +71,7 @@ export const AuthContextProvider = ({
     accessToken: string,
     authorityToken: string,
     accountId: string,
-    role: UserRole,
+    role: UserRole
   ) => {
     setRole(role);
     setAccessToken(accessToken);

@@ -22,7 +22,7 @@ const MainNavigation = () => {
   const isLoggedIn = auth.isLoggedIn;
   const isStudent = isLoggedIn && auth.role === UserRole.Student;
   const isCompany = isLoggedIn && auth.role === UserRole.Company;
-  const isPhoneScreen = width && width < 600;
+  const isPhoneScreen = width < 600;
   const profileLink = isStudent ? '/my-profile' : '/my-dashboard';
 
   const burgerOpenHandler = () => {
@@ -46,7 +46,7 @@ const MainNavigation = () => {
         </div>
         <ul
           className={cn(classes.list, {
-            [classes[`active`]]: isPhoneScreen && isBurgerOpened,
+            [classes.active]: isPhoneScreen && isBurgerOpened,
           })}
         >
           <li>
@@ -57,14 +57,14 @@ const MainNavigation = () => {
               <li
                 className={cn(
                   router.pathname.includes('/companies') &&
-                    classes['active-link'],
+                    classes['active-link']
                 )}
               >
                 <Link href={'/companies'}>Компанії</Link>
               </li>
               <li
                 className={cn(
-                  router.pathname.includes('/offers') && classes['active-link'],
+                  router.pathname.includes('/offers') && classes['active-link']
                 )}
               >
                 <Link href={'/offers'}>Робота</Link>
@@ -74,7 +74,7 @@ const MainNavigation = () => {
             <>
               <li
                 className={cn(
-                  router.pathname.includes('/cvs') && classes['active-link'],
+                  router.pathname.includes('/cvs') && classes['active-link']
                 )}
               >
                 <Link href={'/cvs'}>Резюме</Link>
@@ -82,7 +82,7 @@ const MainNavigation = () => {
               <li
                 className={cn(
                   router.pathname.includes('/offers/add') &&
-                    classes['active-link'],
+                    classes['active-link']
                 )}
               >
                 <Link href={'/offers/add'}>Додати вакансію</Link>

@@ -1,9 +1,9 @@
 import type { AppProps } from 'next/app';
 import store from '@/store/index';
+import dynamic from 'next/dynamic';
 import { ToastContainer } from 'react-toastify';
 import { Provider } from 'react-redux';
 import { AuthContextProvider } from '@/store/auth-context';
-import CommonLayout from '@/components/layout/CommonLayout';
 import { useState } from 'react';
 import {
   Hydrate,
@@ -14,6 +14,10 @@ import {
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/MarkdownEditor.scss';
 import '@/styles/globals.scss';
+
+const CommonLayout = dynamic(() => import('@/components/layout/CommonLayout'), {
+  ssr: false,
+});
 
 function MyApp({ Component, pageProps }: AppProps<any>) {
   const [queryClient] = useState(() => new QueryClient());
