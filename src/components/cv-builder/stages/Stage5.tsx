@@ -25,7 +25,7 @@ const Stage5 = () => {
   const languageInput = useInput(
     (value) =>
       value.trim() !== '' &&
-      !addedLanguages.items.some((x) => x.object.name === value)
+      !addedLanguages.items.some((lang) => lang.name === value)
   );
 
   const dispatch = useAppDispatch();

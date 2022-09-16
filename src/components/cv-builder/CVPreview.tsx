@@ -46,9 +46,7 @@ const CVPreview: React.FC = () => {
           <h1>{`${cvTemplateLocalization.foreignLanguages}:`}</h1>
           <ul>
             {foreignLanguages.map((x) => (
-              <li key={x.id}>{`${x.object.name}: ${
-                x.object.proficiencyLevel as string
-              }`}</li>
+              <li key={x.id}>{`${x.name}: ${x.proficiencyLevel as string}`}</li>
             ))}
           </ul>
         </>
@@ -57,14 +55,13 @@ const CVPreview: React.FC = () => {
         <>
           <h1>{`${cvTemplateLocalization.workingExperience}:`}</h1>
           <ul>
-            {experiences!.map((x) => {
-              const exp = x.object;
+            {experiences!.map((exp) => {
               const endDate = exp.jobIsCurrent
                 ? 'досі'
                 : getFormattedDate(exp.endMonth, exp.endYear);
 
               return (
-                <li key={x.id}>
+                <li key={exp.id}>
                   <h2>{`${exp.jobTitle}, ${exp.company} (${exp.employmentType})`}</h2>
                   <p>{`${getFormattedDate(
                     exp.startMonth,
@@ -86,8 +83,8 @@ const CVPreview: React.FC = () => {
           <ul>
             {projectLinks.map((x) => (
               <li key={x.id}>
-                <a href={x.object.url} target="_blank" rel="noreferrer">
-                  {x.object.title}
+                <a href={x.url} target="_blank" rel="noreferrer">
+                  {x.title}
                 </a>
               </li>
             ))}
@@ -99,12 +96,11 @@ const CVPreview: React.FC = () => {
         <>
           <h1>{`${cvTemplateLocalization.education}:`}</h1>
           <ul>
-            {education.map((x) => {
-              const item = x.object;
+            {education.map((item) => {
               const endYear = item.educationIsCurrent ? 'досі' : item.endYear;
 
               return (
-                <li key={x.id}>
+                <li key={item.id}>
                   <h2>{`${item.university}, ${item.city}, ${item.country}`}</h2>
                   <p>{`${cvTemplateLocalization.speciality}: ${item.title}, ${cvTemplateLocalization.degree}: ${item.degree}`}</p>
                   <p>{`${item.startYear} - ${endYear}`}</p>

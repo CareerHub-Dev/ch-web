@@ -1,5 +1,3 @@
-import IndexedObject from './IndexedObject';
-
 type ArrayInput<T> = {
   value: Array<T>;
   isValid: boolean;
@@ -25,7 +23,7 @@ export const disableArrayInput = <T>(input: ArrayInput<T>) => {
   input.isValid = true;
 };
 
-export const removeArrayInputItem = <T>(
+export const removeArrayInputItem = <T extends Object>(
   input: ArrayInput<IndexedObject<T>>,
   id: string
 ) => {
@@ -36,11 +34,11 @@ export const removeArrayInputItem = <T>(
   }
 };
 
-export const addArrayInputItem = <T>(
+export const addArrayInputItem = <T extends Object>(
   input: ArrayInput<IndexedObject<T>>,
   item: T
 ) => {
-  input.value.push({ object: item, id: input.value.length.toString() });
+  input.value.push({ ...item, id: input.value.length.toString() });
   input.isTouched = true;
   input.isValid = true;
 };

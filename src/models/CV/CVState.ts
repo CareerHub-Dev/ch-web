@@ -2,7 +2,6 @@ import Education from './Education';
 import WorkingExperience from './WorkingExperience';
 import Language from './Language';
 import Link from './Link';
-import IndexedObject from '../IndexedObject';
 import ArrayInput, { getArrayInput } from '../ArrayInput';
 import StringInput, { getStringInput } from '../StringInput';
 import CVTemplateLanguage from '../enums/CVTemplateLanguage';

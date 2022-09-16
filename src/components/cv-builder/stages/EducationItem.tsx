@@ -1,6 +1,5 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
 import Education from '@/models/CV/Education';
-import IndexedObject from '@/models/IndexedObject';
 import { removeEducation } from '@/store/cv-constructor';
 
 import classes from './ListItem.module.scss';
@@ -15,20 +14,19 @@ const removeIconStyle = {
 const EducationItem: React.FC<{ item: IndexedObject<Education> }> = ({
   item,
 }) => {
-  const { id, object: education } = item;
   const dispatch = useAppDispatch();
   const removeButtonClickHandler = () => {
-    dispatch(removeEducation(id));
+    dispatch(removeEducation(item.id));
   };
 
   return (
     <li className={classes.item}>
-      <span>{`${education.university}, ${education.city}, ${education.country}`}</span>
+      <span>{`${item.university}, ${item.city}, ${item.country}`}</span>
       <span>
-        {education.title} : {education.degree}
+        {item.title} : {item.degree}
       </span>
-      <span>{`${education.startYear} - ${
-        education.educationIsCurrent ? 'Досі' : education.endYear
+      <span>{`${item.startYear} - ${
+        item.educationIsCurrent ? 'Досі' : item.endYear
       }`}</span>
       <i
         className="fa-solid fa-xmark"

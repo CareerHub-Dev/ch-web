@@ -69,7 +69,7 @@ declare global {
   type AnyFn = (...args: any[]) => any;
   type Nullable<T> = T | null;
   type AuthDataConsistency = 'ok' | 'error';
-
+  type IndexedObject<T extends Object> = T & { id: string };
   interface WithVerificationComponentProps<Props> {
     authDataConsistency: AuthDataConsistency;
     props: Props;
