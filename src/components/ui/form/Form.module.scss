@@ -40,7 +40,6 @@ $lightOrange: #fbe8d2;
 
 .input {
   min-height: 1.6rem;
-  max-width: 16rem;
   max-height: 100%;
   margin-bottom: 12px;
   padding: 0.4rem 0.8rem;
@@ -83,7 +82,6 @@ $lightOrange: #fbe8d2;
 
 .select {
   min-height: 1.6rem;
-  max-width: 16rem;
   max-height: 100%;
   margin-bottom: 12px;
   padding: 0.4rem 0.8rem;
@@ -183,13 +181,30 @@ $lightOrange: #fbe8d2;
 
 .field {
   @include field-base;
-  max-width: 20rem;
-  min-width: 10rem;
-  width: auto;
 }
 
 .field-date {
   @include field-base;
+}
+
+.image-input {
+  @include field-base;
+  cursor: pointer;
+
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+
+      max-width: 0.9em;
+      max-height: 0.9em;
+      margin-right: 0;
+      margin-left: 0.5em;
+    }
+  }
 }
 
 .image-upload-wrapper {
@@ -200,9 +215,6 @@ $lightOrange: #fbe8d2;
 
   label {
     @include field-base;
-    max-width: 20rem;
-    min-width: 10rem;
-    width: auto;
   }
 
   img {
@@ -278,7 +290,6 @@ $lightOrange: #fbe8d2;
 }
 
 .tags-control {
-  width: 100%;
   align-items: center;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -306,7 +317,6 @@ $lightOrange: #fbe8d2;
   border-radius: 4px;
   display: flex;
   margin: 2px;
-  min-width: 0px;
   box-sizing: border-box;
   transition: color 150ms ease 0s;
 }
@@ -362,8 +372,6 @@ $lightOrange: #fbe8d2;
 }
 
 .tags-action {
-  max-width: 40px;
-  max-height: 40px;
   color: #ccc;
   display: flex;
   padding: 8px;
@@ -385,12 +393,10 @@ $lightOrange: #fbe8d2;
   background-color: #ccc;
   margin-bottom: 8px;
   margin-top: 8px;
-  width: 1px;
   box-sizing: border-box;
 }
 
 .tag-insert {
-  width: 100%;
   border: 1px solid #ccc;
   border-radius: 4px;
 }

@@ -31,7 +31,6 @@ const MainNavigation = () => {
 
   const logoutClickHandler = () => {
     auth.logout();
-    router.replace('/');
   };
 
   const loginClickHandler = () => {

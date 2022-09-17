@@ -72,6 +72,7 @@ const useInput = (options: {
 
   return {
     value: inputState.value,
+    isTouched: inputState.isTouched,
     isValid: valueIsValid,
     hasError,
     change: valueChangeHandler,

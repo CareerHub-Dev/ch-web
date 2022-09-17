@@ -1,4 +1,5 @@
 import UserRole from '@/models/enums/UserRole';
+import Router, { useRouter } from 'next/router';
 import React, { useState, useCallback } from 'react';
 
 type AuthContextData = {
@@ -39,6 +40,7 @@ export const AuthContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const router = useRouter();
   const storedAccessToken = retrieveItemFromLocalStorage('ch-accessToken');
   const storedAuthorityToken =
     retrieveItemFromLocalStorage('ch-authorityToken');
@@ -65,7 +67,8 @@ export const AuthContextProvider = ({
       localStorage.removeItem('ch-role');
     }
     fetch('/api/auth/signout', { method: 'POST' });
-  }, []);
+    router.replace('/');
+  }, [router]);
 
   const loginHandler = (
     accessToken: string,

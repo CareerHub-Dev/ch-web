@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import CompanyHeader from '@/components/companies/details/CompanyHeader';
 import CompanyBody from '@/components/companies/details/CompanyBody';
 import UserRole from '@/models/enums/UserRole';
-import withVerification from '@/lib/with-verification';
+import protecedServerSideProps from '@/lib/protected-server-side-props';
 
 const CompanyDetailsPage = () => {
   const router = useRouter();
@@ -66,7 +66,4 @@ const CompanyDetailsPage = () => {
 };
 export default CompanyDetailsPage;
 
-export const getServerSideProps = withVerification(
-  (_context: GetServerSidePropsContext) => ({ props: {} }),
-  [UserRole.Student]
-);
+export const getServerSideProps = protecedServerSideProps([UserRole.Student]);

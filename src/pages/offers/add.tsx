@@ -1,4 +1,4 @@
-import withVerification from '@/lib/with-verification';
+import protectedServerSideProps from '@/lib/protected-server-side-props';
 import UserRole from '@/models/enums/UserRole';
 import { GetServerSidePropsContext } from 'next/types';
 import JobOfferForm from '@/components/offers/add/JobOfferForm';
@@ -16,7 +16,4 @@ const AddJobOfferPage = () => {
 };
 export default AddJobOfferPage;
 
-export const getServerSideProps = withVerification(
-  (_context: GetServerSidePropsContext) => ({ props: {} }),
-  [UserRole.Company]
-);
+export const getServerSideProps = protectedServerSideProps([UserRole.Company]);

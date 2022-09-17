@@ -7,9 +7,8 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import GeneralInfo from '@/components/offers/details/GeneralInfo';
 import JobOfferTitle from '@/components/offers/details/JobOfferTitle';
 import JobOfferContent from '@/components/offers/details/JobOfferContent';
-import { GetServerSidePropsContext } from 'next';
 import UserRole from '@/models/enums/UserRole';
-import withVerification from '@/lib/with-verification';
+import protectedServerSideProps from '@/lib/protected-server-side-props';
 
 const JobOfferDetailPage = () => {
   const { accessToken } = useAuth();
@@ -77,7 +76,4 @@ const JobOfferDetailPage = () => {
 };
 export default JobOfferDetailPage;
 
-export const getServerSideProps = withVerification(
-  (_context: GetServerSidePropsContext) => ({ props: {} }),
-  [UserRole.Student]
-);
+export const getServerSideProps = protectedServerSideProps([UserRole.Student]);

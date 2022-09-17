@@ -6,16 +6,17 @@ import CVBoard from '@/components/my-profile/CVBoard';
 import { GetServerSidePropsContext } from 'next';
 import UserRole from '@/models/enums/UserRole';
 import SettingsPanel from '@/components/my-profile/SettingsPanel';
-import withVerification from '@/lib/with-verification';
+import { fetchStudent } from '@/lib/api/remote/student';
+import protectedServerSideProps from '@/lib/protected-server-side-props';
 
 import classes from '@/styles/my-dashboard.module.scss';
 
-const MyDashBoardPage = (_props: object) => {
+const StudentProfilePage = ({ studentData }: { studentData: any }) => {
   const { currentSection, changeSection } = useShallowRoutes({
     url: '/my-profile',
     defaultSection: 'overview',
   });
-  const studentQuery = useStudentQuery();
+  const studentQuery = useStudentQuery({ initialData: studentData });
 
   return (
     <div id="dashBoardGridContainer" className={classes.container}>
@@ -33,9 +34,16 @@ const MyDashBoardPage = (_props: object) => {
   );
 };
 
-export default MyDashBoardPage;
+export default StudentProfilePage;
 
-export const getServerSideProps = withVerification(
-  (_context: GetServerSidePropsContext) => ({ props: {} }),
-  [UserRole.Student]
+export const getServerSideProps = protectedServerSideProps(
+  [UserRole.Student],
+  async (_context: GetServerSidePropsContext) => {
+    const storedCookie = _context.req.cookies['ch-authority']!;
+    const { accountId, accessToken } = JSON.parse(storedCookie);
+    const studentData = await fetchStudent({ accountId, accessToken })();
+    return {
+      studentData,
+    };
+  }
 );

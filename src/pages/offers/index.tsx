@@ -10,7 +10,7 @@ import JobOffersList from '@/components/offers/feed/JobOffersList';
 import Head from 'next/head';
 import UserRole from '@/models/enums/UserRole';
 import { fetchJobOffers } from '@/lib/api/remote/jobOffers';
-import withVerification from '@/lib/with-verification';
+import protectedServerSideProps from '@/lib/protected-server-side-props';
 const defaultPageSize = 50;
 
 const JobOffersFeedPage = () => {
@@ -61,7 +61,4 @@ const JobOffersFeedPage = () => {
 };
 export default JobOffersFeedPage;
 
-export const getServerSideProps = withVerification(
-  (_context: GetServerSidePropsContext) => ({ props: {} }),
-  [UserRole.Student]
-);
+export const getServerSideProps = protectedServerSideProps([UserRole.Student]);
