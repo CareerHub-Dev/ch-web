@@ -11,6 +11,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 
+import 'react-image-crop/dist/ReactCrop.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/MarkdownEditor.scss';
 import '@/styles/globals.scss';

@@ -70,6 +70,7 @@ const useInput = (
   return {
     value: inputState.value,
     isValid: valueIsValid,
+    isTouched: inputState.isTouched,
     hasError,
     valueChangeHandler,
     inputBlurHandler,

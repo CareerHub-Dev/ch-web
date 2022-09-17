@@ -31,3 +31,5 @@ const useStudentQuery: (opts?: {
   return studentQuery;
 };
 export default useStudentQuery;
+
+export type UseStudentQueryResult = ReturnType<typeof useStudentQuery>;
