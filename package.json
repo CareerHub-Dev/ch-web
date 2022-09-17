@@ -21,6 +21,7 @@
     "next": "12.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-image-crop": "^10.0.7",
     "react-markdown": "^8.0.3",
     "react-redux": "^8.0.2",
     "react-toastify": "^9.0.8",
@@ -28,12 +29,12 @@
     "usehooks-ts": "^2.6.0"
   },
   "devDependencies": {
-    "@types/node": "18.7.18",
-    "@types/react": "18.0.20",
-    "@types/react-dom": "18.0.6",
     "@types/cookie": "^0.5.1",
     "@types/draft-js": "^0.11.9",
     "@types/jsonwebtoken": "^8.5.9",
+    "@types/node": "18.7.18",
+    "@types/react": "18.0.20",
+    "@types/react-dom": "18.0.6",
     "autoprefixer": "^10.4.11",
     "eslint": "8.23.1",
     "eslint-config-next": "12.3.0",
