@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
-import StringInput, { setStringInputValue } from '@/models/StringInput';
-import ArrayInput, {
+import { setStringInputValue } from '@/models/StringInput';
+import {
   disableArrayInput,
   getArrayInput,
   addArrayInputItem,

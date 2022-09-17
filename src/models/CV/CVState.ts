@@ -2,8 +2,8 @@ import Education from './Education';
 import WorkingExperience from './WorkingExperience';
 import Language from './Language';
 import Link from './Link';
-import ArrayInput, { getArrayInput } from '../ArrayInput';
-import StringInput, { getStringInput } from '../StringInput';
+import { getArrayInput } from '../ArrayInput';
+import { getStringInput } from '../StringInput';
 import CVTemplateLanguage from '../enums/CVTemplateLanguage';
 
 type CVState = {

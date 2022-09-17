@@ -67,6 +67,16 @@ type AnyFn = (...args: any[]) => any;
 type Nullable<T> = T | null;
 type AuthDataConsistency = 'ok' | 'error';
 type IndexedObject<T extends Object> = T & { id: string };
+type ArrayInput<T> = {
+  value: Array<T>;
+  isValid: boolean;
+  isTouched: boolean;
+};
+type StringInput = {
+  value: string;
+  isValid: boolean;
+  isTouched: boolean;
+};
 interface WithVerificationComponentProps<Props> {
   authDataConsistency: AuthDataConsistency;
   props: Props;

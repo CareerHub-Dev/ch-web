@@ -1,11 +1,3 @@
-type ArrayInput<T> = {
-  value: Array<T>;
-  isValid: boolean;
-  isTouched: boolean;
-};
-
-export default ArrayInput;
-
 export const getArrayInput = <T>(
   isValid: boolean = false,
   isTouched: boolean = false

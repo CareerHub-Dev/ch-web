@@ -1,11 +1,3 @@
-type StringInput = {
-  value: string;
-  isValid: boolean;
-  isTouched: boolean;
-};
-
-export default StringInput;
-
 export const getStringInput = (
   value: string = '',
   isValid: boolean = false,
