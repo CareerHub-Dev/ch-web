@@ -6,21 +6,24 @@ Before you run the projects you may define these Environment Variables:
 * NODE_ENV
 
 ##### Note: NextJS has a built-in support for this, you just need to create a file named `.env.local` in project's root directory
-
+#### Before you start make sure you have `pnpm` installed. You can also use `make` to build the project, however it is optional
 To run dev server:
 
 ```bash
 make dev
+or
+pnpm i;pnpm dev
 ```
 
 To build and run prod server:
 ```bash
 make prod
+or
+pnpm i;pnpm build;pnpm start
 ```
 
 Open [http://127.0.0.1:3000/](http://127.0.0.1:3000/) with a browser to see the result.
 
-Note: this project uses pnpm
 
 ## Learn More
 
