@@ -11,14 +11,18 @@ To run dev server:
 
 ```bash
 make dev
+```
 or
+```bash
 pnpm i;pnpm dev
 ```
 
 To build and run prod server:
 ```bash
 make prod
+```
 or
+```bash
 pnpm i;pnpm build;pnpm start
 ```
 
