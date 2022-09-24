@@ -1,3 +1,5 @@
+@import '@/styles/variables.scss';
+
 @mixin btn($backgroundColor) {
   display: flex;
   flex-direction: row;
@@ -11,12 +13,12 @@
   height: 100%;
   border-radius: 14px;
   background: $backgroundColor;
-  border: 2px solid #000e2e;
+  border: 2px solid $darkerBlue;
   transition: all ease-in-out 250ms;
 }
 
 @mixin btnText($textColor) {
-  font-family: 'Noto Sans';
+  font-family: $fontFamily;
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
@@ -66,21 +68,21 @@
 }
 
 .register {
-  @include btn(#000e2e);
+  @include btn($darkerBlue);
   @include btnText(#fff);
 }
 
 .register:hover {
-  @include btnHover(#fff, #000e2e);
+  @include btnHover(#fff, $darkerBlue);
 }
 
 .login {
-  @include btn(#ffffff);
-  @include btnText(#000e2e);
+  @include btn(#fff);
+  @include btnText($darkerBlue);
 }
 
 .login:hover {
-  @include btnHover(#000e2e, #fff);
+  @include btnHover($darkerBlue, #fff);
 }
 
 .content {

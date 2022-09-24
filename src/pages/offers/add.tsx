@@ -7,8 +7,8 @@ import classes from '@/styles/add-offer.module.scss';
 
 const AddJobOfferPage = () => {
   return (
-    <div id="feedWraper" className={classes.wrapper}>
-      <div id="feedBodyContent" className={classes.body}>
+    <div className={classes.wrapper}>
+      <div className={classes.body}>
         <JobOfferForm />
       </div>
     </div>

@@ -3,7 +3,11 @@ import UserRole from '@/models/enums/UserRole';
 import { GetServerSidePropsContext } from 'next/types';
 
 const CompanyDashboard = () => {
-  return <div>Company Dashboard</div>;
+  return (
+    <div className="g__center p-5 m-5 font-bold">
+      Company Dashboard: In progress (components/company-dashboard/index.tsx)
+    </div>
+  );
 };
 export default CompanyDashboard;
 

@@ -22,14 +22,13 @@ const SearchPanel = ({ onChange }: { onChange: (value: string) => any }) => {
           <label htmlFor="companyName">Назва</label>
           <input
             id="companyName"
-            type="text"
+            type="search"
             ref={inputRef}
             placeholder={'Уведіть назву компанії'}
           />
         </div>
       </div>
       <LinkButton onClick={submitHandler}>Пошук</LinkButton>
-      <LinkButton onClick={resetHandler}>Очистити</LinkButton>
     </form>
   );
 };

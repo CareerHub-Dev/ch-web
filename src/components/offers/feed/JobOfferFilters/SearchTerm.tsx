@@ -15,7 +15,7 @@ const SearchTerm = () => {
       </label>
       <input
         id="title"
-        type="text"
+        type="search"
         value={searchTerm}
         onChange={searchTermChangeHandler}
       />

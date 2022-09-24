@@ -1,3 +1,5 @@
+@import './font-faces.scss';
+
 #body {
   max-width: 100%;
 }
@@ -28,21 +30,6 @@
 hr {
   background-color: #aaa;
   height: 2px;
-}
-
-@font-face {
-  font-family: Rancho;
-  src: url('~@/assets/fonts/Rancho-Regular.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: Roboto;
-  src: url('~@/assets/fonts/Roboto-Regular.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Noto Sans';
-  src: url('~@/assets/fonts/NotoSans-Regular.ttf') format('truetype');
 }
 
 @tailwind base;

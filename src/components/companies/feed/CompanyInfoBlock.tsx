@@ -1,4 +1,4 @@
-import classes from './CompanyCard.module.scss';
+import classes from './CompanyInfoBlock.module.scss';
 
 type Props = {
   icon: React.FC;
@@ -9,10 +9,8 @@ const CompanyInfoBlock = ({ icon, value }: Props) => {
   const Icon = icon;
   return (
     <p className={classes.info}>
-      <span>
-        <Icon />
-      </span>
-      <span>{value}</span>
+      <Icon />
+      {value}
     </p>
   );
 };
