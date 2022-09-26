@@ -15,8 +15,6 @@ export const fetchJobOffers =
   }) =>
   async () => {
     let url = `${baseURL}JobOffers?PageNumber=${pageNumber}&PageSize=${pageSize}`;
-    console.log(filter);
-
     if (filter) {
       if (filter.searchTerm) {
         url += `&SearchTerm=${filter.searchTerm}`;

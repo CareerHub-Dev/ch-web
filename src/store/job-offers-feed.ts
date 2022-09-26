@@ -11,6 +11,7 @@ type JobOffersFeedState = {
   experienceLevel: Nullable<ExperienceLevel>;
   jobPositionId: Nullable<string>;
   tags: Tag[];
+  tagsSearch: string;
   appliedValues: Nullable<JobOfferFilter>;
   filterApplied: boolean;
 };
@@ -22,6 +23,7 @@ const initialJobOffersFeedState: JobOffersFeedState = {
   experienceLevel: null,
   jobPositionId: null,
   tags: [],
+  tagsSearch: '',
   appliedValues: null,
   filterApplied: false,
 };
@@ -66,6 +68,9 @@ const jobOffersFeedSlice = createSlice({
     clearTags: (state) => {
       state.tags = [];
     },
+    setTagsSearch: (state, action: PayloadAction<string>) => {
+      state.tagsSearch = action.payload;
+    },
     setFilterApplied: (state, action: PayloadAction<boolean>) => {
       const val = action.payload;
       if (val) {
@@ -97,6 +102,8 @@ export const selectExperienceLevel = (state: RootState) =>
 export const selectJobPositionId = (state: RootState) =>
   state.jobOffersFeed.jobPositionId;
 export const selectTags = (state: RootState) => state.jobOffersFeed.tags;
+export const selectTagsSearch = (state: RootState) =>
+  state.jobOffersFeed.tagsSearch;
 export const selectFilterApplied = (state: RootState) =>
   state.jobOffersFeed.filterApplied;
 export const selectFilterOptions: (state: RootState) => {
@@ -119,6 +126,7 @@ export const {
   addTag,
   removeTag,
   clearTags,
+  setTagsSearch,
   setFilterApplied,
   reset,
 } = jobOffersFeedSlice.actions;

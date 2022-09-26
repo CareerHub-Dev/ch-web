@@ -3,17 +3,15 @@ import useAppDispatch from '@/hooks/useAppDispatch';
 import {
   reset,
   selectFilterApplied,
-  selectTags,
   setFilterApplied,
 } from '@/store/job-offers-feed';
 import { useSelector } from 'react-redux';
-import JobOfferTags from '../../common/JobOfferTags';
 import ExperienceLevelSelect from './ExperienceLevelSelect';
 import JobTypeSelect from './JobTypeSelect';
 import SearchTerm from './SearchTerm';
+import TagsControls from './TagsControls';
 
 import classes from './JobOffersFilters.module.scss';
-import TagsControls from './TagsControls';
 
 const JobOffersFilters = () => {
   const dispatch = useAppDispatch();

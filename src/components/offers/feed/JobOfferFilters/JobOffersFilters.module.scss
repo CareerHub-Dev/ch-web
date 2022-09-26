@@ -39,6 +39,10 @@
   margin-top: 24px;
 }
 
+.overlay {
+  width: inherit;
+}
+
 @media (max-width: 767px) {
   .filters {
     display: none;
