@@ -53,6 +53,7 @@ const TagsControls = () => {
       <label htmlFor="tags" className="g__text-bold">
         {`Теги`}
       </label>
+      <SelectedTags />
       <div className={cn(classes.controls, 'relative')}>
         <input
           id="tags"
@@ -71,7 +72,6 @@ const TagsControls = () => {
           />
         </Overlay>
       </div>
-      <SelectedTags />
     </>
   );
 };
