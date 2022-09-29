@@ -15,15 +15,26 @@ import 'react-image-crop/dist/ReactCrop.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/MarkdownEditor.scss';
 import '@/styles/globals.scss';
+import type { ReactElement, ReactNode } from 'react';
+import type { NextPage } from 'next';
+
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout<P> = AppProps<P> & {
+  Component: NextPageWithLayout;
+};
 
 const CommonLayout = dynamic(() => import('@/components/layout/CommonLayout'), {
   ssr: false,
 });
 
-function MyApp({ Component, pageProps }: AppProps<any>) {
+function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
   const [queryClient] = useState(() => new QueryClient());
+  const getLayout = Component.getLayout ?? ((page) => page);
 
-  return (
+  return getLayout(
     <AuthContextProvider>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
