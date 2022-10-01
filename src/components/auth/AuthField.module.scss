@@ -1,64 +1,83 @@
-$baseBorder: #3fa2ff;
-$baseBg: #f5f8fc;
-$invalidBorder: rgb(255, 41, 112);
-$invalidBorderFocused: rgb(255, 128, 43);
+@import '@/styles/variables.scss';
 
 .field {
   display: flex;
   transition: all ease-in-out 200ms;
-  border: 1.75px solid rgb(66, 66, 66);
+  border: 1.75px solid $borderBase;
   border-radius: 10px;
   padding: 4px;
   align-items: center;
-  background: $baseBg;
+  background: $inputBaseBg;
   justify-content: space-between;
 }
 
 .field:focus-within {
   transition: all ease-in-out 200ms;
-  border: 1.75px solid $baseBorder;
+  border: 1.75px solid $borderFocus;
+}
+
+.select {
+  font-family: 'Noto Sans';
+  display: flex;
+  transition: all ease-in-out 200ms;
+  border: 1.75px solid $borderBase;
+  border-radius: 10px;
+  padding: 4px;
+  background: $inputBaseBg;
+  margin: 2px 0 2px 0;
+  text-align: center;
+  outline: none;
 }
 
 .input {
-  background: $baseBg;
+  background: $inputBaseBg;
   font-family: 'Noto Sans';
 }
+
+.select:focus {
+  transition: all ease-in-out 200ms;
+  border: 1.75px solid $borderFocus;
+}
+
 .input:focus {
-  background: $baseBg;
+  background: $inputBaseBg;
   outline: none;
 }
 
 .invalid {
-  border: 1.75px solid $invalidBorder;
+  border: 1.75px solid $borderInvalidBase;
 }
 
 .invalid:focus-within {
   transition: all ease-in-out 200ms;
-  border: 1.75px solid $invalidBorderFocused;
+  border: 1.75px solid $borderInvalidFocus;
 }
 
 .input:-webkit-autofill,
 .input:-webkit-autofill:hover,
 .input:-webkit-autofill:focus,
 .input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #f5f8fc inset !important;
-  box-shadow: 0 0 0 30px #f5f8fc inset !important;
+  -webkit-box-shadow: 0 0 0 30px $inputBaseBg inset !important;
+  box-shadow: 0 0 0 30px $inputBaseBg inset !important;
 }
+
 .label {
   margin: 2px 10px 2px 5px;
-  color: #000e2e;
+  color: $darkerBlue;
   font-size: 24px;
 }
+
 .field-eye {
   margin: 2px 5px 2px 10px;
-  color: #000e2e;
+  color: $darkerBlue;
   font-size: 24px;
 }
-//BUG: [CEH-273] When eye is hidden, email field is cut off
+
 .field-eye.hidden {
   display: inline;
   visibility: hidden;
 }
+
 .validation.hidden {
   display: none;
   visibility: hidden;
@@ -69,6 +88,7 @@ $invalidBorderFocused: rgb(255, 128, 43);
     max-width: 90vw;
     width: 100%;
   }
+
   .input {
     max-width: 90vw;
     width: 100%;
@@ -79,8 +99,9 @@ $invalidBorderFocused: rgb(255, 128, 43);
   display: flex;
   flex-direction: column;
 }
+
 .validation {
   display: flex;
   justify-content: center;
-  color: rgb(255, 41, 112);
+  color: $primaryRed;
 }
