@@ -28,10 +28,8 @@ const AuthPage: NextPageWithLayout<{ form: string }> = ({ form }) => {
       <ForgotPasswordForm />
     );
   return (
-    <div className={classes.root}>
-      <div className={classes.form}>
-        <FormWrapper>{displayedForm}</FormWrapper>
-      </div>
+    <div className={classes.form}>
+      <FormWrapper>{displayedForm}</FormWrapper>
     </div>
   );
 };
@@ -39,9 +37,9 @@ const AuthPage: NextPageWithLayout<{ form: string }> = ({ form }) => {
 AuthPage.getLayout = (page) => {
   return (
     <>
-      <main>{page}</main>
+      <main className="container flex items-center content-center">{page}</main>
       <Background />
-      <footer className="container block">Copyright &copy; 2022</footer>
+      <footer className="container block">&copy; 2022 CareerHub</footer>
     </>
   );
 };
