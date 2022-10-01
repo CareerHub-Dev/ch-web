@@ -16,9 +16,27 @@
   border: 1.75px solid $borderFocus;
 }
 
+.select {
+  font-family: 'Noto Sans';
+  display: flex;
+  transition: all ease-in-out 200ms;
+  border: 1.75px solid $borderBase;
+  border-radius: 10px;
+  padding: 4px;
+  background: $inputBaseBg;
+  margin: 2px 0 2px 0;
+  text-align: center;
+  outline: none;
+}
+
 .input {
   background: $inputBaseBg;
   font-family: 'Noto Sans';
+}
+
+.select:focus {
+  transition: all ease-in-out 200ms;
+  border: 1.75px solid $borderFocus;
 }
 
 .input:focus {
