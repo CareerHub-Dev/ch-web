@@ -1,6 +1,5 @@
 import { FormEventHandler, useRef, useState } from 'react';
 import useAuth from '@/hooks/useAuth';
-import { useRouter } from 'next/router';
 import useInput from '@/hooks/useInput';
 import { getEmailValidity, getPasswordValidity } from '@/lib/util';
 import { sendLocalGatewayAuthRequest } from '@/lib/api/local/auth';
@@ -18,7 +17,6 @@ import classes from './forms.module.scss';
 
 const LoginForm = () => {
   const auth = useAuth();
-  const router = useRouter();
   const toastRef = useRef<any>(null);
   const [isProcessingRequest, setIsProcessingRequest] = useState(false);
   const selectedRoleRef = useRef<HTMLSelectElement>(null);
@@ -46,7 +44,7 @@ const LoginForm = () => {
           sessionData.accessToken,
           sessionData.authorityToken,
           sessionData.accountId,
-          role,
+          role
         );
         break;
       default:
@@ -72,7 +70,7 @@ const LoginForm = () => {
       passwordInput.value,
       true,
       selectedRoleRef.current!.value as UserRole,
-      requestCallback,
+      requestCallback
     );
   };
 
