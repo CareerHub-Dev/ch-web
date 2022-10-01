@@ -78,7 +78,7 @@ const LoginForm = () => {
     <form onSubmit={formSubmissionHandler} id="loginForm">
       {isProcessingRequest && <ModalLoading />}
       <div className={classes.fields} id="authFieldsDiv">
-        <RoleSelect id="role" ref={selectedRoleRef} />
+        <RoleSelect id="role" refObject={selectedRoleRef} />
         <hr />
         <AuthField
           ref={emailInputRef}

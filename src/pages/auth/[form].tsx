@@ -1,15 +1,17 @@
+import type { NextPageWithLayout } from '../_app';
 import { useRouter } from 'next/router';
 import useAuth from '@/hooks/useAuth';
 import { GetStaticPropsContext } from 'next';
-import FormWrapper from '@/components/auth/FormWrapper';
 import ForgotPasswordForm from '@/components/auth/forms/ForgotPasswordForm';
 import RegisterForm from '@/components/auth/forms/RegisterForm';
 import LoginForm from '@/components/auth/forms/LoginForm';
 import UserRole from '@/models/enums/UserRole';
+import FormWrapper from '@/components/auth/FormWrapper';
+import Background from '@/components/layout/Background';
 
 import classes from '@/styles/auth.module.scss';
 
-const AuthPage = ({ form }: { form: string }) => {
+const AuthPage: NextPageWithLayout<{ form: string }> = ({ form }) => {
   const router = useRouter();
   const authStatus = useAuth();
   if (authStatus.isLoggedIn) {
@@ -31,6 +33,16 @@ const AuthPage = ({ form }: { form: string }) => {
         <FormWrapper>{displayedForm}</FormWrapper>
       </div>
     </div>
+  );
+};
+
+AuthPage.getLayout = (page) => {
+  return (
+    <>
+      <main>{page}</main>
+      <Background />
+      <footer className="container block">Copyright &copy; 2022</footer>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app';
+import type { ReactElement, ReactNode } from 'react';
+import type { NextPage } from 'next';
 import store from '@/store/index';
-import dynamic from 'next/dynamic';
-import { ToastContainer } from 'react-toastify';
 import { Provider } from 'react-redux';
 import { AuthContextProvider } from '@/store/auth-context';
 import { useState } from 'react';
@@ -10,13 +10,12 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import ToastContainer from '@/components/layout/ToastContainer';
 
 import 'react-image-crop/dist/ReactCrop.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/MarkdownEditor.scss';
 import '@/styles/globals.scss';
-import type { ReactElement, ReactNode } from 'react';
-import type { NextPage } from 'next';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -25,10 +24,6 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 type AppPropsWithLayout<P> = AppProps<P> & {
   Component: NextPageWithLayout;
 };
-
-const CommonLayout = dynamic(() => import('@/components/layout/CommonLayout'), {
-  ssr: false,
-});
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
   const [queryClient] = useState(() => new QueryClient());
@@ -39,21 +34,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
-            <CommonLayout>
-              <Component {...pageProps} />
-              <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                style={{ zIndex: 1000 }}
-              />
-            </CommonLayout>
+            <Component {...pageProps} />
+            <ToastContainer />
           </Hydrate>
         </QueryClientProvider>
       </Provider>

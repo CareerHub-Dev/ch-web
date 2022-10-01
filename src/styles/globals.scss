@@ -1,4 +1,21 @@
 @import './font-faces.scss';
+@import './variables.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $fontFamily;
+  color: $primaryBlack;
+}
+
+hr {
+  background-color: $primaryGrey;
+  height: 1px;
+}
 
 #body {
   max-width: 100%;
@@ -25,11 +42,6 @@
 
 .g__text-bold {
   font-weight: bold;
-}
-
-hr {
-  background-color: #aaa;
-  height: 1px;
 }
 
 @tailwind base;
