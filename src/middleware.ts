@@ -16,7 +16,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.rewrite(url);
     } catch (err) {
       url.pathname = '/auth/login';
-      return NextResponse.rewrite(url);
+      return NextResponse.redirect(url);
     }
   }
   return NextResponse.next();
