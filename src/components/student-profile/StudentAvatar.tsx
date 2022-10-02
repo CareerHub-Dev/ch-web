@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from 'next/future/image';
 
 const StudentAvatar = () => {
   return (
@@ -7,7 +7,7 @@ const StudentAvatar = () => {
       alt="Avatar"
       height="128"
       width="128"
-      className="rounded-full w-[128px] h-[128px] shadow-md"
+      className="rounded-full h-[128px] w-[128px] shadow-md"
     />
   );
 };

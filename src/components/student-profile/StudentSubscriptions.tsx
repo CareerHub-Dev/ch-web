@@ -1,4 +1,4 @@
-const StudentSubscriptions = () => {
+const StudentSubscriptions = ({ accountId }: { accountId: string }) => {
   return (
     <div className="bg-primaryBlue text-white p-4 rounded-xl">
       <h2 className="mb-4">Підписки</h2>
