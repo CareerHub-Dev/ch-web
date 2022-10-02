@@ -1,12 +1,14 @@
+import type { NextPageWithLayout } from './_app';
 import useAuth from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
 import NureLogo from '@/assets/logos/NureLogo.svg';
 import CareerLogo from '@/assets/logos/CareerLogo.svg';
 import Head from 'next/head';
+import Background from '@/components/layout/Background';
 
 import classes from '@/styles/index.module.scss';
 
-const LandingPage = () => {
+const LandingPage: NextPageWithLayout = () => {
   const router = useRouter();
   const auth = useAuth();
 
@@ -17,13 +19,6 @@ const LandingPage = () => {
 
   return (
     <>
-      <Head>
-        <title>{'CareerHub 🇺🇦'}</title>
-        <meta
-          name="description"
-          content={`CareerHub - це сервіс пошуку вакансій для студентів ХНУРЕ від студентів ХНУРЕ. Розроблено при підтримці центра 'Кар'єра'.`}
-        />
-      </Head>
       <div className={classes.root}>
         <div className={classes['nure-logo']} id="partnerLogos">
           <NureLogo id="nureLogo" />
@@ -52,6 +47,22 @@ const LandingPage = () => {
           )}
         </div>
       </div>
+    </>
+  );
+};
+
+LandingPage.getLayout = (page) => {
+  return (
+    <>
+      <Head>
+        <title>{'CareerHub 🇺🇦'}</title>
+        <meta
+          name="description"
+          content={`CareerHub - це сервіс пошуку вакансій для студентів ХНУРЕ від студентів ХНУРЕ. Розроблено при підтримці центра 'Кар'єра'.`}
+        />
+      </Head>
+      <main>{page}</main>
+      <Background />
     </>
   );
 };

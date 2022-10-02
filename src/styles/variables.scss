@@ -1,18 +1,21 @@
-$lightBlue: #dff5ff;
-$primaryBlue: #0040d2;
-$primaryRed: #ff2970;
-$darkBlueAccent: #002477;
-$darkerBlue: #000e2e;
 $darkerBlueTransparent: #000e2e96;
+$darkerBlue: #000e2e;
+$darkBlueAccent: #002477;
+$primaryBlue: #0040d2;
+$lightBlueAccent: #3fa2ff;
+$lightBlue: #dff5ff;
+$primaryRed: #ff2970;
+$primaryOrange: #ff802b;
 
 $primaryBlack: #111;
-$primaryWhite: #eff5ff;
+$darkerGrey: #424242;
 $primaryGrey: #f5f8fc;
+$primaryWhite: #eff5ff;
+
+$borderBase: $darkerGrey;
+$borderFocus: $lightBlueAccent;
+$inputBaseBg: $primaryGrey;
+$borderInvalidBase: $primaryRed;
+$borderInvalidFocus: $primaryOrange;
 
 $fontFamily: 'Noto Sans', 'Open Sans', sans-serif;
-
-$borderBase: #424242;
-$borderFocus: #3fa2ff;
-$inputBaseBg: #f5f8fc;
-$borderInvalidBase: #ff2970;
-$borderInvalidFocus: #ff802b;

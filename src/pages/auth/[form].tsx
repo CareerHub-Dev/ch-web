@@ -8,6 +8,7 @@ import LoginForm from '@/components/auth/forms/LoginForm';
 import UserRole from '@/models/enums/UserRole';
 import FormWrapper from '@/components/auth/FormWrapper';
 import Background from '@/components/layout/Background';
+import Footer from '@/components/layout/Footer';
 
 import classes from '@/styles/auth.module.scss';
 
@@ -37,9 +38,9 @@ const AuthPage: NextPageWithLayout<{ form: string }> = ({ form }) => {
 AuthPage.getLayout = (page) => {
   return (
     <>
-      <main className="container flex items-center content-center">{page}</main>
+      <main className="flex justify-center my-32">{page}</main>
+      <Footer />
       <Background />
-      <footer className="container block">&copy; 2022 CareerHub</footer>
     </>
   );
 };
