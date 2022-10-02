@@ -13,8 +13,6 @@ export async function middleware(req: NextRequest) {
         'my-profile',
         `student-profile/${parsedAuthCookie['accountId']}`
       );
-      console.log(url.pathname);
-
       return NextResponse.rewrite(url);
     } catch (err) {
       url.pathname = '/auth/login';
