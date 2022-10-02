@@ -9,7 +9,8 @@ import CVActions from './CVActions';
 import classes from './CVBoard.module.scss';
 
 const CVBoard = () => {
-  const { accessToken, accountId } = useAuth();
+  const { accessToken, sessionData } = useAuth();
+  const accountId = sessionData.accountId;
   const [actionModalIsOpen, setActionModalIsOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState('');
   const cvsQuery = useQuery(

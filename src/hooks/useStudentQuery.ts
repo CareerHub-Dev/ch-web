@@ -13,7 +13,8 @@ const useStudentQuery: (opts?: {
 }) => UseQueryResult<any, any> = (options) => {
   const onSuccess = options?.onSuccess;
   const onError = options?.onError || defaultErrorHandler;
-  const { accessToken, accountId } = useAuth();
+  const { accessToken, sessionData } = useAuth();
+  const accountId = sessionData?.accountId;
 
   const studentQuery = useQuery(
     ['student', accountId],

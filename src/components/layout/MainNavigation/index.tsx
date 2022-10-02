@@ -20,8 +20,8 @@ const MainNavigation = () => {
   const { width } = useWindowSize();
 
   const isLoggedIn = auth.isLoggedIn;
-  const isStudent = isLoggedIn && auth.role === UserRole.Student;
-  const isCompany = isLoggedIn && auth.role === UserRole.Company;
+  const isStudent = isLoggedIn && auth.sessionData.role === UserRole.Student;
+  const isCompany = isLoggedIn && auth.sessionData.role === UserRole.Company;
   const isPhoneScreen = width < 600;
   const profileLink = isStudent ? '/my-profile' : '/my-dashboard';
 

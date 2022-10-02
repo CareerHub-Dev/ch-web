@@ -27,30 +27,29 @@ const RegisterForm = () => {
   const formIsValid = emailInput.isValid && passwordInput.isValid;
 
   const requestCallback: CallbackFn = (response) => {
-    switch (response.status) {
-      case RequestStatus.ResponseRecieved:
-        setIsProcessingRequest(false);
-        break;
-      case RequestStatus.Error:
-        const toastContext = new ToastContext();
-        toastContext.setStrategy(new ErrorToastStrategy());
-        toastContext.notify(response.message, toastRef.current);
-        break;
-      case RequestStatus.Success:
-        const { sessionData, role } = response.data;
-        console.log(response.data);
-
-        auth.login(
-          sessionData.accessToken,
-          sessionData.authorityToken,
-          sessionData.accountId,
-          role,
-        );
-        router.push('/offers');
-        break;
-      default:
-        break;
-    }
+    // switch (response.status) {
+    //   case RequestStatus.ResponseRecieved:
+    //     setIsProcessingRequest(false);
+    //     break;
+    //   case RequestStatus.Error:
+    //     const toastContext = new ToastContext();
+    //     toastContext.setStrategy(new ErrorToastStrategy());
+    //     toastContext.notify(response.message, toastRef.current);
+    //     break;
+    //   case RequestStatus.Success:
+    //     const { sessionData, role } = response.data;
+    //     console.log(response.data);
+    //     auth.login(
+    //       sessionData.accessToken,
+    //       sessionData.authorityToken,
+    //       sessionData.accountId,
+    //       role,
+    //     );
+    //     router.push('/offers');
+    //     break;
+    //   default:
+    //     break;
+    // }
   };
 
   const formSubmissionHandler: FormEventHandler<HTMLFormElement> = (event) => {
@@ -71,7 +70,7 @@ const RegisterForm = () => {
       passwordInput.value,
       false,
       UserRole.Student, // TODO: выпилить этот костыль
-      requestCallback,
+      requestCallback
     );
   };
 

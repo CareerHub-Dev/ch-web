@@ -20,7 +20,7 @@ import ModalLoading from '../ui/Modal/ModalLoading';
 import classes from './SaveModal.module.scss';
 
 const SaveModal = () => {
-  const { accessToken, accountId } = useAuth();
+  const { accessToken, sessionData } = useAuth();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const cvState = useSelector(selectEntireCVState);
@@ -49,7 +49,7 @@ const SaveModal = () => {
     }
     const body = {
       ...cvState,
-      studentId: accountId,
+      studentId: sessionData.accountId,
       title: titleInput.value,
       Title: titleInput.value,
       TemplateLanguage: cvState.templateLanguage,

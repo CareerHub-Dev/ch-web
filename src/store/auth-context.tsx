@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
 
 type AuthContextData = {
+  accessToken: string | null;
   sessionData: any;
   isLoggedIn: boolean;
   login: (data: any) => void;
@@ -10,6 +11,7 @@ type AuthContextData = {
 };
 
 const AuthContext = React.createContext<AuthContextData>({
+  accessToken: null,
   sessionData: null,
   isLoggedIn: false,
   login: (_) => {},
@@ -24,6 +26,7 @@ export const AuthContextProvider = ({
   const router = useRouter();
   const [cookies, setCookie, removeCookie] = useCookies(['ch-client']);
   const clientCookie = cookies['ch-client'];
+  const accessToken = clientCookie?.accessToken || null;
 
   const logoutHandler = () => {
     removeCookie('ch-client');
@@ -38,6 +41,7 @@ export const AuthContextProvider = ({
   };
 
   const contextValue = {
+    accessToken: accessToken,
     sessionData: clientCookie,
     isLoggedIn: !!clientCookie,
     login: loginHandler,
