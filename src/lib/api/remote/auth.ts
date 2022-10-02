@@ -1,52 +1,8 @@
 import RequestStatus from '@/models/enums/RequestStatus';
-import UserRole from '@/models/enums/UserRole';
-import { baseURL, retrieveErrorMessage } from '.';
-
-export const sendAuthRequest = (
-  email: string,
-  password: string,
-  role: UserRole,
-  isLogin: boolean,
-  callback: any
-) => {
-  let url;
-  if (isLogin) {
-    url = `${baseURL}Accounts/authenticate-${role}`;
-  } else {
-    url = `${baseURL}Accounts/register/student`;
-  }
-  const body = JSON.stringify({
-    email,
-    password,
-  });
-  console.log(body);
-
-  fetch(url, {
-    method: 'POST',
-    body,
-    headers: {
-      Accept: 'text/plain',
-      'Content-Type': 'application/json-patch+json',
-    },
-    credentials: 'include',
-  })
-    .then(async (res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      const data = await res.json();
-      throw new Error(retrieveErrorMessage(data));
-    })
-    .then((data) => {
-      callback({ status: RequestStatus.Success, data });
-    })
-    .catch((err) => {
-      callback({ status: RequestStatus.Error, message: err.message });
-    });
-};
+import { backendApiBaseUrl, retrieveErrorMessage } from '..';
 
 export const sendForgotPasswordRequest = (email: string, callback: any) => {
-  fetch(`${baseURL}Accounts/forgot-password`, {
+  fetch(`${backendApiBaseUrl}Accounts/forgot-password`, {
     method: 'POST',
     body: JSON.stringify({ email }),
     headers: {
@@ -73,7 +29,7 @@ export const sendResetPasswordRequest = (
   token: string,
   callback: any
 ) => {
-  fetch(`${baseURL}Accounts/reset-password`, {
+  fetch(`${backendApiBaseUrl}Accounts/reset-password`, {
     method: 'POST',
     body: JSON.stringify({ password, token, confirmPassword: password }),
     headers: {
@@ -99,7 +55,7 @@ export const sendResetPasswordRequest = (
 };
 
 export const sendRefreshTokenRequest = (callback: any) => {
-  const url = `${baseURL}Accounts/refresh-token-web`;
+  const url = `${backendApiBaseUrl}Accounts/refresh-token-web`;
   fetch(url, {
     method: 'POST',
     body: JSON.stringify({

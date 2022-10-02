@@ -1,10 +1,10 @@
-import { baseURL, retrieveErrorMessage } from '.';
+import { backendApiBaseUrl, retrieveErrorMessage } from '..';
 
 export const fetchStudent =
   ({ accountId, accessToken }: { accountId: string; accessToken: string }) =>
   async () => {
     try {
-      const url = `${baseURL}Student/Students/${accountId}`;
+      const url = `${backendApiBaseUrl}Student/Students/${accountId}`;
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -41,7 +41,7 @@ export const updateStudentGeneralInfo =
   }) =>
   async () => {
     try {
-      const url = `${baseURL}Students/${accountId}`;
+      const url = `${backendApiBaseUrl}Students/${accountId}`;
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
@@ -64,7 +64,7 @@ export const fetchStudentCvs =
   ({ accountId, accessToken }: { accountId: string; accessToken: string }) =>
   async () => {
     try {
-      const url = `${baseURL}Students/${accountId}/CVs`;
+      const url = `${backendApiBaseUrl}Students/${accountId}/CVs`;
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -89,7 +89,7 @@ export const getStudentSubscriptionsAmount =
   (accessToken: string | null) =>
   async () => {
     try {
-      const url = `${baseURL}Student/Students/${accountId}/amount-${subscriptionType}-subscriptions`;
+      const url = `${backendApiBaseUrl}Student/Students/${accountId}/amount-${subscriptionType}-subscriptions`;
       const response = await fetch(url, {
         method: 'GET',
         headers: {

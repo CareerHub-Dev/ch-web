@@ -1,4 +1,4 @@
-import { baseURL, retrieveErrorMessage } from '.';
+import { backendApiBaseUrl, retrieveErrorMessage } from '..';
 
 export const authenticate = async ({
   email,
@@ -7,7 +7,7 @@ export const authenticate = async ({
   email: string;
   password: string;
 }) => {
-  const response = await fetch(`${baseURL}Account/authenticate`, {
+  const response = await fetch(`${backendApiBaseUrl}Account/authenticate`, {
     method: 'POST',
     body: JSON.stringify({ email, password }),
     headers: {
@@ -23,7 +23,7 @@ export const authenticate = async ({
 };
 
 export const refreshToken = async (refreshToken: string) => {
-  const response = await fetch(`${baseURL}Account/refresh-token`, {
+  const response = await fetch(`${backendApiBaseUrl}Account/refresh-token`, {
     method: 'POST',
     body: JSON.stringify({ token: refreshToken }),
     headers: {

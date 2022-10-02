@@ -1,5 +1,5 @@
 import JobOfferForm from '@/components/offers/add/JobOfferForm';
-import { baseURL, retrieveErrorMessage } from '.';
+import { backendApiBaseUrl, retrieveErrorMessage } from '..';
 
 export const fetchJobOffers =
   ({
@@ -14,7 +14,7 @@ export const fetchJobOffers =
     filter?: JobOfferFilter;
   }) =>
   async () => {
-    let url = `${baseURL}JobOffers?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+    let url = `${backendApiBaseUrl}JobOffers?PageNumber=${pageNumber}&PageSize=${pageSize}`;
     if (filter) {
       if (filter.searchTerm) {
         url += `&SearchTerm=${filter.searchTerm}`;
@@ -59,14 +59,17 @@ export const fetchJobOffers =
 export const fetchJobOfferDetails =
   ({ token, jobOfferId }: { token: string; jobOfferId: string }) =>
   async () => {
-    const response = await fetch(`${baseURL}JobOffers/${jobOfferId}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'text/plain',
-        'Content-Type': 'application/json-patch+json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${backendApiBaseUrl}JobOffers/${jobOfferId}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'text/plain',
+          'Content-Type': 'application/json-patch+json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (response.ok) {
       return response.json();
     }
@@ -77,7 +80,7 @@ export const fetchJobOfferDetails =
 const fetchJobOfferSubResource =
   (token: string, jobOfferId: string, resource: string) => async () => {
     const response = await fetch(
-      `${baseURL}JobOffers/${jobOfferId}/${resource}`,
+      `${backendApiBaseUrl}JobOffers/${jobOfferId}/${resource}`,
       {
         method: 'GET',
         headers: {
@@ -131,7 +134,7 @@ export const changeSubscriptionStatus =
     currentSubscriptionStatus: boolean;
   }) =>
   async () => {
-    const url = `${baseURL}JobOffers/${jobOfferId}/subscribe`;
+    const url = `${backendApiBaseUrl}JobOffers/${jobOfferId}/subscribe`;
     const response = await fetch(url, {
       method: currentSubscriptionStatus ? 'DELETE' : 'POST',
       headers: {
@@ -152,7 +155,7 @@ export const createJobOffer = async ({
   accessToken: string | null;
   data: JobOfferForm.JobOffer;
 }) => {
-  const url = `${baseURL}JobOffers`;
+  const url = `${backendApiBaseUrl}JobOffers`;
   const formData = new FormData();
   for (const key in data) {
     const value = (data as any)[key];

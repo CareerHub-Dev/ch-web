@@ -1,7 +1,7 @@
-import { baseURL, retrieveErrorMessage } from '.';
+import { backendApiBaseUrl, retrieveErrorMessage } from '..';
 
 export const getTags = (accessToken: Nullable<string>) => async () => {
-  const response = await fetch(`${baseURL}Tags`, {
+  const response = await fetch(`${backendApiBaseUrl}Tags`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

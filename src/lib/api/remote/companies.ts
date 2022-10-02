@@ -1,4 +1,4 @@
-import { baseURL, retrieveErrorMessage } from '.';
+import { backendApiBaseUrl, retrieveErrorMessage } from '..';
 
 export const fetchCompanies =
   ({
@@ -13,7 +13,7 @@ export const fetchCompanies =
     searchTerm?: string;
   }) =>
   async () => {
-    let url = `${baseURL}Companies?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+    let url = `${backendApiBaseUrl}Companies?PageNumber=${pageNumber}&PageSize=${pageSize}`;
     if (searchTerm) {
       url += `&SearchTerm=${searchTerm}`;
     }
@@ -38,7 +38,7 @@ export const fetchCompanies =
 export const fetchCompanyDetails =
   ({ token, companyId }: { token: string; companyId: string }) =>
   async () => {
-    const url = `${baseURL}Companies/${companyId}`;
+    const url = `${backendApiBaseUrl}Companies/${companyId}`;
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -67,7 +67,7 @@ export const fetchCompanySubResource =
     resourceId?: string;
   }) =>
   async () => {
-    const url = `${baseURL}Companies/${companyId}/${resourceName}${
+    const url = `${backendApiBaseUrl}Companies/${companyId}/${resourceName}${
       resourceId ? '/' + resourceId : ''
     }`;
     const response = await fetch(url, {
@@ -145,7 +145,7 @@ export const changeSubscriptionStatus =
     subscriptionStatus: boolean;
   }) =>
   async () => {
-    const url = `${baseURL}Companies/${companyId}/subscribe`;
+    const url = `${backendApiBaseUrl}Companies/${companyId}/subscribe`;
     const response = await fetch(url, {
       method: subscriptionStatus ? 'DELETE' : 'POST',
       headers: {

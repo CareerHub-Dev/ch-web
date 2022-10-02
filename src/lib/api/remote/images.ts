@@ -1,4 +1,4 @@
-import { baseURL, retrieveErrorMessage } from '.';
+import { backendApiBaseUrl, retrieveErrorMessage } from '..';
 
 const blobToBase64 = (blob: Blob) => {
   return new Promise((resolve, _) => {
@@ -8,9 +8,9 @@ const blobToBase64 = (blob: Blob) => {
   });
 };
 
-export const fetchImage = (imageId: string) => (accessToken: Nullable<string>) =>
-  async () => {
-    const response = await fetch(`${baseURL}/Images/${imageId}`, {
+export const fetchImage =
+  (imageId: string) => (accessToken: Nullable<string>) => async () => {
+    const response = await fetch(`${backendApiBaseUrl}/Images/${imageId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

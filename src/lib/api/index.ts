@@ -1,5 +1,5 @@
-export const serverUrl = process.env.BACKEND_SERVER_URL;
-export const baseURL = `${serverUrl}/api/`;
+export const backendServerUrl = process.env.BACKEND_SERVER_URL;
+export const backendApiBaseUrl = `${backendServerUrl}/api/`;
 
 export const retrieveErrorMessage = (responseData: any) => {
   if (responseData.message) {
