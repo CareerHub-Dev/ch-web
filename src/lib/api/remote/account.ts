@@ -1,4 +1,4 @@
-import { backendApiBaseUrl, retrieveErrorMessage } from '..';
+import axios from '../axios';
 
 export const authenticate = async ({
   email,
@@ -7,33 +7,16 @@ export const authenticate = async ({
   email: string;
   password: string;
 }) => {
-  const response = await fetch(`${backendApiBaseUrl}Account/authenticate`, {
-    method: 'POST',
-    body: JSON.stringify({ email, password }),
-    headers: {
-      Accept: 'text/plain',
-      'Content-Type': 'application/json-patch+json',
-    },
+  const response = await axios.post('Account/authenticate', {
+    email,
+    password,
   });
-  const data = await response.json();
-  if (response.ok) {
-    return data;
-  }
-  throw new Error(retrieveErrorMessage(data));
+  return response.data;
 };
 
 export const refreshToken = async (refreshToken: string) => {
-  const response = await fetch(`${backendApiBaseUrl}Account/refresh-token`, {
-    method: 'POST',
-    body: JSON.stringify({ token: refreshToken }),
-    headers: {
-      Accept: 'text/plain',
-      'Content-Type': 'application/json-patch+json',
-    },
+  const response = await axios.post('Account/authenticate', {
+    token: refreshToken,
   });
-  const data = await response.json();
-  if (response.ok) {
-    return data;
-  }
-  throw new Error(retrieveErrorMessage(data));
+  return response.data;
 };
