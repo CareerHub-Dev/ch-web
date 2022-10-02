@@ -11,7 +11,7 @@ import SessionData from '@/models/SessionData';
  * @throws `AuthorizationError` if the authority data is inconsistent (e.g. some of the required fields are missing)
  */
 const verifySessionData = async (request: GetServerSidePropsContext['req']) => {
-  const authorityCookie = request.cookies['ch-authority'];
+  const authorityCookie = request.cookies['ch-http'];
   if (!authorityCookie) {
     throw new AuthorizationError('Не вдалося отримати дані авторизації');
   }

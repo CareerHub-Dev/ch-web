@@ -23,7 +23,7 @@ const setCookie = (
     typeof value === 'object' ? JSON.stringify(value) : String(value);
 
   options.secure = process.env.NODE_ENV === 'production';
-  options.httpOnly = true;
+  options.httpOnly = options.httpOnly ?? true;
   options.sameSite = 'lax';
   options.path = '/';
 
@@ -51,42 +51,48 @@ const deleteCookie = (res: NextApiResponse, name: string) => {
  * @param res - the response object
  */
 export const cleanSessionCookies = (res: NextApiResponse) => {
-  deleteCookie(res, 'ch-authority');
+  deleteCookie(res, 'ch-http');
 };
 
 /**
  * Cookie middleware function.
  * If the user's role matched successfully:
- * * Sets `ch-authority` cookie
- * * Sets `ch-accountId` cookie
+ * * Sets `ch-http` cookie
  * If failed to match user's role:
  * returns 500 status code
  * @param res - the response object
  * @param backendResponse - the response object from the remote backend
  */
 const cookieMiddleware = (res: NextApiResponse, backendResponse: any) => {
-  const matchedRole = matchUserRole(backendResponse.data.role);
+  const { jwtToken, refreshToken, accountId, role, jwtTokenExpires } =
+    backendResponse;
+  const matchedRole = matchUserRole(role);
+
   if (!matchedRole) {
     return res.status(500).json({
       message: 'Не вдалося визначити роль користувача',
     });
   }
   const authorityToken = signAuthorityToken(matchedRole);
-  const { jwtToken, refreshToken, accountId } = backendResponse.data;
-  const cookieObj = {
-    authorityToken,
+  const httpCookie = {
     accountId,
+    authorityToken,
     accessToken: jwtToken,
-    refreshToken,
   };
-  setCookie(res, 'ch-authority', cookieObj);
+  const clientCookie = {
+    accountId,
+    role: matchedRole,
+    refreshToken,
+    accessToken: jwtToken,
+    accessExpires: jwtTokenExpires,
+  };
+  setCookie(res, 'ch-http', httpCookie);
 
   const extendedData = {
-    ...backendResponse.data,
-    role: matchedRole,
-    sessionData: cookieObj,
+    httpCookie,
+    clientCookie,
   };
 
-  res.status(201).json(extendedData);
+  return res.status(201).json(extendedData);
 };
 export default cookieMiddleware;

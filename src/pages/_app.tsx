@@ -30,16 +30,16 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return getLayout(
-    <AuthContextProvider>
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <AuthContextProvider>
+        <Provider store={store}>
           <Hydrate state={pageProps.dehydratedState}>
             <Component {...pageProps} />
             <ToastContainer />
           </Hydrate>
-        </QueryClientProvider>
-      </Provider>
-    </AuthContextProvider>
+        </Provider>
+      </AuthContextProvider>
+    </QueryClientProvider>
   );
 }
 

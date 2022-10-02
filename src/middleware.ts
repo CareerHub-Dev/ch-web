@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const authCookie = req.cookies.get('ch-authority');
+  const authCookie = req.cookies.get('ch-http');
 
   if (pathname.startsWith('/my-profile')) {
     const url = req.nextUrl.clone();

@@ -39,7 +39,7 @@ export default StudentProfilePage;
 export const getServerSideProps = protectedServerSideProps(
   [UserRole.Student],
   async (_context: GetServerSidePropsContext) => {
-    const storedCookie = _context.req.cookies['ch-authority']!;
+    const storedCookie = _context.req.cookies['ch-http']!;
     const { accountId, accessToken } = JSON.parse(storedCookie);
     const studentData = await fetchStudent({ accountId, accessToken })();
     return {

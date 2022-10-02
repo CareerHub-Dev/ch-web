@@ -4,7 +4,7 @@ export const fetchStudent =
   ({ accountId, accessToken }: { accountId: string; accessToken: string }) =>
   async () => {
     try {
-      const url = `${baseURL}Students/${accountId}`;
+      const url = `${baseURL}Student/Students/${accountId}`;
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -82,3 +82,34 @@ export const fetchStudentCvs =
       throw new Error(error?.message || 'Помилка звернення до серверу');
     }
   };
+
+export const getStudentSubscriptionsAmount =
+  (subscriptionType: string) =>
+  (accountId: string) =>
+  (accessToken: string | null) =>
+  async () => {
+    try {
+      const url = `${baseURL}Student/Students/${accountId}/amount-${subscriptionType}-subscriptions`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Accept: 'text/plain',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        return data;
+      }
+      throw new Error(retrieveErrorMessage(data));
+    } catch (error: any) {
+      throw new Error(error?.message || 'Помилка звернення до серверу');
+    }
+  };
+
+export const getStudentStudentSubscriptionsAmount =
+  getStudentSubscriptionsAmount('student');
+export const getStudentCompanySubscriptionsAmount =
+  getStudentSubscriptionsAmount('company');
+export const getStudentJobOfferSubscriptionsAmount =
+  getStudentSubscriptionsAmount('jobOffer');

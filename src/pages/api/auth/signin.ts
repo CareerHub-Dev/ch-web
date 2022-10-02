@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { sendAuthRequest } from '@/lib/api/remote/auth';
-import RequestStatus from '@/models/enums/RequestStatus';
+import { authenticate } from '@/lib/api/remote/account';
 import cookieMiddleware from '@/lib/api/local/middleware/cookieMiddleware';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -8,20 +7,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(404).json({ message: 'Метод запиту не підтримується' });
   }
 
-  const { email, password, role } = JSON.parse(req.body);
-
-  sendAuthRequest(email, password, role, true, (response) => {
-    switch (response.status) {
-      case RequestStatus.Success:
-        cookieMiddleware(res, response);
-        break;
-      case RequestStatus.Error:
-        res.status(400).json({ message: response.message });
-        break;
-      default:
-        res.status(500).json({ message: 'Невідома помилка' });
-        break;
+  try {
+    const { email, password } = JSON.parse(req.body);
+    const data = await authenticate({ email, password });
+    return cookieMiddleware(res, data);
+  } catch (err) {
+    let message = 'Невідома помилка';
+    if (err instanceof Error) {
+      message;
     }
-  });
+    return res.status(500).json({ message });
+  }
 };
 export default handler;

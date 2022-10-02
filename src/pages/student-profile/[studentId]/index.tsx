@@ -1,14 +1,19 @@
+import type { NextPageWithLayout } from '../../_app';
 import Footer from '@/components/layout/Footer';
 import StudentAvatar from '@/components/student-profile/StudentAvatar';
 import StudentInfo from '@/components/student-profile/StudentInfo';
-import StudentSubscriptions from '@/components/student-profile/StudentSubscriptions';
+import dynamic from 'next/dynamic';
 import StudentWorkExperience from '@/components/student-profile/StudentWorkExperience';
 import { fetchStudent } from '@/lib/api/remote/student';
 import protectedServerSideProps from '@/lib/protected-server-side-props';
 import UserRole from '@/models/enums/UserRole';
 import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
-import type { NextPageWithLayout } from '../../_app';
+
+const StudentSubscriptions = dynamic(
+  import('@/components/student-profile/StudentSubscriptions'),
+  { ssr: false }
+);
 
 const StudentProfilePage: NextPageWithLayout<{
   isSelf: boolean;
@@ -74,7 +79,9 @@ export const getServerSideProps = protectedServerSideProps(
   [UserRole.Student],
   async (context: GetServerSidePropsContext) => {
     const studentId = context.query.studentId as string;
-    const storedCookie = context.req.cookies['ch-authority'] as string;
+    const storedCookie = context.req.cookies['ch-http'] as string;
+    console.log(storedCookie);
+
     const { accountId, accessToken } = JSON.parse(storedCookie);
     const studentData = await fetchStudent({
       accountId: studentId,

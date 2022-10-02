@@ -62,6 +62,14 @@ namespace JobOfferForm {
   };
 }
 
+type SessionData = {
+  authorityToken: string;
+  accessToken: string;
+  accountId: string;
+  refreshToken: string;
+  expires: string;
+};
+
 type ValueOf<T> = T[keyof T];
 type AnyFn = (...args: any[]) => any;
 type Nullable<T> = T | null;
