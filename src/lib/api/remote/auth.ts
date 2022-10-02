@@ -1,4 +1,3 @@
-import type { CallbackFn } from '@/lib/callback/types';
 import RequestStatus from '@/models/enums/RequestStatus';
 import UserRole from '@/models/enums/UserRole';
 import { baseURL, retrieveErrorMessage } from '.';
@@ -8,7 +7,7 @@ export const sendAuthRequest = (
   password: string,
   role: UserRole,
   isLogin: boolean,
-  callback: CallbackFn,
+  callback: any
 ) => {
   let url;
   if (isLogin) {
@@ -46,10 +45,7 @@ export const sendAuthRequest = (
     });
 };
 
-export const sendForgotPasswordRequest = (
-  email: string,
-  callback: CallbackFn,
-) => {
+export const sendForgotPasswordRequest = (email: string, callback: any) => {
   fetch(`${baseURL}Accounts/forgot-password`, {
     method: 'POST',
     body: JSON.stringify({ email }),
@@ -75,7 +71,7 @@ export const sendForgotPasswordRequest = (
 export const sendResetPasswordRequest = (
   password: string,
   token: string,
-  callback: CallbackFn,
+  callback: any
 ) => {
   fetch(`${baseURL}Accounts/reset-password`, {
     method: 'POST',
@@ -102,7 +98,7 @@ export const sendResetPasswordRequest = (
     });
 };
 
-export const sendRefreshTokenRequest = (callback: CallbackFn) => {
+export const sendRefreshTokenRequest = (callback: any) => {
   const url = `${baseURL}Accounts/refresh-token-web`;
   fetch(url, {
     method: 'POST',

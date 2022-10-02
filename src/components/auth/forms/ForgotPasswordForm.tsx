@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { FormEventHandler, useRef, useState } from 'react';
 import useInput from '@/hooks/useInput';
-import type { CallbackFn } from '@/lib/callback/types';
 import { getEmailValidity, getPasswordValidity } from '@/lib/util';
 import ErrorToastStrategy from '@/lib/toasts/strategies/ErrorToastStrategy';
 import SuccessToastStrategy from '@/lib/toasts/strategies/SuccessToastStrategy';
@@ -27,7 +26,7 @@ const ForgotPasswordForm = () => {
   const newPasswordInput = useInput(getPasswordValidity);
   const newPasswordRepeatInputRef = useRef<HTMLInputElement>(null);
   const newPasswordRepeatInput = useInput(
-    (value: string) => value === newPasswordInput.value,
+    (value: string) => value === newPasswordInput.value
   );
 
   const [verificationRequestPassed, setVerificationRequestPassed] =
@@ -36,8 +35,8 @@ const ForgotPasswordForm = () => {
   const resetTokenInputRef = useRef<HTMLInputElement>(null);
   const resetTokenInput = useInput();
 
-  const createCallback: (onSuccess: () => void) => CallbackFn = (
-    onSuccess: () => void,
+  const createCallback: (onSuccess: () => void) => any = (
+    onSuccess: () => void
   ) => {
     return ({
       status,
@@ -61,17 +60,17 @@ const ForgotPasswordForm = () => {
       }
       toastContext.notify(
         message ? message : 'Невідома помилка',
-        toastRef.current,
+        toastRef.current
       );
     };
   };
 
   const verificationRequestCallback = createCallback(
-    setVerificationRequestPassed.bind(null, true),
+    setVerificationRequestPassed.bind(null, true)
   );
 
   const resetPasswordRequestCallback = createCallback(
-    router.push.bind(null, '/auth/login'),
+    router.push.bind(null, '/auth/login')
   );
 
   const validationHandler = () => {
@@ -98,7 +97,7 @@ const ForgotPasswordForm = () => {
       sendResetPasswordRequest(
         newPasswordInput.value,
         resetTokenInput.value,
-        resetPasswordRequestCallback,
+        resetPasswordRequestCallback
       );
     } else if (!resetTokenInput.isValid) {
       resetTokenInputRef.current!.focus();

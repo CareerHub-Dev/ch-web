@@ -5,15 +5,9 @@ import { getStudentEmailValidity, getPasswordValidity } from '@/lib/util';
 import AuthField from '../AuthField';
 import KeyIcon from '@/components/ui/icons/KeyIcon';
 import EnvelopeIcon from '@/components/ui/icons/EnvelopeIcon';
-import { CallbackFn } from '@/lib/callback/types';
-import RequestStatus from '@/models/enums/RequestStatus';
 import { useRouter } from 'next/router';
-import ToastContext from '@/lib/toasts/ToastContext';
-import ErrorToastStrategy from '@/lib/toasts/strategies/ErrorToastStrategy';
-import { sendLocalGatewayAuthRequest } from '@/lib/api/local/auth';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
 import classes from './forms.module.scss';
-import UserRole from '@/models/enums/UserRole';
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -26,7 +20,7 @@ const RegisterForm = () => {
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const formIsValid = emailInput.isValid && passwordInput.isValid;
 
-  const requestCallback: CallbackFn = (response) => {
+  const requestCallback = (response: any) => {
     // switch (response.status) {
     //   case RequestStatus.ResponseRecieved:
     //     setIsProcessingRequest(false);
@@ -64,14 +58,14 @@ const RegisterForm = () => {
       }
       return;
     }
-    setIsProcessingRequest(true);
-    sendLocalGatewayAuthRequest(
-      emailInput.value,
-      passwordInput.value,
-      false,
-      UserRole.Student, // TODO: выпилить этот костыль
-      requestCallback
-    );
+    // setIsProcessingRequest(true);
+    // sendLocalGatewayAuthRequest(
+    //   emailInput.value,
+    //   passwordInput.value,
+    //   false,
+    //   UserRole.Student, // TODO: выпилить этот костыль
+    //   requestCallback
+    // );
   };
 
   return (
