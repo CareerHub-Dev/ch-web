@@ -1,4 +1,4 @@
-import { refreshToken } from '@/lib/api/local/auth';
+import { refreshToken } from '@/lib/api/local/account';
 import cookieMiddleware from '@/lib/api/local/middleware/cookieMiddleware';
 import { NextApiRequest, NextApiResponse } from 'next';
 

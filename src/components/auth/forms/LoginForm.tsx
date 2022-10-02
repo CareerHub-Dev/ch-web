@@ -4,7 +4,7 @@ import useToast from '@/hooks/useToast';
 import useInput from '@/hooks/useInput';
 import { useMutation } from '@tanstack/react-query';
 import { getEmailValidity, getPasswordValidity } from '@/lib/util';
-import { authenticate } from '@/lib/api/local/auth';
+import { authenticate } from '@/lib/api/local/account';
 import AuthField from '../AuthField';
 import KeyIcon from '@/components/ui/icons/KeyIcon';
 import EnvelopeIcon from '@/components/ui/icons/EnvelopeIcon';
