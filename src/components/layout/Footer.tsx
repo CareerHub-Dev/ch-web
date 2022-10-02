@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import FooterLink from './FooterLink';
 
 const footerNavItems = [
   {
@@ -10,8 +10,9 @@ const footerNavItems = [
     text: 'Допомога',
   },
   {
-    href: '#',
-    text: `Кар'єрний центр`,
+    href: 'http://rabota.nure.ua/',
+    text: `Центр-Кар'єра`,
+    newTab: true,
   },
 ];
 
@@ -19,14 +20,10 @@ const Footer = () => {
   return (
     <footer className="w-full fixed bottom-0 px-4">
       <nav className="flex items-center content-center justify-center">
-        <ul className="mx-auto flex gap-4 py-4">
+        <ul className="mx-auto flex gap-6 py-4">
           {footerNavItems.map((item) => (
             <li key={item.href}>
-              <Link href={item.href}>
-                <a className="text-gray-500 hover:text-darkerBlue hover:underline">
-                  {item.text}
-                </a>
-              </Link>
+              <FooterLink item={item} />
             </li>
           ))}
         </ul>

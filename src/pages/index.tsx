@@ -5,6 +5,7 @@ import NureLogo from '@/assets/logos/NureLogo.svg';
 import CareerLogo from '@/assets/logos/CareerLogo.svg';
 import Head from 'next/head';
 import Background from '@/components/layout/Background';
+import Footer from '@/components/layout/Footer';
 
 import classes from '@/styles/index.module.scss';
 
@@ -19,34 +20,32 @@ const LandingPage: NextPageWithLayout = () => {
 
   return (
     <>
-      <div className={classes.root}>
-        <div className={classes['nure-logo']} id="partnerLogos">
+      <header className="mt-20 flex flex-col items-center content-center">
+        <div className={classes.logos} id="partnerLogos">
           <NureLogo id="nureLogo" />
           <CareerLogo id="careerLogo" />
         </div>
-        <div className={classes.content}>
-          <h1 className={classes.title}>CareerHub</h1>
+        <h1 className={classes.title}>CareerHub</h1>
+      </header>
 
-          {!auth.isLoggedIn && (
-            <div className={classes.actions}>
-              <button
-                className={classes.register}
-                type="button"
-                onClick={routingHandler('/auth/register')}
-              >
-                Зареєструватися
-              </button>
-              <button
-                className={classes.register}
-                type="button"
-                onClick={routingHandler('/auth/login')}
-              >
-                Увійти
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
+      {!auth.isLoggedIn && (
+        <section className={classes.actions}>
+          <button
+            className={classes.register}
+            type="button"
+            onClick={routingHandler('/auth/register')}
+          >
+            Зареєструватися
+          </button>
+          <button
+            className={classes.register}
+            type="button"
+            onClick={routingHandler('/auth/login')}
+          >
+            Увійти
+          </button>
+        </section>
+      )}
     </>
   );
 };
@@ -62,6 +61,7 @@ LandingPage.getLayout = (page) => {
         />
       </Head>
       <main>{page}</main>
+      <Footer />
       <Background />
     </>
   );

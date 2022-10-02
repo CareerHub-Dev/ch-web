@@ -3,7 +3,7 @@
 @mixin btn($backgroundColor) {
   display: flex;
   flex-direction: row;
-  flex-shrink: true;
+  flex-shrink: 1;
   justify-content: center;
   align-items: center;
   padding: 14.5px;
@@ -14,11 +14,10 @@
   border-radius: 14px;
   background: $backgroundColor;
   border: 2px solid $darkerBlue;
-  transition: all ease-in-out 250ms;
+  cursor: pointer;
 }
 
 @mixin btnText($textColor) {
-  font-family: $fontFamily;
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
@@ -32,23 +31,12 @@
   transition: all ease-in-out 300ms;
   background: $bgColor;
   color: $textColor;
-  cursor: pointer;
-}
-
-.root {
-  margin-top: 80px;
-  display: flex;
-  z-index: 20;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: calc(100vh - 160px);
 }
 
 .title {
   font-family: 'Rancho';
   font-size: 150px;
+  color: $darkerBlue;
 }
 
 @media (max-width: 700px) {
@@ -58,11 +46,14 @@
 
   .actions {
     flex-direction: column;
+    align-items: center;
   }
 }
 
 .actions {
+  margin-top: 5rem;
   display: flex;
+  justify-content: center;
   gap: 15px;
   max-width: 100%;
 }
@@ -85,21 +76,10 @@
   @include btnHover($darkerBlue, #fff);
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  position: relative;
-  z-index: 20;
-}
-
-.nure-logo {
-  position: absolute;
-  top: 10%;
+.logos {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
 
   &>svg {
     height: min-content;
