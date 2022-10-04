@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        careerHub: ['"Noto Sans"', '"Open Sans"', 'sans-serif'],
+        rancho: ['"Rancho"', 'cursive'],
+      },
       colors: {
         darkerBlueTransparent: '#000e2e96',
         darkerBlue: '#000e2e',

@@ -9,7 +9,7 @@ interface JobOfferFilter {
 
 interface Tag {
   id: string;
-  title: string;
+  name: string;
 }
 
 namespace JobOffersFeed {

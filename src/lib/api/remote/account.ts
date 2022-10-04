@@ -1,22 +1,23 @@
-import axios from '../axios';
+import { request } from '../axios';
 
-export const authenticate = async ({
+export const authenticate = ({
   email,
   password,
 }: {
   email: string;
   password: string;
 }) => {
-  const response = await axios.post('Account/authenticate', {
-    email,
-    password,
+  return request({
+    url: 'Account/authenticate',
+    method: 'POST',
+    data: { email, password },
   });
-  return response.data;
 };
 
-export const refreshToken = async (refreshToken: string) => {
-  const response = await axios.post('Account/authenticate', {
-    token: refreshToken,
+export const refreshToken = (refreshToken: string) => {
+  return request({
+    url: 'Account/refresh-token',
+    method: 'POST',
+    data: { token: refreshToken },
   });
-  return response.data;
 };

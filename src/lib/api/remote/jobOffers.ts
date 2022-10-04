@@ -1,4 +1,3 @@
-import JobOfferForm from '@/components/offers/add/JobOfferForm';
 import { backendApiBaseUrl, retrieveErrorMessage } from '..';
 
 export const fetchJobOffers =

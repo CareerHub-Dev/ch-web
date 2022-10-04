@@ -1,6 +1,6 @@
 import useAuth from './useAuth';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { fetchStudent } from '@/lib/api/remote/student';
+import { getStudent } from '@/lib/api/remote/student';
 
 const defaultErrorHandler = (error: any) => {
   alert(error.message || 'Помилка звернення до серверу');
@@ -18,10 +18,7 @@ const useStudentQuery: (opts?: {
 
   const studentQuery = useQuery(
     ['student', accountId],
-    fetchStudent({
-      accountId: accountId as string,
-      accessToken: accessToken as string,
-    }),
+    getStudent(accountId)(accessToken),
     {
       initialData: options?.initialData,
       enabled: !!accessToken && !!accountId,

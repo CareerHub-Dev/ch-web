@@ -6,7 +6,7 @@ import CVBoard from '@/components/my-profile/CVBoard';
 import { GetServerSidePropsContext } from 'next';
 import UserRole from '@/models/enums/UserRole';
 import SettingsPanel from '@/components/my-profile/SettingsPanel';
-import { fetchStudent } from '@/lib/api/remote/student';
+import { getStudent } from '@/lib/api/remote/student';
 import protectedServerSideProps from '@/lib/protected-server-side-props';
 
 import classes from '@/styles/my-dashboard.module.scss';
@@ -38,10 +38,10 @@ export default StudentProfilePage;
 
 export const getServerSideProps = protectedServerSideProps(
   [UserRole.Student],
-  async (_context: GetServerSidePropsContext) => {
-    const storedCookie = _context.req.cookies['ch-http']!;
+  async (context: GetServerSidePropsContext) => {
+    const storedCookie = context.req.cookies['ch-http']!;
     const { accountId, accessToken } = JSON.parse(storedCookie);
-    const studentData = await fetchStudent({ accountId, accessToken })();
+    const studentData = await getStudent(accountId)(accessToken)();
     return {
       studentData,
     };

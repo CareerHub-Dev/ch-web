@@ -1,10 +1,11 @@
 import type { NextPageWithLayout } from '../../_app';
+import HorizontalNavbar from '@/components/layout/HorizontalNavbar';
 import Footer from '@/components/layout/Footer';
 import StudentAvatar from '@/components/student-profile/StudentAvatar';
 import StudentInfo from '@/components/student-profile/StudentInfo';
 import StudentSubscriptions from '@/components/student-profile/StudentSubscriptions';
 import StudentWorkExperience from '@/components/student-profile/StudentWorkExperience';
-import { fetchStudent } from '@/lib/api/remote/student';
+import { getStudent } from '@/lib/api/remote/student';
 import protectedServerSideProps from '@/lib/protected-server-side-props';
 import UserRole from '@/models/enums/UserRole';
 import { GetServerSidePropsContext } from 'next';
@@ -18,7 +19,7 @@ const StudentProfilePage: NextPageWithLayout<{
 
   return (
     <div
-      className="mx-auto grid grid-cols-[1fr_0.5fr] grid-rows-[minmax(0,_1fr)_auto] bg-white pt-12 shadow-2xl rounded-b-lg
+      className="mx-auto grid grid-cols-[1fr_0.5fr] grid-rows-[minmax(0,_1fr)_auto] bg-white pt-12 shadow-xl rounded-b-lg
         max-w-full
         lg:max-w-4xl"
     >
@@ -53,7 +54,7 @@ const StudentProfilePage: NextPageWithLayout<{
 
       <section className="p-4 col-span-2">
         <hr className="m-4" />
-        <StudentWorkExperience items={[]} />
+        <StudentWorkExperience items={[]} editable={isSelf} />
       </section>
     </div>
   );
@@ -62,7 +63,8 @@ const StudentProfilePage: NextPageWithLayout<{
 StudentProfilePage.getLayout = (page) => {
   return (
     <>
-      <main className="bg-lightBlue h-screen">{page}</main>;
+      <HorizontalNavbar />
+      <main className="">{page}</main>
       <Footer />
     </>
   );
@@ -77,10 +79,7 @@ export const getServerSideProps = protectedServerSideProps(
     const storedCookie = context.req.cookies['ch-http'] as string;
 
     const { accountId, accessToken } = JSON.parse(storedCookie);
-    const studentData = await fetchStudent({
-      accountId: studentId,
-      accessToken,
-    })();
+    const studentData = await getStudent(studentId)(accessToken)();
 
     const isSelf = studentId === accountId;
     return {

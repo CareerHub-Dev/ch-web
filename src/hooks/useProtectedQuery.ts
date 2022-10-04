@@ -17,7 +17,7 @@ export default function useProtectedQuery<
   queryFnCreator: (
     accessToken: string | null
   ) => QueryFunction<TQueryFnData, TQueryKey>,
-  options: Omit<
+  options?: Omit<
     UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     'queryFn' | 'queryKey'
   >

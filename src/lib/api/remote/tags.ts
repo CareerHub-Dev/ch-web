@@ -1,14 +1,11 @@
-import { backendApiBaseUrl, retrieveErrorMessage } from '..';
+import { request } from '../axios';
 
 export const getTags = (accessToken: Nullable<string>) => async () => {
-  const response = await fetch(`${backendApiBaseUrl}Tags`, {
+  return request({
+    url: 'Auth/Tags',
+    method: 'GET',
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  const data = await response.json();
-  if (response.ok) {
-    return data;
-  }
-  throw new Error(retrieveErrorMessage(data));
 };

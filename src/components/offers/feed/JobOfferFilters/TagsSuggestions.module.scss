@@ -1,9 +1,11 @@
+@import "@/styles/variables.scss";
+
 .suggestions {
   position: absolute;
   padding: 1px;
-  border: 1px solid #ccc;
+  border: 1px solid $borderBase;
   border-radius: 4px;
-  background-color: white;
+  background-color: $inputBaseBg;
   top: 100%;
   width: inherit;
   box-shadow: 4px 4px 4px 2px rgba(0, 0, 0, 0.152);
@@ -26,7 +28,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: #0a66c2;
+    background-color: $primaryBlue;
     color: white;
   }
 }

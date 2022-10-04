@@ -1,15 +1,28 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { backendApiBaseUrl } from '.';
 
 const defaultHeaders = { 'Content-Type': 'application/json' };
 
-export default axios.create({
+const client = axios.create({
   baseURL: backendApiBaseUrl,
   headers: defaultHeaders,
 });
+export default client;
 
-export const axiosPrivate = axios.create({
-  baseURL: backendApiBaseUrl,
-  headers: defaultHeaders,
-  withCredentials: true,
-});
+export const retrieveAxiosErrorMessage = (err: AxiosError<any>) => {
+  return err.response?.data?.detail || err.message || 'Невідома помилка';
+};
+
+export const request = async <TData = any, TConfig = any>(
+  options: AxiosRequestConfig<TConfig>
+) => {
+  const onSuccess = (response: AxiosResponse<TData, TConfig>) => {
+    return response.data;
+  };
+
+  const onError = (err: AxiosError<TData, TConfig>) => {
+    const msg = retrieveAxiosErrorMessage(err);
+    return Promise.reject(msg);
+  };
+  return client(options).then(onSuccess).catch(onError);
+};

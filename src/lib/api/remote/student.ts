@@ -1,27 +1,35 @@
 import { backendApiBaseUrl, retrieveErrorMessage } from '..';
+import { request } from '../axios';
 
-export const fetchStudent =
-  ({ accountId, accessToken }: { accountId: string; accessToken: string }) =>
-  async () => {
-    try {
-      const url = `${backendApiBaseUrl}Student/Students/${accountId}`;
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          Accept: 'text/plain',
-          'Content-Type': 'application/json-patch+json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      const data = await response.json();
-      if (response.ok) {
-        return data;
-      }
-      throw new Error(retrieveErrorMessage(data));
-    } catch (error: any) {
-      throw new Error(error?.message || 'Помилка звернення до серверу');
-    }
-  };
+export const getStudent =
+  (accountId: string) => (accessToken: string | null) => () =>
+    request({
+      url: `Student/Students/${accountId}`,
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+// async () => {
+//   try {
+//     const url = `${backendApiBaseUrl}Student/Students/${accountId}`;
+//     const response = await fetch(url, {
+//       method: 'GET',
+//       headers: {
+//         Accept: 'text/plain',
+//         'Content-Type': 'application/json-patch+json',
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     });
+//     const data = await response.json();
+//     if (response.ok) {
+//       return data;
+//     }
+//     throw new Error(retrieveErrorMessage(data));
+//   } catch (error: any) {
+//     throw new Error(error?.message || 'Помилка звернення до серверу');
+//   }
+// };
 
 export const updateStudentGeneralInfo =
   ({

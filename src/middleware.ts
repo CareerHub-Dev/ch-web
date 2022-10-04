@@ -1,22 +1,26 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+export const config = {
+  matcher: '/my-profile',
+};
+
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const authCookie = req.cookies.get('ch-http');
 
   if (pathname.startsWith('/my-profile')) {
-    const url = req.nextUrl.clone();
+    const newUrl = req.nextUrl.clone();
     try {
-      const parsedAuthCookie = JSON.parse(authCookie as string);
-      url.pathname = pathname.replace(
+      const httpOnlyAuthCookie = req.cookies.get('ch-http');
+      const parsedAuthCookie = JSON.parse(httpOnlyAuthCookie as string);
+      newUrl.pathname = pathname.replace(
         'my-profile',
         `student-profile/${parsedAuthCookie['accountId']}`
       );
-      return NextResponse.rewrite(url);
+      return NextResponse.rewrite(newUrl);
     } catch (err) {
-      url.pathname = '/auth/login';
-      return NextResponse.redirect(url);
+      newUrl.pathname = '/auth/login';
+      return NextResponse.redirect(newUrl);
     }
   }
   return NextResponse.next();

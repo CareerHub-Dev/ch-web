@@ -26,19 +26,29 @@ type AppPropsWithLayout<P> = AppProps<P> & {
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+            retry: false,
+          },
+        },
+      })
+  );
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return getLayout(
     <QueryClientProvider client={queryClient}>
-      <AuthContextProvider>
-        <Provider store={store}>
-          <Hydrate state={pageProps.dehydratedState}>
+      <Hydrate state={pageProps.dehydratedState}>
+        <AuthContextProvider>
+          <Provider store={store}>
             <Component {...pageProps} />
             <ToastContainer />
-          </Hydrate>
-        </Provider>
-      </AuthContextProvider>
+          </Provider>
+        </AuthContextProvider>
+      </Hydrate>
     </QueryClientProvider>
   );
 }

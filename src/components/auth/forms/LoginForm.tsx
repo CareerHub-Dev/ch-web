@@ -1,4 +1,5 @@
 import { FormEventHandler, useRef } from 'react';
+import { useRouter } from 'next/router';
 import useAuth from '@/hooks/useAuth';
 import useToast from '@/hooks/useToast';
 import useInput from '@/hooks/useInput';
@@ -12,6 +13,7 @@ import ModalLoading from '@/components/ui/Modal/ModalLoading';
 import classes from './forms.module.scss';
 
 const LoginForm = () => {
+  const router = useRouter();
   const auth = useAuth();
   const toast = useToast();
   const emailInputRef = useRef<HTMLInputElement>(null);
@@ -22,6 +24,7 @@ const LoginForm = () => {
   const authMutation = useMutation(['auth'], authenticate, {
     onSuccess: (data: any) => {
       auth.login(data);
+      router.push('/my-profile');
     },
     onError: (error) => {
       if (error instanceof Error) {
@@ -29,6 +32,10 @@ const LoginForm = () => {
       }
     },
   });
+
+  if (auth.isLoggedIn) {
+    router.push('/my-profile');
+  }
 
   const formSubmissionHandler: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();

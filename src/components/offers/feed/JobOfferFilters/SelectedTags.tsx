@@ -24,7 +24,7 @@ const SelectedTags = () => {
         {tags.map((tag) => (
           <li key={tag.id}>
             <span>
-              <div className={classes['tag-title']}>{tag.title}</div>
+              <div className={classes['tag-title']}>{tag.name}</div>
               <div
                 role="button"
                 className={classes['tag-remove']}

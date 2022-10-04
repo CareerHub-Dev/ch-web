@@ -7,7 +7,7 @@ const footerNavItems = [
   },
   {
     href: '/help',
-    text: 'Допомога',
+    text: "Зв'язок",
   },
   {
     href: 'http://rabota.nure.ua/',

@@ -15,7 +15,7 @@ const NotFound = () => {
           <div className={classes.row}>
             <Link href="/" passHref>
               <div className={classes.button}>
-                <button>Повернутися</button>
+                <button>На головну</button>
               </div>
             </Link>
           </div>

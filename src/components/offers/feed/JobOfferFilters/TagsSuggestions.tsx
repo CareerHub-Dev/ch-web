@@ -26,7 +26,7 @@ const TagsSuggestions = ({
       {items.length > 0 ? (
         items.map((item, index) => (
           <li key={index} className={classes.tag} onClick={clickHandler(item)}>
-            {item.title}
+            {item.name}
           </li>
         ))
       ) : (
