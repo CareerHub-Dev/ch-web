@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { cleanSessionCookies } from '@/lib/api/local/middleware/cookieMiddleware';
+import { cleanSessionCookies } from '@/lib/api/cookieMiddleware';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {

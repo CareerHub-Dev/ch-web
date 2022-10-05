@@ -7,8 +7,7 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import GeneralInfo from '@/components/offers/details/GeneralInfo';
 import JobOfferTitle from '@/components/offers/details/JobOfferTitle';
 import JobOfferContent from '@/components/offers/details/JobOfferContent';
-import UserRole from '@/lib/schemas/UserRole';
-import protectedServerSideProps from '@/lib/protected-server-side-props';
+import protectedSsr from '@/lib/protected-ssr';
 
 const JobOfferDetailPage = () => {
   const { accessToken } = useAuth();
@@ -76,4 +75,6 @@ const JobOfferDetailPage = () => {
 };
 export default JobOfferDetailPage;
 
-export const getServerSideProps = protectedServerSideProps(['Student']);
+export const getServerSideProps = protectedSsr({
+  allowedRoles: ['Student'],
+})();

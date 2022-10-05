@@ -1,7 +1,6 @@
 import CVControls from '@/components/cv-builder/CVControls';
 import CVPreview from '@/components/cv-builder/CVPreview';
-import UserRole from '@/lib/schemas/UserRole';
-import protectedServerSideProps from '@/lib/protected-server-side-props';
+import protectedSsr from '@/lib/protected-ssr';
 
 import classes from '@/styles/cv-builder.module.scss';
 
@@ -15,4 +14,6 @@ const CVBuilderPage = () => {
 };
 export default CVBuilderPage;
 
-export const getServerSideProps = protectedServerSideProps(['Student']);
+export const getServerSideProps = protectedSsr({
+  allowedRoles: ['Student'],
+})();

@@ -1,7 +1,6 @@
 import { serialize, CookieSerializeOptions } from 'cookie';
 import { NextApiResponse } from 'next';
-import UserRoleSchema from '@/lib/schemas/UserRole';
-import signAuthorityToken from '../helpers/sign-authority-token';
+import SessionDataSchema from '@/lib/schemas/SessionData';
 
 /**
  * Sets multiple `cookies` using the `res` object.
@@ -67,33 +66,17 @@ export const cleanSessionCookies = (res: NextApiResponse) => {
  * @param res - the response object
  * @param backendResponse - the response object from the remote backend
  */
-const cookieMiddleware = (
-  res: NextApiResponse,
-  backendResponse: RawSessionData
-) => {
-  const { jwtToken, refreshToken, accountId, role, jwtTokenExpires } =
-    backendResponse;
-  const parsedRole = UserRoleSchema.safeParse(role);
+const cookieMiddleware = (res: NextApiResponse, backendResponse: unknown) => {
+  const sessionData = SessionDataSchema.safeParse(backendResponse);
 
-  if (!parsedRole.success) {
+  if (!sessionData.success) {
     return res.status(500).json({
-      message: 'Не вдалося визначити роль користувача',
+      message: 'Неочікувана відповідь від сервера',
     });
   }
-  const matchedRole = parsedRole.data;
-  const authorityToken = signAuthorityToken(matchedRole);
-  const httpCookie = {
-    accountId,
-    authorityToken,
-    accessToken: jwtToken,
-  };
-  const clientCookie = {
-    accountId,
-    role: matchedRole,
-    refreshToken,
-    accessToken: jwtToken,
-    accessExpires: jwtTokenExpires,
-  };
+  const validatedData = sessionData.data;
+  const httpCookie = validatedData;
+  const clientCookie = validatedData;
 
   setCookies(res, [
     {

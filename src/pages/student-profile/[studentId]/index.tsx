@@ -5,8 +5,7 @@ import StudentInfo from '@/components/student-profile/StudentInfo';
 import StudentSubscriptions from '@/components/student-profile/StudentSubscriptions';
 import StudentWorkExperience from '@/components/student-profile/StudentWorkExperience';
 import { getStudent } from '@/lib/api/remote/student';
-import protectedServerSideProps from '@/lib/protected-server-side-props';
-import { GetServerSidePropsContext } from 'next';
+import protectedSsr from '@/lib/protected-ssr';
 import Link from 'next/link';
 
 const StudentProfilePage: NextPageWithLayout<{
@@ -70,9 +69,8 @@ StudentProfilePage.getLayout = (page) => {
 
 export default StudentProfilePage;
 
-export const getServerSideProps = protectedServerSideProps(
-  ['Student'],
-  async (context: GetServerSidePropsContext) => {
+export const getServerSideProps = protectedSsr({ allowedRoles: ['Student'] })(
+  async (context) => {
     const studentId = context.query.studentId as string;
     const storedCookie = context.req.cookies['ch-http'] as string;
 
@@ -81,8 +79,10 @@ export const getServerSideProps = protectedServerSideProps(
 
     const isSelf = studentId === accountId;
     return {
-      isSelf,
-      studentData,
+      props: {
+        isSelf,
+        studentData,
+      },
     };
   }
 );

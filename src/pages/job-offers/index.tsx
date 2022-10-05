@@ -7,10 +7,9 @@ import FeedWrapper from '@/components/layout/FeedWrapper';
 import JobOffersFilters from '@/components/offers/feed/JobOfferFilters';
 import JobOffersList from '@/components/offers/feed/JobOffersList';
 import Head from 'next/head';
-import UserRole from '@/lib/schemas/UserRole';
 import { fetchJobOffers } from '@/lib/api/remote/jobOffers';
-import protectedServerSideProps from '@/lib/protected-server-side-props';
 import HorizontalNavbar from '@/components/layout/HorizontalNavbar';
+import protectedSsr from '@/lib/protected-ssr';
 
 const defaultPageSize = 50;
 
@@ -70,4 +69,6 @@ JobOffersFeedPage.getLayout = (page) => (
 
 export default JobOffersFeedPage;
 
-export const getServerSideProps = protectedServerSideProps(['Student']);
+export const getServerSideProps = protectedSsr({
+  allowedRoles: ['Student'],
+})();

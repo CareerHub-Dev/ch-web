@@ -1,6 +1,6 @@
-import { refreshToken } from '@/lib/api/local/account';
-import cookieMiddleware from '@/lib/api/local/middleware/cookieMiddleware';
 import { NextApiRequest, NextApiResponse } from 'next';
+import AccountService from '@/lib/api/AccountService';
+import cookieMiddleware from '@/lib/api/cookieMiddleware';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
@@ -8,14 +8,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    const requestData = JSON.parse(req.body);
-    const token = requestData.refreshToken as string;
-    const data = await refreshToken(token);
+    const data = await new AccountService().authenticate(req.body);
     return cookieMiddleware(res, data);
   } catch (err) {
     let message = 'Невідома помилка';
-    if (err instanceof Error) {
-      message;
+    if (typeof err === 'string') {
+      message = err;
+    } else if (err instanceof Error) {
+      message = err.message;
     }
     return res.status(500).json({ message });
   }
