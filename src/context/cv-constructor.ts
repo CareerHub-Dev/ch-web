@@ -1,20 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
-import { setStringInputValue } from '@/models/StringInput';
+import { setStringInputValue } from '@/lib/string-input';
 import {
   disableArrayInput,
   getArrayInput,
   addArrayInputItem,
   removeArrayInputItem,
-} from '@/models/ArrayInput';
-import Language from '@/models/CV/Language';
-import WorkingExperience from '@/models/CV/WorkingExperience';
-import Link from '@/models/CV/Link';
-import Education from '@/models/CV/Education';
+} from '@/lib/array-input';
+import Language from '@/lib/cv/Language';
+import WorkingExperience from '@/lib/cv/WorkingExperience';
+import Link from '@/lib/cv/Link';
+import Education from '@/lib/cv/Education';
 import CVState, {
   initialCVState,
   enforceInputValidation,
-} from '@/models/CV/CVState';
+} from '@/lib/cv/CVState';
 
 type CvStore = {
   cvState: CVState;

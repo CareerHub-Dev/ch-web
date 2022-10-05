@@ -1,5 +1,5 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import WorkingExperience from '@/models/CV/WorkingExperience';
+import WorkingExperience from '@/lib/cv/WorkingExperience';
 import { removeWorkingExperience } from '@/context/cv-constructor';
 import { getFormattedDate } from '@/lib/util';
 import TrashIcon from '@/components/ui/icons/TrashIcon';

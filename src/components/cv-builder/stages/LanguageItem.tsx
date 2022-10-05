@@ -1,6 +1,6 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
 import { removeLanguage } from '@/context/cv-constructor';
-import Language from '@/models/CV/Language';
+import Language from '@/lib/cv/Language';
 import TrashIcon from '@/components/ui/icons/TrashIcon';
 
 import classes from './ListItem.module.scss';

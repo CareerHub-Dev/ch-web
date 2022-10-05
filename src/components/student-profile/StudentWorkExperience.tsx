@@ -1,4 +1,4 @@
-import WorkingExperience from '@/models/CV/WorkingExperience';
+import WorkingExperience from '@/lib/cv/WorkingExperience';
 import NoWorkExperience from './NoWorkExperience';
 import WorkExperienceItem from './WorkExperienceItem';
 

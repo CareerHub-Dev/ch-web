@@ -1,4 +1,4 @@
-import WorkingExperience from '@/models/CV/WorkingExperience';
+import WorkingExperience from '@/lib/cv/WorkingExperience';
 import { getFormattedDate } from '@/lib/date';
 
 const greyText = 'text-md text-darkerGrey';
