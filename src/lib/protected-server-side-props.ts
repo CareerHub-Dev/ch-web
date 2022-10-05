@@ -1,8 +1,8 @@
 import { type GetServerSidePropsContext } from 'next/types';
 import verifyAuthority from './api/local/helpers/verify-authority';
 import verifySessionData from './api/local/helpers/verify-session-data';
-import UserRole from './enums/UserRole';
-import SessionData from './models/SessionData';
+import { type UserRole } from './schemas/UserRole';
+import { type SessionData } from './schemas/SessionData';
 
 const protectedServerSideProps =
   <PropsT>(

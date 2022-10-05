@@ -1,4 +1,4 @@
-import UserRole from '@/lib/enums/UserRole';
+import { type UserRole } from '@/lib/schemas/UserRole';
 import jwt from 'jsonwebtoken';
 
 /**

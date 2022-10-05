@@ -6,7 +6,6 @@ import StudentSubscriptions from '@/components/student-profile/StudentSubscripti
 import StudentWorkExperience from '@/components/student-profile/StudentWorkExperience';
 import { getStudent } from '@/lib/api/remote/student';
 import protectedServerSideProps from '@/lib/protected-server-side-props';
-import UserRole from '@/lib/enums/UserRole';
 import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 
@@ -72,7 +71,7 @@ StudentProfilePage.getLayout = (page) => {
 export default StudentProfilePage;
 
 export const getServerSideProps = protectedServerSideProps(
-  [UserRole.Student],
+  ['Student'],
   async (context: GetServerSidePropsContext) => {
     const studentId = context.query.studentId as string;
     const storedCookie = context.req.cookies['ch-http'] as string;

@@ -8,7 +8,6 @@ import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import SigOutIcon from '@/components/ui/icons/SignOutIcon';
 import LinkButton from '@/components/ui/LinkButton';
-import UserRole from '@/lib/enums/UserRole';
 
 import cn from 'classnames';
 import classes from './MainNavigation.module.scss';
@@ -20,8 +19,8 @@ const MainNavigation = () => {
   const { width } = useWindowSize();
 
   const isLoggedIn = auth.isLoggedIn;
-  const isStudent = isLoggedIn && auth.sessionData.role === UserRole.Student;
-  const isCompany = isLoggedIn && auth.sessionData.role === UserRole.Company;
+  const isStudent = isLoggedIn && auth.sessionData.role === 'Student';
+  const isCompany = isLoggedIn && auth.sessionData.role === 'Company';
   const isPhoneScreen = width < 600;
   const profileLink = isStudent ? '/my-profile' : '/my-dashboard';
 

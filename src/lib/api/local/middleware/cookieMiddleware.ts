@@ -1,6 +1,6 @@
 import { serialize, CookieSerializeOptions } from 'cookie';
 import { NextApiResponse } from 'next';
-import matchUserRole from '../helpers/match-user-role';
+import UserRoleSchema from '@/lib/schemas/UserRole';
 import signAuthorityToken from '../helpers/sign-authority-token';
 
 /**
@@ -73,13 +73,14 @@ const cookieMiddleware = (
 ) => {
   const { jwtToken, refreshToken, accountId, role, jwtTokenExpires } =
     backendResponse;
-  const matchedRole = matchUserRole(role);
+  const parsedRole = UserRoleSchema.safeParse(role);
 
-  if (!matchedRole) {
+  if (!parsedRole.success) {
     return res.status(500).json({
       message: 'Не вдалося визначити роль користувача',
     });
   }
+  const matchedRole = parsedRole.data;
   const authorityToken = signAuthorityToken(matchedRole);
   const httpCookie = {
     accountId,

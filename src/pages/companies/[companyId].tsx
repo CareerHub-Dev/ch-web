@@ -1,12 +1,10 @@
 import useAuth from '@/hooks/useAuth';
 import useShallowRoutes from '@/hooks/useShallowRoutes';
-import { GetServerSidePropsContext } from 'next';
 import { useQuery } from '@tanstack/react-query';
 import { fetchCompanyDetails } from '@/lib/api/remote/companies';
 import { useRouter } from 'next/router';
 import CompanyHeader from '@/components/companies/details/CompanyHeader';
 import CompanyBody from '@/components/companies/details/CompanyBody';
-import UserRole from '@/lib/enums/UserRole';
 import protecedServerSideProps from '@/lib/protected-server-side-props';
 
 const CompanyDetailsPage = () => {
@@ -66,4 +64,4 @@ const CompanyDetailsPage = () => {
 };
 export default CompanyDetailsPage;
 
-export const getServerSideProps = protecedServerSideProps([UserRole.Student]);
+export const getServerSideProps = protecedServerSideProps(['Student']);

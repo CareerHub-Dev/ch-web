@@ -6,7 +6,7 @@ import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
 import FeedWrapper from '@/components/layout/FeedWrapper';
 import SearchPanel from '@/components/companies/feed/SearchPanel';
 import LoadMoreSection from '@/components/layout/LoadMoreSection';
-import UserRole from '@/lib/enums/UserRole';
+import UserRole from '@/lib/schemas/UserRole';
 import protectedServerSideProps from '@/lib/protected-server-side-props';
 
 const defaultPageSize = 50;
@@ -54,4 +54,4 @@ const CompaniesFeedPage = () => {
 };
 export default CompaniesFeedPage;
 
-export const getServerSideProps = protectedServerSideProps([UserRole.Student]);
+export const getServerSideProps = protectedServerSideProps(['Student']);

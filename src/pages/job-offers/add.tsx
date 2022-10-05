@@ -1,5 +1,5 @@
 import protectedServerSideProps from '@/lib/protected-server-side-props';
-import UserRole from '@/lib/enums/UserRole';
+import UserRole from '@/lib/schemas/UserRole';
 import { GetServerSidePropsContext } from 'next/types';
 import JobOfferForm from '@/components/offers/add/JobOfferForm';
 
@@ -16,4 +16,4 @@ const AddJobOfferPage = () => {
 };
 export default AddJobOfferPage;
 
-export const getServerSideProps = protectedServerSideProps([UserRole.Company]);
+export const getServerSideProps = protectedServerSideProps(['Company']);

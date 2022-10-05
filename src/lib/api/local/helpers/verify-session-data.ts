@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import jwt from 'jwt-promisify';
-import UserRole from '@/lib/enums/UserRole';
+import { type UserRole } from '@/lib/schemas/UserRole';
 
 /**
  * Parses session data from the server-side context,

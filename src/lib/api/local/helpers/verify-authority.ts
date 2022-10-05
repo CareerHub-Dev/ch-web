@@ -1,5 +1,5 @@
-import UserRole from '@/lib/enums/UserRole';
-import SessionData from '@/lib/models/SessionData';
+import { type UserRole } from '@/lib/schemas/UserRole';
+import { type SessionData } from '@/lib/schemas/SessionData';
 
 /**
  * Verifies the authority token,
