@@ -1,4 +1,4 @@
-import { cvTemplateLocalization } from '../../models/resources/localization';
+import { cvTemplateLocalization } from '../../resources/cv-localization';
 
 enum CVJobType {
   Dev = 'dev',

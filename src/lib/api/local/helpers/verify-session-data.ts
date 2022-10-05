@@ -1,6 +1,5 @@
 import { GetServerSidePropsContext } from 'next';
 import jwt from 'jwt-promisify';
-import AuthorizationError from '../../../../models/errors/AuthorizationError';
 import UserRole from '@/lib/enums/UserRole';
 
 /**
@@ -12,7 +11,7 @@ import UserRole from '@/lib/enums/UserRole';
 const verifySessionData = async (request: GetServerSidePropsContext['req']) => {
   const authorityCookie = request.cookies['ch-http'];
   if (!authorityCookie) {
-    throw new AuthorizationError('Не вдалося отримати дані авторизації');
+    throw new Error('Не вдалося отримати дані авторизації');
   }
   const parsedSessionDataObj = JSON.parse(authorityCookie);
   if (
@@ -21,7 +20,7 @@ const verifySessionData = async (request: GetServerSidePropsContext['req']) => {
     !parsedSessionDataObj.accountId ||
     !parsedSessionDataObj.accessToken
   ) {
-    throw new AuthorizationError('Не вдалося отримати дані авторизації');
+    throw new Error('Не вдалося отримати дані авторизації');
   }
   const decoded = await jwt.verify(
     parsedSessionDataObj.authorityToken,
