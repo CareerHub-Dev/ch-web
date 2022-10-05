@@ -6,7 +6,7 @@ import classes from './StudentAvatar.module.scss';
 const StudentAvatar: React.FC<{
   photoId?: string;
 }> = ({ photoId }) => {
-  const { accessToken } = useAuth();
+  const { session } = useAuth();
   const photoIsSet = !!photoId;
 
   return (

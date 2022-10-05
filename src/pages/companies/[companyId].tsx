@@ -10,15 +10,17 @@ import protectedSsr from '@/lib/protected-ssr';
 const CompanyDetailsPage = () => {
   const router = useRouter();
   const companyId = router.query.companyId as string;
-  const { accessToken } = useAuth();
+  const { session } = useAuth();
+  const token = session?.jwtToken as string;
+
   const companyQuery = useQuery(
     ['company', companyId],
     fetchCompanyDetails({
-      token: accessToken as string,
+      token,
       companyId,
     }),
     {
-      enabled: accessToken !== null,
+      enabled: token !== null,
       onError: (err: any) =>
         alert(err.message || 'Помилка при завантаженні компанії'),
     }
@@ -42,7 +44,6 @@ const CompanyDetailsPage = () => {
     companyLogo,
     companyBanner,
   } = companyQuery.data;
-  console.log(companyMotto);
 
   return (
     <>

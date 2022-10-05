@@ -42,7 +42,7 @@ const JobOfferForm = () => {
   const responsibilitiesEditor = useEditor();
   const { startDate, endDate, dateFrameIsValid } = useDatepicker(maxDaysFrame);
 
-  const { accessToken } = useAuth();
+  const { session } = useAuth();
   const submitMutation = useMutation(['job-offer-form'], createJobOffer, {
     onError: (error) => {
       let msg;
@@ -128,7 +128,10 @@ const JobOfferForm = () => {
       preferences: 'none', // TODO: add preferences input and conversion
     };
 
-    submitMutation.mutate({ data: requestBody, accessToken });
+    submitMutation.mutate({
+      data: requestBody,
+      accessToken: session?.jwtToken as string,
+    });
   };
 
   return (

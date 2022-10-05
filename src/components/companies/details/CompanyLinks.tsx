@@ -6,14 +6,17 @@ import classes from './CompanyLinks.module.scss';
 const CompanyLinks: React.FC<{
   companyId: string;
 }> = ({ companyId }) => {
-  const { accessToken } = useAuth();
+  const { session } = useAuth();
+  const accessToken = session?.jwtToken as string;
   const linksQuery = useQuery(
     ['company', companyId, 'links'],
     fetchCompanyLinks({
       accessToken,
       companyId,
     }),
-    {}
+    {
+      enabled: !!accessToken,
+    }
   );
   const links = linksQuery.data || [];
   const linksAreEmpty = links.length === 0;

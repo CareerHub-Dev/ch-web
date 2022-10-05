@@ -11,7 +11,8 @@ import protectedSsr from '@/lib/protected-ssr';
 const defaultPageSize = 50;
 
 const CompaniesFeedPage = () => {
-  const { accessToken } = useAuth();
+  const { session } = useAuth();
+  const accessToken = session?.jwtToken as string;
   const [searchTerm, setSearchTerm] = useState('');
   const companiesQuery = useInfiniteQuery(
     [

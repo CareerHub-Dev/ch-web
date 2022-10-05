@@ -14,7 +14,8 @@ import protectedSsr from '@/lib/protected-ssr';
 const defaultPageSize = 50;
 
 const JobOffersFeedPage: NextPageWithLayout = () => {
-  const { accessToken } = useAuth();
+  const { session } = useAuth();
+  const token = session?.jwtToken as string;
   const { filter, isApplied } = useSelector(selectFilterOptions);
   const queryKey: Array<string | object> = ['jobOffers'];
   if (isApplied && !!filter) {
@@ -24,13 +25,13 @@ const JobOffersFeedPage: NextPageWithLayout = () => {
     queryKey,
     async ({ pageParam = 1 }) =>
       await fetchJobOffers({
-        token: accessToken as string,
+        token,
         pageNumber: pageParam,
         pageSize: defaultPageSize,
         filter: isApplied ? filter! : undefined,
       })(),
     {
-      enabled: !!accessToken,
+      enabled: !token,
       getNextPageParam: (lastPage) => lastPage.nextPage,
       onError: (err: any) =>
         alert(err.message || 'Помилка при завантаженні вакансій'),

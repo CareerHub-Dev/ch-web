@@ -5,7 +5,8 @@ import InfoItem from './InfoItem';
 import DocumentIcon from '@/components/ui/icons/DocumentIcon';
 
 const AppliedCVsInfo: React.FC<{ jobOfferId: string }> = ({ jobOfferId }) => {
-  const { accessToken } = useAuth();
+  const { session } = useAuth();
+  const accessToken = session?.jwtToken as string;
   const { data, status } = useQuery(
     ['jobOfferDetails', jobOfferId, 'applied-cvs-amount'],
     fetchJobOfferAppliedCvsAmount({

@@ -22,7 +22,8 @@ export default function useProtectedQuery<
     'queryFn' | 'queryKey'
   >
 ): UseQueryResult<TData, TError> {
-  const { accessToken } = useAuth();
+  const { session } = useAuth();
+  const accessToken = session?.jwtToken ?? null;
 
   const q = useQuery({
     queryKey,

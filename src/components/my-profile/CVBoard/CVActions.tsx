@@ -11,11 +11,12 @@ const CVActions: React.FC<{
   cvId: string;
   onClose: AnyFn;
 }> = ({ title, cvId, onClose }) => {
-  const { accessToken } = useAuth();
+  const { session } = useAuth();
+  const accessToken = session?.jwtToken as string;
   const deleteMutation = useMutation(
     ['deleteCv', cvId],
     deleteCv({
-      accessToken: accessToken as string,
+      accessToken,
       cvId,
     }),
     {

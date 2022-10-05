@@ -9,15 +9,16 @@ import CVActions from './CVActions';
 import classes from './CVBoard.module.scss';
 
 const CVBoard = () => {
-  const { accessToken, sessionData } = useAuth();
-  const accountId = sessionData.accountId;
+  const { session } = useAuth();
+  const accessToken = session?.jwtToken as string;
+  const accountId = session?.accountId as string;
   const [actionModalIsOpen, setActionModalIsOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState('');
   const cvsQuery = useQuery(
     ['cvs', accountId],
     fetchStudentCvs({
-      accessToken: accessToken as string,
-      accountId: accountId as string,
+      accessToken,
+      accountId,
     }),
     {
       enabled: accessToken !== null,
@@ -40,8 +41,6 @@ const CVBoard = () => {
       cvsQuery.refetch();
     }
   };
-
-  console.log(cvs);
 
   return (
     <>

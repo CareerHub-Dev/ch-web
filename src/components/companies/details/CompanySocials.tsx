@@ -9,7 +9,8 @@ import FollowButton from './FollowButton';
 import classes from './CompanySocials.module.scss';
 
 const CompanySocials: React.FC<{ companyId: string }> = ({ companyId }) => {
-  const { accessToken } = useAuth();
+  const { session } = useAuth();
+  const accessToken = session?.jwtToken as string;
   const subscribersQuery = useQuery(
     ['company', companyId, 'subscriptions', 'amount'],
     fetchCompanySubscribersAmount({
@@ -17,6 +18,7 @@ const CompanySocials: React.FC<{ companyId: string }> = ({ companyId }) => {
       companyId,
     }),
     {
+      enabled: !!accessToken,
       onError: (error: any) => {
         alert && alert(error.message || 'Помилка при завантаженні компанії');
       },

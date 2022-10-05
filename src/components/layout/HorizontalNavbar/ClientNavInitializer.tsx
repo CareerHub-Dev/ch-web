@@ -4,9 +4,7 @@ import { createPortal } from 'react-dom';
 import NavLink from './NavLink';
 
 const ClientNavInitializer = () => {
-  const { sessionData } = useAuth();
-  console.log('SessionData:', sessionData);
-
+  const { session } = useAuth();
   const { pathname } = useRouter();
   const horizontalNavbar = document.getElementById('horizontalNavbar');
   if (!horizontalNavbar) {

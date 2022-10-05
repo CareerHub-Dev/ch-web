@@ -1,30 +1,26 @@
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { createContext, type ReactNode } from 'react';
 import { useCookies } from 'react-cookie';
+import SessionDataSchema, { type SessionData } from '@/lib/schemas/SessionData';
 
 type AuthContextData = {
-  accessToken: string | null;
-  sessionData: any;
+  session: SessionData | null;
   isLoggedIn: boolean;
   logout: () => void;
 };
 
-const AuthContext = React.createContext<AuthContextData>({
-  accessToken: null,
-  sessionData: null,
+const AuthContext = createContext<AuthContextData>({
+  session: null,
   isLoggedIn: false,
   logout: () => {},
 });
 
-export const AuthContextProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const [cookies, _setCookie, removeCookie] = useCookies(['ch-client']);
   const clientCookie = cookies['ch-client'];
-  const accessToken = clientCookie?.accessToken || null;
+  const parsedSession = SessionDataSchema.safeParse(clientCookie);
+  const session = parsedSession.success ? parsedSession.data : null;
 
   const logoutHandler = () => {
     removeCookie('ch-client');
@@ -32,9 +28,8 @@ export const AuthContextProvider = ({
   };
 
   const contextValue = {
-    accessToken: accessToken,
-    sessionData: clientCookie,
-    isLoggedIn: !!clientCookie,
+    session,
+    isLoggedIn: !!session,
     logout: logoutHandler,
   } as AuthContextData;
 

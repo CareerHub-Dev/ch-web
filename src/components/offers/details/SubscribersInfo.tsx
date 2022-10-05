@@ -5,7 +5,8 @@ import InfoItem from './InfoItem';
 import PeopleIcon from '@/components/ui/icons/PeopleIcon';
 
 const SubscribersInfo: React.FC<{ jobOfferId: string }> = ({ jobOfferId }) => {
-  const { accessToken } = useAuth();
+  const { session } = useAuth();
+  const accessToken = session?.jwtToken as string;
   const { data, isLoading } = useQuery(
     ['jobOffer', jobOfferId, 'subscriptions', 'amount'],
     fetchJobOfferSubscribedStudentsAmount({

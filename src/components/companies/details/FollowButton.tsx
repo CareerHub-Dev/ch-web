@@ -23,14 +23,18 @@ const followedStyle = {
 const FollowButton: React.FC<{
   companyId: string;
 }> = ({ companyId }) => {
-  const { accessToken } = useAuth();
+  const { session } = useAuth();
+  const accessToken = session?.jwtToken as string;
   const queryClient = useQueryClient();
   const subscriptionStatusQuery = useQuery(
     ['company', companyId, 'subscriptions', 'self'],
     fetchCompanySubscriptionStatus({
       accessToken,
       companyId,
-    })
+    }),
+    {
+      enabled: !!accessToken,
+    }
   );
   const isFollowed = subscriptionStatusQuery.data;
 

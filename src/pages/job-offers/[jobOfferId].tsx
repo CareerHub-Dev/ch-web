@@ -10,16 +10,17 @@ import JobOfferContent from '@/components/offers/details/JobOfferContent';
 import protectedSsr from '@/lib/protected-ssr';
 
 const JobOfferDetailPage = () => {
-  const { accessToken } = useAuth();
+  const { session } = useAuth();
+  const token = session?.jwtToken as string;
   const { jobOfferId } = useRouter().query;
   const jobOfferQuery = useQuery(
     ['jobOfferDetails', jobOfferId],
     fetchJobOfferDetails({
-      token: accessToken as string,
+      token,
       jobOfferId: jobOfferId as string,
     }),
     {
-      enabled: !!accessToken,
+      enabled: !!token,
       onError: (err: any) => {
         alert && alert(err.message);
       },
