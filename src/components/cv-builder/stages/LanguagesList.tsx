@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { selectLanguages } from '@/store/cv-constructor';
+import { selectLanguages } from '@/context/cv-constructor';
 import FormErrorMessage from '@/components/ui/form/FormErrorMessage';
 import LanguageItem from './LanguageItem';
 

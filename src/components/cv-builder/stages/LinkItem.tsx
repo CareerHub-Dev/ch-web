@@ -1,5 +1,5 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import { removeLink } from '@/store/cv-constructor';
+import { removeLink } from '@/context/cv-constructor';
 import Link from '@/models/CV/Link';
 import TrashIcon from '@/components/ui/icons/TrashIcon';
 

@@ -1,4 +1,4 @@
-import UserRole from '@/models/enums/UserRole';
+import UserRole from '@/lib/enums/UserRole';
 
 /**
  * Matches a string to a UserRole
@@ -12,8 +12,6 @@ const matchUserRole = (role: string) => {
       return UserRole.Student;
     case 'COMPANY':
       return UserRole.Company;
-    case 'ADMIN':
-      return UserRole.Admin;
     default:
       return null;
   }

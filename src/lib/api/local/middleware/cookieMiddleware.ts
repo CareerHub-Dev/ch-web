@@ -1,11 +1,10 @@
-import UserRole from '@/models/enums/UserRole';
 import { serialize, CookieSerializeOptions } from 'cookie';
 import { NextApiResponse } from 'next';
 import matchUserRole from '../helpers/match-user-role';
 import signAuthorityToken from '../helpers/sign-authority-token';
 
 /**
- * Sets `cookie` using the `res` object.
+ * Sets multiple `cookies` using the `res` object.
  * Allows to set `maxAge` in options.
  * Some passed options will be overridden:
  * - `path` will be set to `/`
@@ -13,25 +12,30 @@ import signAuthorityToken from '../helpers/sign-authority-token';
  * - `httpOnly` will be set to `true`
  * - `sameSite` will be set to `'lax'`
  */
-const setCookie = (
+const setCookies = (
   res: NextApiResponse,
-  name: string,
-  value: unknown,
-  options: CookieSerializeOptions = {}
+  cookies: Array<{
+    name: string;
+    value: unknown;
+    options: Omit<CookieSerializeOptions, 'sameSite' | 'path' | 'secure'>;
+  }>
 ) => {
-  const stringValue =
-    typeof value === 'object' ? JSON.stringify(value) : String(value);
-
-  options.secure = process.env.NODE_ENV === 'production';
-  options.httpOnly = options.httpOnly ?? true;
-  options.sameSite = 'lax';
-  options.path = '/';
-
-  if ('maxAge' in options) {
-    options.expires = new Date(Date.now() + options.maxAge!);
-    options.maxAge! /= 1000;
-  }
-  res.setHeader('Set-Cookie', serialize(name, stringValue, options));
+  const cookiesToSet = cookies.map((cookie) => {
+    const { name, value, options } = cookie;
+    const cookieOptions: CookieSerializeOptions = { ...options };
+    cookieOptions.secure = process.env.NODE_ENV === 'production';
+    cookieOptions.path = '/';
+    cookieOptions.httpOnly = options.httpOnly ?? true;
+    cookieOptions.sameSite = 'lax';
+    const stringValue =
+      typeof value === 'object' ? JSON.stringify(value) : String(value);
+    if (options.maxAge) {
+      cookieOptions.expires = new Date(Date.now() + options.maxAge);
+      cookieOptions.maxAge! /= 1000;
+    }
+    return serialize(name, stringValue, cookieOptions);
+  });
+  res.setHeader('Set-Cookie', cookiesToSet);
 };
 
 /**
@@ -63,7 +67,10 @@ export const cleanSessionCookies = (res: NextApiResponse) => {
  * @param res - the response object
  * @param backendResponse - the response object from the remote backend
  */
-const cookieMiddleware = (res: NextApiResponse, backendResponse: any) => {
+const cookieMiddleware = (
+  res: NextApiResponse,
+  backendResponse: RawSessionData
+) => {
   const { jwtToken, refreshToken, accountId, role, jwtTokenExpires } =
     backendResponse;
   const matchedRole = matchUserRole(role);
@@ -86,7 +93,23 @@ const cookieMiddleware = (res: NextApiResponse, backendResponse: any) => {
     accessToken: jwtToken,
     accessExpires: jwtTokenExpires,
   };
-  setCookie(res, 'ch-http', httpCookie);
+
+  setCookies(res, [
+    {
+      name: 'ch-http',
+      value: httpCookie,
+      options: {
+        httpOnly: true,
+      },
+    },
+    {
+      name: 'ch-client',
+      value: clientCookie,
+      options: {
+        httpOnly: false,
+      },
+    },
+  ]);
 
   const extendedData = {
     httpCookie,

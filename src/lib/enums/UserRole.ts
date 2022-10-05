@@ -1,5 +1,4 @@
 enum UserRole {
-  Admin = 'Admin',
   Student = 'Student',
   Company = 'Company',
 }

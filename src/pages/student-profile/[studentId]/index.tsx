@@ -1,4 +1,3 @@
-import type { NextPageWithLayout } from '../../_app';
 import HorizontalNavbar from '@/components/layout/HorizontalNavbar';
 import Footer from '@/components/layout/Footer';
 import StudentAvatar from '@/components/student-profile/StudentAvatar';
@@ -7,7 +6,7 @@ import StudentSubscriptions from '@/components/student-profile/StudentSubscripti
 import StudentWorkExperience from '@/components/student-profile/StudentWorkExperience';
 import { getStudent } from '@/lib/api/remote/student';
 import protectedServerSideProps from '@/lib/protected-server-side-props';
-import UserRole from '@/models/enums/UserRole';
+import UserRole from '@/lib/enums/UserRole';
 import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 

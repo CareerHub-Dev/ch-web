@@ -7,7 +7,7 @@ import {
   selectTitle,
   selectEntireCVState,
   reset,
-} from '@/store/cv-constructor';
+} from '@/context/cv-constructor';
 import useAuth from '@/hooks/useAuth';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import { useSelector } from 'react-redux';

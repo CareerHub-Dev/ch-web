@@ -1,3 +1,17 @@
+type RawSessionData = {
+  accountId: string;
+  role: string;
+  jwtToken: string;
+  jwtTokenExpires: string;
+  refreshToken: string;
+};
+
+interface AppNavigationLink {
+  href: string;
+  text: string;
+  exact?: boolean;
+}
+
 interface JobOfferFilter {
   searchTerm?: string;
   jobType?: string;
@@ -61,14 +75,6 @@ namespace JobOfferForm {
     tagIds: Array<string>;
   };
 }
-
-type SessionData = {
-  authorityToken: string;
-  accessToken: string;
-  accountId: string;
-  refreshToken: string;
-  expires: string;
-};
 
 type ValueOf<T> = T[keyof T];
 type AnyFn = (...args: any[]) => any;

@@ -1,4 +1,3 @@
-import type { NextPageWithLayout } from '../_app';
 import { GetStaticPropsContext } from 'next';
 import ForgotPasswordForm from '@/components/auth/forms/ForgotPasswordForm';
 import RegisterForm from '@/components/auth/forms/RegisterForm';

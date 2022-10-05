@@ -1,5 +1,5 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import { addTag } from '@/store/job-offers-feed';
+import { addTag } from '@/context/job-offers-feed';
 import cn from 'classnames';
 import classes from './TagsSuggestions.module.scss';
 

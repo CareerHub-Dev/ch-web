@@ -2,7 +2,7 @@ import {
   selectIsAssistEnabled,
   selectSkillsAndTechnologies,
   setSkillsAndTechnologies,
-} from '@/store/cv-constructor';
+} from '@/context/cv-constructor';
 import { useSelector } from 'react-redux';
 import useReduxStringInput from '../../../hooks/useReduxStringInput';
 import AssistantTip from './AssistantTip';

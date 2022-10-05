@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
-import JobType from '@/models/enums/_JobType';
-import WorkFormat from '@/models/enums/WorkFormat';
-import ExperienceLevel from '@/models/enums/ExperienceLevel';
+import JobType from '@/lib/enums/_JobType';
+import WorkFormat from '@/lib/enums/WorkFormat';
+import ExperienceLevel from '@/lib/enums/ExperienceLevel';
 
 type JobOffersFeedState = {
   searchTerm: string;

@@ -1,4 +1,4 @@
-import RequestStatus from '@/models/enums/RequestStatus';
+import RequestStatus from '@/lib/enums/RequestStatus';
 import { backendApiBaseUrl, retrieveErrorMessage } from '..';
 
 export const sendForgotPasswordRequest = (email: string, callback: any) => {

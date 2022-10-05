@@ -5,7 +5,7 @@ import {
   selectSurname,
   setName,
   setSurname,
-} from '@/store/cv-constructor';
+} from '@/context/cv-constructor';
 import { useSelector } from 'react-redux';
 import useStudentQuery from '@/hooks/useStudentQuery';
 import useReduxStringInput from '@/hooks/useReduxStringInput';

@@ -7,11 +7,11 @@ import useImageUpload from '@/hooks/useImageUpload';
 import useDatepicker from '@/hooks/useDatepicker';
 import { createJobOffer } from '@/lib/api/remote/jobOffers';
 
-import JobType, { jobTypeOptions } from '@/models/enums/_JobType';
-import WorkFormat, { workFormatOptions } from '@/models/enums/WorkFormat';
+import JobType, { jobTypeOptions } from '@/lib/enums/_JobType';
+import WorkFormat, { workFormatOptions } from '@/lib/enums/WorkFormat';
 import ExperienceLevel, {
   experienceLevelOptions,
-} from '@/models/enums/ExperienceLevel';
+} from '@/lib/enums/ExperienceLevel';
 
 import LoadedImage from '@/components/ui/LoadedImage';
 import EditorsList from './EditorsList';

@@ -7,13 +7,13 @@ import {
   setJobPosition,
   setTemplateLanguage,
   setIsAssistEnabled,
-} from '@/store/cv-constructor';
+} from '@/context/cv-constructor';
 import useJobPositionsQuery from '@/hooks/useJobPositionsQuery';
 import { useSelector } from 'react-redux';
 import useReduxStringInput from '@/hooks/useReduxStringInput';
 import useAppDispatch from '@/hooks/useAppDispatch';
-import CVJobType from '@/models/enums/CVJobType';
-import CVTemplateLanguage from '@/models/enums/CVTemplateLanguage';
+import CVJobType from '@/lib/enums/CVJobType';
+import CVTemplateLanguage from '@/lib/enums/CVTemplateLanguage';
 import AssistantTip from './AssistantTip';
 import Card from '@/components/ui/Card';
 import FormSelect from '@/components/ui/form/FormSelect';

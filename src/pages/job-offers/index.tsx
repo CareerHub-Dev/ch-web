@@ -1,16 +1,15 @@
 import useAuth from '@/hooks/useAuth';
 import { useSelector } from 'react-redux';
-import { selectFilterOptions } from '@/store/job-offers-feed';
+import { selectFilterOptions } from '@/context/job-offers-feed';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import LoadMoreSection from '@/components/layout/LoadMoreSection';
 import FeedWrapper from '@/components/layout/FeedWrapper';
 import JobOffersFilters from '@/components/offers/feed/JobOfferFilters';
 import JobOffersList from '@/components/offers/feed/JobOffersList';
 import Head from 'next/head';
-import UserRole from '@/models/enums/UserRole';
+import UserRole from '@/lib/enums/UserRole';
 import { fetchJobOffers } from '@/lib/api/remote/jobOffers';
 import protectedServerSideProps from '@/lib/protected-server-side-props';
-import { NextPageWithLayout } from '../_app';
 import HorizontalNavbar from '@/components/layout/HorizontalNavbar';
 
 const defaultPageSize = 50;

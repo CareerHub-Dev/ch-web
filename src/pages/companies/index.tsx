@@ -6,9 +6,9 @@ import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
 import FeedWrapper from '@/components/layout/FeedWrapper';
 import SearchPanel from '@/components/companies/feed/SearchPanel';
 import LoadMoreSection from '@/components/layout/LoadMoreSection';
-import UserRole from '@/models/enums/UserRole';
+import UserRole from '@/lib/enums/UserRole';
 import protectedServerSideProps from '@/lib/protected-server-side-props';
-import WithVerification from '@/components/HOC/WithVerification';
+
 const defaultPageSize = 50;
 
 const CompaniesFeedPage = () => {
@@ -52,6 +52,6 @@ const CompaniesFeedPage = () => {
     </>
   );
 };
-export default WithVerification(CompaniesFeedPage);
+export default CompaniesFeedPage;
 
 export const getServerSideProps = protectedServerSideProps([UserRole.Student]);

@@ -22,8 +22,7 @@ const LoginForm = () => {
   const passwordInput = useInput(getPasswordValidity);
   const formIsValid = emailInput.isValid && passwordInput.isValid;
   const authMutation = useMutation(['auth'], authenticate, {
-    onSuccess: (data: any) => {
-      auth.login(data);
+    onSuccess: () => {
       router.push('/my-profile');
     },
     onError: (error) => {

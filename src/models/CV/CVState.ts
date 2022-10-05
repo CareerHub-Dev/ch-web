@@ -4,7 +4,7 @@ import Language from './Language';
 import Link from './Link';
 import { getArrayInput } from '../ArrayInput';
 import { getStringInput } from '../StringInput';
-import CVTemplateLanguage from '../enums/CVTemplateLanguage';
+import CVTemplateLanguage from '../../lib/enums/CVTemplateLanguage';
 
 type CVState = {
   title: StringInput;

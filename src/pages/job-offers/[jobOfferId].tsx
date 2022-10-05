@@ -7,7 +7,7 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import GeneralInfo from '@/components/offers/details/GeneralInfo';
 import JobOfferTitle from '@/components/offers/details/JobOfferTitle';
 import JobOfferContent from '@/components/offers/details/JobOfferContent';
-import UserRole from '@/models/enums/UserRole';
+import UserRole from '@/lib/enums/UserRole';
 import protectedServerSideProps from '@/lib/protected-server-side-props';
 
 const JobOfferDetailPage = () => {

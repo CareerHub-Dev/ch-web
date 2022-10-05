@@ -1,6 +1,5 @@
-import type { NextPageWithLayout } from './_app';
-import NureLogo from '@/assets/logos/NureLogo.svg';
-import CareerLogo from '@/assets/logos/CareerLogo.svg';
+import NureLogo from '@/resources/logos/NureLogo.svg';
+import CareerLogo from '@/resources/logos/CareerLogo.svg';
 import Head from 'next/head';
 import HorizontalNavbar from '@/components/layout/HorizontalNavbar';
 import Footer from '@/components/layout/Footer';
@@ -13,9 +12,17 @@ const AuthButtons = dynamic(() => import('@/components/landing/AuthButtons'), {
   ssr: false,
 });
 
+const ClientNavInitializer = dynamic(
+  () => import('@/components/layout/HorizontalNavbar/ClientNavInitializer'),
+  {
+    ssr: false,
+  }
+);
+
 const LandingPage: NextPageWithLayout = () => {
   return (
     <>
+      <ClientNavInitializer />
       <header className="mt-20 flex flex-col items-center content-center">
         <div className={classes.logos} id="partnerLogos">
           <NureLogo id="nureLogo" />
@@ -39,9 +46,9 @@ LandingPage.getLayout = (page) => {
         />
       </Head>
       <HorizontalNavbar />
-      <Background />
       <main>{page}</main>
       <Footer />
+      <Background />
     </>
   );
 };

@@ -1,5 +1,5 @@
 import protectedServerSideProps from '@/lib/protected-server-side-props';
-import UserRole from '@/models/enums/UserRole';
+import UserRole from '@/lib/enums/UserRole';
 import { GetServerSidePropsContext } from 'next/types';
 
 const CompanyDashboard = () => {

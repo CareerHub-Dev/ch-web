@@ -8,7 +8,7 @@ import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import SigOutIcon from '@/components/ui/icons/SignOutIcon';
 import LinkButton from '@/components/ui/LinkButton';
-import UserRole from '@/models/enums/UserRole';
+import UserRole from '@/lib/enums/UserRole';
 
 import cn from 'classnames';
 import classes from './MainNavigation.module.scss';

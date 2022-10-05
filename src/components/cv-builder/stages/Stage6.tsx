@@ -5,7 +5,7 @@ import {
   selectOtherExperience,
   setOtherExperience,
   addLink,
-} from '@/store/cv-constructor';
+} from '@/context/cv-constructor';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import useReduxStringInput from '@/hooks/useReduxStringInput';

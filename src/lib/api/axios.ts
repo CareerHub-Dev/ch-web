@@ -13,11 +13,21 @@ export const retrieveAxiosErrorMessage = (err: AxiosError<any>) => {
   return err.response?.data?.detail || err.message || 'Невідома помилка';
 };
 
-export const request = async <TData = any, TConfig = any>(
-  options: AxiosRequestConfig<TConfig>
-) => {
+type AxiosResponseCallbackFn<TData = any, TResult = any> = (
+  response: ValueOf<AxiosResponse<TData>>
+) => TResult;
+
+type ExtendedAxiosRequestOptions<TData, TConfig, TSelected> =
+  AxiosRequestConfig<TConfig> & {
+    select?: AxiosResponseCallbackFn<TData, TSelected>;
+  };
+
+export const request = async <TData = any, TConfig = any, TSelected = TData>({
+  select = (response) => response.data,
+  ...options
+}: ExtendedAxiosRequestOptions<TData, TConfig, TSelected>) => {
   const onSuccess = (response: AxiosResponse<TData, TConfig>) => {
-    return response.data;
+    return select(response);
   };
 
   const onError = (err: AxiosError<TData, TConfig>) => {

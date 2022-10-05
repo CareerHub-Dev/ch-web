@@ -6,7 +6,7 @@ import { fetchCompanyDetails } from '@/lib/api/remote/companies';
 import { useRouter } from 'next/router';
 import CompanyHeader from '@/components/companies/details/CompanyHeader';
 import CompanyBody from '@/components/companies/details/CompanyBody';
-import UserRole from '@/models/enums/UserRole';
+import UserRole from '@/lib/enums/UserRole';
 import protecedServerSideProps from '@/lib/protected-server-side-props';
 
 const CompanyDetailsPage = () => {

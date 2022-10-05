@@ -1,7 +1,7 @@
 import { MouseEventHandler } from 'react';
 import { useSelector } from 'react-redux';
 import useAppDispatch from '@/hooks/useAppDispatch';
-import { removeTag, selectTags } from '@/store/job-offers-feed';
+import { removeTag, selectTags } from '@/context/job-offers-feed';
 import RemoveIconAlt from '@/components/ui/icons/RemoveIconAlt';
 
 import classes from './SelectedTags.module.scss';

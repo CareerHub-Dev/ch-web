@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useAppDispatch from '../../../hooks/useAppDispatch';
 import useInput from '../../../hooks/useInput';
-import { addWorkingExperience } from '../../../store/cv-constructor';
+import { addWorkingExperience } from '../../../context/cv-constructor';
 
 import FormInput from '@/components/ui/form/FormInput';
 import FormSelect from '@/components/ui/form/FormSelect';

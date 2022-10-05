@@ -1,8 +1,8 @@
-import UserRole from '@/models/enums/UserRole';
-import SessionData from '@/models/SessionData';
 import { type GetServerSidePropsContext } from 'next/types';
 import verifyAuthority from './api/local/helpers/verify-authority';
 import verifySessionData from './api/local/helpers/verify-session-data';
+import UserRole from './enums/UserRole';
+import SessionData from './models/SessionData';
 
 const protectedServerSideProps =
   <PropsT>(
@@ -16,7 +16,7 @@ const protectedServerSideProps =
     let accessAllowed = false;
     let sessionData: SessionData | null = null;
     try {
-      sessionData = await verifySessionData(context.req);
+      sessionData = (await verifySessionData(context.req)) as SessionData;
       accessAllowed = verifyAuthority(sessionData, allowedRoles);
     } catch {
       return {
@@ -64,3 +64,56 @@ const protectedServerSideProps =
     }
   };
 export default protectedServerSideProps;
+
+export const protectedSsr =
+  <TProps>(options: {
+    allowedRoles: Array<UserRole>;
+    redirect: {
+      destination: string;
+      permanent: boolean;
+    };
+  }) =>
+  (
+    getServerSidePropsFn?: (context: GetServerSidePropsContext) => Promise<
+      | {
+          props: TProps;
+        }
+      | {
+          redirect: {
+            destination: string;
+            permanent?: boolean;
+          };
+        }
+    >
+  ) => {
+    return async function protectedServerSidePropsCreator(
+      context: GetServerSidePropsContext
+    ) {
+      const session = {};
+      const sessionStatusVerified = true; // TODO: verify session status
+
+      if (!sessionStatusVerified) {
+        return {
+          redirect: options.redirect,
+        };
+      }
+
+      if (!getServerSidePropsFn) {
+        return {
+          props: { session },
+        };
+      }
+      const otherProps = await getServerSidePropsFn(context);
+
+      if ('redirect' in otherProps) {
+        return otherProps.redirect;
+      }
+
+      return {
+        props: {
+          session,
+          ...otherProps.props,
+        },
+      };
+    };
+  };

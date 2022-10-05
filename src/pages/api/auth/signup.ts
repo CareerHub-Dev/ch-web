@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import RequestStatus from '@/models/enums/RequestStatus';
+import RequestStatus from '@/lib/enums/RequestStatus';
 import cookieMiddleware from '@/lib/api/local/middleware/cookieMiddleware';
-import UserRole from '@/models/enums/UserRole';
+import UserRole from '@/lib/enums/UserRole';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {

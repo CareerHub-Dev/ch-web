@@ -1,7 +1,6 @@
 import CVControls from '@/components/cv-builder/CVControls';
 import CVPreview from '@/components/cv-builder/CVPreview';
-import UserRole from '@/models/enums/UserRole';
-import { GetServerSidePropsContext } from 'next';
+import UserRole from '@/lib/enums/UserRole';
 import protectedServerSideProps from '@/lib/protected-server-side-props';
 
 import classes from '@/styles/cv-builder.module.scss';

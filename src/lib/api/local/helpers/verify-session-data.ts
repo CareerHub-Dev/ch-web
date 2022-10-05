@@ -1,8 +1,7 @@
-import UserRole from '@/models/enums/UserRole';
 import { GetServerSidePropsContext } from 'next';
 import jwt from 'jwt-promisify';
 import AuthorizationError from '../../../../models/errors/AuthorizationError';
-import SessionData from '@/models/SessionData';
+import UserRole from '@/lib/enums/UserRole';
 
 /**
  * Parses session data from the server-side context,
@@ -28,10 +27,8 @@ const verifySessionData = async (request: GetServerSidePropsContext['req']) => {
     parsedSessionDataObj.authorityToken,
     String(process.env.JWT_SECRET)
   );
-  const sessionData: SessionData = {
+  const sessionData = {
     role: decoded.role as UserRole,
-    authorityToken: parsedSessionDataObj.authorityToken,
-    accessToken: parsedSessionDataObj.accessToken,
     accountId: parsedSessionDataObj.accountId,
   };
 

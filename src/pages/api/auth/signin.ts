@@ -10,6 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { email, password } = JSON.parse(req.body);
     const data = await authenticate({ email, password });
+
     return cookieMiddleware(res, data);
   } catch (err) {
     let message = 'Невідома помилка';

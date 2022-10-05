@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { selectWorkingExperience } from '@/store/cv-constructor';
+import { selectWorkingExperience } from '@/context/cv-constructor';
 import FormErrorMessage from '@/components/ui/form/FormErrorMessage';
 import WorkingExperienceItem from './WorkingExperienceItem';
 

@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { selectEntireCVState } from '../../../store/cv-constructor';
+import { selectEntireCVState } from '../../../context/cv-constructor';
 import Link from 'next/link';
 
 import classes from './CompletionStage.module.scss';

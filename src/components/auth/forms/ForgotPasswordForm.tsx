@@ -10,7 +10,7 @@ import {
   sendForgotPasswordRequest,
   sendResetPasswordRequest,
 } from '@/lib/api/remote/auth';
-import RequestStatus from '@/models/enums/RequestStatus';
+import RequestStatus from '@/lib/enums/RequestStatus';
 import AuthField from '../AuthField';
 import KeyIcon from '@/components/ui/icons/KeyIcon';
 import EnvelopeIcon from '@/components/ui/icons/EnvelopeIcon';

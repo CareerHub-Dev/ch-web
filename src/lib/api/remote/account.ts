@@ -7,7 +7,7 @@ export const authenticate = ({
   email: string;
   password: string;
 }) => {
-  return request({
+  return request<RawSessionData>({
     url: 'Account/authenticate',
     method: 'POST',
     data: { email, password },
@@ -15,7 +15,7 @@ export const authenticate = ({
 };
 
 export const refreshToken = (refreshToken: string) => {
-  return request({
+  return request<RawSessionData>({
     url: 'Account/refresh-token',
     method: 'POST',
     data: { token: refreshToken },

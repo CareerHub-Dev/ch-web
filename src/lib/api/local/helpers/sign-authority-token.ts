@@ -1,4 +1,4 @@
-import UserRole from '@/models/enums/UserRole';
+import UserRole from '@/lib/enums/UserRole';
 import jwt from 'jsonwebtoken';
 
 /**

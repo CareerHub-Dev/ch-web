@@ -6,7 +6,7 @@ import {
   selectTagsSearch,
   setTagsSearch,
   selectTags,
-} from '@/store/job-offers-feed';
+} from '@/context/job-offers-feed';
 import { getTags } from '@/lib/api/remote/tags';
 import SelectedTags from './SelectedTags';
 import Overlay from '@/components/ui/Overlay';
