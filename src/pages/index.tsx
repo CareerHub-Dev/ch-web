@@ -4,14 +4,12 @@ import CareerLogo from '@/assets/logos/CareerLogo.svg';
 import Head from 'next/head';
 import HorizontalNavbar from '@/components/layout/HorizontalNavbar';
 import Footer from '@/components/layout/Footer';
+import Background from '@/components/layout/Background';
 import dynamic from 'next/dynamic';
 
 import classes from '@/styles/index.module.scss';
 
 const AuthButtons = dynamic(() => import('@/components/landing/AuthButtons'), {
-  ssr: false,
-});
-const Background = dynamic(() => import('@/components/layout/Background'), {
   ssr: false,
 });
 
@@ -41,9 +39,9 @@ LandingPage.getLayout = (page) => {
         />
       </Head>
       <HorizontalNavbar />
+      <Background />
       <main>{page}</main>
       <Footer />
-      <Background />
     </>
   );
 };

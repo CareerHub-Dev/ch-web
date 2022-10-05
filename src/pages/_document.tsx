@@ -18,7 +18,6 @@ class MyDocument extends Document {
         <Head></Head>
         <body>
           <Main />
-          <div id="appBackground" />
           <div id="modal" />
           <NextScript />
         </body>
