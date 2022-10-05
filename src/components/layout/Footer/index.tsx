@@ -6,10 +6,6 @@ const footerNavItems = [
     text: 'CareerHub © 2022',
   },
   {
-    href: '/help',
-    text: "Зв'язок",
-  },
-  {
     href: 'http://rabota.nure.ua/',
     text: `Центр-Кар'єра`,
     newTab: true,
@@ -27,7 +23,6 @@ const Footer = () => {
             </li>
           ))}
         </ul>
-        <section></section>
       </nav>
     </footer>
   );

@@ -2,7 +2,6 @@ import type { NextPageWithLayout } from './_app';
 import NureLogo from '@/assets/logos/NureLogo.svg';
 import CareerLogo from '@/assets/logos/CareerLogo.svg';
 import Head from 'next/head';
-import Background from '@/components/layout/Background';
 import HorizontalNavbar from '@/components/layout/HorizontalNavbar';
 import Footer from '@/components/layout/Footer';
 import dynamic from 'next/dynamic';
@@ -10,6 +9,9 @@ import dynamic from 'next/dynamic';
 import classes from '@/styles/index.module.scss';
 
 const AuthButtons = dynamic(() => import('@/components/landing/AuthButtons'), {
+  ssr: false,
+});
+const Background = dynamic(() => import('@/components/layout/Background'), {
   ssr: false,
 });
 
