@@ -5,7 +5,7 @@ import useToast from '@/hooks/useToast';
 import useInput from '@/hooks/useInput';
 import { useMutation } from '@tanstack/react-query';
 import { getEmailValidity, getPasswordValidity } from '@/lib/util';
-import { authenticate } from '@/lib/api/AccountService';
+import { LocalGateway } from '@/lib/api/account';
 import AuthField from '../AuthField';
 import KeyIcon from '@/components/ui/icons/KeyIcon';
 import EnvelopeIcon from '@/components/ui/icons/EnvelopeIcon';
@@ -21,7 +21,7 @@ const LoginForm = () => {
   const emailInput = useInput(getEmailValidity);
   const passwordInput = useInput(getPasswordValidity);
   const formIsValid = emailInput.isValid && passwordInput.isValid;
-  const authMutation = useMutation(['auth'], authenticate, {
+  const authMutation = useMutation(['auth'], LocalGateway.authenticate, {
     onSuccess: () => {
       router.push('/my-profile');
     },

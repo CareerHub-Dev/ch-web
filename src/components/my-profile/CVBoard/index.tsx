@@ -1,7 +1,7 @@
 import useAuth from '@/hooks/useAuth';
-import { useQuery } from '@tanstack/react-query';
+import useProtectedQuery from '@/hooks/useProtectedQuery';
 import { useState } from 'react';
-import { fetchStudentCvs } from '@/lib/api/remote/student';
+import { fetchStudentCvs } from '@/lib/api/student';
 import LinkButton from '@/components/ui/LinkButton';
 import CVItem from './CVItem';
 import CVActions from './CVActions';
@@ -10,18 +10,13 @@ import classes from './CVBoard.module.scss';
 
 const CVBoard = () => {
   const { session } = useAuth();
-  const accessToken = session?.jwtToken as string;
   const accountId = session?.accountId as string;
   const [actionModalIsOpen, setActionModalIsOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState('');
-  const cvsQuery = useQuery(
+  const cvsQuery = useProtectedQuery(
     ['cvs', accountId],
-    fetchStudentCvs({
-      accessToken,
-      accountId,
-    }),
+    fetchStudentCvs(accountId),
     {
-      enabled: accessToken !== null,
       onError: (err: any) =>
         console.log(err.message || 'Помилка при завантаженні резюме'),
     }

@@ -1,5 +1,5 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { backendApiBaseUrl, localGatewayUrl } from '.';
+import axios, { AxiosError, AxiosInstance } from 'axios';
+import { backendApiBaseUrl, localGatewayUrl } from './api';
 
 const defaultHeaders = { 'Content-Type': 'application/json' };
 
@@ -23,22 +23,23 @@ export const retrieveAxiosErrorMessage = (err: AxiosError<any>) => {
   );
 };
 
-export type AxiosResponseCallbackFn<TData = any, TResult = any> = (
-  response: ValueOf<AxiosResponse<TData>>
-) => TResult;
-
-export type ExtendedAxiosRequestOptions<TData, TConfig, TSelected> =
-  AxiosRequestConfig<TConfig> & {
-    select?: AxiosResponseCallbackFn<TData, TSelected>;
-  };
+const requestErrorHandler = <TData, TConfig>(
+  err: AxiosError<TData, TConfig>
+) => {
+  const msg = retrieveAxiosErrorMessage(err);
+  return Promise.reject(msg);
+};
 
 export const request = async <TData = any, TConfig = any, TSelected = TData>({
+  instance = axiosInstance,
+  prefix,
   select = (response) => response.data,
+  method = 'GET',
   ...options
 }: ExtendedAxiosRequestOptions<TData, TConfig, TSelected>) => {
-  const onError = (err: AxiosError<TData, TConfig>) => {
-    const msg = retrieveAxiosErrorMessage(err);
-    return Promise.reject(msg);
-  };
-  return axiosInstance(options).then(select).catch(onError);
+  if (prefix) {
+    options.url = `${prefix}/${options.url}`;
+  }
+
+  return axiosInstance(options).then(select).catch(requestErrorHandler);
 };

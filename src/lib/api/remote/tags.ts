@@ -1,4 +1,4 @@
-import { request } from '../axios';
+import { request } from '../../axios';
 
 export const getTags = (accessToken: Nullable<string>) => async () => {
   return request({

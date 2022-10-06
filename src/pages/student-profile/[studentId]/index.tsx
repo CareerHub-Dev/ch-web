@@ -4,7 +4,7 @@ import StudentAvatar from '@/components/student-profile/StudentAvatar';
 import StudentInfo from '@/components/student-profile/StudentInfo';
 import StudentSubscriptions from '@/components/student-profile/StudentSubscriptions';
 import StudentWorkExperience from '@/components/student-profile/StudentWorkExperience';
-import { getStudent } from '@/lib/api/remote/student';
+import { getStudent } from '@/lib/api/student';
 import protectedSsr from '@/lib/protected-ssr';
 import Link from 'next/link';
 
@@ -72,10 +72,8 @@ export default StudentProfilePage;
 export const getServerSideProps = protectedSsr({ allowedRoles: ['Student'] })(
   async (context) => {
     const studentId = context.query.studentId as string;
-    const storedCookie = context.req.cookies['ch-http'] as string;
-
-    const { accountId, accessToken } = JSON.parse(storedCookie);
-    const studentData = await getStudent(studentId)(accessToken)();
+    const { accountId, jwtToken } = context.session;
+    const studentData = await getStudent(studentId)(jwtToken)();
 
     const isSelf = studentId === accountId;
     return {

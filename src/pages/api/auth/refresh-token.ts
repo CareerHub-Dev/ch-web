@@ -1,5 +1,5 @@
-import AccountService from '@/lib/api/AccountService';
-import cookieMiddleware from '@/lib/api/cookieMiddleware';
+import { refreshToken } from '@/lib/api/account';
+import cookieMiddleware from '@/lib/middleware/cookieMiddleware';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const requestData = JSON.parse(req.body);
     const token = requestData.refreshToken as string;
-    const data = await new AccountService().refreshToken(token);
+    const data = await refreshToken(token);
     return cookieMiddleware(res, data);
   } catch (err) {
     let message = 'Невідома помилка';

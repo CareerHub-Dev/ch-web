@@ -4,7 +4,7 @@ import SidePanel from '@/components/my-profile/SidePanel';
 import StudentProfile from '@/components/my-profile/StudentProfile';
 import CVBoard from '@/components/my-profile/CVBoard';
 import SettingsPanel from '@/components/my-profile/SettingsPanel';
-import { getStudent } from '@/lib/api/remote/student';
+import { getStudent } from '@/lib/api/student';
 import protectedSsr from '@/lib/protected-ssr';
 
 import classes from '@/styles/my-dashboard.module.scss';

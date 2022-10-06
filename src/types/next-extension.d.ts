@@ -1,6 +1,15 @@
-import type { NextApiRequest, NextApiResponse, NextPage } from 'next';
+import type {
+  NextApiRequest,
+  NextApiResponse,
+  NextPage,
+  GetServerSidePropsContext,
+  GetServerSideProps,
+  PreviewData,
+} from 'next';
+import type { ParsedUrlQuery } from 'querystring';
 import type { ReactNode, ReactElement } from 'react';
 import type { AppProps } from 'next/app';
+import type { SessionData } from '@/lib/schemas/SessionData';
 
 declare global {
   type ApiHandler<TResponse> = (
@@ -8,9 +17,24 @@ declare global {
     res: NextApiResponse
   ) => TResponse;
 
-  interface NextApiRequestWithSessionData extends NextApiRequest {
+  type GetServerSidePropsContextWithSession<
+    Q extends ParsedUrlQuery = ParsedUrlQuery,
+    D extends PreviewData = PreviewData
+  > = GetServerSidePropsContext & {
+    session: SessionData;
+  };
+
+  type GetServerSidePropsWithSession<
+    P extends { [key: string]: any } = { [key: string]: any },
+    Q extends ParsedUrlQuery = ParsedUrlQuery,
+    D extends PreviewData = PreviewData
+  > = (
+    context: GetServerSidePropsContextWithSession<Q, D>
+  ) => Promise<GetServerSidePropsResult<P>>;
+
+  type NextApiRequestWithSessionData = NextApiRequest & {
     user?: SessionData;
-  }
+  };
 
   type ExtendedApiHandler<TResponse> = (
     req: NextApiRequestWithSessionData,

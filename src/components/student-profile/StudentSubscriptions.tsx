@@ -2,7 +2,7 @@ import {
   getStudentCompanySubscriptionsAmount,
   getStudentStudentSubscriptionsAmount,
   getStudentJobOfferSubscriptionsAmount,
-} from '@/lib/api/remote/student';
+} from '@/lib/api/student';
 import useProtectedQuery from '@/hooks/useProtectedQuery';
 
 const StudentSubscriptions = ({ accountId }: { accountId: string }) => {

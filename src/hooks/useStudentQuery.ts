@@ -1,6 +1,6 @@
 import useAuth from './useAuth';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { getStudent } from '@/lib/api/remote/student';
+import { getStudent } from '@/lib/api/student';
 
 const defaultErrorHandler = (error: any) => {
   alert(error.message || 'Помилка звернення до серверу');

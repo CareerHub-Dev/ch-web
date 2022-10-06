@@ -1,11 +1,11 @@
 import {
   type GetServerSidePropsContext,
-  type GetServerSideProps,
+  type Redirect,
   PreviewData,
 } from 'next/types';
 import { type UserRole } from './schemas/UserRole';
-import SessionDataSchema, { type SessionData } from './schemas/SessionData';
 import { ParsedUrlQuery } from 'querystring';
+import sessionMiddleware from './middleware/sessionMiddleware';
 
 const protectedSsr =
   <
@@ -20,27 +20,15 @@ const protectedSsr =
     },
   }: {
     allowedRoles: Array<UserRole>;
-    redirect?: {
-      destination: string;
-      permanent: boolean;
-    };
+    redirect?: Redirect;
   }) =>
-  (getServerSidePropsFn?: GetServerSideProps<P, Q, D>) => {
+  (getServerSidePropsFn?: GetServerSidePropsWithSession<P, Q, D>) => {
     return async function protectedServerSidePropsCreator(
       context: GetServerSidePropsContext<Q, D>
     ) {
-      const httpCookie = context.req.cookies['ch-http'];
-      const sessionData = SessionDataSchema.safeParse(httpCookie);
+      const session = sessionMiddleware(context, allowedRoles);
 
-      if (!sessionData.success) {
-        return {
-          redirect,
-        };
-      }
-
-      const session = sessionData.data as SessionData;
-
-      if (!allowedRoles.includes(session.role)) {
+      if ('error' in session) {
         return {
           redirect,
         };
@@ -51,18 +39,21 @@ const protectedSsr =
           props: { session },
         };
       }
-      const otherProps = await getServerSidePropsFn(context);
+      const otherProps = await getServerSidePropsFn({ ...context, session });
 
       if ('redirect' in otherProps) {
-        return otherProps.redirect;
+        return { redirect: otherProps.redirect };
       }
 
       const props =
         'props' in otherProps ? { ...otherProps.props, session } : session;
-      return {
+
+      const revalidatedProps = {
         ...otherProps,
         props,
       };
+
+      return revalidatedProps;
     };
   };
 
