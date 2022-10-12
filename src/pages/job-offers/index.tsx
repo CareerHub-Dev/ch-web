@@ -63,7 +63,7 @@ const JobOffersFeedPage: NextPageWithLayout = () => {
 
 JobOffersFeedPage.getLayout = (page) => (
   <>
-    <HorizontalNavbar />
+    <HorizontalNavbar links={[]} />
     <main>{page}</main>
   </>
 );

@@ -4,9 +4,9 @@ import StudentAvatar from '@/components/student-profile/StudentAvatar';
 import StudentInfo from '@/components/student-profile/StudentInfo';
 import StudentSubscriptions from '@/components/student-profile/StudentSubscriptions';
 import StudentWorkExperience from '@/components/student-profile/StudentWorkExperience';
+import Link from 'next/link';
 import { getStudent } from '@/lib/api/student';
 import protectedSsr from '@/lib/protected-ssr';
-import Link from 'next/link';
 
 const StudentProfilePage: NextPageWithLayout<{
   isSelf: boolean;
@@ -60,7 +60,7 @@ const StudentProfilePage: NextPageWithLayout<{
 StudentProfilePage.getLayout = (page) => {
   return (
     <>
-      <HorizontalNavbar />
+      <HorizontalNavbar links={[]} />
       <main className="">{page}</main>
       <Footer />
     </>

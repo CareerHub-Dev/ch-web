@@ -25,19 +25,19 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
           },
         },
       })
-  );
+  );  
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return getLayout(
+  return (
     <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <AuthContextProvider>
-          <Provider store={store}>
-            <Component {...pageProps} />
+      <AuthContextProvider>
+        <Provider store={store}>
+          <Hydrate state={pageProps.dehydratedState}>
+            {getLayout(<Component {...pageProps} />)}
             <ToastContainer />
-          </Provider>
-        </AuthContextProvider>
-      </Hydrate>
+          </Hydrate>
+        </Provider>
+      </AuthContextProvider>
     </QueryClientProvider>
   );
 }
