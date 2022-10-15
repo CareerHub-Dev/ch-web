@@ -22,7 +22,7 @@ export const getStudentSubscriptionsAmount =
   (token: string | null) =>
   () =>
     request({
-      url: `/Student/Students/${accountId}/SubscriptionsAmount/${subscriptionType}`,
+      url: `/Student/Students/${accountId}/amount-${subscriptionType}-subscriptions`,
       headers: { Authorization: `Bearer ${token}` },
     });
 

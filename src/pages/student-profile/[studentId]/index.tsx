@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { getStudent } from '@/lib/api/student';
 import protectedSsr from '@/lib/protected-ssr';
 
-
 const StudentProfilePage: NextPageWithLayout<{
   isSelf: boolean;
   studentData: any;
@@ -22,7 +21,7 @@ const StudentProfilePage: NextPageWithLayout<{
     >
       <section className="px-4">
         <div className="flex flex-center">
-          <StudentAvatar />
+          <StudentAvatar photoId={studentData.photoId} />
           <div className="ml-4">
             <StudentInfo
               fullName={fullName}
