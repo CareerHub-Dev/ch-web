@@ -1,10 +1,5 @@
 export const studentNavLinks: AppNavigationLink[] = [
   {
-    text: 'Мій профіль',
-    href: '/my-profile',
-    exact: true,
-  },
-  {
     text: 'Мої резюме',
     href: '/my-cvs',
     exact: true,

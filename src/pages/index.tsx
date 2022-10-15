@@ -1,10 +1,10 @@
 import NureLogo from '@/resources/logos/NureLogo.svg';
 import CareerLogo from '@/resources/logos/CareerLogo.svg';
 import Head from 'next/head';
-//import HorizontalNavbar from '@/components/layout/HorizontalNavbar';
 import Footer from '@/components/layout/Footer';
 import Background from '@/components/layout/Background';
 import dynamic from 'next/dynamic';
+import { studentNavLinks } from '@/lib/navigation-links';
 
 import classes from '@/styles/index.module.scss';
 
@@ -40,7 +40,7 @@ LandingPage.getLayout = (page) => {
           content={`CareerHub - це сервіс пошуку вакансій для студентів ХНУРЕ від студентів ХНУРЕ. Розроблено при підтримці центра 'Кар'єра'.`}
         />
       </Head>
-      <HorizontalNavbar links={[]}/>
+      <HorizontalNavbar links={studentNavLinks}/>
       <main>{page}</main>
       <Footer />
       <Background />

@@ -1,18 +1,18 @@
-import axios, { AxiosError, AxiosInstance } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { backendApiBaseUrl, localGatewayUrl } from './api';
 
 const defaultHeaders = { 'Content-Type': 'application/json' };
+
+export const localGatewayAxiosInstance = axios.create({
+  baseURL: localGatewayUrl,
+  headers: defaultHeaders,
+});
 
 const axiosInstance = axios.create({
   baseURL: backendApiBaseUrl,
   headers: defaultHeaders,
 });
 export default axiosInstance;
-
-export const localGatewayAxiosInstance = axios.create({
-  baseURL: localGatewayUrl,
-  headers: defaultHeaders,
-});
 
 export const retrieveAxiosErrorMessage = (err: AxiosError<any>) => {
   return (
@@ -41,5 +41,7 @@ export const request = async <TData = any, TConfig = any, TSelected = TData>({
     options.url = `${prefix}/${options.url}`;
   }
 
-  return axiosInstance(options).then(select).catch(requestErrorHandler);
+  return instance({ method, ...options })
+    .then(select)
+    .catch(requestErrorHandler);
 };

@@ -10,6 +10,7 @@ export namespace LocalGateway {
       url: 'authenticate',
       prefix: 'auth',
       method: 'POST',
+      withCredentials: true,
       data,
     });
 
@@ -20,6 +21,7 @@ export namespace LocalGateway {
       prefix: 'auth',
       method: 'POST',
       data: { refreshToken },
+      withCredentials: true,
     });
 }
 
@@ -29,6 +31,7 @@ export const authenticate = async (data: { email: string; password: string }) =>
     prefix: 'Account',
     method: 'POST',
     data,
+    withCredentials: true,
   });
 
 export const refreshToken = async (refreshToken: string) =>
@@ -37,6 +40,7 @@ export const refreshToken = async (refreshToken: string) =>
     prefix: 'Account',
     method: 'POST',
     data: { refreshToken },
+    withCredentials: true,
   });
 
 export const forgotPassword = async (email: string) =>

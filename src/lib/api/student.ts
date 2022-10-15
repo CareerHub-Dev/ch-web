@@ -8,6 +8,14 @@ export const getStudent = (accountId: string) => (token: string | null) => () =>
     },
   });
 
+export const getSelfStudent = (token: string | null) => () =>
+  request({
+    url: '/Student/Students/self',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
 export const getStudentSubscriptionsAmount =
   (subscriptionType: string) =>
   (accountId: string) =>
