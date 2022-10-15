@@ -1,5 +1,4 @@
-import HorizontalNavbar from '@/components/layout/HorizontalNavbar';
-import Footer from '@/components/layout/Footer';
+import CommonLayout from '@/components/layout/CommonLayout';
 import StudentAvatar from '@/components/student-profile/StudentAvatar';
 import StudentInfo from '@/components/student-profile/StudentInfo';
 import StudentSubscriptions from '@/components/student-profile/StudentSubscriptions';
@@ -7,6 +6,7 @@ import StudentWorkExperience from '@/components/student-profile/StudentWorkExper
 import Link from 'next/link';
 import { getStudent } from '@/lib/api/student';
 import protectedSsr from '@/lib/protected-ssr';
+
 
 const StudentProfilePage: NextPageWithLayout<{
   isSelf: boolean;
@@ -57,15 +57,7 @@ const StudentProfilePage: NextPageWithLayout<{
   );
 };
 
-StudentProfilePage.getLayout = (page) => {
-  return (
-    <>
-      <HorizontalNavbar links={[]} />
-      <main className="">{page}</main>
-      <Footer />
-    </>
-  );
-};
+StudentProfilePage.getLayout = CommonLayout();
 
 export default StudentProfilePage;
 

@@ -1,16 +1,26 @@
-import MainNavigation from './MainNavigation';
+import dynamic from 'next/dynamic';
+import type { ReactNode } from 'react';
 import Background from './Background';
-import { type ReactNode } from 'react';
-import classes from './CommonLayout.module.scss';
+import Footer from './Footer';
+const HorizontalNavbar = dynamic(() => import('./HorizontalNavbar'), {
+  ssr: false,
+});
 
-const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
-  return (
-    <>
-      <Background />
-      <MainNavigation />
-      <main className={classes.main}>{children}</main>
-    </>
-  );
-};
-
-export default Layout;
+const CommonLayout = (
+  opts: {
+    withBackground: boolean;
+  } = {
+    withBackground: false,
+  }
+) =>
+  function CommonLayoutFn(page: ReactNode) {
+    return (
+      <>
+        <HorizontalNavbar />
+        <main>{page}</main>
+        <Footer />
+        {opts.withBackground && <Background />}
+      </>
+    );
+  };
+export default CommonLayout;

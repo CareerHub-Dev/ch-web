@@ -1,9 +1,15 @@
 import { useRouter } from "next/router";
+import useAuth from "@/hooks/useAuth";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
+import getNavigationLinks from "@/lib/navigation-links";
 
-const HorizontalNavbar = ({ links }: { links: Array<AppNavigationLink> }) => {
+const HorizontalNavbar = () => {
   const { pathname } = useRouter();
+  const auth = useAuth();
+  console.log(auth);
+  
+  const links = getNavigationLinks(auth?.session?.role);
 
   return (
     <header className="relative bg-white flex justify-between items-center h-20 border px-12">
@@ -26,7 +32,7 @@ const HorizontalNavbar = ({ links }: { links: Array<AppNavigationLink> }) => {
             </li>
           ))}
         </ul>
-        <UserMenu />
+        {auth.isLoggedIn && <UserMenu />}
       </nav>
     </header>
   );

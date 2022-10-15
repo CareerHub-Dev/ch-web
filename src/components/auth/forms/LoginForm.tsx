@@ -11,6 +11,7 @@ import KeyIcon from '@/components/ui/icons/KeyIcon';
 import EnvelopeIcon from '@/components/ui/icons/EnvelopeIcon';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
 import classes from './forms.module.scss';
+import type { SessionData } from '@/lib/schemas/SessionData';
 
 const LoginForm = () => {
   const router = useRouter();
@@ -22,7 +23,8 @@ const LoginForm = () => {
   const passwordInput = useInput(getPasswordValidity);
   const formIsValid = emailInput.isValid && passwordInput.isValid;
   const authMutation = useMutation(['auth'], LocalGateway.authenticate, {
-    onSuccess: () => {
+    onSuccess: (data: SessionData) => {
+      auth.login(data);
       router.push('/my-profile');
     },
     onError: (error: string) => {

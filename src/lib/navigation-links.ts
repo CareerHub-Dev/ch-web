@@ -1,4 +1,6 @@
-export const studentNavLinks: AppNavigationLink[] = [
+import type { UserRole } from './schemas/UserRole';
+
+const studentNavLinks: AppNavigationLink[] = [
   {
     text: 'Мої резюме',
     href: '/my-cvs',
@@ -16,9 +18,16 @@ export const studentNavLinks: AppNavigationLink[] = [
   },
 ];
 
-export const landingNavLinks = [
+const defaultNavLinks: AppNavigationLink[] = [
   {
     text: 'Увійти',
     href: '/auth/login',
   },
 ];
+
+export default function getNavigationLinks(userRole?: UserRole) {
+  if (userRole === 'Student') {
+    return studentNavLinks;
+  }
+  return defaultNavLinks;
+}

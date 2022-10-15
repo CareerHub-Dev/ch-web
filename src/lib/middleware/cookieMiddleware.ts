@@ -21,17 +21,15 @@ const setCookies = (
 ) => {
   const cookiesToSet = cookies.map((cookie) => {
     const { name, value, options } = cookie;
-    const cookieOptions: CookieSerializeOptions = { ...options };
-    cookieOptions.secure = process.env.NODE_ENV === 'production';
-    cookieOptions.path = '/';
-    cookieOptions.httpOnly = options.httpOnly ?? true;
-    cookieOptions.sameSite = 'lax';
+    const cookieOptions: CookieSerializeOptions = { ...options,
+      path: '/',
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: options.httpOnly ?? true,
+      expires: options.expires ?? new Date(Date.now() + (options.maxAge ?? 1000)),
+    };
     const stringValue =
       typeof value === 'object' ? JSON.stringify(value) : String(value);
-    if (options.maxAge) {
-      cookieOptions.expires = new Date(Date.now() + options.maxAge);
-      cookieOptions.maxAge! /= 1000;
-    }
     return serialize(name, stringValue, cookieOptions);
   });
   res.setHeader('Set-Cookie', cookiesToSet);
@@ -75,31 +73,18 @@ const cookieMiddleware = (res: NextApiResponse, backendResponse: unknown) => {
     });
   }
   const validatedData = sessionData.data;
-  const httpCookie = validatedData;
-  const clientCookie = validatedData;
 
   setCookies(res, [
     {
       name: 'ch-http',
-      value: httpCookie,
+      value: validatedData,
       options: {
         httpOnly: true,
-      },
-    },
-    {
-      name: 'ch-client',
-      value: clientCookie,
-      options: {
-        httpOnly: false,
+        expires: new Date(validatedData.jwtTokenExpires),
       },
     },
   ]);
 
-  const extendedData = {
-    httpCookie,
-    clientCookie,
-  };
-
-  return res.status(201).json(extendedData);
+  return res.status(201).json(validatedData);
 };
 export default cookieMiddleware;
