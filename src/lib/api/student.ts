@@ -33,22 +33,46 @@ export const getStudentCompanySubscriptionsAmount =
 export const getStudentJobOfferSubscriptionsAmount =
   getStudentSubscriptionsAmount('jobOffer');
 
-export const updateStudentGeneralInfo = (data: {
-  accountId: string;
-  accessToken: string;
-  firstName?: string;
-  lastName?: string;
-  photo?: string;
+export const updateStudentGeneralInfo = ({
+  accessToken,
+  ...data
+}: {
+  accessToken?: string;
+  firstName: string;
+  lastName: string;
+  birthDate?: string;
   phone?: string;
+  studentGroupId: string;
 }) =>
   request({
-    url: `/Student/Students/${data.accountId}/GeneralInfo`,
+    url: `/Student/Students/self/detail`,
     method: 'PUT',
     headers: {
-      Authorization: `Bearer ${data.accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
     },
     data,
   });
+
+export const updateStudentPhoto = ({
+  accessToken,
+  blob,
+}: {
+  accessToken?: string;
+  blob?: Blob;
+}) => {
+  const data = new FormData();
+  data.append('file', blob ?? 'undefined');
+
+  return request({
+    url: `/Student/Students/self/photo`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'multipart/form-data',
+    },
+    data,
+  });
+};
 
 export const fetchStudentCvs =
   (accountId: string) => (accessToken: string | null) => () =>

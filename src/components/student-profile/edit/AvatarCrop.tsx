@@ -17,7 +17,7 @@ const AvatarCrop = ({
   fileType,
 }: {
   src: string;
-  onCropComplete: (cropBlobUrl: string) => void;
+  onCropComplete: (data: { url?: string; blob?: Blob }) => void;
   fileType: string;
 }) => {
   const cropImgRef = useRef<HTMLImageElement>(null);
@@ -37,13 +37,18 @@ const AvatarCrop = ({
 
   const cropCompleteHandler = useCallback(
     async (completedCrop: PixelCrop) => {
-      const croppedImageBlob = await cropImage(
-        cropImgRef.current as HTMLImageElement,
-        fileType,
-        completedCrop
-      );
-      setCompletedCropBlob(croppedImageBlob);
-      onCropComplete(croppedImageBlob.blobUrl);
+      try {
+        const croppedImageBlob = await cropImage(
+          cropImgRef.current as HTMLImageElement,
+          fileType,
+          completedCrop
+        );
+        setCompletedCropBlob(croppedImageBlob);
+        onCropComplete({
+          url: croppedImageBlob.blobUrl,
+          blob: croppedImageBlob.blob,
+        });
+      } catch (_ignored) {}
     },
     [fileType, onCropComplete]
   );
@@ -51,17 +56,22 @@ const AvatarCrop = ({
   useEffect(() => () => completedCropBlob?.revokeUrl(), [completedCropBlob]);
 
   return (
-    <div className="block max-w-full bg-primaryGray mt-4">
+    <div className="block max-fit bg-primaryGray mt-4">
       <ReactCrop
         crop={crop}
         ruleOfThirds
         onChange={(_, percentCrop) => setCrop(percentCrop)}
         onComplete={cropCompleteHandler}
         aspect={1}
-        style={{ transform: `scale(1)` }}
         className="block w-fit mx-auto"
       >
-        <img ref={cropImgRef} alt="Crop me" src={src} onLoad={onImageLoad} className="max-w-fit" />
+        <img
+          ref={cropImgRef}
+          alt="Crop me"
+          src={src}
+          onLoad={onImageLoad}
+          className="max-w-fit"
+        />
       </ReactCrop>
     </div>
   );

@@ -26,13 +26,16 @@ export default function useImageUpload({
     isTouched.setFalse();
   };
 
+  const fileType =
+    typeof source === 'object' && 'type' in source ? source.type : null;
+
   return {
     source,
     url,
     isTouched: isTouched.value,
     reset,
     change,
-    fileType: source instanceof File ? source.type : null,
+    fileType,
   };
 }
 

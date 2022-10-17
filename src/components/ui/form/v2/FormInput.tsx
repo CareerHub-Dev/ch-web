@@ -10,7 +10,11 @@ const FormInput = ({
   className,
   type = 'text',
   id,
-}: UseInputResult & { className?: string; type?: string; id?: string }) => {
+}: UseInputResult & {
+  className?: string;
+  type?: string;
+  id?: string;
+}) => {
   return (
     <>
       <input

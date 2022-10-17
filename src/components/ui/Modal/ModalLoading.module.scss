@@ -3,8 +3,7 @@
   top: 20vh;
   left: 30%;
   width: 40%;
-  z-index: 30;
-  animation: slide-down 300ms ease-out forwards;
+  z-index: 40;
 }
 
 .backdrop {
@@ -13,6 +12,6 @@
   left: 0;
   width: 100%;
   height: 100vh;
-  z-index: 20;
-  background-color: rgba(114, 114, 114, 0.75);
+  z-index: 30;
+  background-color: rgba(114, 114, 114, 0.557);
 }

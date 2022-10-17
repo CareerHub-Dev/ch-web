@@ -1,23 +1,62 @@
 import useImageUpload from '@/hooks/useImageUpload/v2';
+import useToast from '@/hooks/useToast';
+import useAuth from '@/hooks/useAuth';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateStudentPhoto } from '@/lib/api/student';
 import { useBoolean } from 'usehooks-ts';
-import { useState, type ChangeEvent } from 'react';
+import { useState, useCallback, type ChangeEvent } from 'react';
 import Overlay from '@/components/ui/Overlay';
 import Image from 'next/future/image';
 import PencilIcon from '@/components/ui/icons/PencilIcon';
 import AvatarCrop from './AvatarCrop';
+import ModalLoading from '@/components/ui/Modal/ModalLoading';
 
 import cn from 'classnames';
 
 const AvatarEdit = ({ initialData }: { initialData: any }) => {
+  const auth = useAuth();
+  const toast = useToast();
+  const queryClient = useQueryClient();
   const avatarUpload = useImageUpload({ initialData });
-  const [completedCropUrl, setCompletedCropUrl] = useState<string>();
+  const [completedCrop, setCompletedCrop] = useState<{
+    url?: string;
+    blob?: Blob;
+  }>({});
 
   const editPopupIsOpen = useBoolean(false);
-  const imageSource = completedCropUrl
-    ? completedCropUrl
-    : initialData
-    ? avatarUpload.url
-    : '/default-avatar.png';
+  const imageSource = completedCrop.url
+    ? completedCrop.url
+    : initialData ?? '/default-avatar.png';
+
+  const updateStudentPhotoMutation = useMutation(
+    ['updateSelfStudentPhoto'],
+    updateStudentPhoto,
+    {
+      onSuccess: (data) => {
+        const currentData = queryClient.getQueryData(['selfStudent']);
+        if (typeof currentData === 'object' && typeof data === 'string') {
+          queryClient.setQueryData(['selfStudent'], {
+            ...currentData,
+            photoId: data,
+          });
+        } else {
+          queryClient.invalidateQueries(['selfStudent']);
+        }
+        toast.success('Фото успішно оновлено');
+        avatarUpload.reset();
+        setCompletedCrop({});
+      },
+      onError: (error) => {
+        let msg = 'Не вдалося оновити фото, невідома помилка';
+        if (error instanceof Error) {
+          msg = error.message;
+        } else if (typeof error === 'string') {
+          msg = error;
+        }
+        toast.error(msg);
+      },
+    }
+  );
 
   const avatarUploadHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -31,15 +70,21 @@ const AvatarEdit = ({ initialData }: { initialData: any }) => {
 
   const newAvatarCancelHandler = () => {
     avatarUpload.reset();
-    setCompletedCropUrl(undefined);
-  }
-
-  const newAvatarSaveHandler = () => {
-    // TODO: add handler;
+    setCompletedCrop({});
   };
+
+  const newAvatarSaveHandler = useCallback(async () => {
+    if (completedCrop.blob) {      
+      await updateStudentPhotoMutation.mutateAsync({
+        accessToken: auth.session?.jwtToken,
+        blob: completedCrop.blob,
+      });
+    }
+  }, [auth.session?.jwtToken, completedCrop.blob, updateStudentPhotoMutation]);
 
   return (
     <>
+      {updateStudentPhotoMutation.isLoading && <ModalLoading />}
       <h2 className="text-2xl">Аватар</h2>
       <p className="text-sm text-darkGray mb-2">
         Завантаження фото для аватару
@@ -92,12 +137,22 @@ const AvatarEdit = ({ initialData }: { initialData: any }) => {
           <>
             <AvatarCrop
               src={avatarUpload.url}
-              onCropComplete={setCompletedCropUrl}
+              onCropComplete={setCompletedCrop}
               fileType={avatarUpload.fileType as string}
             />
-            <div className='flex flex-row-reverse mt-4 mb-40'>
-              <button className='btn-primary p-2 w-40 ml-2 bg-primaryBlue' onClick={newAvatarSaveHandler}>Зберегти</button>
-              <button className='btn-primary p-2 w-40' onClick={newAvatarCancelHandler}>Скасувати</button>
+            <div className="flex flex-row-reverse mt-4 mb-40">
+              <button
+                className="btn-primary p-2 w-40 ml-2 bg-primaryBlue"
+                onClick={newAvatarSaveHandler}
+              >
+                Зберегти
+              </button>
+              <button
+                className="btn-primary p-2 w-40"
+                onClick={newAvatarCancelHandler}
+              >
+                Скасувати
+              </button>
             </div>
           </>
         )}
