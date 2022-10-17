@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useLayoutEffect } from 'react';
+import { useIsomorphicLayoutEffect } from 'usehooks-ts';
 
 export default function useShallowRoutes({
   defaultSection,
@@ -12,7 +12,7 @@ export default function useShallowRoutes({
   const section = router.query.section as string;
   const currentPath = router.asPath;
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const sectionAllowed = sections?.includes(section) || !sections;
     if (!section || !sectionAllowed) {
       const newRoute = section
