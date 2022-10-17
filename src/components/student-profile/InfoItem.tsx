@@ -8,7 +8,7 @@ const InfoItem: React.FC<{
   return (
     <div className={classes.item}>
       <Icon />
-      <p className="text-md text-darkerGrey">{text}</p>
+      <p className="text-md text-darkGray">{text}</p>
     </div>
   );
 };

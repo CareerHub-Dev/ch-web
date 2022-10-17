@@ -1,28 +1,32 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
 export default function useShallowRoutes({
-  url,
   defaultSection,
   sections,
 }: {
-  url: string;
   defaultSection: string;
   sections?: string[];
 }) {
   const router = useRouter();
   const section = router.query.section as string;
-  useEffect(() => {
+  const currentPath = router.asPath;
+
+  useLayoutEffect(() => {
     const sectionAllowed = sections?.includes(section) || !sections;
-    if (!section || section.length === 0 || !sectionAllowed) {
-      router.replace(`${url}/?section=${defaultSection}`, undefined, {
+    if (!section || !sectionAllowed) {
+      const newRoute = section
+        ? currentPath.replace(section, defaultSection)
+        : `${currentPath}?section=${defaultSection}`;
+      router.replace(newRoute, undefined, {
         shallow: true,
       });
     }
-  }, [router, section, defaultSection, url, sections]);
+  }, [router, section, defaultSection, sections, currentPath]);
 
   const displayedSectionChangeHandler = (newSection: string) => {
-    router.push(`${url}/?section=${newSection}`, undefined, {
+    const newRoute = currentPath.replace(section, newSection);
+    router.push(newRoute, undefined, {
       shallow: true,
     });
   };

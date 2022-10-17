@@ -11,7 +11,6 @@ import classes from '@/styles/my-dashboard.module.scss';
 
 const StudentProfilePage = ({ studentData }: { studentData: any }) => {
   const { currentSection, changeSection } = useShallowRoutes({
-    url: '/my-profile',
     defaultSection: 'overview',
   });
   const studentQuery = useStudentQuery({ initialData: studentData });

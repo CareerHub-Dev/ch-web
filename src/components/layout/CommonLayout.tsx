@@ -9,8 +9,10 @@ const HorizontalNavbar = dynamic(() => import('./HorizontalNavbar'), {
 const CommonLayout = (
   opts: {
     withBackground: boolean;
+    withFooter: boolean;
   } = {
     withBackground: false,
+    withFooter: false,
   }
 ) =>
   function CommonLayoutFn(page: ReactNode) {
@@ -18,7 +20,7 @@ const CommonLayout = (
       <>
         <HorizontalNavbar />
         <main>{page}</main>
-        <Footer />
+        {opts.withFooter && <Footer />}
         {opts.withBackground && <Background />}
       </>
     );

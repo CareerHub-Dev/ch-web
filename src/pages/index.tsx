@@ -13,7 +13,7 @@ const AuthButtons = dynamic(() => import('@/components/landing/AuthButtons'), {
 const LandingPage: NextPageWithLayout = () => {
   return (
     <>
-    <Head>
+      <Head>
         <title>{'CareerHub 🇺🇦'}</title>
         <meta
           name="description"
@@ -33,6 +33,9 @@ const LandingPage: NextPageWithLayout = () => {
   );
 };
 
-LandingPage.getLayout = CommonLayout({ withBackground: true });
+LandingPage.getLayout = CommonLayout({
+  withBackground: true,
+  withFooter: true,
+});
 
 export default LandingPage;

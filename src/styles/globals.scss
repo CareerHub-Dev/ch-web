@@ -1,6 +1,24 @@
 @import './font-faces.scss';
 @import './variables.scss';
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn-primary {
+    @apply cursor-pointer bg-darkerBlue text-white border-2 border-darkerBlue border-solid rounded-xl enabled:hover:shadow-lg enabled:hover:bg-white enabled:hover:text-darkerBlue ease-in-out duration-300 disabled:cursor-default disabled:opacity-50;
+  }
+
+  .btn-flat {
+    @apply cursor-pointer bg-white text-darkerBlue border-2 border-darkerBlue border-solid rounded-xl disabled:cursor-default disabled:opacity-50;
+  }
+
+  .form-input {
+    @apply border-darkGray border border-solid rounded-lg bg-lightGray transition ease-in-out duration-200 focus:border-lightBlueAccent focus:outline-none;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -13,27 +31,5 @@ body {
 }
 
 hr {
-  background-color: $primaryGrey;
   height: 1px;
 }
-
-#body {
-  max-width: 100%;
-}
-
-.g__center {
-  margin: auto;
-  text-align: center;
-}
-
-.g__display-none {
-  display: none !important;
-}
-
-.g__text-bold {
-  font-weight: bold;
-}
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

@@ -10,7 +10,7 @@ const HorizontalNavbar = () => {
   const links = getNavigationLinks(auth?.session?.role);
 
   return (
-    <header className="relative bg-white flex justify-between items-center h-20 border px-12">
+    <header className="relative bg-white flex justify-between items-center h-16 border px-12">
       <h1 className="font-rancho pointer-events-none text-3xl select-none inline-block">
         CareerHub
       </h1>

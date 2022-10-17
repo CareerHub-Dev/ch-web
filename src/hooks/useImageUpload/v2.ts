@@ -32,6 +32,7 @@ export default function useImageUpload({
     isTouched: isTouched.value,
     reset,
     change,
+    fileType: source instanceof File ? source.type : null,
   };
 }
 

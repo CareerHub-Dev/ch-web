@@ -26,7 +26,6 @@ const CompanyDetailsPage = () => {
     }
   );
   const { currentSection, changeSection } = useShallowRoutes({
-    url: `/companies/${companyId}`,
     defaultSection: 'about',
   });
 

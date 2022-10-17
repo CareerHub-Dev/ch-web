@@ -34,11 +34,7 @@ const StudentProfilePage: NextPageWithLayout<{
         </div>
         {isSelf && (
           <Link href={`/my-profile/edit`}>
-            <a
-              className="cursor-pointer p-2 mt-4 text-sm bg-darkerBlue text-white border-2 block
-                border-darkerBlue border-solid rounded-xl font-semibold w-[128px] text-center
-                hover:shadow-lg hover:bg-white hover:text-darkerBlue ease-in-out duration-300"
-            >
+            <a className="p-2 mt-4 text-sm block tracking-wider font-semibold w-[128px] text-center btn-primary">
               {'Редагувати'}
             </a>
           </Link>
