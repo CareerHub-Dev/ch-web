@@ -58,7 +58,7 @@ const AvatarEdit = ({ initialData }: { initialData: any }) => {
     }
   );
 
-  const avatarUploadHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const uploadAvatar = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const file = event.target.files?.[0];
     if (!file) {
@@ -68,19 +68,25 @@ const AvatarEdit = ({ initialData }: { initialData: any }) => {
     editPopupIsOpen.setFalse();
   };
 
-  const newAvatarCancelHandler = () => {
+  const cancelNewAvatar = () => {
     avatarUpload.reset();
     setCompletedCrop({});
   };
 
-  const newAvatarSaveHandler = useCallback(async () => {
-    if (completedCrop.blob) {      
+  const saveNewAvatar = useCallback(async () => {
+    if (completedCrop.blob) {
       await updateStudentPhotoMutation.mutateAsync({
         accessToken: auth.session?.jwtToken,
         blob: completedCrop.blob,
       });
     }
   }, [auth.session?.jwtToken, completedCrop.blob, updateStudentPhotoMutation]);
+
+  const deleteAvatar = async () => {
+    await updateStudentPhotoMutation.mutateAsync({
+      accessToken: auth.session?.jwtToken,
+    });
+  };
 
   return (
     <>
@@ -124,10 +130,13 @@ const AvatarEdit = ({ initialData }: { initialData: any }) => {
               type="file"
               accept="image/png, image/jpeg"
               multiple={false}
-              onChange={avatarUploadHandler}
+              onChange={uploadAvatar}
               className="hidden"
             />
-            <button className="block w-full py-2 px-8 cursor-pointer hover:bg-primaryBlue hover:text-white">
+            <button
+              className="block w-full py-2 px-8 cursor-pointer hover:bg-primaryBlue hover:text-white"
+              onClick={deleteAvatar}
+            >
               Видалити аватар
             </button>
           </div>
@@ -143,13 +152,13 @@ const AvatarEdit = ({ initialData }: { initialData: any }) => {
             <div className="flex flex-row-reverse mt-4 mb-40">
               <button
                 className="btn-primary p-2 w-40 ml-2 bg-primaryBlue"
-                onClick={newAvatarSaveHandler}
+                onClick={saveNewAvatar}
               >
                 Зберегти
               </button>
               <button
                 className="btn-primary p-2 w-40"
-                onClick={newAvatarCancelHandler}
+                onClick={cancelNewAvatar}
               >
                 Скасувати
               </button>
