@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import type { NextRequest, NextFetchEvent } from 'next/server';
 
-export async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest, _event: NextFetchEvent) {
   const { pathname } = req.nextUrl;
 
   if (pathname.startsWith('/my-profile')) {
@@ -16,6 +16,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.rewrite(newUrl);
     } catch (err) {
       newUrl.pathname = '/auth/login';
+      newUrl.search = '';
       return NextResponse.redirect(newUrl);
     }
   }
