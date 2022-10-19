@@ -10,6 +10,7 @@ import NavigationItems from '@/components/student-profile/edit/NavigationItems';
 import GeneralInfo from '@/components/student-profile/edit/GeneralInfo';
 import AvatarEdit from '@/components/student-profile/edit/AvatarEdit';
 import EditPageHeader from '@/components/student-profile/edit/EditPageHeader';
+import ChangePassword from '@/components/student-profile/edit/ChangePassword';
 
 const navigationItems = [
   {
@@ -26,14 +27,14 @@ const navigationItems = [
   },
 ];
 
-const sections = navigationItems.map((item) => item.section);
+const sections = ['general', 'avatar', 'password'];
 
 const EditStudentPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ studentData }) => {
   const { changeSection, currentSection } = useShallowRoutes({
-    defaultSection: 'general',
     sections,
+    defaultSection: 'general',
   });
   const { data: syncData } = useSelfStudentQuery({
     initialData: studentData,
@@ -45,7 +46,7 @@ const EditStudentPage: NextPageWithLayout<
   });
 
   return (
-    <div className="md:max-w-[978px] md:mx-auto bg-white mx-auto mt-2">
+    <div className="mx-8 lg:mx-auto max-w-full lg:max-w-[978px] bg-white my-2">
       <div className="grid grid-cols-[auto_1fr] gap-8">
         <EditPageHeader
           avatarData={imageData}
@@ -59,12 +60,14 @@ const EditStudentPage: NextPageWithLayout<
           items={navigationItems}
           onChangeRoute={changeSection}
         />
-        <section className="px-4 py-2 ">
+        <section className="px-4 py-2 col-span-2 md:col-auto">
           {currentSection === 'general' ? (
             <GeneralInfo initialData={syncData} />
           ) : currentSection === 'avatar' ? (
             <AvatarEdit initialData={imageData} />
-          ) : null}
+          ) : (
+            <ChangePassword />
+          )}
         </section>
       </div>
     </div>

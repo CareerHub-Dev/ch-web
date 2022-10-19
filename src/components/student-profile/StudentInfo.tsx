@@ -3,6 +3,7 @@ import MailIcon from '../ui/icons/MailIcon';
 import GroupIcon from '../ui/icons/GroupIcon';
 import PhoneIcon from '../ui/icons/PhoneIcon';
 import DateIcon from '../ui/icons/DateIcon';
+import format from 'date-fns/format';
 
 const StudentInfo = ({
   fullName,
@@ -17,6 +18,10 @@ const StudentInfo = ({
   phone?: string;
   birthDate?: string;
 }) => {
+  const formattedBirthDate = birthDate
+    ? format(new Date(birthDate), 'dd.MM.yyyy')
+    : '';
+
   return (
     <>
       <h1 className="text-xl mb-4 text-darkerBlue">{fullName}</h1>
@@ -24,7 +29,7 @@ const StudentInfo = ({
         <InfoItem text={email} icon={MailIcon} />
         <InfoItem text={group} icon={GroupIcon} />
         {phone && <InfoItem text={phone} icon={PhoneIcon} />}
-        {birthDate && <InfoItem text={birthDate} icon={DateIcon} />}
+        {birthDate && <InfoItem text={formattedBirthDate} icon={DateIcon} />}
       </div>
     </>
   );

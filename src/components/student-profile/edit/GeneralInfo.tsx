@@ -2,19 +2,19 @@ import useInput from '@/hooks/useInput/v3';
 import useAuth from '@/hooks/useAuth';
 import useToast from '@/hooks/useToast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import format from 'date-fns/format';
 import { updateStudentGeneralInfo } from '@/lib/api/student';
 import FormInput from '@/components/ui/form/v2/FormInput';
 import { isPhoneNumber } from '@/lib/regex';
+import parseUnknownError from '@/lib/parse-unknown-error';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
-
-import cn from 'classnames';
 
 const GeneralInfo = ({ initialData }: { initialData: any }) => {
   const auth = useAuth();
   const toast = useToast();
   const queryClient = useQueryClient();
   const firstNameInput = useInput({
-    initialValue: initialData.firstName,
+    initialValue: initialData?.firstName,
     validators: [
       {
         validate: (value) => value.length > 0,
@@ -23,7 +23,7 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
     ],
   });
   const lastNameInput = useInput({
-    initialValue: initialData.lastName,
+    initialValue: initialData?.lastName,
     validators: [
       {
         validate: (value) => value.length > 0,
@@ -32,7 +32,7 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
     ],
   });
   const phoneInput = useInput({
-    initialValue: initialData.phone ?? '',
+    initialValue: initialData?.phone,
     validators: [
       {
         validate: (value) => {
@@ -44,40 +44,53 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
       },
     ],
   });
+  const initialBirthDate = initialData?.birthDate;
+  const birthDateInput = useInput({
+    initialValue: initialBirthDate
+      ? format(new Date(initialBirthDate), 'yyyy-MM-dd')
+      : '',
+  });
 
   const mutation = useMutation(
     ['updateSelfStudent'],
     updateStudentGeneralInfo,
     {
-      onSuccess: (data) => {
+      onSuccess: (_) => {
         const currentData = queryClient.getQueryData(['selfStudent']);
-        if (typeof currentData === 'object' && typeof data === 'object') {
+        const newData = {
+          firstName: firstNameInput.value,
+          lastName: lastNameInput.value,
+          phone: phoneInput.value,
+          birthDate:
+            birthDateInput.value &&
+            new Date(birthDateInput.value).toISOString(),
+        };
+        if (typeof currentData === 'object') {
           queryClient.setQueryData(['selfStudent'], {
             ...currentData,
-            ...data,
+            ...newData,
           });
         } else {
           queryClient.invalidateQueries(['selfStudent']);
         }
+        firstNameInput.reset(newData.firstName);
+        lastNameInput.reset(newData.lastName);
+        phoneInput.reset(newData.phone);
+        birthDateInput.reset(birthDateInput.value);
         toast.success('Зміни збережено');
       },
       onError: (error) => {
-        let msg = 'Невідома помилка';
-        if (error instanceof Error) {
-          msg = error.message;
-        } else if (typeof error === 'string') {
-          msg = error;
-        }
-        toast.error(msg);
+        toast.error(parseUnknownError(error));
       },
     }
   );
 
   const accessToken = auth.session?.jwtToken;
-  const allInputs = [firstNameInput, lastNameInput, phoneInput];
+  const allInputs = [firstNameInput, lastNameInput, phoneInput, birthDateInput];
+  const noInputTouched = allInputs.every((input) => input.isInitial);
   const someInputIsInvalid = allInputs.some((input) => !input.isValid);
   const someInputHasError = allInputs.some((input) => input.hasError);
-  const cannotSubmit = someInputHasError;
+  const cannotSubmit = someInputHasError || noInputTouched;
 
   const save = async () => {
     if (someInputIsInvalid) {
@@ -87,11 +100,13 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
     if (cannotSubmit) {
       return;
     }
+    const birthDate = birthDateInput.value;
     const data = {
       accessToken,
       firstName: firstNameInput.value,
       lastName: lastNameInput.value,
-      phone: phoneInput.value.replace(/\s/g, ''),
+      phone: phoneInput.value.replace(/\s/g, '') || null,
+      birthDate: birthDate ? new Date(birthDate).toISOString() : null,
       studentGroupId: initialData?.studentGroup?.id,
     };
     await mutation.mutateAsync(data);
@@ -109,7 +124,7 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
         Зміна імені, прізвища, номеру телефону та дати народження
       </p>
       <hr />
-      <form className="mt-4 p-4">
+      <form className="mt-4 py-4 md:px-4">
         <div className="mb-8">
           <label htmlFor="firstName" className="font-bold">{`Ім'я`}</label>
           <FormInput
@@ -131,17 +146,22 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
             id="phone"
           />
         </div>
-        {/* <div className='mb-8'>
+        <div className="mb-8">
           <label
             className="font-bold"
             htmlFor="birthDate"
           >{`Дата народження`}</label>
-          <input type="date" id="birthDate" className={inputClassName} />
-        </div> */}
+          <FormInput
+            {...birthDateInput}
+            type="date"
+            id="birthDate"
+            className="w-full p-2"
+          />
+        </div>
       </form>
       <div className="flex flex-row-reverse mt-4 mb-40">
         <button
-          className={cn('btn-primary p-2 w-40 ml-2 bg-primaryBlue')}
+          className={'btn-primary p-2 w-40 ml-2 bg-primaryBlue'}
           onClick={save}
           disabled={cannotSubmit}
         >

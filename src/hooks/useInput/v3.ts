@@ -10,7 +10,7 @@ type InputAction =
   | { type: 'INPUT'; value: string }
   | { type: 'FORCE'; value: string }
   | { type: 'BLUR' }
-  | { type: 'RESET' };
+  | { type: 'RESET'; value?: string };
 
 type InputValidationFunction = (value: string) => boolean;
 
@@ -18,16 +18,29 @@ type InputChangeEvent = ChangeEvent<HTMLInputElement | HTMLSelectElement>;
 
 const inputStateReducer = (state: InputState, action: InputAction) => {
   if (action.type === 'INPUT') {
-    return { value: action.value, isTouched: state.isTouched, initialValue: state.initialValue };
+    return {
+      value: action.value,
+      isTouched: state.isTouched,
+      initialValue: state.initialValue,
+    };
   }
   if (action.type === 'BLUR') {
-    return { value: state.value, isTouched: true, initialValue: state.initialValue };
+    return {
+      value: state.value,
+      isTouched: true,
+      initialValue: state.initialValue,
+    };
   }
   if (action.type === 'RESET') {
-    return { value: state.initialValue, isTouched: false, initialValue: state.initialValue };
+    const initialValue = action.value ?? state.initialValue;
+    return { value: initialValue, isTouched: false, initialValue };
   }
   if (action.type === 'FORCE') {
-    return { value: action.value, isTouched: false, initialValue: state.initialValue };
+    return {
+      value: action.value,
+      isTouched: false,
+      initialValue: state.initialValue,
+    };
   }
 
   return {
@@ -60,6 +73,7 @@ const useInput = (opts?: {
   }
 
   const hasError = !valueIsValid && inputState.isTouched;
+
   const isInitial = inputState.value === initialValue;
 
   const change = (event: InputChangeEvent) => {
@@ -70,8 +84,8 @@ const useInput = (opts?: {
     dispatch({ type: 'BLUR' });
   };
 
-  const reset = () => {
-    dispatch({ type: 'RESET' });
+  const reset = (value?: string) => {
+    dispatch({ type: 'RESET', value });
   };
 
   const force = (value: string) => {

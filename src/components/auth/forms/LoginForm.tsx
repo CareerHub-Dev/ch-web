@@ -32,10 +32,6 @@ const LoginForm = () => {
     },
   });
 
-  if (auth.isLoggedIn) {
-    router.push('/my-profile');
-  }
-
   const formSubmissionHandler: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     emailInput.inputBlurHandler();

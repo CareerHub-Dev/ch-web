@@ -9,7 +9,7 @@ const UserMenu = () => {
         <div className="flex items-center">
           <UserMenuPopper />
           <Link href="/my-profile" passHref>
-            <a className="font-semibold ml-4 hover:text-primaryBlue">
+            <a className="ml-4 text-primaryGrayDarker hover:text-primaryBlack">
               Мій профіль
             </a>
           </Link>

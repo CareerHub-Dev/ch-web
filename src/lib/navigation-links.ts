@@ -2,11 +2,6 @@ import type { UserRole } from './schemas/UserRole';
 
 const studentNavLinks: AppNavigationLink[] = [
   {
-    text: 'Мої резюме',
-    href: '/my-cvs',
-    exact: true,
-  },
-  {
     text: 'Компанії',
     href: '/companies',
     exact: true,

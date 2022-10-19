@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useBoolean } from 'usehooks-ts';
 import { isImageTypeValid } from '@/lib/images';
 
@@ -8,6 +8,7 @@ export default function useImageUpload({
   initialData: string;
 }) {
   const [source, setSource] = useState<File | string>(initialData);
+  const [fileExtension, setFileExtension] = useState<string>('');
   const [url, setUrl] = useState(initialData);
   const isTouched = useBoolean(false);
 
@@ -16,6 +17,7 @@ export default function useImageUpload({
       return;
     }
     setSource(image);
+    setFileExtension(image.name.split('.').pop() || '');
     setUrl(URL.createObjectURL(image));
     isTouched.setTrue();
   };
@@ -25,6 +27,15 @@ export default function useImageUpload({
     setUrl(initialData);
     isTouched.setFalse();
   };
+
+  useEffect(
+    () => () => {
+      if (isTouched.value) {
+        URL.revokeObjectURL(url);
+      }
+    },
+    [isTouched.value, url]
+  );
 
   const fileType =
     typeof source === 'object' && 'type' in source ? source.type : null;
@@ -36,6 +47,7 @@ export default function useImageUpload({
     reset,
     change,
     fileType,
+    fileExtension,
   };
 }
 

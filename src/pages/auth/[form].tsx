@@ -5,21 +5,22 @@ import LoginForm from '@/components/auth/forms/LoginForm';
 import FormWrapper from '@/components/auth/FormWrapper';
 import Background from '@/components/layout/Background';
 import Footer from '@/components/layout/Footer';
+import useAuth from '@/hooks/useAuth';
 
 import classes from '@/styles/auth.module.scss';
 
 const AuthPage: NextPageWithLayout<{ form: string }> = ({ form }) => {
-  const displayedForm =
-    form === 'login' ? (
-      <LoginForm />
-    ) : form === 'register' ? (
-      <RegisterForm />
-    ) : (
-      <ForgotPasswordForm />
-    );
   return (
     <div className={classes.form}>
-      <FormWrapper>{displayedForm}</FormWrapper>
+      <FormWrapper>
+        {form === 'login' ? (
+          <LoginForm />
+        ) : form === 'register' ? (
+          <RegisterForm />
+        ) : (
+          <ForgotPasswordForm />
+        )}
+      </FormWrapper>
     </div>
   );
 };
@@ -27,7 +28,7 @@ const AuthPage: NextPageWithLayout<{ form: string }> = ({ form }) => {
 AuthPage.getLayout = (page) => {
   return (
     <>
-      <main className="flex justify-center my-32">{page}</main>
+      <main className="flex justify-center py-32">{page}</main>
       <Footer />
       <Background />
     </>

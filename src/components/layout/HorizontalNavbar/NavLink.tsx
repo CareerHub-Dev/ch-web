@@ -11,11 +11,11 @@ const NavLink = ({
   text: string;
 }) => {
   return (
-    <Link href={href}>
+    <Link href={href} passHref>
       <a
         className={cn(
-          'hover:text-primaryBlue font-semibold',
-          active && 'text-primaryBlue hover:text-primaryBlue'
+          'text-primaryGrayDarker hover:text-primaryBlack transition-all ease duration-200',
+          active && 'text-primaryBlue hover:text-primaryBlue font-semibold'
         )}
       >
         {text}

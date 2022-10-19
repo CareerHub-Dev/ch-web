@@ -1,25 +1,52 @@
+import useShallowRoutes from '@/hooks/useShallowRoutes';
 import CommonLayout from '@/components/layout/CommonLayout';
 import StudentAvatar from '@/components/student-profile/StudentAvatar';
 import StudentInfo from '@/components/student-profile/StudentInfo';
 import StudentSubscriptions from '@/components/student-profile/StudentSubscriptions';
 import StudentWorkExperience from '@/components/student-profile/StudentWorkExperience';
 import Link from 'next/link';
+import NavigationMenu from '@/components/student-profile/NavigationMenu';
 import { getStudent } from '@/lib/api/student';
 import protectedSsr from '@/lib/protected-ssr';
+
+const navigationItems = [
+  {
+    title: 'Досвід роботи',
+    section: 'experience',
+  },
+  {
+    title: 'Вакансії',
+    section: 'jobOffers',
+  },
+  {
+    title: 'Компанії',
+    section: 'companies',
+  },
+  {
+    title: 'Студенти',
+    section: 'students',
+  },
+];
+
+const sections = ['experience', 'jobOffers', 'companies', 'students'];
 
 const StudentProfilePage: NextPageWithLayout<{
   isSelf: boolean;
   studentData: any;
 }> = ({ isSelf, studentData }) => {
   const fullName = `${studentData.firstName} ${studentData.lastName}`;
+  const { currentSection, changeSection } = useShallowRoutes({
+    sections,
+    defaultSection: 'experience',
+  });
 
   return (
     <div
-      className="mx-auto grid grid-cols-[1fr_0.5fr] grid-rows-[minmax(0,_1fr)_auto] bg-white pt-12 shadow-xl rounded-b-lg
+      className="mx-auto grid grid-cols-[1fr_0.5fr] grid-rows-[minmax(0,_1fr)_auto] gap-4 bg-white pt-12 shadow-xl rounded-b-lg
         max-w-full
         lg:max-w-4xl"
     >
-      <section className="px-4">
+      <section className="px-4 col-span-2 md:col-auto">
         <div className="flex flex-center">
           <StudentAvatar photoId={studentData.photoId} />
           <div className="ml-4">
@@ -40,12 +67,15 @@ const StudentProfilePage: NextPageWithLayout<{
           </Link>
         )}
       </section>
-      <aside className="px-4">
+      <aside className="px-4 col-span-2 md:col-auto">
         <StudentSubscriptions accountId={studentData.id} />
       </aside>
-
       <section className="p-4 col-span-2">
-        <hr className="m-4" />
+        <NavigationMenu
+          sections={navigationItems}
+          currentSection={currentSection}
+          onChangeRoute={changeSection}
+        />
         <StudentWorkExperience items={[]} editable={isSelf} />
       </section>
     </div>

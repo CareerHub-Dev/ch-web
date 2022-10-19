@@ -5,8 +5,8 @@ export default function useShallowRoutes({
   defaultSection,
   sections,
 }: {
-  defaultSection: string;
   sections?: string[];
+  defaultSection: string;
 }) {
   const router = useRouter();
   const section = router.query.section as string;

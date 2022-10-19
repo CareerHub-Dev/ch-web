@@ -8,10 +8,12 @@ const FormInput = ({
   hasError,
   error,
   className,
+  disabled = false,
   type = 'text',
   id,
 }: UseInputResult & {
   className?: string;
+  disabled?: boolean;
   type?: string;
   id?: string;
 }) => {
@@ -24,6 +26,7 @@ const FormInput = ({
         onChange={change}
         onBlur={blur}
         value={value}
+        disabled={disabled}
       />
       {hasError && <span className="text-primaryRed">{error}</span>}
     </>

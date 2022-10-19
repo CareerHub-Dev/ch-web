@@ -28,7 +28,11 @@ const AvatarCrop = ({
     width: 50,
     height: 50,
   });
-  const [completedCropBlob, setCompletedCropBlob] = useState<any>();
+  const [completedCropBlob, setCompletedCropBlob] = useState<{
+    blob: Blob;
+    blobUrl: string;
+    revokeUrl: () => void;
+  }>();
 
   const onImageLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
     const { width, height } = e.currentTarget;
@@ -56,7 +60,7 @@ const AvatarCrop = ({
   useEffect(() => () => completedCropBlob?.revokeUrl(), [completedCropBlob]);
 
   return (
-    <div className="block max-fit bg-primaryGray mt-4">
+    <div className="block max-fit bg-lightBlue mt-4">
       <ReactCrop
         crop={crop}
         ruleOfThirds

@@ -40,8 +40,8 @@ export const updateStudentGeneralInfo = ({
   accessToken?: string;
   firstName: string;
   lastName: string;
-  birthDate?: string;
-  phone?: string;
+  birthDate?: string | null;
+  phone?: string | null;
   studentGroupId: string;
 }) =>
   request({
@@ -55,13 +55,13 @@ export const updateStudentGeneralInfo = ({
 
 export const updateStudentPhoto = ({
   accessToken,
-  blob,
+  file,
 }: {
   accessToken?: string;
-  blob?: Blob;
+  file?: File;
 }) => {
   const data = new FormData();
-  data.append('file', blob ?? 'undefined');
+  data.append('file', file ?? 'undefined');
 
   return request({
     url: `/Student/Students/self/photo`,

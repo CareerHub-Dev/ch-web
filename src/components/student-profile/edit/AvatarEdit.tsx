@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateStudentPhoto } from '@/lib/api/student';
 import { useBoolean } from 'usehooks-ts';
 import { useState, useCallback, type ChangeEvent } from 'react';
+import parseUnknownError from '@/lib/parse-unknown-error';
 import Overlay from '@/components/ui/Overlay';
 import Image from 'next/future/image';
 import PencilIcon from '@/components/ui/icons/PencilIcon';
@@ -47,13 +48,7 @@ const AvatarEdit = ({ initialData }: { initialData: any }) => {
         setCompletedCrop({});
       },
       onError: (error) => {
-        let msg = 'Не вдалося оновити фото, невідома помилка';
-        if (error instanceof Error) {
-          msg = error.message;
-        } else if (typeof error === 'string') {
-          msg = error;
-        }
-        toast.error(msg);
+        toast.error(parseUnknownError(error));
       },
     }
   );
@@ -77,10 +72,22 @@ const AvatarEdit = ({ initialData }: { initialData: any }) => {
     if (completedCrop.blob) {
       await updateStudentPhotoMutation.mutateAsync({
         accessToken: auth.session?.jwtToken,
-        blob: completedCrop.blob,
+        file: new File(
+          [completedCrop.blob],
+          `file.${avatarUpload.fileExtension}`,
+          {
+            type: avatarUpload.fileType ?? undefined,
+          }
+        ),
       });
     }
-  }, [auth.session?.jwtToken, completedCrop.blob, updateStudentPhotoMutation]);
+  }, [
+    auth.session?.jwtToken,
+    avatarUpload.fileExtension,
+    avatarUpload.fileType,
+    completedCrop.blob,
+    updateStudentPhotoMutation,
+  ]);
 
   const deleteAvatar = async () => {
     await updateStudentPhotoMutation.mutateAsync({
