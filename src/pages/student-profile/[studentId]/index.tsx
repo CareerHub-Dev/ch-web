@@ -3,7 +3,12 @@ import CommonLayout from '@/components/layout/CommonLayout';
 import StudentAvatar from '@/components/student-profile/StudentAvatar';
 import StudentInfo from '@/components/student-profile/StudentInfo';
 import StudentSubscriptions from '@/components/student-profile/StudentSubscriptions';
+
 import StudentWorkExperience from '@/components/student-profile/StudentWorkExperience';
+import StudentSubscriptionsJobOffers from '@/components/student-profile/StudentSubscriptionsJobOffers';
+import StudentSubscriptionsCompanies from '@/components/student-profile/StudentSubscriptionsCompanies';
+import StudentSubscriptionsStudents from '@/components/student-profile/StudentSubscriptionsStudents';
+
 import Link from 'next/link';
 import NavigationMenu from '@/components/student-profile/NavigationMenu';
 import { getStudent } from '@/lib/api/student';
@@ -31,9 +36,10 @@ const navigationItems = [
 const sections = ['experience', 'jobOffers', 'companies', 'students'];
 
 const StudentProfilePage: NextPageWithLayout<{
+  studentId: string;
   isSelf: boolean;
   studentData: any;
-}> = ({ isSelf, studentData }) => {
+}> = ({ isSelf, studentData, studentId }) => {
   const fullName = `${studentData.firstName} ${studentData.lastName}`;
   const { currentSection, changeSection } = useShallowRoutes({
     sections,
@@ -43,6 +49,7 @@ const StudentProfilePage: NextPageWithLayout<{
   return (
     <div
       className="mx-auto grid grid-cols-[1fr_0.5fr] grid-rows-[minmax(0,_1fr)_auto] gap-4 bg-white pt-12 shadow-xl rounded-b-lg
+        mb-20  
         max-w-full
         lg:max-w-4xl"
     >
@@ -76,7 +83,21 @@ const StudentProfilePage: NextPageWithLayout<{
           currentSection={currentSection}
           onChangeRoute={changeSection}
         />
-        <StudentWorkExperience items={[]} editable={isSelf} />
+        {currentSection === 'experience' ? (
+          <StudentWorkExperience items={[]} editable={isSelf} />
+        ) : currentSection === 'jobOffers' ? (
+          <StudentSubscriptionsJobOffers
+            accountId={studentId}
+            isSelf={isSelf}
+          />
+        ) : currentSection === 'companies' ? (
+          <StudentSubscriptionsCompanies
+            accountId={studentId}
+            isSelf={isSelf}
+          />
+        ) : currentSection === 'students' ? (
+          <StudentSubscriptionsStudents accountId={studentId} isSelf={isSelf} />
+        ) : null}
       </section>
     </div>
   );
@@ -95,6 +116,7 @@ export const getServerSideProps = protectedSsr({ allowedRoles: ['Student'] })(
     const isSelf = studentId === accountId;
     return {
       props: {
+        studentId,
         isSelf,
         studentData,
       },

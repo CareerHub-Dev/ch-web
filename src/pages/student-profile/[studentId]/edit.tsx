@@ -36,11 +36,11 @@ const EditStudentPage: NextPageWithLayout<
     sections,
     defaultSection: 'general',
   });
-  const { data: syncData } = useSelfStudentQuery({
+  const { data: syncData, isLoading: loadingSyncData } = useSelfStudentQuery({
     initialData: studentData,
   });
   const syncPhotoId = syncData?.photoId;
-  const { data: imageData } = useImageQuery({
+  const { data: imageData, isLoading: loadingImage } = useImageQuery({
     imageId: syncPhotoId,
     enabled: !!syncPhotoId,
   });
@@ -49,6 +49,7 @@ const EditStudentPage: NextPageWithLayout<
     <div className="mx-8 lg:mx-auto max-w-full lg:max-w-[978px] bg-white my-2">
       <div className="grid grid-cols-[auto_1fr] gap-8">
         <EditPageHeader
+          avatarLoading={loadingImage && !!syncPhotoId}
           avatarData={imageData}
           firstName={syncData?.firstName ?? studentData.firstName}
           lastName={syncData?.lastName ?? studentData.lastName}
@@ -64,7 +65,10 @@ const EditStudentPage: NextPageWithLayout<
           {currentSection === 'general' ? (
             <GeneralInfo initialData={syncData} />
           ) : currentSection === 'avatar' ? (
-            <AvatarEdit initialData={imageData} />
+            <AvatarEdit
+              initialData={imageData}
+              loadingAvatar={loadingImage && !!syncPhotoId}
+            />
           ) : (
             <ChangePassword />
           )}

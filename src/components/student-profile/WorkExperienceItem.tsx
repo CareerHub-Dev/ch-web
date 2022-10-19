@@ -10,7 +10,7 @@ const WorkExperienceItem = ({ item }: { item: WorkingExperience }) => {
     : getFormattedDate(item.endMonth, item.endYear);
 
   return (
-    <li className="m-4 p-4 ">
+    <li className="m-4 p-4">
       <h3 className="text-lg text-darkerBlue">{item.jobTitle}</h3>
       <p className={grayText}>Компанія: {item.company}</p>
       <p className={grayText}>Дата початку: {startDate}</p>

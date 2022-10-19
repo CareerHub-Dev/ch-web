@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { backendApiBaseUrl, localGatewayUrl } from './api';
 
 const defaultHeaders = { 'Content-Type': 'application/json' };

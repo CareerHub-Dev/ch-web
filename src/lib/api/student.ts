@@ -1,4 +1,8 @@
 import { request } from '../axios';
+import parseJson from '../json-safe-parse';
+import XPaginationHeaderSchema, {
+  type XPaginationHeader,
+} from '../schemas/XPaginationHeader';
 
 export const getStudent = (accountId: string) => (token: string | null) => () =>
   request({
@@ -80,3 +84,41 @@ export const fetchStudentCvs =
       url: `/Student/Students/${accountId}/Cvs`,
       headers: { Authorization: `Bearer ${accessToken}` },
     });
+
+export const getStudentSubscriptions =
+  (type: 'company' | 'jobOffer' | 'student') =>
+  ({
+    accountId,
+    ...params
+  }: {
+    accountId: string;
+    pageNumber: number;
+    pageSize: number;
+    searchTerm?: string;
+    orderByExpression?: string;
+  }) =>
+  (accessToken: string | null) =>
+  () => {
+    return request({
+      url: `/Student/Students/${accountId}/${type}-subscriptions`,
+      select: (response) => {
+        const { data, headers } = response;
+        let pagination: XPaginationHeader | null = null;
+        if (headers['x-pagination']) {
+          const parsed = parseJson(headers['x-pagination']);
+          if (parsed.success) {
+            const parsedHeader = XPaginationHeaderSchema.safeParse(parsed.data);
+            if (parsedHeader.success) {
+              pagination = parsedHeader.data;
+            }
+          }
+        }
+        return {
+          data,
+          pagination,
+        };
+      },
+      params,
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+  };

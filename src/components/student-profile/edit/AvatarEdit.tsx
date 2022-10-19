@@ -14,7 +14,13 @@ import ModalLoading from '@/components/ui/Modal/ModalLoading';
 
 import cn from 'classnames';
 
-const AvatarEdit = ({ initialData }: { initialData: any }) => {
+const AvatarEdit = ({
+  initialData,
+  loadingAvatar,
+}: {
+  initialData: any;
+  loadingAvatar: boolean;
+}) => {
   const auth = useAuth();
   const toast = useToast();
   const queryClient = useQueryClient();
@@ -104,13 +110,17 @@ const AvatarEdit = ({ initialData }: { initialData: any }) => {
       </p>
       <hr />
       <div className="mt-4 p-4">
-        <Image
-          src={imageSource}
-          width={256}
-          height={256}
-          alt={'Твій аватар'}
-          className="block mx-auto border-2 border-primaryGray"
-        />
+        <span className="block mx-auto border-2 border-primaryGray bg-primaryGray w-64 h-64">
+          {!loadingAvatar && (
+            <Image
+              src={imageSource}
+              width={256}
+              height={256}
+              alt={'Твій аватар'}
+              className="overflow-hidden aspect-square"
+            />
+          )}
+        </span>
 
         <Overlay className="relative" onOutsideClick={editPopupIsOpen.setFalse}>
           <button
