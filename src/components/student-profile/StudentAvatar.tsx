@@ -7,8 +7,7 @@ const containerClass = 'rounded-full h-[128px] w-[128px]';
 
 const StudentAvatar = ({ photoId }: { photoId: string | null }) => {
   const q = useImageQuery({
-    imageId: photoId as string,
-    enabled: !!photoId,
+    imageId: photoId,
   });
   const imageSource = q.data ?? '/default-avatar.png';
   const imageMightBeLoading = !!photoId && q.isLoading;

@@ -1,4 +1,4 @@
-import protectedSsr from '@/lib/protected-ssr';
+import { protectedSsr } from '@/lib/protected-ssr';
 import JobOfferForm from '@/components/offers/add/JobOfferForm';
 
 import classes from '@/styles/add-offer.module.scss';
@@ -16,4 +16,4 @@ export default AddJobOfferPage;
 
 export const getServerSideProps = protectedSsr({
   allowedRoles: ['Company'],
-})();
+});

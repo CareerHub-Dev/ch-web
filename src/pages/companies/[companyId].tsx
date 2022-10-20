@@ -5,7 +5,7 @@ import { fetchCompanyDetails } from '@/lib/api/remote/companies';
 import { useRouter } from 'next/router';
 import CompanyHeader from '@/components/companies/details/CompanyHeader';
 import CompanyBody from '@/components/companies/details/CompanyBody';
-import protectedSsr from '@/lib/protected-ssr';
+import { protectedSsr } from '@/lib/protected-ssr';
 
 const CompanyDetailsPage = () => {
   const router = useRouter();
@@ -65,5 +65,5 @@ const CompanyDetailsPage = () => {
 export default CompanyDetailsPage;
 
 export const getServerSideProps = protectedSsr({
-  allowedRoles: ['Student'],
-})();
+  allowedRoles: ['Student', 'Company'],
+});

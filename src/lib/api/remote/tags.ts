@@ -1,11 +1,11 @@
 import { request } from '../../axios';
 
-export const getTags = (accessToken: Nullable<string>) => async () => {
+export const getTags = (token?: string) => {
   return request({
     url: 'Auth/Tags',
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 };

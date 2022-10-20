@@ -9,7 +9,7 @@ import JobOffersList from '@/components/offers/feed/JobOffersList';
 import Head from 'next/head';
 import { fetchJobOffers } from '@/lib/api/remote/jobOffers';
 import HorizontalNavbar from '@/components/layout/HorizontalNavbar';
-import protectedSsr from '@/lib/protected-ssr';
+import { protectedSsr } from '@/lib/protected-ssr';
 
 const defaultPageSize = 50;
 
@@ -72,4 +72,4 @@ export default JobOffersFeedPage;
 
 export const getServerSideProps = protectedSsr({
   allowedRoles: ['Student'],
-})();
+});

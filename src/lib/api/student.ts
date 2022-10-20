@@ -1,30 +1,34 @@
+import { AxiosResponse } from 'axios';
 import { request } from '../axios';
 import parseJson from '../json-safe-parse';
+import StudentSchema from '../schemas/Student';
 import XPaginationHeaderSchema, {
   type XPaginationHeader,
 } from '../schemas/XPaginationHeader';
 
-export const getStudent = (accountId: string) => (token: string | null) => () =>
+const parseStudent = (response: AxiosResponse) =>
+  StudentSchema.parse(response.data);
+
+export const getStudent = (accountId: string) => (token?: string) =>
   request({
     url: `/Student/Students/${accountId}`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    select: parseStudent,
   });
 
-export const getSelfStudent = (token: string | null) => () =>
+export const getSelfStudent = (token?: string) =>
   request({
     url: '/Student/Students/self',
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    select: parseStudent,
   });
 
 export const getStudentSubscriptionsAmount =
-  (subscriptionType: string) =>
-  (accountId: string) =>
-  (token: string | null) =>
-  () =>
+  (subscriptionType: string) => (accountId: string) => (token?: string) =>
     request({
       url: `/Student/Students/${accountId}/amount-${subscriptionType}-subscriptions`,
       headers: { Authorization: `Bearer ${token}` },

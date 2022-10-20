@@ -23,7 +23,7 @@ const StudentSubscriptions = ({ accountId }: { accountId: string }) => {
   );
 
   return (
-    <div className="bg-primaryBlue text-white p-4 rounded-xl">
+    <div className="text-white p-4 rounded-xl opacity-95 bg-gradient-to-r from-primaryBlue to-lightBlueAccent">
       <h2 className="mb-4">Підписки</h2>
       <p className="text-lightBlue">
         Студенти: {students.isLoading ? '...' : students.data}

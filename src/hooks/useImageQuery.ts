@@ -5,21 +5,15 @@ export default function useImageQuery({
   imageId,
   onError,
   onSuccess,
-  enabled,
-  refetchOnMount,
 }: {
-  imageId: string;
+  imageId?: string | null;
   onError?: AnyFn;
   onSuccess?: AnyFn;
-  enabled?: boolean;
-  refetchOnMount?: boolean;
 }) {
-  const q = useProtectedQuery(['image', imageId], getImage(imageId), {
+  return useProtectedQuery(['image', imageId], getImage(imageId!), {
     onError,
     onSuccess,
     retry: false,
-    enabled,
-    refetchOnMount,
+    enabled: !!imageId,
   });
-  return q;
 }

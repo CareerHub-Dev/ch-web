@@ -6,7 +6,7 @@ import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
 import FeedWrapper from '@/components/layout/FeedWrapper';
 import SearchPanel from '@/components/companies/feed/SearchPanel';
 import LoadMoreSection from '@/components/layout/LoadMoreSection';
-import protectedSsr from '@/lib/protected-ssr';
+import { protectedSsr } from '@/lib/protected-ssr';
 
 const defaultPageSize = 50;
 
@@ -55,5 +55,5 @@ const CompaniesFeedPage = () => {
 export default CompaniesFeedPage;
 
 export const getServerSideProps = protectedSsr({
-  allowedRoles: ['Student'],
-})();
+  allowedRoles: ['Student', 'Company'],
+});

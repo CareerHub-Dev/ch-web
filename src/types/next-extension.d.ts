@@ -3,6 +3,7 @@ import type {
   NextApiResponse,
   NextPage,
   GetServerSidePropsContext,
+  GetServerSidePropsResult,
   GetServerSideProps,
   PreviewData,
 } from 'next';
@@ -33,7 +34,7 @@ declare global {
   ) => Promise<GetServerSidePropsResult<P>>;
 
   type NextApiRequestWithSessionData = NextApiRequest & {
-    user?: SessionData;
+    session?: SessionData;
   };
 
   type ExtendedApiHandler<TResponse> = (

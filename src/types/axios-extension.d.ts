@@ -1,14 +1,14 @@
 import type { AxiosResponse, AxiosRequestConfig } from 'axios';
 
 declare global {
-  type AxiosResponseCallbackFn<TData = any, TResult = any> = (
-    response: ValueOf<AxiosResponse<TData>>
+  type AxiosResponseCallbackFn<TResult> = (
+    response: AxiosResponse<any>
   ) => TResult;
 
-  type ExtendedAxiosRequestOptions<TData, TConfig, TSelected> =
+  type ExtendedAxiosRequestOptions<TConfig, TSelected> =
     AxiosRequestConfig<TConfig> & {
-      select?: AxiosResponseCallbackFn<TData, TSelected>;
       instance?: AxiosInstance;
       prefix?: string;
+      select?: AxiosResponseCallbackFn<TSelected>;
     };
 }

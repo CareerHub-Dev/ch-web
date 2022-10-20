@@ -11,8 +11,9 @@ import StudentSubscriptionsStudents from '@/components/student-profile/StudentSu
 
 import Link from 'next/link';
 import NavigationMenu from '@/components/student-profile/NavigationMenu';
+import { type InferGetServerSidePropsType } from 'next';
 import { getStudent } from '@/lib/api/student';
-import protectedSsr from '@/lib/protected-ssr';
+import { protectedSsr } from '@/lib/protected-ssr';
 
 const navigationItems = [
   {
@@ -35,12 +36,10 @@ const navigationItems = [
 
 const sections = ['experience', 'jobOffers', 'companies', 'students'];
 
-const StudentProfilePage: NextPageWithLayout<{
-  studentId: string;
-  isSelf: boolean;
-  studentData: any;
-}> = ({ isSelf, studentData, studentId }) => {
-  const fullName = `${studentData.firstName} ${studentData.lastName}`;
+const StudentProfilePage: NextPageWithLayout<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ isSelf, student }) => {
+  const fullName = `${student.firstName} ${student.lastName}`;
   const { currentSection, changeSection } = useShallowRoutes({
     sections,
     defaultSection: 'experience',
@@ -55,14 +54,14 @@ const StudentProfilePage: NextPageWithLayout<{
     >
       <section className="px-4 col-span-2 md:col-auto">
         <div className="flex flex-center">
-          <StudentAvatar photoId={studentData.photoId} />
+          <StudentAvatar photoId={student.photoId} />
           <div className="ml-4">
             <StudentInfo
               fullName={fullName}
-              email={studentData.email}
-              group={studentData.studentGroup.name}
-              phone={studentData.phone}
-              birthDate={studentData.birthDate}
+              email={student.email}
+              group={student.studentGroup.name}
+              phone={student.phone}
+              birthDate={student.birthDate}
             />
           </div>
         </div>
@@ -75,7 +74,7 @@ const StudentProfilePage: NextPageWithLayout<{
         )}
       </section>
       <aside className="px-4 col-span-2 md:col-auto">
-        <StudentSubscriptions accountId={studentData.id} />
+        <StudentSubscriptions accountId={student.id} />
       </aside>
       <section className="p-4 col-span-2">
         <NavigationMenu
@@ -87,16 +86,19 @@ const StudentProfilePage: NextPageWithLayout<{
           <StudentWorkExperience items={[]} editable={isSelf} />
         ) : currentSection === 'jobOffers' ? (
           <StudentSubscriptionsJobOffers
-            accountId={studentId}
+            accountId={student.id}
             isSelf={isSelf}
           />
         ) : currentSection === 'companies' ? (
           <StudentSubscriptionsCompanies
-            accountId={studentId}
+            accountId={student.id}
             isSelf={isSelf}
           />
         ) : currentSection === 'students' ? (
-          <StudentSubscriptionsStudents accountId={studentId} isSelf={isSelf} />
+          <StudentSubscriptionsStudents
+            accountId={student.id}
+            isSelf={isSelf}
+          />
         ) : null}
       </section>
     </div>
@@ -107,19 +109,19 @@ StudentProfilePage.getLayout = CommonLayout();
 
 export default StudentProfilePage;
 
-export const getServerSideProps = protectedSsr({ allowedRoles: ['Student'] })(
-  async (context) => {
+export const getServerSideProps = protectedSsr({
+  allowedRoles: ['Student'],
+  getProps: async (context) => {
     const studentId = context.query.studentId as string;
     const { accountId, jwtToken } = context.session;
-    const studentData = await getStudent(studentId)(jwtToken)();
+    const student = await getStudent(studentId)(jwtToken);
 
     const isSelf = studentId === accountId;
     return {
       props: {
-        studentId,
         isSelf,
-        studentData,
+        student,
       },
     };
-  }
-);
+  },
+});

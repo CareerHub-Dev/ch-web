@@ -1,5 +1,5 @@
 import useImageQuery from '@/hooks/useImageQuery';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import classes from './CompanyLogo.module.scss';
 
 const CompanyLogo: React.FC<{
@@ -13,7 +13,7 @@ const CompanyLogo: React.FC<{
 
   return (
     <div className={classes.wrapper}>
-      <img alt="Company Logo" src={logo} />
+      <Image alt="Company Logo" src={logo} />
     </div>
   );
 };

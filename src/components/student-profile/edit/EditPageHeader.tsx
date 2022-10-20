@@ -8,7 +8,7 @@ const EditPageHeader = ({
   firstName,
   lastName,
 }: {
-  avatarData: string | null;
+  avatarData?: string | null;
   avatarLoading: boolean;
   firstName: string;
   lastName: string;

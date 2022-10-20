@@ -11,7 +11,6 @@ const SubscriptionCompanyItem = ({
 }) => {
   const q = useImageQuery({
     imageId: company.logoId,
-    enabled: !!company.logoId,
   });
 
   return (
@@ -26,7 +25,7 @@ const SubscriptionCompanyItem = ({
       <div className="flex-auto">
         <div className="flex items-center justify-between flex-wrap">
           <Link href={`/company/${company.id}`} passHref>
-            <a className="cursor-pointer hover:text-primaryBlue hover:underline text-lg">
+            <a className="cursor-pointer hover:text-primaryBlue hover:underline md:text-lg">
               {company.name}
             </a>
           </Link>
@@ -36,7 +35,7 @@ const SubscriptionCompanyItem = ({
             </button>
           )}
         </div>
-        <p className="text-sm text-darkGray mt-1">{company.motto}</p>
+        <p className="text-xs text-darkGray mt-1">{company.motto}</p>
       </div>
     </div>
   );

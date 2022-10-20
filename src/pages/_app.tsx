@@ -8,6 +8,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import ToastContainer from '@/components/layout/ToastContainer';
+import Head from 'next/head';
 
 import 'react-image-crop/dist/ReactCrop.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -25,20 +26,28 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
           },
         },
       })
-  );  
+  );
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthContextProvider>
-        <Provider store={store}>
-          <Hydrate state={pageProps.dehydratedState}>
-            {getLayout(<Component {...pageProps} />)}
-            <ToastContainer />
-          </Hydrate>
-        </Provider>
-      </AuthContextProvider>
-    </QueryClientProvider>
+    <>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        ></meta>
+      </Head>
+      <QueryClientProvider client={queryClient}>
+        <AuthContextProvider>
+          <Provider store={store}>
+            <Hydrate state={pageProps.dehydratedState}>
+              {getLayout(<Component {...pageProps} />)}
+              <ToastContainer />
+            </Hydrate>
+          </Provider>
+        </AuthContextProvider>
+      </QueryClientProvider>
+    </>
   );
 }
 

@@ -15,8 +15,8 @@ const StudentInfo = ({
   fullName: string;
   email: string;
   group: string;
-  phone?: string;
-  birthDate?: string;
+  phone: string | null;
+  birthDate: string | null;
 }) => {
   const formattedBirthDate = birthDate
     ? format(new Date(birthDate), 'dd.MM.yyyy')

@@ -30,13 +30,13 @@ const requestErrorHandler = <TData, TConfig>(
   return Promise.reject(msg);
 };
 
-export const request = async <TData = any, TConfig = any, TSelected = TData>({
+export const request = async <TSelected = any, TConfig = any>({
   instance = axiosInstance,
   prefix,
   select = (response) => response.data,
   method = 'GET',
   ...options
-}: ExtendedAxiosRequestOptions<TData, TConfig, TSelected>) => {
+}: ExtendedAxiosRequestOptions<TConfig, TSelected>): Promise<TSelected> => {
   if (prefix) {
     options.url = `${prefix}/${options.url}`;
   }

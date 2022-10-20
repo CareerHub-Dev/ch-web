@@ -7,7 +7,6 @@ const UserMenuAvatar = () => {
     useSelfStudentQuery();
   const { data: imageData, isLoading: loadingImage } = useImageQuery({
     imageId: studentData?.photoId,
-    enabled: !!studentData?.photoId,
   });
 
   const imageSource = imageData ?? '/default-avatar.png';

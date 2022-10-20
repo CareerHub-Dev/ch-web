@@ -1,6 +1,6 @@
 import { request } from '../axios';
 
-export const getImage = (imageId: string) => (token: string | null) => () =>
+export const getImage = (imageId: string) => (token?: string) =>
   request({
     prefix: 'Auth',
     url: `Images/${imageId}`,

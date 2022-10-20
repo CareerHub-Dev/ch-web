@@ -1,4 +1,4 @@
-import protectedSsr from '@/lib/protected-ssr';
+import { protectedSsr } from '@/lib/protected-ssr';
 
 const CompanyDashboard = () => {
   return (
@@ -11,4 +11,4 @@ export default CompanyDashboard;
 
 export const getServerSideProps = protectedSsr({
   allowedRoles: ['Company'],
-})();
+});

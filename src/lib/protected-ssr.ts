@@ -1,60 +1,109 @@
-import {
-  type GetServerSidePropsContext,
-  type Redirect,
-  PreviewData,
-} from 'next/types';
+import { PreviewData, GetServerSideProps } from 'next/types';
 import { type UserRole } from './schemas/UserRole';
+import { type SessionData } from './schemas/SessionData';
 import { ParsedUrlQuery } from 'querystring';
 import sessionMiddleware from './middleware/sessionMiddleware';
 
-const protectedSsr =
-  <
-    P extends { [key: string]: any } = { [key: string]: any },
-    Q extends ParsedUrlQuery = ParsedUrlQuery,
-    D extends PreviewData = PreviewData
-  >({
-    allowedRoles,
-    redirect = {
-      destination: '/404',
-      permanent: false,
-    },
-  }: {
-    allowedRoles: Array<UserRole>;
-    redirect?: Redirect;
-  }) =>
-  (getServerSidePropsFn?: GetServerSidePropsWithSession<P, Q, D>) => {
-    return async function protectedServerSidePropsCreator(
-      context: GetServerSidePropsContext<Q, D>
-    ) {
-      const session = sessionMiddleware(context, allowedRoles);
+type BaseProps = { [key: string]: any };
 
-      if ('error' in session) {
-        return {
-          redirect,
-        };
+type ProtectedSsrOptions<
+  P extends BaseProps = BaseProps,
+  Q extends ParsedUrlQuery = ParsedUrlQuery,
+  D extends PreviewData = PreviewData
+> = {
+  allowedRoles: UserRole[];
+  getProps: GetServerSidePropsWithSession<P, Q, D>;
+};
+
+type BoxedSessionData = { session: SessionData };
+
+export function protectedSsr<
+  P extends BaseProps = BaseProps,
+  Q extends ParsedUrlQuery = ParsedUrlQuery,
+  D extends PreviewData = PreviewData
+>(
+  options: ProtectedSsrOptions<P, Q, D>
+): GetServerSideProps<P & BoxedSessionData, Q, D>;
+
+export function protectedSsr<
+  P extends BaseProps = BaseProps,
+  Q extends ParsedUrlQuery = ParsedUrlQuery,
+  D extends PreviewData = PreviewData
+>(
+  options: Omit<ProtectedSsrOptions<P, Q, D>, 'getProps'>
+): GetServerSideProps<BoxedSessionData, Q, D>;
+
+export function protectedSsr<
+  P extends BaseProps = BaseProps,
+  Q extends ParsedUrlQuery = ParsedUrlQuery,
+  D extends PreviewData = PreviewData
+>(
+  options:
+    | ProtectedSsrOptions<P, Q, D>
+    | Omit<ProtectedSsrOptions<P, Q, D>, 'getProps'>
+): GetServerSideProps<(P & BoxedSessionData) | BoxedSessionData, Q, D> {
+  return async function _getProtectedServerSideProps(context) {
+    const { allowedRoles } = options;
+    const session = sessionMiddleware(context, allowedRoles);
+
+    if ('error' in session) {
+      return { notFound: true };
+    }
+
+    if ('getProps' in options) {
+      const otherProps = await options.getProps({ ...context, session });
+      if ('props' in otherProps) {
+        const props = otherProps.props;
+        if (props instanceof Promise) {
+          return props.then((resolvedProps) => ({
+            props: { ...resolvedProps, session },
+          }));
+        } else {
+          return {
+            props: { ...props, session },
+          };
+        }
       }
+      return otherProps;
+    }
 
-      if (!getServerSidePropsFn) {
-        return {
-          props: { session },
-        };
-      }
-      const otherProps = await getServerSidePropsFn({ ...context, session });
-
-      if ('redirect' in otherProps) {
-        return { redirect: otherProps.redirect };
-      }
-
-      const props =
-        'props' in otherProps ? { ...otherProps.props, session } : session;
-
-      const revalidatedProps = {
-        ...otherProps,
-        props,
-      };
-
-      return revalidatedProps;
-    };
+    return { props: { session } };
   };
+}
 
-export default protectedSsr;
+// export default function protectedSsr<
+//   P extends { [key: string]: any },
+//   Q extends ParsedUrlQuery = ParsedUrlQuery,
+//   D extends PreviewData = PreviewData
+// >({
+//   allowedRoles,
+//   getProps,
+// }: ProtectedSsrOptions<P, Q, D>): GetServerSideProps<
+//   P & BoxedSessionData,
+//   Q,
+//   D
+// > {
+//   return async function getProtectedServerSideProps(context) {
+//     const session = sessionMiddleware(context, allowedRoles);
+
+//     if ('error' in session) {
+//       return { notFound: true };
+//     }
+
+//     const otherProps = await getProps({ ...context, session });
+
+//     if ('props' in otherProps) {
+//       const props = otherProps.props;
+//       if (props instanceof Promise) {
+//         return props.then((resolvedProps) => ({
+//           props: { ...resolvedProps, session },
+//         }));
+//       } else {
+//         return {
+//           props: { ...props, session },
+//         };
+//       }
+//     }
+//     return otherProps;
+//   };
+// }

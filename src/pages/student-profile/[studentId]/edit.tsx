@@ -1,6 +1,7 @@
 import { getSelfStudent } from '@/lib/api/student';
-import protectedSsr from '@/lib/protected-ssr';
-import { InferGetServerSidePropsType } from 'next';
+import { protectedSsr } from '@/lib/protected-ssr';
+import { type InferGetServerSidePropsType } from 'next';
+import { type Student } from '@/lib/schemas/Student';
 import useSelfStudentQuery from '@/hooks/useStudentSelfQuery';
 import useImageQuery from '@/hooks/useImageQuery';
 import useShallowRoutes from '@/hooks/useShallowRoutes';
@@ -31,18 +32,17 @@ const sections = ['general', 'avatar', 'password'];
 
 const EditStudentPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ studentData }) => {
+> = ({ student }) => {
   const { changeSection, currentSection } = useShallowRoutes({
     sections,
     defaultSection: 'general',
   });
-  const { data: syncData, isLoading: loadingSyncData } = useSelfStudentQuery({
-    initialData: studentData,
+  const { data: syncData } = useSelfStudentQuery({
+    initialData: student,
   });
   const syncPhotoId = syncData?.photoId;
   const { data: imageData, isLoading: loadingImage } = useImageQuery({
-    imageId: syncPhotoId,
-    enabled: !!syncPhotoId,
+    imageId: syncPhotoId
   });
 
   return (
@@ -51,11 +51,9 @@ const EditStudentPage: NextPageWithLayout<
         <EditPageHeader
           avatarLoading={loadingImage && !!syncPhotoId}
           avatarData={imageData}
-          firstName={syncData?.firstName ?? studentData.firstName}
-          lastName={syncData?.lastName ?? studentData.lastName}
-          groupName={
-            syncData?.studentGroup?.name ?? studentData.studentGroup?.name
-          }
+          firstName={syncData?.firstName ?? student.firstName}
+          lastName={syncData?.lastName ?? student.lastName}
+          groupName={syncData?.studentGroup?.name ?? student.studentGroup?.name}
         />
         <NavigationItems
           items={navigationItems}
@@ -82,11 +80,11 @@ EditStudentPage.getLayout = CommonLayout();
 
 export default EditStudentPage;
 
-export const getServerSideProps = protectedSsr({ allowedRoles: ['Student'] })(
-  async (context) => {
+export const getServerSideProps = protectedSsr<{ student: Student }>({
+  allowedRoles: ['Student'],
+  getProps: async (context) => {
     const studentId = context.query.studentId as string;
     const { accountId, jwtToken } = context.session;
-
     if (studentId !== accountId) {
       return {
         redirect: {
@@ -95,12 +93,7 @@ export const getServerSideProps = protectedSsr({ allowedRoles: ['Student'] })(
         },
       };
     }
-    const studentData = await getSelfStudent(jwtToken)();
-
-    return {
-      props: {
-        studentData,
-      },
-    };
-  }
-);
+    const student = await getSelfStudent(jwtToken);
+    return { props: { student } };
+  },
+});

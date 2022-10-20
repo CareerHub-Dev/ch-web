@@ -54,7 +54,7 @@ export function makeHandler<
         //     }
         //   }
         // }
-        req.user = undefined;
+        req.session = undefined;
       }
 
       return await methodParams.handler(req, res);

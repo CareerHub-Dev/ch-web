@@ -19,7 +19,7 @@ const useStudentQuery: (opts?: {
 
   const studentQuery = useQuery(
     ['student', accountId],
-    getStudent(accountId)(accessToken),
+    () => getStudent(accountId)(accessToken),
     {
       initialData: options?.initialData,
       enabled: !!accessToken && !!accountId,

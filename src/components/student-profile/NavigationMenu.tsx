@@ -13,7 +13,7 @@ const NavigationMenu = ({
   currentSection: string;
 }) => {
   return (
-    <nav className="text-sm md:px-4 w-full mb-8 border-y border-primaryGray">
+    <nav className="text-xs md:text-sm md:px-4 w-full mb-8 border-y border-primaryGray">
       <ul className="flex items-center gap-2">
         {sections.map((item, index) => (
           <NavigationMenuItem
