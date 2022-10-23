@@ -11,7 +11,7 @@ const CompanyHeader: React.FC<{
   motto?: string;
   companyLogo: string;
   companyBanner: string;
-  currentSection: string;
+  currentSection?: string | string[];
   changeSection: (section: string) => void;
 }> = ({
   id,

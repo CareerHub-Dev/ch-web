@@ -2,6 +2,8 @@ import WorkingExperience from '@/lib/cv/WorkingExperience';
 import NoWorkExperience from './NoWorkExperience';
 import WorkExperienceItem from './WorkExperienceItem';
 
+import cn from 'classnames';
+
 const StudentWorkExperience = ({
   items,
   editable,
@@ -11,7 +13,12 @@ const StudentWorkExperience = ({
 }) => {
   return (
     <div className="border border-gray rounded-md">
-      <div className="flex p-4 mb-4 bg-primaryBlue text-white rounded-t-md justify-center">
+      <div
+        className={cn(
+          'flex p-4 mb-4 bg-primaryBlue text-white rounded-t-md',
+          editable && 'justify-center'
+        )}
+      >
         <h2>Досвід роботи</h2>
         {editable && (
           <button className="ml-auto text-lightBlue text-sm underline">

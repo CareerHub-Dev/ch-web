@@ -13,7 +13,6 @@ export default function useImageQuery({
   return useProtectedQuery(['image', imageId], getImage(imageId!), {
     onError,
     onSuccess,
-    retry: false,
     enabled: !!imageId,
   });
 }

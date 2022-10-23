@@ -7,7 +7,7 @@ import {
   setSurname,
 } from '@/context/cv-constructor';
 import { useSelector } from 'react-redux';
-import useStudentQuery from '@/hooks/useStudentQuery';
+import useSelfStudentQuery from '@/hooks/useStudentSelfQuery';
 import useReduxStringInput from '@/hooks/useReduxStringInput';
 import AssistantTip from './AssistantTip';
 import Card from '@/components/ui/Card';
@@ -21,14 +21,10 @@ const Stage1 = () => {
   const surname = useReduxStringInput(selectSurname, setSurname);
   const isAssistEnabled = useSelector(selectIsAssistEnabled);
   const selectedJobType = useSelector(selectJobType);
-  const { isLoading: studentDataIsLoading } = useStudentQuery({
+  const { isLoading: studentDataIsLoading } = useSelfStudentQuery({
     onSuccess: (data) => {
-      if (data?.firstName) {
-        name.force(data?.firstName);
-      }
-      if (data?.lastName) {
-        surname.force(data?.lastName);
-      }
+      name.force(data.firstName);
+      surname.force(data.lastName);
     },
   });
   if (studentDataIsLoading) {

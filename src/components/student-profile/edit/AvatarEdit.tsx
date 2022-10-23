@@ -41,7 +41,11 @@ const AvatarEdit = ({
     {
       onSuccess: (data) => {
         const currentData = queryClient.getQueryData(['selfStudent']);
+        console.log(typeof currentData);
+        console.log(typeof data);
+
         if (typeof currentData === 'object' && typeof data === 'string') {
+          console.log('resetting currentData');
           queryClient.setQueryData(['selfStudent'], {
             ...currentData,
             photoId: data,

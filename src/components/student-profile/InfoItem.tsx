@@ -4,10 +4,9 @@ const InfoItem: React.FC<{
   text: string;
   icon: () => JSX.Element;
 }> = ({ text, icon }) => {
-  const Icon = icon;
   return (
     <div className={classes.item}>
-      <Icon />
+      {icon()}
       <p className="text-md text-darkGray">{text}</p>
     </div>
   );

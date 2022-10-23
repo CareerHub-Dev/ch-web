@@ -27,6 +27,7 @@ const CompanyDetailsPage = () => {
   );
   const { currentSection, changeSection } = useShallowRoutes({
     defaultSection: 'about',
+    sections: ['about'],
   });
 
   if (companyQuery.isLoading) {

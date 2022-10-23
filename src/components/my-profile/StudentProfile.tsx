@@ -21,7 +21,7 @@ const StudentProfile: React.FC<{
 
   const profileData = studentQuery.data;
   const displayedName = `${profileData.firstName} ${profileData.lastName}`;
-  const avatarPhotoId = profileData.photo;
+  const avatarPhotoId = profileData.photoId;
   const groupName = profileData.studentGroup?.name || 'Групу не вказано';
   const birthDate = profileData.birthDate;
   const birthDateIsSet = !!birthDate;

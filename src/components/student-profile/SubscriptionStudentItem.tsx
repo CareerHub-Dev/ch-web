@@ -1,23 +1,26 @@
 import useImageQuery from '@/hooks/useImageQuery';
+import { type StudentSubscription } from '@/lib/api/student/schemas';
 import Image from 'next/future/image';
 import Link from 'next/link';
-import type { CompanySubscription } from '@/lib/api/student/schemas';
 
-const SubscriptionCompanyItem = ({
+const SubscriptionStudentItem = ({
   item,
-  onSelect,
+  onSelect
 }: {
-  item: CompanySubscription;
+  item: StudentSubscription;
   onSelect?: () => void;
 }) => {
-  const q = useImageQuery({
-    imageId: item.logoId,
+  const { data: avatarData } = useImageQuery({
+    imageId: item.photoId,
   });
+
+  const studentFullName = `${item.firstName} ${item.lastName}`;
+  const studentAvatarSource = avatarData ?? '/company-dummy-logo.png';
 
   return (
     <div className="p-4 rounded-xl border border-x-primaryGray w-full flex gap-4 bg-lightGray">
       <Image
-        src={q.data ?? '/company-dummy-logo.png'}
+        src={studentAvatarSource}
         width={60}
         height={60}
         className="rounded-xl inline-block overflow-hidden aspect-square"
@@ -25,9 +28,9 @@ const SubscriptionCompanyItem = ({
       />
       <div className="flex-auto">
         <div className="flex items-center justify-between flex-wrap">
-          <Link href={`/company/${item.id}`} passHref>
+          <Link href={`/student-profile/${item.id}`} passHref>
             <a className="cursor-pointer hover:text-primaryBlue hover:underline md:text-lg">
-              {item.name}
+              {studentFullName}
             </a>
           </Link>
           {onSelect && (
@@ -39,9 +42,9 @@ const SubscriptionCompanyItem = ({
             </button>
           )}
         </div>
-        <p className="text-xs text-darkGray mt-1">{item.motto}</p>
+        <p className="text-xs text-darkGray mt-1">{item.studentGroup.name}</p>
       </div>
     </div>
   );
 };
-export default SubscriptionCompanyItem;
+export default SubscriptionStudentItem;

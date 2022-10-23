@@ -44,7 +44,7 @@ export function protectedSsr<
 ): GetServerSideProps<(P & BoxedSessionData) | BoxedSessionData, Q, D> {
   return async function _getProtectedServerSideProps(context) {
     const { allowedRoles } = options;
-    const session = sessionMiddleware(context, allowedRoles);
+    const session = sessionMiddleware(context.req.cookies, allowedRoles);
 
     if ('error' in session) {
       return { notFound: true };
@@ -52,8 +52,10 @@ export function protectedSsr<
 
     if ('getProps' in options) {
       const otherProps = await options.getProps({ ...context, session });
+
       if ('props' in otherProps) {
         const props = otherProps.props;
+
         if (props instanceof Promise) {
           return props.then((resolvedProps) => ({
             props: { ...resolvedProps, session },
@@ -70,40 +72,3 @@ export function protectedSsr<
     return { props: { session } };
   };
 }
-
-// export default function protectedSsr<
-//   P extends { [key: string]: any },
-//   Q extends ParsedUrlQuery = ParsedUrlQuery,
-//   D extends PreviewData = PreviewData
-// >({
-//   allowedRoles,
-//   getProps,
-// }: ProtectedSsrOptions<P, Q, D>): GetServerSideProps<
-//   P & BoxedSessionData,
-//   Q,
-//   D
-// > {
-//   return async function getProtectedServerSideProps(context) {
-//     const session = sessionMiddleware(context, allowedRoles);
-
-//     if ('error' in session) {
-//       return { notFound: true };
-//     }
-
-//     const otherProps = await getProps({ ...context, session });
-
-//     if ('props' in otherProps) {
-//       const props = otherProps.props;
-//       if (props instanceof Promise) {
-//         return props.then((resolvedProps) => ({
-//           props: { ...resolvedProps, session },
-//         }));
-//       } else {
-//         return {
-//           props: { ...props, session },
-//         };
-//       }
-//     }
-//     return otherProps;
-//   };
-// }

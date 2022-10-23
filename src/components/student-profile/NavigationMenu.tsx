@@ -10,7 +10,7 @@ const NavigationMenu = ({
     section: string;
   }[];
   onChangeRoute: (route: string) => void;
-  currentSection: string;
+  currentSection?: string | string[];
 }) => {
   return (
     <nav className="text-xs md:text-sm md:px-4 w-full mb-8 border-y border-primaryGray">

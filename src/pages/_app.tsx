@@ -22,7 +22,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
         defaultOptions: {
           queries: {
             refetchOnWindowFocus: false,
-            retry: false,
+            refetchOnMount: false,
+            retryDelay: (attemptIndex) =>
+              Math.min(1000 * 2 ** attemptIndex, 30000),
           },
         },
       })

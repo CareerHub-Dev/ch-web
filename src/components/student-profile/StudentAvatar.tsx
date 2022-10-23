@@ -13,7 +13,7 @@ const StudentAvatar = ({ photoId }: { photoId: string | null }) => {
   const imageMightBeLoading = !!photoId && q.isLoading;
 
   return (
-    <span className={cn(containerClass, 'bg-primaryGray shadow-md')}>
+    <span className={cn(containerClass, 'bg-primaryGray shadow-md', imageMightBeLoading && 'animate-pulse')}>
       {!imageMightBeLoading && (
         <Image
           src={imageSource}

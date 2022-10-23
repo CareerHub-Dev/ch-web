@@ -1,10 +1,10 @@
-import { Fragment } from 'react';
+import {
+  getStudentStudentSubscriptions,
+  unsubscribeStudentFromStudent,
+} from '@/lib/api/student';
 import NoStudentSubscriptions from './NoStudentSubscriptions';
-import useStudentSubscriptionsInfiniteQuery from '@/hooks/useStudentSubscriptionsInfiniteQuery';
-import ErrorWhileLoading from './ErrorWhileLoading';
-import parseUnknownError from '@/lib/parse-unknown-error';
-import LoadingPage from './LoadingPage';
-import LoadMoreButton from './LoadMoreButton';
+import StudentSubscriptionsList from './StudentSubscriptionsList';
+import SubscriptionStudentItem from './SubscriptionStudentItem';
 
 const StudentSubscriptionsStudents = ({
   accountId,
@@ -13,41 +13,24 @@ const StudentSubscriptionsStudents = ({
   accountId: string;
   isSelf: boolean;
 }) => {
-  const query = useStudentSubscriptionsInfiniteQuery({
-    accountId,
-    type: 'student',
-    params: {
-      pageSize: 50,
-    },
-  });
-
-  if (query.isLoading) {
-    return <LoadingPage />;
-  }
-  if (query.isError) {
-    return (
-      <ErrorWhileLoading
-        message={parseUnknownError(query.error)}
-        refetch={() => query.refetch()}
-        isRefetching={query.isRefetching}
-      />
-    );
-  }
-  if (query.data?.pages.at(0)?.data?.length === 0) {
-    return <NoStudentSubscriptions isSelf={isSelf} />;
-  }
-
   return (
-    <div>
-      {query.data.pages.map((page, pageIndex) => (
-        <Fragment key={pageIndex}>{JSON.stringify(page.data)}</Fragment>
-      ))}
-      {query.isFetchingNextPage ? (
-        <LoadingPage />
-      ) : query.hasNextPage ? (
-        <LoadMoreButton onClick={() => query.fetchNextPage()} />
-      ) : null}
-    </div>
+    <StudentSubscriptionsList
+      queryKey="studentStudentSubscriptions"
+      amountQueryKey={'student-student-subscriptions-amount'}
+      accountId={accountId}
+      isSelf={isSelf}
+      item={SubscriptionStudentItem}
+      noItems={NoStudentSubscriptions}
+      getItems={getStudentStudentSubscriptions}
+      mutateItem={(jwt?: string) => (id: string) => {
+        return new Promise<void>((resolve, reject) => {
+          setTimeout(() => {
+            resolve();
+          }, 3000);
+        });
+      }}
+      extractItemName={(item) => `${item.firstName} ${item.lastName}`}
+    />
   );
 };
 export default StudentSubscriptionsStudents;

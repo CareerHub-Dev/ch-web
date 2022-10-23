@@ -1,6 +1,7 @@
 import useSelfStudentQuery from '@/hooks/useStudentSelfQuery';
 import useImageQuery from '@/hooks/useImageQuery';
 import Image from 'next/future/image';
+import cn from 'classnames';
 
 const UserMenuAvatar = () => {
   const { data: studentData, isLoading: loadingStudentData } =
@@ -14,7 +15,7 @@ const UserMenuAvatar = () => {
     loadingStudentData || (!!studentData?.photoId && loadingImage);
 
   return (
-    <span className="rounded-full h-8 w-8 inline-flex bg-primaryGray">
+    <span className={cn("rounded-full h-8 w-8 inline-flex bg-primaryGray", imageMightBeLoading && 'animate-pulse')}>
       {!imageMightBeLoading && (
         <Image
           width={32}

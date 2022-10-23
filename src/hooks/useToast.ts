@@ -44,8 +44,8 @@ const useToast = () => {
     baseHandler(options.msg, new ToastClass(), options.current);
   };
 
-  const setTextHandler = (text: string, options?: ToastOptions) => {
-    toastRef.current = toast(text, options);
+  const setTextHandler = (text: string, options?: Omit<ToastOptions, 'isLoading' | 'type'>) => {
+    toastRef.current = toast(text, {...options, isLoading: true });
   };
 
   return {

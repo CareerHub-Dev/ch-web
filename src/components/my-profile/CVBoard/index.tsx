@@ -1,7 +1,7 @@
 import useAuth from '@/hooks/useAuth';
 import useProtectedQuery from '@/hooks/useProtectedQuery';
 import { useState } from 'react';
-import { fetchStudentCvs } from '@/lib/api/student';
+import { getStudentCvs } from '@/lib/api/student';
 import LinkButton from '@/components/ui/LinkButton';
 import CVItem from './CVItem';
 import CVActions from './CVActions';

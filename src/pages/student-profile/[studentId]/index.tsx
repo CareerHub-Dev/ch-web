@@ -11,6 +11,7 @@ import StudentSubscriptionsStudents from '@/components/student-profile/StudentSu
 
 import Link from 'next/link';
 import NavigationMenu from '@/components/student-profile/NavigationMenu';
+import { type Student } from '@/lib/schemas/Student';
 import { type InferGetServerSidePropsType } from 'next';
 import { getStudent } from '@/lib/api/student';
 import { protectedSsr } from '@/lib/protected-ssr';
@@ -109,19 +110,26 @@ StudentProfilePage.getLayout = CommonLayout();
 
 export default StudentProfilePage;
 
-export const getServerSideProps = protectedSsr({
+export const getServerSideProps = protectedSsr<{
+  student: Student;
+  isSelf: boolean;
+}>({
   allowedRoles: ['Student'],
   getProps: async (context) => {
     const studentId = context.query.studentId as string;
     const { accountId, jwtToken } = context.session;
-    const student = await getStudent(studentId)(jwtToken);
 
-    const isSelf = studentId === accountId;
-    return {
-      props: {
-        isSelf,
-        student,
-      },
-    };
+    try {
+      const student = await getStudent(studentId)(jwtToken);
+      const isSelf = studentId === accountId;
+      return {
+        props: {
+          isSelf,
+          student,
+        },
+      };
+    } catch (error) {
+      return { notFound: true };
+    }
   },
 });

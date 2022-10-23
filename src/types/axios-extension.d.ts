@@ -1,14 +1,17 @@
-import type { AxiosResponse, AxiosRequestConfig } from 'axios';
+import type {
+  AxiosInstance,
+  AxiosResponse,
+  AxiosRequestConfig,
+  AxiosProxyConfig,
+} from 'axios';
+import type { ZodSchema } from 'zod';
 
 declare global {
-  type AxiosResponseCallbackFn<TResult> = (
-    response: AxiosResponse<any>
-  ) => TResult;
+  type AxiosResponseCallbackFn<TResult> = (response: AxiosResponse) => TResult;
 
-  type ExtendedAxiosRequestOptions<TConfig, TSelected> =
-    AxiosRequestConfig<TConfig> & {
-      instance?: AxiosInstance;
-      prefix?: string;
-      select?: AxiosResponseCallbackFn<TSelected>;
-    };
+  type ExtendedAxiosRequestOptions<TSelected> = AxiosRequestConfig & {
+    instance?: AxiosInstance;
+    prefix?: string;
+    select?: AxiosResponseCallbackFn<TSelected>;
+  };
 }

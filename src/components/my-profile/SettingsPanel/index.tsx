@@ -9,7 +9,7 @@ const SettingsPanel: React.FC<{
   const generalInfo = {
     firstName: studentData?.firstName || '',
     lastName: studentData?.lastName || '',
-    phoneNumber: studentData?.phoneNumber || '',
+    phoneNumber: studentData?.phone || '',
     birthDate: studentData?.birthDate || '',
   };
 

@@ -1,4 +1,5 @@
-import { localGatewayAxiosInstance, request } from '../axios';
+import { localGatewayAxiosInstance, request } from '../../axios';
+import { type SessionData } from '@/lib/schemas/SessionData';
 
 export namespace LocalGateway {
   export const authenticate = async (data: {
@@ -22,6 +23,12 @@ export namespace LocalGateway {
       method: 'POST',
       data: { refreshToken },
       withCredentials: true,
+    });
+
+  export const getMe = async () =>
+    request<SessionData>({
+      instance: localGatewayAxiosInstance,
+      url: 'me',
     });
 }
 
@@ -61,3 +68,14 @@ export const resetPassword = async (data: {
     method: 'POST',
     data,
   });
+
+export const changePassword =
+  (jwt?: string) =>
+  async (data: { oldPassword: string; newPassword: string }) =>
+    request({
+      prefix: 'Auth/Account',
+      url: 'change-password',
+      method: 'POST',
+      data,
+      headers: { Authorization: `Bearer ${jwt}` },
+    });

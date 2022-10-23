@@ -18,7 +18,7 @@ const NoSubscriptions = ({
       </p>
       {isSelf && (
         <Link href={suggestionHref} passHref>
-          <a className="underline cursor-pointer text-xl hover:text-primaryBlue">
+          <a className="underline underline-offset-8 cursor-pointer text-xl hover:text-primaryBlue">
             {suggestionText}
           </a>
         </Link>

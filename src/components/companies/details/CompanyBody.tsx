@@ -2,7 +2,7 @@ import classes from './CompanyBody.module.scss';
 
 const CompanyBody: React.FC<{
   description: string;
-  currentSection: string;
+  currentSection?: string | string[];
 }> = ({ description, currentSection }) => {
   if (currentSection === 'about') {
     return (

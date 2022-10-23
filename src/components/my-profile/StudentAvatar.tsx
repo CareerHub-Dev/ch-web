@@ -4,7 +4,7 @@ import Image from 'next/image';
 import classes from './StudentAvatar.module.scss';
 
 const StudentAvatar: React.FC<{
-  photoId?: string;
+  photoId?: string | null;
 }> = ({ photoId }) => {
   const { session } = useAuth();
   const photoIsSet = !!photoId;

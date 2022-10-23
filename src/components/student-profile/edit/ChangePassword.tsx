@@ -1,8 +1,8 @@
 import useInput from '@/hooks/useInput/v3';
 import useToast from '@/hooks/useToast';
-import useAuth from '@/hooks/useAuth';
+import useProtectedMutation from '@/hooks/useProtectedMutation';
 import { useBoolean } from 'usehooks-ts';
-import { useMutation } from '@tanstack/react-query';
+import { changePassword } from '@/lib/api/account';
 import parseUnknownError from '@/lib/parse-unknown-error';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
 import FormInput from '@/components/ui/form/v2/FormInput';
@@ -10,9 +10,6 @@ import Link from 'next/link';
 
 const ChangePassword = () => {
   const toast = useToast();
-  const auth = useAuth();
-  const accessToken = auth.session?.jwtToken;
-
   const oldPasswordInput = useInput();
   const oldPasswordIsVisible = useBoolean(false);
   const newPasswordInput = useInput({
@@ -24,7 +21,7 @@ const ChangePassword = () => {
     ],
   });
   const newPasswordIsVisible = useBoolean(false);
-  const mutation = useMutation(['changePassword'], async () => true, {
+  const mutation = useProtectedMutation(['changePassword'], changePassword, {
     onSuccess: () => {
       toast.success('Пароль успішно змінено');
     },
@@ -38,12 +35,12 @@ const ChangePassword = () => {
   const save = async () => {
     oldPasswordInput.blur();
     newPasswordInput.blur();
-
-    if (oldPasswordInput.hasError || newPasswordInput.hasError) {
+    if ([oldPasswordInput, newPasswordInput].some((input) => !input.isValid)) {
       return;
     }
     const oldPassword = oldPasswordInput.value;
     const newPassword = newPasswordInput.value;
+    await mutation.mutateAsync({ oldPassword, newPassword });
   };
 
   return (
@@ -82,9 +79,9 @@ const ChangePassword = () => {
       </form>
       <div className="flex flex-row-reverse mt-4 mb-40">
         <button
-          className={'btn-primary p-2 w-40 ml-2 bg-primaryBlue'}
+          className="btn-primary p-2 w-40 ml-2 bg-primaryBlue"
           onClick={save}
-          disabled={cannotSubmit}
+          disabled={cannotSubmit || mutation.isLoading}
         >
           Оновити пароль
         </button>

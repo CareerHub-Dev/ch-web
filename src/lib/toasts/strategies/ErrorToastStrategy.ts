@@ -9,6 +9,7 @@ class ErrorToastStrategy implements IToastStrategy {
         type: toast.TYPE.ERROR,
         autoClose: 5000,
         closeButton: null,
+        isLoading: false,
       });
     else
       toast.error(message, {

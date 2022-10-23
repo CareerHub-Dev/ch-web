@@ -1,5 +1,5 @@
 import useImageQuery from '@/hooks/useImageQuery';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import classes from './CompanyBanner.module.scss';
 
 const CompanyBanner: React.FC<{
@@ -11,7 +11,7 @@ const CompanyBanner: React.FC<{
 
   return (
     <div className={classes.wrapper}>
-      <img alt="Company Banner" src={banner} />
+      <Image alt="Company Banner" src={banner} />
     </div>
   );
 };

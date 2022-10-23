@@ -6,6 +6,15 @@ type RawSessionData = {
   refreshToken: string;
 };
 
+type PaginatedRequestParams = {
+  pageNumber: number;
+  pageSize: number;
+  searchTerm?: string;
+  orderByExpression?: string;
+};
+
+type PaginatedQueryParams = Omit<PaginatedQueryParams, 'pageNumber'>;
+
 interface AppNavigationLink {
   href: string;
   text: string;
