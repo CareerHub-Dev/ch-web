@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { LocalGateway } from '@/lib/api/account';
 import { type SessionData } from '@/lib/schemas/SessionData';
 import { createContext, ReactNode, useState } from 'react';
@@ -38,9 +38,16 @@ export const SessionContextProvider = ({
     },
     retry: false,
   });
+  
+  const logoutMutation = useMutation(LocalGateway.logout, {
+    onSuccess() {
+      setData(null);
+      setStatus('unauthenticated');
+    },
+  });
 
-  const logout = () => {
-    // mutate and call logout
+  const logout = async () => {
+    await logoutMutation.mutateAsync();
   };
 
   const login = (session: SessionData) => {

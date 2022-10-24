@@ -25,6 +25,14 @@ export namespace LocalGateway {
       withCredentials: true,
     });
 
+  export const logout = async () =>
+    request({
+      instance: localGatewayAxiosInstance,
+      prefix: 'auth',
+      url: 'signout',
+      method: 'POST',
+    });
+
   export const getMe = async () =>
     request<SessionData>({
       instance: localGatewayAxiosInstance,
