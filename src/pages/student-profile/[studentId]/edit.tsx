@@ -3,7 +3,6 @@ import { protectedSsr } from '@/lib/protected-ssr';
 import { type InferGetServerSidePropsType } from 'next';
 import { type Student } from '@/lib/schemas/Student';
 import useSelfStudentQuery from '@/hooks/useStudentSelfQuery';
-import useImageQuery from '@/hooks/useImageQuery';
 import useShallowRoutes from '@/hooks/useShallowRoutes';
 
 import CommonLayout from '@/components/layout/CommonLayout';
@@ -12,6 +11,7 @@ import GeneralInfo from '@/components/student-profile/edit/GeneralInfo';
 import AvatarEdit from '@/components/student-profile/edit/AvatarEdit';
 import EditPageHeader from '@/components/student-profile/edit/EditPageHeader';
 import ChangePassword from '@/components/student-profile/edit/ChangePassword';
+import { getImage } from '@/lib/api/image';
 
 const navigationItems = [
   {
@@ -40,17 +40,15 @@ const EditStudentPage: NextPageWithLayout<
   const { data: syncData } = useSelfStudentQuery({
     initialData: student,
   });
-  const syncPhotoId = syncData?.photoId;
-  const { data: imageData, isLoading: loadingImage } = useImageQuery({
-    imageId: syncPhotoId
-  });
+  const currentAvatar = syncData?.photo
+    ? getImage(syncData.photo)
+    : '/default-avatar.png';
 
   return (
     <div className="mx-8 lg:mx-auto max-w-full lg:max-w-[978px] bg-white my-2">
       <div className="grid grid-cols-[auto_1fr] gap-8">
         <EditPageHeader
-          avatarLoading={loadingImage && !!syncPhotoId}
-          avatarData={imageData}
+          avatarData={currentAvatar}
           firstName={syncData?.firstName ?? student.firstName}
           lastName={syncData?.lastName ?? student.lastName}
           groupName={syncData?.studentGroup?.name ?? student.studentGroup?.name}
@@ -63,10 +61,7 @@ const EditStudentPage: NextPageWithLayout<
           {currentSection === 'general' ? (
             <GeneralInfo initialData={syncData} />
           ) : currentSection === 'avatar' ? (
-            <AvatarEdit
-              initialData={imageData}
-              loadingAvatar={loadingImage && !!syncPhotoId}
-            />
+            <AvatarEdit initialData={currentAvatar} />
           ) : (
             <ChangePassword />
           )}

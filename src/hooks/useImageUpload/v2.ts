@@ -28,15 +28,6 @@ export default function useImageUpload({
     isTouched.setFalse();
   };
 
-  useEffect(
-    () => () => {
-      if (isTouched.value) {
-        URL.revokeObjectURL(url);
-      }
-    },
-    [isTouched.value, url]
-  );
-
   const fileType =
     typeof source === 'object' && 'type' in source ? source.type : null;
 

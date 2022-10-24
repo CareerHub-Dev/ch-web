@@ -1,11 +1,3 @@
-type RawSessionData = {
-  accountId: string;
-  role: string;
-  jwtToken: string;
-  jwtTokenExpires: string;
-  refreshToken: string;
-};
-
 type PaginatedRequestParams = {
   pageNumber: number;
   pageSize: number;

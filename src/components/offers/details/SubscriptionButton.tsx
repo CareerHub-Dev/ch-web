@@ -1,4 +1,4 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   fetchJobOfferSubscriptionStatus,
@@ -10,7 +10,7 @@ import LinkButton from '@/components/ui/LinkButton';
 import classes from './GeneralInfo.module.scss';
 
 const SubscriptionButton = ({ jobOfferId }: { jobOfferId: string }) => {
-  const { session } = useAuth();
+  const { data: session } = useSession();
   const token = session?.jwtToken as string;
   const queryClient = useQueryClient();
   const subscriptionStatusQuery = useQuery(

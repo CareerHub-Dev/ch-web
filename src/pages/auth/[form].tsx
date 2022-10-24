@@ -5,7 +5,7 @@ import LoginForm from '@/components/auth/forms/LoginForm';
 import FormWrapper from '@/components/auth/FormWrapper';
 import Background from '@/components/layout/Background';
 import Footer from '@/components/layout/Footer';
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 
 import classes from '@/styles/auth.module.scss';
 

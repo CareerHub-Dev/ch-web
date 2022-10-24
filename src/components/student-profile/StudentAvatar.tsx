@@ -1,30 +1,26 @@
+import { useBoolean } from 'usehooks-ts';
 import Image from 'next/future/image';
-import useImageQuery from '@/hooks/useImageQuery';
+import { getImage } from '@/lib/api/image';
 
 import cn from 'classnames';
 
-const containerClass = 'rounded-full h-[128px] w-[128px]';
-
 const StudentAvatar = ({ photoId }: { photoId: string | null }) => {
-  const q = useImageQuery({
-    imageId: photoId,
-  });
-  const imageSource = q.data ?? '/default-avatar.png';
-  const imageMightBeLoading = !!photoId && q.isLoading;
+  const imageSource = photoId ? getImage(photoId) : '/default-avatar.png';
+  const imageMightBeLoading = useBoolean(true);
 
   return (
-    <span className={cn(containerClass, 'bg-primaryGray shadow-md', imageMightBeLoading && 'animate-pulse')}>
-      {!imageMightBeLoading && (
-        <Image
-          src={imageSource}
-          priority={true}
-          alt="Avatar"
-          height="128"
-          width="128"
-          className={containerClass}
-        />
+    <Image
+      src={imageSource}
+      priority={true}
+      alt="Avatar"
+      height="128"
+      width="128"
+      className={cn(
+        'rounded-full h-[128px] w-[128px]',
+        imageMightBeLoading.value && 'animate-pulse'
       )}
-    </span>
+      onLoadingComplete={imageMightBeLoading.setFalse}
+    />
   );
 };
 export default StudentAvatar;

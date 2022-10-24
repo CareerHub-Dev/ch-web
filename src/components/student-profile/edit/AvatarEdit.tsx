@@ -1,6 +1,6 @@
 import useImageUpload from '@/hooks/useImageUpload/v2';
 import useToast from '@/hooks/useToast';
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateStudentPhoto } from '@/lib/api/student';
 import { useBoolean } from 'usehooks-ts';
@@ -14,14 +14,8 @@ import ModalLoading from '@/components/ui/Modal/ModalLoading';
 
 import cn from 'classnames';
 
-const AvatarEdit = ({
-  initialData,
-  loadingAvatar,
-}: {
-  initialData: any;
-  loadingAvatar: boolean;
-}) => {
-  const auth = useAuth();
+const AvatarEdit = ({ initialData }: { initialData: string }) => {
+  const { data: session } = useSession();
   const toast = useToast();
   const queryClient = useQueryClient();
   const avatarUpload = useImageUpload({ initialData });
@@ -31,9 +25,7 @@ const AvatarEdit = ({
   }>({});
 
   const editPopupIsOpen = useBoolean(false);
-  const imageSource = completedCrop.url
-    ? completedCrop.url
-    : initialData ?? '/default-avatar.png';
+  const imageSource = completedCrop.url ? completedCrop.url : initialData;
 
   const updateStudentPhotoMutation = useMutation(
     ['updateSelfStudentPhoto'],
@@ -44,7 +36,7 @@ const AvatarEdit = ({
         if (typeof currentData === 'object' && typeof data === 'string') {
           queryClient.setQueryData(['selfStudent'], {
             ...currentData,
-            photoId: data,
+            photo: data,
           });
         } else {
           queryClient.invalidateQueries(['selfStudent']);
@@ -77,7 +69,7 @@ const AvatarEdit = ({
   const saveNewAvatar = useCallback(async () => {
     if (completedCrop.blob) {
       await updateStudentPhotoMutation.mutateAsync({
-        accessToken: auth.session?.jwtToken,
+        accessToken: session?.jwtToken,
         file: new File(
           [completedCrop.blob],
           `file.${avatarUpload.fileExtension}`,
@@ -88,7 +80,7 @@ const AvatarEdit = ({
       });
     }
   }, [
-    auth.session?.jwtToken,
+    session?.jwtToken,
     avatarUpload.fileExtension,
     avatarUpload.fileType,
     completedCrop.blob,
@@ -97,7 +89,7 @@ const AvatarEdit = ({
 
   const deleteAvatar = async () => {
     await updateStudentPhotoMutation.mutateAsync({
-      accessToken: auth.session?.jwtToken,
+      accessToken: session?.jwtToken,
     });
   };
 
@@ -111,15 +103,13 @@ const AvatarEdit = ({
       <hr />
       <div className="mt-4 p-4">
         <span className="block mx-auto border-2 border-primaryGray bg-primaryGray w-64 h-64">
-          {!loadingAvatar && (
-            <Image
-              src={imageSource}
-              width={256}
-              height={256}
-              alt={'Твій аватар'}
-              className="overflow-hidden aspect-square"
-            />
-          )}
+          <Image
+            src={imageSource}
+            width={256}
+            height={256}
+            alt={'Твій аватар'}
+            className="overflow-hidden aspect-square"
+          />
         </span>
 
         <Overlay className="relative" onOutsideClick={editPopupIsOpen.setFalse}>

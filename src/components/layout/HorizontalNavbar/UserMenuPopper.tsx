@@ -1,6 +1,6 @@
 import { useBoolean } from 'usehooks-ts';
 import { useRouter } from 'next/router';
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import Overlay from '@/components/ui/Overlay';
 import Link from 'next/link';
 import UserMenuAvatar from './UserMenuAvatar';
@@ -17,11 +17,11 @@ const popupClassName =
 
 const UserMenuPopper = () => {
   const optionsPopup = useBoolean(false);
-  const auth = useAuth();
+  const { logout } = useSession();
   const router = useRouter();
 
   const logoutClickHandler = () => {
-    auth.logout();
+    logout();
     router.push('/');
   }
 

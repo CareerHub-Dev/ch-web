@@ -1,4 +1,4 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import { useQuery } from '@tanstack/react-query';
 import { fetchJobOfferDetails } from '@/lib/api/remote/jobOffers';
 import { useRouter } from 'next/router';
@@ -10,7 +10,7 @@ import JobOfferContent from '@/components/offers/details/JobOfferContent';
 import { protectedSsr } from '@/lib/protected-ssr';
 
 const JobOfferDetailPage = () => {
-  const { session } = useAuth();
+  const { data: session } = useSession();
   const token = session?.jwtToken as string;
   const { jobOfferId } = useRouter().query;
   const jobOfferQuery = useQuery(

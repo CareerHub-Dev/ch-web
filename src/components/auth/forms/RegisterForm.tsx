@@ -1,5 +1,5 @@
 import { FormEventHandler, useRef, useState } from 'react';
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import useInput from '@/hooks/useInput';
 import { getStudentEmailValidity, getPasswordValidity } from '@/lib/util';
 import AuthField from '../AuthField';
@@ -11,7 +11,7 @@ import classes from './forms.module.scss';
 
 const RegisterForm = () => {
   const router = useRouter();
-  const auth = useAuth();
+  const session = useSession();
   const toastRef = useRef<any>(null);
   const [isProcessingRequest, setIsProcessingRequest] = useState(false);
   const emailInput = useInput(getStudentEmailValidity);

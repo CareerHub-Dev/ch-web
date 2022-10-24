@@ -55,7 +55,7 @@ const StudentProfilePage: NextPageWithLayout<
     >
       <section className="px-4 col-span-2 md:col-auto">
         <div className="flex flex-center">
-          <StudentAvatar photoId={student.photoId} />
+          <StudentAvatar photoId={student.photo} />
           <div className="ml-4">
             <StudentInfo
               fullName={fullName}

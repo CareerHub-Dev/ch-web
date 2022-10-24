@@ -1,12 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import useAuth from '@/hooks/useAuth';
 import Image from 'next/image';
 import classes from './StudentAvatar.module.scss';
 
 const StudentAvatar: React.FC<{
   photoId?: string | null;
 }> = ({ photoId }) => {
-  const { session } = useAuth();
   const photoIsSet = !!photoId;
 
   return (

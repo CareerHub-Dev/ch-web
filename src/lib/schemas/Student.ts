@@ -5,7 +5,7 @@ const StudentSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   email: z.string(),
-  photoId: z.string().nullable(),
+  photo: z.string().nullable(),
   phone: z.string().nullable(),
   birthDate: z.string().nullable(),
   studentGroup: z.object({

@@ -1,4 +1,4 @@
-import useAuth from './useAuth';
+import useSession from './useSession';
 import {
   type QueryKey,
   type UseInfiniteQueryOptions,
@@ -24,8 +24,8 @@ export default function useProtectedPaginatedQuery<
   UseInfiniteQueryOptions<PaginatedResponse<Array<TItem>>>,
   'queryKey' | 'queryFn' | 'getNextPageParam' | 'enabled'
 >) {
-  const auth = useAuth();
-  const accessToken = auth.session?.jwtToken;
+  const { data: session } = useSession();
+  const accessToken = session?.jwtToken;
 
   return useInfiniteQuery<
     PaginatedResponse<Array<TItem>>,

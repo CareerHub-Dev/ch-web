@@ -1,4 +1,4 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import { useQuery } from '@tanstack/react-query';
 import {
   fetchCompanyJobOffersAmount,
@@ -9,7 +9,7 @@ import FollowButton from './FollowButton';
 import classes from './CompanySocials.module.scss';
 
 const CompanySocials: React.FC<{ companyId: string }> = ({ companyId }) => {
-  const { session } = useAuth();
+  const { data: session } = useSession();
   const accessToken = session?.jwtToken as string;
   const subscribersQuery = useQuery(
     ['company', companyId, 'subscriptions', 'amount'],

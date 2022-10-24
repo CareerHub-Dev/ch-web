@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import NavLink from './NavLink';
 import UserMenu from './UserMenu';
 import getNavigationLinks from '@/lib/navigation-links';
 
 const LazyNav = () => {
   const { pathname } = useRouter();
-  const auth = useAuth();
-  const links = getNavigationLinks(auth?.session?.role);
+  const { data: session, status } = useSession();
+  const links = getNavigationLinks(session?.role);
 
   return (
     <nav className="flex gap-12 items-center">
@@ -26,7 +26,7 @@ const LazyNav = () => {
           </li>
         ))}
       </ul>
-      {auth.isLoggedIn && <UserMenu />}
+      {status === 'authenticated' && <UserMenu />}
     </nav>
   );
 };

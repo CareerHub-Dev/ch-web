@@ -1,4 +1,4 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import { useQuery } from '@tanstack/react-query';
 import { fetchCompanyLinks } from '@/lib/api/remote/companies';
 import classes from './CompanyLinks.module.scss';
@@ -6,8 +6,8 @@ import classes from './CompanyLinks.module.scss';
 const CompanyLinks: React.FC<{
   companyId: string;
 }> = ({ companyId }) => {
-  const { session } = useAuth();
-  const accessToken = session?.jwtToken as string;
+  const session = useSession();
+  const accessToken = session?.data?.jwtToken as string;
   const linksQuery = useQuery(
     ['company', companyId, 'links'],
     fetchCompanyLinks({

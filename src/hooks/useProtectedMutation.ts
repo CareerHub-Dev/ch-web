@@ -1,4 +1,4 @@
-import useAuth from './useAuth';
+import useSession from './useSession';
 import {
   useMutation,
   type UseMutationOptions,
@@ -21,7 +21,7 @@ export default function useProtectedMutation<
     'mutationKey'
   >
 ) {
-  const auth = useAuth();
-  const jwt = auth.session?.jwtToken;
+  const { data: session } = useSession();
+  const jwt = session?.jwtToken;
   return useMutation(key, mutateFn(jwt), options);
 }

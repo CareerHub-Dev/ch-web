@@ -1,5 +1,5 @@
 import useInput from '@/hooks/useInput/v3';
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import useToast from '@/hooks/useToast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import format from 'date-fns/format';
@@ -10,7 +10,7 @@ import parseUnknownError from '@/lib/parse-unknown-error';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
 
 const GeneralInfo = ({ initialData }: { initialData: any }) => {
-  const auth = useAuth();
+  const { data: session } = useSession();
   const toast = useToast();
   const queryClient = useQueryClient();
   const firstNameInput = useInput({
@@ -85,7 +85,7 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
     }
   );
 
-  const accessToken = auth.session?.jwtToken;
+  const accessToken = session?.jwtToken;
   const allInputs = [firstNameInput, lastNameInput, phoneInput, birthDateInput];
   const noInputTouched = allInputs.every((input) => input.isInitial);
   const someInputIsInvalid = allInputs.some((input) => !input.isValid);

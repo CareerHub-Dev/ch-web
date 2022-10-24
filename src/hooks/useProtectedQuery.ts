@@ -1,4 +1,4 @@
-import useAuth from './useAuth';
+import useSession from './useSession';
 import {
   useQuery,
   type UseQueryOptions,
@@ -18,7 +18,7 @@ export default function useProtectedQuery<
     'queryFn' | 'queryKey'
   >
 ) {
-  const { session } = useAuth();
+  const { data: session } = useSession();
   const accessToken = session?.jwtToken;
 
   return useQuery<TQueryFnData, TError, TData, TQueryKey>({

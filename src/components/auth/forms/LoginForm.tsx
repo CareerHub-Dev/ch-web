@@ -1,6 +1,6 @@
 import { FormEventHandler, useRef } from 'react';
 import { useRouter } from 'next/router';
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import useToast from '@/hooks/useToast';
 import useInput from '@/hooks/useInput';
 import { useMutation } from '@tanstack/react-query';
@@ -15,7 +15,7 @@ import type { SessionData } from '@/lib/schemas/SessionData';
 
 const LoginForm = () => {
   const router = useRouter();
-  const auth = useAuth();
+  const session = useSession();
   const toast = useToast();
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -24,7 +24,7 @@ const LoginForm = () => {
   const formIsValid = emailInput.isValid && passwordInput.isValid;
   const authMutation = useMutation(['auth'], LocalGateway.authenticate, {
     onSuccess: (data: SessionData) => {
-      auth.login(data);
+      session.login(data);
       router.push('/my-profile');
     },
     onError: (error: string) => {

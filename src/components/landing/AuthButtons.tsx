@@ -1,10 +1,10 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import { useRouter } from 'next/router';
 
 import classes from './AuthButtons.module.scss';
 
 const AuthButtons = () => {
-  const { isLoggedIn } = useAuth();
+  const { status } = useSession();
   const router = useRouter();
 
   const routingHandler = (path: string) => (event: any) => {
@@ -12,11 +12,7 @@ const AuthButtons = () => {
     router.push(path);
   };
 
-  if (isLoggedIn) {
-    return null;
-  }
-
-  return (
+  return status === 'unauthenticated' ? (
     <section className={classes.actions}>
       <button
         className={classes.register}
@@ -33,6 +29,6 @@ const AuthButtons = () => {
         Увійти
       </button>
     </section>
-  );
+  ) : null;
 };
 export default AuthButtons;

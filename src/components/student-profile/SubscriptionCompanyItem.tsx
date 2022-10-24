@@ -1,7 +1,7 @@
-import useImageQuery from '@/hooks/useImageQuery';
 import Image from 'next/future/image';
 import Link from 'next/link';
 import type { CompanySubscription } from '@/lib/api/student/schemas';
+import { getImage } from '@/lib/api/image';
 
 const SubscriptionCompanyItem = ({
   item,
@@ -10,14 +10,14 @@ const SubscriptionCompanyItem = ({
   item: CompanySubscription;
   onSelect?: () => void;
 }) => {
-  const q = useImageQuery({
-    imageId: item.logoId,
-  });
+  const imageSource = item.photo
+    ? getImage(item.photo)
+    : '/company-dummy-logo.png';
 
   return (
     <div className="p-4 rounded-xl border border-x-primaryGray w-full flex gap-4 bg-lightGray">
       <Image
-        src={q.data ?? '/company-dummy-logo.png'}
+        src={imageSource}
         width={60}
         height={60}
         className="rounded-xl inline-block overflow-hidden aspect-square"

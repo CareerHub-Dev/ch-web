@@ -1,4 +1,3 @@
-import useAuth from '@/hooks/useAuth';
 import useProtectedQuery from '@/hooks/useProtectedQuery';
 import { useState } from 'react';
 import { getStudentCvs } from '@/lib/api/student';
@@ -9,7 +8,6 @@ import CVActions from './CVActions';
 import classes from './CVBoard.module.scss';
 
 const CVBoard = () => {
-  // const { session } = useAuth();
   // const accountId = session?.accountId as string;
   // const [actionModalIsOpen, setActionModalIsOpen] = useState(false);
   // const [selectedItemId, setSelectedItemId] = useState('');

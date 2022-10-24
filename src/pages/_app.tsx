@@ -1,6 +1,6 @@
 import store from '@/context/index';
 import { Provider } from 'react-redux';
-import { AuthContextProvider } from '@/context/auth-context';
+import { SessionContextProvider } from '@/context/session-context';
 import { useState } from 'react';
 import {
   Hydrate,
@@ -40,14 +40,14 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
         ></meta>
       </Head>
       <QueryClientProvider client={queryClient}>
-        <AuthContextProvider>
+        <SessionContextProvider>
           <Provider store={store}>
             <Hydrate state={pageProps.dehydratedState}>
               {getLayout(<Component {...pageProps} />)}
               <ToastContainer />
             </Hydrate>
           </Provider>
-        </AuthContextProvider>
+        </SessionContextProvider>
       </QueryClientProvider>
     </>
   );

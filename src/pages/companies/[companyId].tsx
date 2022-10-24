@@ -1,4 +1,4 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import useShallowRoutes from '@/hooks/useShallowRoutes';
 import { useQuery } from '@tanstack/react-query';
 import { fetchCompanyDetails } from '@/lib/api/remote/companies';
@@ -10,7 +10,7 @@ import { protectedSsr } from '@/lib/protected-ssr';
 const CompanyDetailsPage = () => {
   const router = useRouter();
   const companyId = router.query.companyId as string;
-  const { session } = useAuth();
+  const { data: session } = useSession();
   const token = session?.jwtToken as string;
 
   const companyQuery = useQuery(

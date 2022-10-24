@@ -1,4 +1,4 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import { useSelector } from 'react-redux';
 import { selectFilterOptions } from '@/context/job-offers-feed';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -14,7 +14,7 @@ import { protectedSsr } from '@/lib/protected-ssr';
 const defaultPageSize = 50;
 
 const JobOffersFeedPage: NextPageWithLayout = () => {
-  const { session } = useAuth();
+  const { data: session } = useSession();
   const token = session?.jwtToken as string;
   const { filter, isApplied } = useSelector(selectFilterOptions);
   const queryKey: Array<string | object> = ['jobOffers'];

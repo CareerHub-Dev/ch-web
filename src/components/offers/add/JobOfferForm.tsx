@@ -1,4 +1,4 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import useToast from '@/hooks/useToast';
 import { useMutation } from '@tanstack/react-query';
 import useEditor from '@/hooks/useEditor';
@@ -42,7 +42,7 @@ const JobOfferForm = () => {
   const responsibilitiesEditor = useEditor();
   const { startDate, endDate, dateFrameIsValid } = useDatepicker(maxDaysFrame);
 
-  const { session } = useAuth();
+  const { data: session } = useSession();
   const submitMutation = useMutation(['job-offer-form'], createJobOffer, {
     onError: (error) => {
       let msg;

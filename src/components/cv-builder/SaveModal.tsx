@@ -8,7 +8,7 @@ import {
   selectEntireCVState,
   reset,
 } from '@/context/cv-constructor';
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import { useSelector } from 'react-redux';
 import { useMutation } from '@tanstack/react-query';
@@ -20,7 +20,7 @@ import ModalLoading from '../ui/Modal/ModalLoading';
 import classes from './SaveModal.module.scss';
 
 const SaveModal = () => {
-  const { session } = useAuth();
+  const { data: session } = useSession();
   const accessToken = session?.jwtToken as string;
   const router = useRouter();
   const dispatch = useAppDispatch();

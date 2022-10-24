@@ -1,4 +1,4 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import { useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchCompanies } from '@/lib/api/remote/companies';
@@ -11,7 +11,7 @@ import { protectedSsr } from '@/lib/protected-ssr';
 const defaultPageSize = 50;
 
 const CompaniesFeedPage = () => {
-  const { session } = useAuth();
+  const { data: session } = useSession();
   const accessToken = session?.jwtToken as string;
   const [searchTerm, setSearchTerm] = useState('');
   const companiesQuery = useInfiniteQuery(

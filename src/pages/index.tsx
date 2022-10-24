@@ -2,13 +2,9 @@ import NureLogo from '@/resources/logos/NureLogo.svg';
 import CareerLogo from '@/resources/logos/CareerLogo.svg';
 import Head from 'next/head';
 import CommonLayout from '@/components/layout/CommonLayout';
-import dynamic from 'next/dynamic';
+import AuthButtons from '@/components/landing/AuthButtons';
 
 import classes from '@/styles/index.module.scss';
-
-const AuthButtons = dynamic(() => import('@/components/landing/AuthButtons'), {
-  ssr: false,
-});
 
 const LandingPage: NextPageWithLayout = () => {
   return (

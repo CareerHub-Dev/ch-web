@@ -1,5 +1,5 @@
 import FollowIcon from '@/components/ui/icons/FollowIcon';
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   fetchCompanySubscriptionStatus,
@@ -23,7 +23,7 @@ const followedStyle = {
 const FollowButton: React.FC<{
   companyId: string;
 }> = ({ companyId }) => {
-  const { session } = useAuth();
+  const { data: session } = useSession();
   const accessToken = session?.jwtToken as string;
   const queryClient = useQueryClient();
   const subscriptionStatusQuery = useQuery(

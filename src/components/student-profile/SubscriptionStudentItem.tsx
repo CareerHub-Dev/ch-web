@@ -1,21 +1,19 @@
-import useImageQuery from '@/hooks/useImageQuery';
 import { type StudentSubscription } from '@/lib/api/student/schemas';
+import { getImage } from '@/lib/api/image';
 import Image from 'next/future/image';
 import Link from 'next/link';
 
 const SubscriptionStudentItem = ({
   item,
-  onSelect
+  onSelect,
 }: {
   item: StudentSubscription;
   onSelect?: () => void;
 }) => {
-  const { data: avatarData } = useImageQuery({
-    imageId: item.photoId,
-  });
-
   const studentFullName = `${item.firstName} ${item.lastName}`;
-  const studentAvatarSource = avatarData ?? '/company-dummy-logo.png';
+  const studentAvatarSource = item.photo
+    ? getImage(item.photo)
+    : '/company-dummy-logo.png';
 
   return (
     <div className="p-4 rounded-xl border border-x-primaryGray w-full flex gap-4 bg-lightGray">

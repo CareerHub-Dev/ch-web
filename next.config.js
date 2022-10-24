@@ -5,6 +5,9 @@ const nextConfig = {
   env: {
     BACKEND_SERVER_URL: process.env.BACKEND_SERVER_URL,
   },
+  images: {
+    domains: [process.env.BACKEND_SERVER_DOMAIN],
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

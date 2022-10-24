@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import type { ReactNode } from 'react';
 import Background from './Background';
 import Footer from './Footer';

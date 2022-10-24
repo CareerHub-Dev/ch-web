@@ -8,8 +8,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = sessionMiddleware(req.cookies);
   
   if ('error' in session) {
-    return res.status(500).json({ message: session.error });
+    return res.status(401).json({ message: 'Unauthorized' });
   }
-  return res.status(200).json({ session });
+  return res.status(200).json(session);
 };
 export default handler;
