@@ -19,6 +19,9 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
   amountQueryKey,
   accountId,
   isSelf,
+  search,
+  debouncedSearchValue,
+  setSearch,
   item,
   noItems,
   getItems,
@@ -29,6 +32,9 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
   amountQueryKey: string;
   accountId: string;
   isSelf: boolean;
+  search: string;
+  debouncedSearchValue: string;
+  setSearch: (value: string) => void;
   item: (props: { item: TItem; onSelect?: () => void }) => JSX.Element;
   noItems: (props: { isSelf: boolean }) => JSX.Element;
   getItems: (
@@ -45,6 +51,7 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
   const paginatedQueryParams = {
     accountId,
     pageSize: 50,
+    searchTerm: debouncedSearchValue,
   };
 
   const toast = useToast();
@@ -83,7 +90,9 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
           queryClient.invalidateQueries(cachedDataKey);
         }
         try {
-          const cachedAmount = queryClient.getQueryData(cachedAmountQueryKey) as number;
+          const cachedAmount = queryClient.getQueryData(
+            cachedAmountQueryKey
+          ) as number;
           queryClient.setQueryData(cachedAmountQueryKey, cachedAmount - 1);
         } catch {
           queryClient.invalidateQueries(cachedAmountQueryKey);
@@ -96,49 +105,54 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
 
   const selectItem = (selected: TItem) => () => setSelectedItem(selected);
 
-  if (query.isLoading) {
-    return <LoadingPage />;
-  }
-  if (query.isError) {
-    return (
-      <ErrorWhileLoading
-        message={parseUnknownError(query.error)}
-        refetch={() => query.refetch()}
-        isRefetching={query.isRefetching}
-      />
-    );
-  }
-
-  if (query.data.pages.at(0)?.data.length === 0) {
-    return <NoItems isSelf={isSelf} />;
-  }
-
   return (
-    <div className="flex flex-col gap-2 md:px-4">
-      {!!selectedItem && (
-        <UnsubscribeModal
-          disabled={unsubscribeMutation.isLoading}
-          from={extractItemName(selectedItem)}
-          onClose={() => setSelectedItem(null)}
-          onConfirm={() => unsubscribeMutation.mutate(selectedItem.id)}
-        />
-      )}
-      {query.data.pages.map((page, pageIndex) => (
-        <Fragment key={pageIndex}>
-          {page.data.map((item, itemIndex) => (
-            <Item
-              key={itemIndex}
-              item={item}
-              onSelect={isSelf ? selectItem(item) : undefined}
-            />
-          ))}
-        </Fragment>
-      ))}
-      {query.isFetchingNextPage ? (
-        <LoadingPage />
-      ) : query.hasNextPage ? (
-        <LoadMoreButton onClick={() => query.fetchNextPage()} />
-      ) : null}
+    <div className="md:px-4">
+      <input
+        type="search"
+        className="w-full form-input mb-8 px-4 py-2 text-sm"
+        onChange={(e) => setSearch(e.target.value)}
+        value={search}
+        placeholder="Пошук"
+      />
+
+      <div className="flex flex-col gap-2">
+        {!!selectedItem && (
+          <UnsubscribeModal
+            disabled={unsubscribeMutation.isLoading}
+            from={extractItemName(selectedItem)}
+            onClose={() => setSelectedItem(null)}
+            onConfirm={() => unsubscribeMutation.mutate(selectedItem.id)}
+          />
+        )}
+        {query.isLoading ? (
+          <LoadingPage />
+        ) : query.isError ? (
+          <ErrorWhileLoading
+            message={parseUnknownError(query.error)}
+            refetch={query.refetch}
+            isRefetching={query.isRefetching}
+          />
+        ) : query.data.pages.at(0)?.data.length === 0 ? (
+          <NoItems isSelf={isSelf} />
+        ) : (
+          query.data.pages.map((page, pageIndex) => (
+            <Fragment key={pageIndex}>
+              {page.data.map((item, itemIndex) => (
+                <Item
+                  key={itemIndex}
+                  item={item}
+                  onSelect={isSelf ? selectItem(item) : undefined}
+                />
+              ))}
+            </Fragment>
+          ))
+        )}
+        {query.isFetchingNextPage ? (
+          <LoadingPage />
+        ) : query.hasNextPage ? (
+          <LoadMoreButton onClick={query.fetchNextPage} />
+        ) : null}
+      </div>
     </div>
   );
 }

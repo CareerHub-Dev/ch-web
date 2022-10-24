@@ -3,19 +3,18 @@ import StudentSubscriptionsList from './StudentSubscriptionsList';
 import { getStudentJobOfferSubscriptions } from '@/lib/api/student';
 import SubscriptionJobOfferItem from './SubscriptionJobOfferItem';
 
-const StudentSubscriptionsJobOffers = ({
-  accountId,
-  isSelf,
-}: {
+const StudentSubscriptionsJobOffers = (props: {
   accountId: string;
   isSelf: boolean;
+  search: string;
+  setSearch: (value: string) => void;
+  debouncedSearchValue: string;
 }) => {
   return (
     <StudentSubscriptionsList
       queryKey="studentJobOfferSubscriptions"
       amountQueryKey={'student-job-offer-subscriptions-amount'}
-      accountId={accountId}
-      isSelf={isSelf}
+      {...props}
       item={SubscriptionJobOfferItem}
       noItems={NoJobOfferSubscriptions}
       getItems={getStudentJobOfferSubscriptions}

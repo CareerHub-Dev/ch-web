@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useDebounce } from 'usehooks-ts';
 import useShallowRoutes from '@/hooks/useShallowRoutes';
 import CommonLayout from '@/components/layout/CommonLayout';
 import StudentAvatar from '@/components/student-profile/StudentAvatar';
@@ -45,6 +47,12 @@ const StudentProfilePage: NextPageWithLayout<
     sections,
     defaultSection: 'experience',
   });
+  const [studentSearch, setStudentSearch] = useState('');
+  const debouncedStudentSearch = useDebounce(studentSearch, 500);
+  const [companySearch, setCompanySearch] = useState('');
+  const debouncedCompanySearch = useDebounce(companySearch, 500);
+  const [jobOfferSearch, setJobOfferSearch] = useState('');
+  const debouncedJobOfferSearch = useDebounce(jobOfferSearch, 500);
 
   return (
     <div
@@ -87,16 +95,25 @@ const StudentProfilePage: NextPageWithLayout<
           <StudentWorkExperience items={[]} editable={isSelf} />
         ) : currentSection === 'jobOffers' ? (
           <StudentSubscriptionsJobOffers
+            debouncedSearchValue={debouncedJobOfferSearch}
+            search={jobOfferSearch}
+            setSearch={setJobOfferSearch}
             accountId={student.id}
             isSelf={isSelf}
           />
         ) : currentSection === 'companies' ? (
           <StudentSubscriptionsCompanies
+            debouncedSearchValue={debouncedCompanySearch}
+            search={companySearch}
+            setSearch={setCompanySearch}
             accountId={student.id}
             isSelf={isSelf}
           />
         ) : currentSection === 'students' ? (
           <StudentSubscriptionsStudents
+            search={studentSearch}
+            debouncedSearchValue={debouncedStudentSearch}
+            setSearch={setStudentSearch}
             accountId={student.id}
             isSelf={isSelf}
           />

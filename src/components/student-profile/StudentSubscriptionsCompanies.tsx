@@ -3,19 +3,18 @@ import SubscriptionCompanyItem from './SubscriptionCompanyItem';
 import StudentSubscriptionsList from './StudentSubscriptionsList';
 import { getStudentCompanySubscriptions } from '@/lib/api/student';
 
-const StudentSubscriptionsCompanies = ({
-  accountId,
-  isSelf,
-}: {
+const StudentSubscriptionsCompanies = (props: {
   accountId: string;
   isSelf: boolean;
+  search: string;
+  setSearch: (value: string) => void;
+  debouncedSearchValue: string;
 }) => {
   return (
     <StudentSubscriptionsList
       queryKey="studentCompanySubscriptions"
       amountQueryKey={'student-company-subscriptions-amount'}
-      accountId={accountId}
-      isSelf={isSelf}
+      {...props}
       item={SubscriptionCompanyItem}
       noItems={NoCompanySubscriptions}
       getItems={getStudentCompanySubscriptions}
