@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react';
+import { type AxiosInstance } from 'axios';
 import useToast from '@/hooks/useToast';
 import { useQueryClient } from '@tanstack/react-query';
 import useProtectedPaginatedQuery from '@/hooks/useProtectedPaginatedQuery';
@@ -7,6 +8,7 @@ import parseUnknownError from '@/lib/parse-unknown-error';
 import ErrorWhileLoading from './ErrorWhileLoading';
 import LoadingPage from './LoadingPage';
 import LoadMoreButton from './LoadMoreButton';
+import OrderByOptions from './OrderByOptions';
 import { type PaginatedResponse } from '@/lib/api/pagination';
 import dynamic from 'next/dynamic';
 
@@ -27,6 +29,9 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
   getItems,
   extractItemName,
   mutateItem,
+  orderByOptions,
+  selectedOrderByOption,
+  setSelectedOrderByOption,
 }: {
   queryKey: string;
   amountQueryKey: string;
@@ -39,9 +44,15 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
   noItems: (props: { isSelf: boolean }) => JSX.Element;
   getItems: (
     params: PaginatedQueryParams & { accountId: string }
-  ) => (token?: string) => Promise<PaginatedResponse<TItem[]>>;
+  ) => (instance: AxiosInstance) => Promise<PaginatedResponse<TItem[]>>;
   extractItemName: (item: TItem) => string;
-  mutateItem: (jwt?: string) => (itemId: string) => any;
+  mutateItem: (instance: AxiosInstance) => (itemId: string) => any;
+  orderByOptions: Array<{
+    label: string;
+    value: string;
+  }>;
+  selectedOrderByOption: { label: string; value: string };
+  setSelectedOrderByOption: (option: { label: string; value: string }) => void;
 }) {
   const Item = item;
   const NoItems = noItems;
@@ -50,8 +61,9 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
   const cachedAmountQueryKey = [amountQueryKey, accountId];
   const paginatedQueryParams = {
     accountId,
-    pageSize: 50,
+    pageSize: 25,
     searchTerm: debouncedSearchValue,
+    orderByExpression: selectedOrderByOption.value || undefined,
   };
 
   const toast = useToast();
@@ -107,13 +119,20 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
 
   return (
     <div className="md:px-4">
-      <input
-        type="search"
-        className="w-full form-input mb-8 px-4 py-2 text-sm"
-        onChange={(e) => setSearch(e.target.value)}
-        value={search}
-        placeholder="Пошук"
-      />
+      <div className="flex flex-col flex-auto gap-2 mb-8 md:flex-row md:items-center md:justify-between">
+        <input
+          type="search"
+          className="w-full form-input px-4 py-2 text-sm"
+          onChange={(e) => setSearch(e.target.value)}
+          value={search}
+          placeholder="Пошук"
+        />
+        <OrderByOptions
+          options={orderByOptions}
+          setSelectedOption={setSelectedOrderByOption}
+          selectedOption={selectedOrderByOption}
+        />
+      </div>
 
       <div className="flex flex-col gap-2">
         {!!selectedItem && (

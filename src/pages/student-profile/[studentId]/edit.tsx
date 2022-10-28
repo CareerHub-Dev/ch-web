@@ -12,6 +12,7 @@ import AvatarEdit from '@/components/student-profile/edit/AvatarEdit';
 import EditPageHeader from '@/components/student-profile/edit/EditPageHeader';
 import ChangePassword from '@/components/student-profile/edit/ChangePassword';
 import { getImage } from '@/lib/api/image';
+import createAxiosInstance from '@/lib/axios/create-instance';
 
 const navigationItems = [
   {
@@ -45,7 +46,8 @@ const EditStudentPage: NextPageWithLayout<
     : '/default-avatar.png';
 
   return (
-    <div className="mx-8 lg:mx-auto max-w-full lg:max-w-[978px] bg-white my-2">
+    <div className="mx-8 lg:mx-auto max-w-full lg:max-w-[978px] bg-white px-4 rounded-md shadow-md
+      transition-all ease-in-out duration-200">
       <div className="grid grid-cols-[auto_1fr] gap-8">
         <EditPageHeader
           avatarData={currentAvatar}
@@ -71,7 +73,7 @@ const EditStudentPage: NextPageWithLayout<
   );
 };
 
-EditStudentPage.getLayout = CommonLayout();
+EditStudentPage.getLayout = CommonLayout;
 
 export default EditStudentPage;
 
@@ -79,7 +81,7 @@ export const getServerSideProps = protectedSsr<{ student: Student }>({
   allowedRoles: ['Student'],
   getProps: async (context) => {
     const studentId = context.query.studentId as string;
-    const { accountId, jwtToken } = context.session;
+    const { accountId, refreshToken } = context.session;
     if (studentId !== accountId) {
       return {
         redirect: {
@@ -88,7 +90,11 @@ export const getServerSideProps = protectedSsr<{ student: Student }>({
         },
       };
     }
-    const student = await getSelfStudent(jwtToken);
+    const student = await getSelfStudent(
+      createAxiosInstance({
+        data: context.session,
+      })
+    );
     return { props: { student } };
   },
 });

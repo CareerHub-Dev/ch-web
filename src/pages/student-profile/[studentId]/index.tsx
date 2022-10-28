@@ -17,6 +17,7 @@ import { type Student } from '@/lib/schemas/Student';
 import { type InferGetServerSidePropsType } from 'next';
 import { getStudent } from '@/lib/api/student';
 import { protectedSsr } from '@/lib/protected-ssr';
+import createAxiosInstance from '@/lib/axios/create-instance';
 
 const navigationItems = [
   {
@@ -35,9 +36,54 @@ const navigationItems = [
     title: 'Студенти',
     section: 'students',
   },
+  {
+    title: 'Підписники',
+    section: 'subscribers',
+  },
 ];
 
 const sections = ['experience', 'jobOffers', 'companies', 'students'];
+
+const defaultOrderByOption = {
+  label: 'За замовченням',
+  value: '',
+};
+
+const studentOrderByOptions = [
+  defaultOrderByOption,
+  {
+    label: "За ім'ям",
+    value: 'firstName',
+  },
+  {
+    label: 'За прізвищем',
+    value: 'lastName',
+  },
+  {
+    label: 'За групою',
+    value: 'studentGroup.name',
+  },
+];
+
+const companyOrderByOptions = [
+  defaultOrderByOption,
+  {
+    label: 'За назвою',
+    value: 'name',
+  },
+  {
+    label: 'За назвою зворотньо',
+    value: 'name DESC',
+  },
+];
+
+const jobOfferOrderByOptions = [
+  defaultOrderByOption,
+  {
+    label: 'За назвою',
+    value: 'title',
+  },
+];
 
 const StudentProfilePage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -48,44 +94,49 @@ const StudentProfilePage: NextPageWithLayout<
     defaultSection: 'experience',
   });
   const [studentSearch, setStudentSearch] = useState('');
+  const [selectedStudentOrderByOption, setSelectedStudentOrderByOption] =
+    useState(studentOrderByOptions[0]);
   const debouncedStudentSearch = useDebounce(studentSearch, 500);
   const [companySearch, setCompanySearch] = useState('');
+  const [selectedCompanyOrderByOption, setSelectedCompanyOrderByOption] =
+    useState(companyOrderByOptions[0]);
   const debouncedCompanySearch = useDebounce(companySearch, 500);
   const [jobOfferSearch, setJobOfferSearch] = useState('');
+  const [selectedJobOfferOrderByOption, setSelectedJobOfferOrderByOption] =
+    useState(jobOfferOrderByOptions[0]);
   const debouncedJobOfferSearch = useDebounce(jobOfferSearch, 500);
 
   return (
-    <div
-      className="mx-auto grid grid-cols-[1fr_0.5fr] grid-rows-[minmax(0,_1fr)_auto] gap-4 bg-white pt-12 shadow-xl rounded-b-lg
-        mb-20  
-        max-w-full
-        lg:max-w-4xl"
-    >
-      <section className="px-4 col-span-2 md:col-auto">
-        <div className="flex flex-center">
-          <StudentAvatar photoId={student.photo} />
-          <div className="ml-4">
-            <StudentInfo
-              fullName={fullName}
-              email={student.email}
-              group={student.studentGroup.name}
-              phone={student.phone}
-              birthDate={student.birthDate}
-            />
+    <div className="mx-auto bg-white pt-12 shadow-lg rounded-b-lg mb-20 max-w-full lg:max-w-4xl">
+      <div className="grid grid-cols-[1fr_0.5fr] grid-rows-[minmax(0,_1fr)_auto] gap-4">
+        <section className="px-4 col-span-2 md:col-auto">
+          <div className="grid grid-cols-[auto_1fr] gap-8">
+            <div>
+              <StudentAvatar photoId={student.photo} />
+              {isSelf && (
+                <Link href={`/my-profile/edit`}>
+                  <a className="p-2 mt-4 text-sm block tracking-wider w-full text-center btn-primary">
+                    {'Редагувати'}
+                  </a>
+                </Link>
+              )}
+            </div>
+            <div>
+              <StudentInfo
+                fullName={fullName}
+                email={student.email}
+                group={student.studentGroup.name}
+                phone={student.phone}
+                birthDate={student.birthDate}
+              />
+            </div>
           </div>
-        </div>
-        {isSelf && (
-          <Link href={`/my-profile/edit`}>
-            <a className="p-2 mt-4 text-sm block tracking-wider font-semibold w-[128px] text-center btn-primary">
-              {'Редагувати'}
-            </a>
-          </Link>
-        )}
-      </section>
-      <aside className="px-4 col-span-2 md:col-auto">
-        <StudentSubscriptions accountId={student.id} />
-      </aside>
-      <section className="p-4 col-span-2">
+        </section>
+        <aside className="px-4 col-span-2 md:col-auto">
+          <StudentSubscriptions accountId={student.id} />
+        </aside>
+      </div>
+      <section className="p-4">
         <NavigationMenu
           sections={navigationItems}
           currentSection={currentSection}
@@ -98,6 +149,9 @@ const StudentProfilePage: NextPageWithLayout<
             debouncedSearchValue={debouncedJobOfferSearch}
             search={jobOfferSearch}
             setSearch={setJobOfferSearch}
+            orderByOptions={jobOfferOrderByOptions}
+            selectedOrderByOption={selectedJobOfferOrderByOption}
+            setSelectedOrderByOption={setSelectedJobOfferOrderByOption}
             accountId={student.id}
             isSelf={isSelf}
           />
@@ -106,6 +160,9 @@ const StudentProfilePage: NextPageWithLayout<
             debouncedSearchValue={debouncedCompanySearch}
             search={companySearch}
             setSearch={setCompanySearch}
+            orderByOptions={companyOrderByOptions}
+            selectedOrderByOption={selectedCompanyOrderByOption}
+            setSelectedOrderByOption={setSelectedCompanyOrderByOption}
             accountId={student.id}
             isSelf={isSelf}
           />
@@ -114,6 +171,9 @@ const StudentProfilePage: NextPageWithLayout<
             search={studentSearch}
             debouncedSearchValue={debouncedStudentSearch}
             setSearch={setStudentSearch}
+            orderByOptions={studentOrderByOptions}
+            selectedOrderByOption={selectedStudentOrderByOption}
+            setSelectedOrderByOption={setSelectedStudentOrderByOption}
             accountId={student.id}
             isSelf={isSelf}
           />
@@ -123,7 +183,7 @@ const StudentProfilePage: NextPageWithLayout<
   );
 };
 
-StudentProfilePage.getLayout = CommonLayout();
+StudentProfilePage.getLayout = CommonLayout;
 
 export default StudentProfilePage;
 
@@ -134,11 +194,15 @@ export const getServerSideProps = protectedSsr<{
   allowedRoles: ['Student'],
   getProps: async (context) => {
     const studentId = context.query.studentId as string;
-    const { accountId, jwtToken } = context.session;
+    const { accountId, refreshToken } = context.session;
+    const isSelf = studentId === accountId;
 
     try {
-      const student = await getStudent(studentId)(jwtToken);
-      const isSelf = studentId === accountId;
+      const student = await getStudent(studentId)(
+        createAxiosInstance({
+          data: context.session
+        })
+      );
       return {
         props: {
           isSelf,

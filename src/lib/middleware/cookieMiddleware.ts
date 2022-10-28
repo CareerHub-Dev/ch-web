@@ -80,7 +80,7 @@ const cookieMiddleware = (res: NextApiResponse, backendResponse: unknown) => {
       value: validatedData,
       options: {
         httpOnly: true,
-        expires: new Date(validatedData.jwtTokenExpires),
+        expires: new Date(validatedData.refreshTokenExpires),
       },
     },
   ]);

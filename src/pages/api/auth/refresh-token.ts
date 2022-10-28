@@ -7,15 +7,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(404).json({ message: 'Метод запиту не підтримується' });
   }
 
-  try {
-    const requestData = JSON.parse(req.body);
-    const token = requestData.refreshToken as string;
+  try {    
+    const token = req.body.refreshToken as string;    
     const data = await refreshToken(token);
     return cookieMiddleware(res, data);
-  } catch (err) {
+  } catch (err) {    
     let message = 'Невідома помилка';
     if (err instanceof Error) {
-      message;
+      message = err.message;
     }
     return res.status(500).json({ message });
   }

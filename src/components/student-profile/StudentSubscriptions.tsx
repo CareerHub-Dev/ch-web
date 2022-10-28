@@ -24,7 +24,7 @@ const StudentSubscriptions = ({ accountId }: { accountId: string }) => {
 
   return (
     <div className="text-white p-4 rounded-xl opacity-95 bg-gradient-to-r from-primaryBlue to-lightBlueAccent">
-      <h2 className="mb-4">Підписки</h2>
+      <h2 className="mb-2">Підписки</h2>
       <p className="text-lightBlue">
         Студенти: {students.isLoading ? '...' : students.data}
       </p>
@@ -33,6 +33,9 @@ const StudentSubscriptions = ({ accountId }: { accountId: string }) => {
       </p>
       <p className="text-lightBlue">
         Вакансії: {jobOffers.isLoading ? '...' : jobOffers.data}
+      </p>
+      <p className='mt-2'>
+        Підписники: 0
       </p>
     </div>
   );

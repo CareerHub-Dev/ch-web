@@ -1,4 +1,5 @@
 import useSession from './useSession';
+import { type AxiosInstance } from 'axios';
 import {
   type QueryKey,
   type UseInfiniteQueryOptions,
@@ -18,14 +19,13 @@ export default function useProtectedPaginatedQuery<
   queryKey: QueryKey;
   params: TParams;
   getItems: (
-    params: TParams
-  ) => (token?: string) => Promise<PaginatedResponse<Array<TItem>>>;
+    params: TParams & { pageNumber: number }
+  ) => (instance: AxiosInstance) => Promise<PaginatedResponse<Array<TItem>>>;
 } & Omit<
   UseInfiniteQueryOptions<PaginatedResponse<Array<TItem>>>,
   'queryKey' | 'queryFn' | 'getNextPageParam' | 'enabled'
 >) {
-  const { data: session } = useSession();
-  const accessToken = session?.jwtToken;
+  const { axios, status } = useSession();
 
   return useInfiniteQuery<
     PaginatedResponse<Array<TItem>>,
@@ -38,9 +38,9 @@ export default function useProtectedPaginatedQuery<
       getItems({
         ...params,
         pageNumber: pageParam,
-      })(accessToken),
+      })(axios),
     {
-      enabled: !!accessToken,
+      enabled: status === 'authenticated',
       getNextPageParam: (lastPage) => {
         const { HasNext, CurrentPage } = lastPage.pagination;
         return HasNext && CurrentPage + 1;

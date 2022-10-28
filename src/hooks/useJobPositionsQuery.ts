@@ -1,11 +1,14 @@
 import useProtectedQuery from './useProtectedQuery';
-import { fetchJobPositions } from '@/lib/api/remote/jobPositions';
+import { getJobPositions } from '@/lib/api/job-positions';
 import { UseQueryOptions } from '@tanstack/react-query';
 
 export default function useJobPositionsQuery(
-  options?: Omit<UseQueryOptions<any, unknown, any, string[]>, 'enabled'>
+  options?: Omit<
+    UseQueryOptions<any, unknown, any, string[]>,
+    'queryKey' | 'queryFn'
+  >
 ) {
-  const q = useProtectedQuery(['jobPositions'], fetchJobPositions, {
+  const q = useProtectedQuery(['jobPositions'], getJobPositions, {
     ...options,
   });
   const jobPositionOptions =

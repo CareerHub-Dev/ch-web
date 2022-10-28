@@ -1,8 +1,8 @@
-import NureLogo from '@/resources/logos/NureLogo.svg';
-import CareerLogo from '@/resources/logos/CareerLogo.svg';
 import Head from 'next/head';
-import CommonLayout from '@/components/layout/CommonLayout';
+import NureIcon from '@/components/ui/icons/NureIcon';
+import CareerCenterIcon from '@/components/ui/icons/CareerCenterIcon';
 import AuthButtons from '@/components/landing/AuthButtons';
+import CommonLayout from '@/components/layout/CommonLayout';
 
 import classes from '@/styles/index.module.scss';
 
@@ -19,8 +19,8 @@ const LandingPage: NextPageWithLayout = () => {
 
       <header className="mt-20 flex flex-col items-center content-center">
         <div className={classes.logos} id="partnerLogos">
-          <NureLogo id="nureLogo" />
-          <CareerLogo id="careerLogo" />
+          <NureIcon />
+          <CareerCenterIcon />
         </div>
         <h1 className={classes.title}>CareerHub</h1>
       </header>
@@ -29,9 +29,6 @@ const LandingPage: NextPageWithLayout = () => {
   );
 };
 
-LandingPage.getLayout = CommonLayout({
-  withBackground: true,
-  withFooter: true,
-});
+LandingPage.getLayout = CommonLayout;
 
 export default LandingPage;

@@ -5,6 +5,7 @@ import {
   MutationKey,
   MutateFunction,
 } from '@tanstack/react-query';
+import { type AxiosInstance } from 'axios';
 
 export default function useProtectedMutation<
   TData = unknown,
@@ -14,14 +15,13 @@ export default function useProtectedMutation<
 >(
   key: MutationKey,
   mutateFn: (
-    jwt?: string
+    instance: AxiosInstance
   ) => MutateFunction<TData, TError, TVariables, TContext>,
   options?: Omit<
     UseMutationOptions<TData, TError, TVariables, TContext>,
     'mutationKey'
   >
 ) {
-  const { data: session } = useSession();
-  const jwt = session?.jwtToken;
-  return useMutation(key, mutateFn(jwt), options);
+  const { axios } = useSession();
+  return useMutation(key, mutateFn(axios), options);
 }

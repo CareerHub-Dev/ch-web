@@ -7,6 +7,7 @@ const SessionDataSchema = z.object({
   jwtToken: z.string(),
   jwtTokenExpires: z.string(),
   refreshToken: z.string(),
+  refreshTokenExpires: z.string(),
 });
 export default SessionDataSchema;
 

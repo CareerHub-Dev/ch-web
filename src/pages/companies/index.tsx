@@ -7,10 +7,11 @@ import FeedWrapper from '@/components/layout/FeedWrapper';
 import SearchPanel from '@/components/companies/feed/SearchPanel';
 import LoadMoreSection from '@/components/layout/LoadMoreSection';
 import { protectedSsr } from '@/lib/protected-ssr';
+import CommonLayout from '@/components/layout/CommonLayout';
 
 const defaultPageSize = 50;
 
-const CompaniesFeedPage = () => {
+const CompaniesFeedPage: NextPageWithLayout = () => {
   const { data: session } = useSession();
   const accessToken = session?.jwtToken as string;
   const [searchTerm, setSearchTerm] = useState('');
@@ -52,6 +53,9 @@ const CompaniesFeedPage = () => {
     </>
   );
 };
+
+CompaniesFeedPage.getLayout = CommonLayout;
+
 export default CompaniesFeedPage;
 
 export const getServerSideProps = protectedSsr({

@@ -1,42 +1,31 @@
-import useSession from '@/hooks/useSession';
+import useProtectedPaginatedQuery from '@/hooks/useProtectedPaginatedQuery';
 import { useSelector } from 'react-redux';
 import { selectFilterOptions } from '@/context/job-offers-feed';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import LoadMoreSection from '@/components/layout/LoadMoreSection';
 import FeedWrapper from '@/components/layout/FeedWrapper';
 import JobOffersFilters from '@/components/offers/feed/JobOfferFilters';
 import JobOffersList from '@/components/offers/feed/JobOffersList';
 import Head from 'next/head';
-import { fetchJobOffers } from '@/lib/api/remote/jobOffers';
-import HorizontalNavbar from '@/components/layout/HorizontalNavbar';
+import CommonLayout from '@/components/layout/CommonLayout';
 import { protectedSsr } from '@/lib/protected-ssr';
-
-const defaultPageSize = 50;
+import { getJobOffers } from '@/lib/api/job-offer';
 
 const JobOffersFeedPage: NextPageWithLayout = () => {
-  const { data: session } = useSession();
-  const token = session?.jwtToken as string;
   const { filter, isApplied } = useSelector(selectFilterOptions);
   const queryKey: Array<string | object> = ['jobOffers'];
   if (isApplied && !!filter) {
     queryKey.push(filter);
   }
-  const jobOffersQuery = useInfiniteQuery(
+
+  const params = {
+    pageSize: 25,
+  };
+
+  const jobOffersQuery = useProtectedPaginatedQuery({
     queryKey,
-    async ({ pageParam = 1 }) =>
-      await fetchJobOffers({
-        token,
-        pageNumber: pageParam,
-        pageSize: defaultPageSize,
-        filter: isApplied ? filter! : undefined,
-      })(),
-    {
-      enabled: !token,
-      getNextPageParam: (lastPage) => lastPage.nextPage,
-      onError: (err: any) =>
-        alert(err.message || 'Помилка при завантаженні вакансій'),
-    }
-  );
+    getItems: getJobOffers,
+    params,
+  });
 
   const loadMore = (event: any) => {
     event.preventDefault();
@@ -61,12 +50,7 @@ const JobOffersFeedPage: NextPageWithLayout = () => {
   );
 };
 
-JobOffersFeedPage.getLayout = (page) => (
-  <>
-    <HorizontalNavbar />
-    <main>{page}</main>
-  </>
-);
+JobOffersFeedPage.getLayout = CommonLayout;
 
 export default JobOffersFeedPage;
 

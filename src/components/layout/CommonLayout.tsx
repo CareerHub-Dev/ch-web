@@ -1,25 +1,19 @@
 import type { ReactNode } from 'react';
-import Background from './Background';
-import Footer from './Footer';
 import HorizontalNavbar from './HorizontalNavbar';
+import Footer from './Footer';
+import Background from './Background';
 
-const CommonLayout = (
-  opts: {
-    withBackground: boolean;
-    withFooter: boolean;
-  } = {
-    withBackground: false,
-    withFooter: false,
-  }
-) =>
-  function CommonLayoutFn(page: ReactNode) {
-    return (
-      <>
-        <HorizontalNavbar />
-        <main>{page}</main>
-        {opts.withFooter && <Footer />}
-        {opts.withBackground && <Background />}
-      </>
-    );
-  };
-export default CommonLayout;
+export default function CommonLayout(page: ReactNode) {
+  return (
+    <>
+      <main className="flex flex-col h-screen">
+        <div className="grow">
+          <HorizontalNavbar />
+          {page}
+        </div>
+        <Footer />
+      </main>
+      <Background />
+    </>
+  );
+}

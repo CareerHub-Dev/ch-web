@@ -12,6 +12,9 @@ const StudentSubscriptionsStudents = (props: {
   search: string;
   setSearch: (value: string) => void;
   debouncedSearchValue: string;
+  orderByOptions: Array<{ label: string; value: string }>;
+  selectedOrderByOption: { label: string; value: string };
+  setSelectedOrderByOption: (option: { label: string; value: string }) => void;
 }) => {
   return (
     <StudentSubscriptionsList
@@ -21,13 +24,7 @@ const StudentSubscriptionsStudents = (props: {
       item={SubscriptionStudentItem}
       noItems={NoStudentSubscriptions}
       getItems={getStudentStudentSubscriptions}
-      mutateItem={(jwt?: string) => (id: string) => {
-        return new Promise<void>((resolve, reject) => {
-          setTimeout(() => {
-            resolve();
-          }, 3000);
-        });
-      }}
+      mutateItem={unsubscribeStudentFromStudent}
       extractItemName={(item) => `${item.firstName} ${item.lastName}`}
     />
   );

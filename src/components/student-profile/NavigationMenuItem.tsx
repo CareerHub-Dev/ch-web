@@ -16,7 +16,7 @@ const NavigationMenuItem = ({
       key={section}
       className={cn(
         'border-b-2 transition-all ease-in duration-200',
-        isCurrent ? 'border-primaryBlue' : 'border-transparent'
+        isCurrent ? 'border-lightBlueAccent text-lightBlueAccent' : 'border-transparent'
       )}
     >
       <a

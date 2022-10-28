@@ -9,6 +9,9 @@ const StudentSubscriptionsJobOffers = (props: {
   search: string;
   setSearch: (value: string) => void;
   debouncedSearchValue: string;
+  orderByOptions: Array<{ label: string; value: string }>;
+  selectedOrderByOption: { label: string; value: string };
+  setSelectedOrderByOption: (option: { label: string; value: string }) => void;
 }) => {
   return (
     <StudentSubscriptionsList
@@ -18,7 +21,7 @@ const StudentSubscriptionsJobOffers = (props: {
       item={SubscriptionJobOfferItem}
       noItems={NoJobOfferSubscriptions}
       getItems={getStudentJobOfferSubscriptions}
-      mutateItem={(jwt?: string) => (id: string) => {
+      mutateItem={() => (id: string) => {
         return new Promise<void>((resolve, reject) => {
           setTimeout(() => {
             resolve();

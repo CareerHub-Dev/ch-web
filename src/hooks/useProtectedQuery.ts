@@ -4,6 +4,7 @@ import {
   type UseQueryOptions,
   type QueryKey,
 } from '@tanstack/react-query';
+import { type AxiosInstance } from 'axios';
 
 export default function useProtectedQuery<
   TQueryKey extends QueryKey = QueryKey,
@@ -12,19 +13,18 @@ export default function useProtectedQuery<
   TData = TQueryFnData
 >(
   queryKey: TQueryKey,
-  queryFn: (accessToken?: string) => Promise<TQueryFnData>,
+  queryFn: (instance: AxiosInstance) => Promise<TQueryFnData>,
   options?: Omit<
     UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     'queryFn' | 'queryKey'
   >
 ) {
-  const { data: session } = useSession();
-  const accessToken = session?.jwtToken;
+  const { axios, status } = useSession();
 
   return useQuery<TQueryFnData, TError, TData, TQueryKey>({
     queryKey,
-    enabled: !!accessToken,
+    enabled: status === 'authenticated',
     ...options,
-    queryFn: () => queryFn(accessToken),
+    queryFn: () => queryFn(axios),
   });
 }

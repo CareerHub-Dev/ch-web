@@ -1,7 +1,7 @@
 import useImageUpload from '@/hooks/useImageUpload/v2';
 import useToast from '@/hooks/useToast';
-import useSession from '@/hooks/useSession';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useProtectedMutation from '@/hooks/useProtectedMutation';
+import { useQueryClient } from '@tanstack/react-query';
 import { updateStudentPhoto } from '@/lib/api/student';
 import { useBoolean } from 'usehooks-ts';
 import { useState, useCallback, type ChangeEvent } from 'react';
@@ -15,7 +15,6 @@ import ModalLoading from '@/components/ui/Modal/ModalLoading';
 import cn from 'classnames';
 
 const AvatarEdit = ({ initialData }: { initialData: string }) => {
-  const { data: session } = useSession();
   const toast = useToast();
   const queryClient = useQueryClient();
   const avatarUpload = useImageUpload({ initialData });
@@ -27,7 +26,7 @@ const AvatarEdit = ({ initialData }: { initialData: string }) => {
   const editPopupIsOpen = useBoolean(false);
   const imageSource = completedCrop.url ? completedCrop.url : initialData;
 
-  const updateStudentPhotoMutation = useMutation(
+  const updateStudentPhotoMutation = useProtectedMutation(
     ['updateSelfStudentPhoto'],
     updateStudentPhoto,
     {
@@ -66,31 +65,23 @@ const AvatarEdit = ({ initialData }: { initialData: string }) => {
     setCompletedCrop({});
   };
 
-  const saveNewAvatar = useCallback(async () => {
+  const saveNewAvatar = useCallback(() => {
     if (completedCrop.blob) {
-      await updateStudentPhotoMutation.mutateAsync({
-        accessToken: session?.jwtToken,
-        file: new File(
-          [completedCrop.blob],
-          `file.${avatarUpload.fileExtension}`,
-          {
-            type: avatarUpload.fileType ?? undefined,
-          }
-        ),
-      });
+      updateStudentPhotoMutation.mutate(
+        new File([completedCrop.blob], `file.${avatarUpload.fileExtension}`, {
+          type: avatarUpload.fileType ?? undefined,
+        })
+      );
     }
   }, [
-    session?.jwtToken,
     avatarUpload.fileExtension,
     avatarUpload.fileType,
     completedCrop.blob,
     updateStudentPhotoMutation,
   ]);
 
-  const deleteAvatar = async () => {
-    await updateStudentPhotoMutation.mutateAsync({
-      accessToken: session?.jwtToken,
-    });
+  const deleteAvatar = () => {
+    updateStudentPhotoMutation.mutate(undefined);
   };
 
   return (
@@ -156,7 +147,7 @@ const AvatarEdit = ({ initialData }: { initialData: string }) => {
               onCropComplete={setCompletedCrop}
               fileType={avatarUpload.fileType as string}
             />
-            <div className="flex flex-row-reverse mt-4 mb-40">
+            <div className="flex flex-row-reverse mt-4 mb-4">
               <button
                 className="btn-primary p-2 w-40 ml-2 bg-primaryBlue"
                 onClick={saveNewAvatar}

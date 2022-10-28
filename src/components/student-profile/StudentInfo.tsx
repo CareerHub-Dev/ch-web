@@ -1,8 +1,11 @@
 import InfoItem from './InfoItem';
-import MailIcon from '../ui/icons/MailIcon';
-import GroupIcon from '../ui/icons/GroupIcon';
-import PhoneIcon from '../ui/icons/PhoneIcon';
-import DateIcon from '../ui/icons/DateIcon';
+import {
+  EnvelopeIcon,
+  UserGroupIcon,
+  CalendarIcon,
+  PhoneIcon,
+} from '@heroicons/react/24/outline';
+
 import format from 'date-fns/format';
 
 const StudentInfo = ({
@@ -26,10 +29,20 @@ const StudentInfo = ({
     <>
       <h1 className="text-xl mb-4 text-darkerBlue">{fullName}</h1>
       <div className="grid gap-1">
-        <InfoItem text={email} icon={MailIcon} />
-        <InfoItem text={group} icon={GroupIcon} />
-        {phone && <InfoItem text={phone} icon={PhoneIcon} />}
-        {birthDate && <InfoItem text={formattedBirthDate} icon={DateIcon} />}
+        <InfoItem text={email} icon={() => <EnvelopeIcon title="Пошта" />} />
+        <InfoItem text={group} icon={() => <UserGroupIcon title="Група" />} />
+        {phone && (
+          <InfoItem
+            text={phone}
+            icon={() => <PhoneIcon title="Номер телефону" />}
+          />
+        )}
+        {birthDate && (
+          <InfoItem
+            text={formattedBirthDate}
+            icon={() => <CalendarIcon title="Дата народження" />}
+          />
+        )}
       </div>
     </>
   );

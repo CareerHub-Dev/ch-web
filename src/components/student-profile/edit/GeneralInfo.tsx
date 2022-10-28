@@ -1,7 +1,7 @@
 import useInput from '@/hooks/useInput/v3';
-import useSession from '@/hooks/useSession';
 import useToast from '@/hooks/useToast';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useProtectedMutation from '@/hooks/useProtectedMutation';
+import { useQueryClient } from '@tanstack/react-query';
 import format from 'date-fns/format';
 import { updateStudentGeneralInfo } from '@/lib/api/student';
 import FormInput from '@/components/ui/form/v2/FormInput';
@@ -10,7 +10,6 @@ import parseUnknownError from '@/lib/parse-unknown-error';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
 
 const GeneralInfo = ({ initialData }: { initialData: any }) => {
-  const { data: session } = useSession();
   const toast = useToast();
   const queryClient = useQueryClient();
   const firstNameInput = useInput({
@@ -51,11 +50,11 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
       : '',
   });
 
-  const mutation = useMutation(
+  const mutation = useProtectedMutation(
     ['updateSelfStudent'],
     updateStudentGeneralInfo,
     {
-      onSuccess: (_) => {
+      onSuccess: () => {
         const currentData = queryClient.getQueryData(['selfStudent']);
         const newData = {
           firstName: firstNameInput.value,
@@ -85,7 +84,6 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
     }
   );
 
-  const accessToken = session?.jwtToken;
   const allInputs = [firstNameInput, lastNameInput, phoneInput, birthDateInput];
   const noInputTouched = allInputs.every((input) => input.isInitial);
   const someInputIsInvalid = allInputs.some((input) => !input.isValid);
@@ -102,7 +100,6 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
     }
     const birthDate = birthDateInput.value;
     const data = {
-      accessToken,
       firstName: firstNameInput.value,
       lastName: lastNameInput.value,
       phone: phoneInput.value.replace(/\s/g, '') || null,
@@ -159,7 +156,7 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
           />
         </div>
       </form>
-      <div className="flex flex-row-reverse mt-4 mb-40">
+      <div className="flex flex-row-reverse mt-4 mb-4">
         <button
           className={'btn-primary p-2 w-40 ml-2 bg-primaryBlue'}
           onClick={save}

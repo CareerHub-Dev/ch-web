@@ -7,7 +7,7 @@ import {
   setTagsSearch,
   selectTags,
 } from '@/context/job-offers-feed';
-import { getTags } from '@/lib/api/remote/tags';
+import { getTags } from '@/lib/api/tags';
 import SelectedTags from './SelectedTags';
 import Overlay from '@/components/ui/Overlay';
 import TagsSuggestions from './TagsSuggestions';

@@ -15,7 +15,7 @@ const NavLink = ({
       <a
         className={cn(
           'text-primaryGrayDarker hover:text-primaryBlack transition-all ease duration-200',
-          active && 'text-primaryBlue hover:text-primaryBlue font-semibold'
+          active && 'text-lightBlueAccent hover:text-lightBlueAccent font-semibold'
         )}
       >
         {text}

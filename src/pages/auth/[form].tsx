@@ -28,8 +28,12 @@ const AuthPage: NextPageWithLayout<{ form: string }> = ({ form }) => {
 AuthPage.getLayout = (page) => {
   return (
     <>
-      <main className="flex justify-center py-32">{page}</main>
-      <Footer />
+      <main className="flex flex-col h-screen">
+        <div className="grow flex justify-center py-20">
+          {page}
+        </div>
+        <Footer className="shrink-0" />
+      </main>
       <Background />
     </>
   );

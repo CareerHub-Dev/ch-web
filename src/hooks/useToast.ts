@@ -7,16 +7,10 @@ import SuccessToastStrategy from '@/lib/toasts/strategies/SuccessToastStrategy';
 import WarningToastStrategy from '@/lib/toasts/strategies/WarningToastStrategy';
 import IToastStrategy from '@/lib/toasts/strategies/IToastStrategy';
 
-const toastClassesMap = {
-  success: SuccessToastStrategy,
-  error: ErrorToastStrategy,
-  warning: WarningToastStrategy,
-};
-
 const useToast = () => {
   const toastRef = useRef<any>(null);
 
-  const baseHandler = (
+  const notify = (
     message: string,
     strategy: IToastStrategy,
     current: boolean = false
@@ -26,34 +20,27 @@ const useToast = () => {
     ctx.notify(message, toastId);
   };
 
-  const successNotificationHandler = (msg: string, current: boolean = false) =>
-    baseHandler(msg, new SuccessToastStrategy(), current);
+  const success = (msg: string, current: boolean = false) =>
+    notify(msg, new SuccessToastStrategy(), current);
 
-  const errorNotificationHandler = (msg: string, current: boolean = false) =>
-    baseHandler(msg, new ErrorToastStrategy(), current);
+  const error = (msg: string, current: boolean = false) =>
+    notify(msg, new ErrorToastStrategy(), current);
 
-  const warningNotificationHandler = (msg: string, current: boolean = false) =>
-    baseHandler(msg, new WarningToastStrategy(), current);
+  const warning = (msg: string, current: boolean = false) =>
+    notify(msg, new WarningToastStrategy(), current);
 
-  const commonNotificationHandler = (options: {
-    msg: string;
-    type?: keyof typeof toastClassesMap;
-    current?: boolean;
-  }) => {
-    const ToastClass = toastClassesMap[options.type || 'success'];
-    baseHandler(options.msg, new ToastClass(), options.current);
-  };
-
-  const setTextHandler = (text: string, options?: Omit<ToastOptions, 'isLoading' | 'type'>) => {
-    toastRef.current = toast(text, {...options, isLoading: true });
+  const setCurrent = (
+    text: string,
+    options?: Omit<ToastOptions, 'isLoading' | 'type'>
+  ) => {
+    toastRef.current = toast(text, { ...options, isLoading: true });
   };
 
   return {
-    notify: commonNotificationHandler,
-    success: successNotificationHandler,
-    error: errorNotificationHandler,
-    warning: warningNotificationHandler,
-    setCurrent: setTextHandler,
+    success,
+    error,
+    warning,
+    setCurrent,
   };
 };
 

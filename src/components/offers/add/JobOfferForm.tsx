@@ -51,13 +51,10 @@ const JobOfferForm = () => {
       } else {
         msg = 'Не вдалося створити вакансію';
       }
-      toast.notify({ type: 'error', msg, current: true });
+      toast.error(msg, true);
     },
     onSuccess: () => {
-      toast.notify({
-        msg: `\u2713 Вакансію ${titleInput.value} створено`,
-        current: true,
-      });
+      toast.success(`\u2713 Вакансію ${titleInput.value} створено`, true);
       titleInput.reset();
       uploadedImage.reset();
       overviewEditor.reset();

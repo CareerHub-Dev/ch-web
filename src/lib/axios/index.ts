@@ -1,6 +1,5 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { z } from 'zod';
-import { backendApiBaseUrl, localGatewayUrl } from './api';
+import axios, { AxiosError } from 'axios';
+import { backendApiBaseUrl, localGatewayUrl } from '../api';
 
 const defaultHeaders = { 'Content-Type': 'application/json' };
 
@@ -34,32 +33,25 @@ const requestErrorHandler = (err: unknown) => {
   return Promise.reject(msg);
 };
 
-export const request = async <TSelected = any>({
+export async function request<TSelected = any>(
+  options: ExtendedAxiosRequestOptions<Promise<TSelected>>
+): Promise<TSelected>;
+export async function request<TSelected = any>(
+  options: ExtendedAxiosRequestOptions<TSelected>
+): Promise<TSelected>;
+export async function request<TSelected = any>({
   instance = axiosInstance,
   prefix,
   select = (response) => response.data,
   method = 'GET',
   ...options
-}: ExtendedAxiosRequestOptions<TSelected>): Promise<TSelected> => {
+}: ExtendedAxiosRequestOptions<
+  TSelected | Promise<TSelected>
+>): Promise<TSelected> {
   if (prefix) {
     options.url = `${prefix}/${options.url}`;
   }
   return instance({ method, ...options })
     .then(select)
     .catch(requestErrorHandler);
-};
-
-export const requestAsync = async <TSelected = any>({
-  instance = axiosInstance,
-  prefix,
-  select = (response) => response.data,
-  method = 'GET',
-  ...options
-}: ExtendedAxiosRequestOptions<Promise<TSelected>>): Promise<TSelected> => {
-  if (prefix) {
-    options.url = `${prefix}/${options.url}`;
-  }
-  return instance({ method, ...options })
-    .then(select)
-    .catch(requestErrorHandler);
-};
+}

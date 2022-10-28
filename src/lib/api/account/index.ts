@@ -1,31 +1,27 @@
 import { localGatewayAxiosInstance, request } from '../../axios';
 import { type SessionData } from '@/lib/schemas/SessionData';
+import { type AxiosInstance } from 'axios';
 
 export namespace LocalGateway {
-  export const authenticate = async (data: {
-    email: string;
-    password: string;
-  }) =>
+  export const authenticate = (data: { email: string; password: string }) =>
     request({
       instance: localGatewayAxiosInstance,
-      url: 'authenticate',
-      prefix: 'auth',
+      url: 'auth/authenticate',
       method: 'POST',
       withCredentials: true,
       data,
     });
 
-  export const refreshToken = async (refreshToken: string) =>
-    request({
+  export const refreshToken = (refreshToken: string) =>
+    request<SessionData>({
       instance: localGatewayAxiosInstance,
-      url: 'authenticate',
-      prefix: 'auth',
+      url: 'auth/refresh-token',
       method: 'POST',
       data: { refreshToken },
       withCredentials: true,
     });
 
-  export const logout = async () =>
+  export const logout = () =>
     request({
       instance: localGatewayAxiosInstance,
       prefix: 'auth',
@@ -33,14 +29,14 @@ export namespace LocalGateway {
       method: 'POST',
     });
 
-  export const getMe = async () =>
+  export const getMe = () =>
     request<SessionData>({
       instance: localGatewayAxiosInstance,
       url: 'me',
     });
 }
 
-export const authenticate = async (data: { email: string; password: string }) =>
+export const authenticate = (data: { email: string; password: string }) =>
   request({
     url: 'authenticate',
     prefix: 'Account',
@@ -49,16 +45,15 @@ export const authenticate = async (data: { email: string; password: string }) =>
     withCredentials: true,
   });
 
-export const refreshToken = async (refreshToken: string) =>
+export const refreshToken = (token: string) =>
   request({
-    url: 'authenticate',
-    prefix: 'Account',
+    url: 'Account/refresh-token',
     method: 'POST',
-    data: { refreshToken },
+    data: { token },
     withCredentials: true,
   });
 
-export const forgotPassword = async (email: string) =>
+export const forgotPassword = (email: string) =>
   request({
     url: 'forgot-password',
     prefix: 'Account',
@@ -66,10 +61,7 @@ export const forgotPassword = async (email: string) =>
     data: { email },
   });
 
-export const resetPassword = async (data: {
-  password: string;
-  token: string;
-}) =>
+export const resetPassword = (data: { password: string; token: string }) =>
   request({
     url: 'reset-password',
     prefix: 'Account',
@@ -78,12 +70,11 @@ export const resetPassword = async (data: {
   });
 
 export const changePassword =
-  (jwt?: string) =>
-  async (data: { oldPassword: string; newPassword: string }) =>
+  (instance: AxiosInstance) =>
+  (data: { oldPassword: string; newPassword: string }) =>
     request({
-      prefix: 'Auth/Account',
-      url: 'change-password',
+      instance,
+      url: 'Auth/Account/change-password',
       method: 'POST',
       data,
-      headers: { Authorization: `Bearer ${jwt}` },
     });

@@ -77,7 +77,7 @@ const ChangePassword = () => {
           />
         </div>
       </form>
-      <div className="flex flex-row-reverse mt-4 mb-40">
+      <div className="flex flex-row-reverse mt-4 mb-4">
         <button
           className="btn-primary p-2 w-40 ml-2 bg-primaryBlue"
           onClick={save}
