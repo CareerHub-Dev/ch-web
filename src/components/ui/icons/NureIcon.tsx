@@ -1,4 +1,4 @@
-export default function NureIcon({ className }: { className?: string }) {
+export default function NureIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

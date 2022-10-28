@@ -105,5 +105,5 @@ export const cropImage = async (
     crop.height * scaleY
   );
 
-  return await getBlobFromCanvas(canvas, fileType);
+  return getBlobFromCanvas(canvas, fileType);
 };

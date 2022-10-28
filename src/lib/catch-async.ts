@@ -6,7 +6,11 @@ export default function catchAsync<T>(fn: ExtendedApiHandler<T>) {
     res: NextApiResponse
   ) {
     try {
-      return await fn(req, res);
+      const handlerResult = fn(req, res);
+      if (handlerResult instanceof Promise) {
+        return await handlerResult;
+      }
+      return handlerResult;
     } catch (e: unknown) {
       let message = 'Something went wrong! Error: ';
       if (e instanceof Error) {
@@ -14,8 +18,7 @@ export default function catchAsync<T>(fn: ExtendedApiHandler<T>) {
       } else {
         message += 'unknown. Caught object: ' + e;
       }
-
-      res.status(500).json({ message });
+      return res.status(500).json({ message });
     }
   };
 }

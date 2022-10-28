@@ -1,5 +1,4 @@
 const SubscriptionJobOfferItem = ({
-  item,
   onSelect,
 }: {
   item: any;

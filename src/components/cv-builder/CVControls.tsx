@@ -20,10 +20,9 @@ const getProgressEstimation = (currentStage: number) =>
 const completionStage = 8;
 
 const CVControls: React.FC = () => {
-  // TODO: extract buttons into a separate component
   const dispatch = useAppDispatch();
   const [currentStage, setCurrentStage] = useState(0);
-  const progress = getProgressEstimation(currentStage);
+  const progress = getProgressEstimation(currentStage) ?? 100;
   const currentStageInputs = useSelector(selectStageErrors(currentStage));
   const saveModalIsOpen = useSelector(selectSaveModalIsOpen);
   const currentStageHasInvalidInputs = currentStageInputs.some(

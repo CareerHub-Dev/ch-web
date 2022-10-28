@@ -5,7 +5,6 @@ import LoginForm from '@/components/auth/forms/LoginForm';
 import FormWrapper from '@/components/auth/FormWrapper';
 import Background from '@/components/layout/Background';
 import Footer from '@/components/layout/Footer';
-import useSession from '@/hooks/useSession';
 
 import classes from '@/styles/auth.module.scss';
 
@@ -29,9 +28,7 @@ AuthPage.getLayout = (page) => {
   return (
     <>
       <main className="flex flex-col h-screen">
-        <div className="grow flex justify-center py-20">
-          {page}
-        </div>
+        <div className="grow flex justify-center py-20">{page}</div>
         <Footer className="shrink-0" />
       </main>
       <Background />

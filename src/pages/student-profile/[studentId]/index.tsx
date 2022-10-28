@@ -95,15 +95,15 @@ const StudentProfilePage: NextPageWithLayout<
   });
   const [studentSearch, setStudentSearch] = useState('');
   const [selectedStudentOrderByOption, setSelectedStudentOrderByOption] =
-    useState(studentOrderByOptions[0]);
+    useState(studentOrderByOptions.at(0));
   const debouncedStudentSearch = useDebounce(studentSearch, 500);
   const [companySearch, setCompanySearch] = useState('');
   const [selectedCompanyOrderByOption, setSelectedCompanyOrderByOption] =
-    useState(companyOrderByOptions[0]);
+    useState(companyOrderByOptions.at(0));
   const debouncedCompanySearch = useDebounce(companySearch, 500);
   const [jobOfferSearch, setJobOfferSearch] = useState('');
   const [selectedJobOfferOrderByOption, setSelectedJobOfferOrderByOption] =
-    useState(jobOfferOrderByOptions[0]);
+    useState(jobOfferOrderByOptions.at(0));
   const debouncedJobOfferSearch = useDebounce(jobOfferSearch, 500);
 
   return (
@@ -151,7 +151,7 @@ const StudentProfilePage: NextPageWithLayout<
             search={jobOfferSearch}
             setSearch={setJobOfferSearch}
             orderByOptions={jobOfferOrderByOptions}
-            selectedOrderByOption={selectedJobOfferOrderByOption}
+            selectedOrderByOption={selectedJobOfferOrderByOption!}
             setSelectedOrderByOption={setSelectedJobOfferOrderByOption}
             accountId={student.id}
             isSelf={isSelf}
@@ -162,7 +162,7 @@ const StudentProfilePage: NextPageWithLayout<
             search={companySearch}
             setSearch={setCompanySearch}
             orderByOptions={companyOrderByOptions}
-            selectedOrderByOption={selectedCompanyOrderByOption}
+            selectedOrderByOption={selectedCompanyOrderByOption!}
             setSelectedOrderByOption={setSelectedCompanyOrderByOption}
             accountId={student.id}
             isSelf={isSelf}
@@ -173,7 +173,7 @@ const StudentProfilePage: NextPageWithLayout<
             debouncedSearchValue={debouncedStudentSearch}
             setSearch={setStudentSearch}
             orderByOptions={studentOrderByOptions}
-            selectedOrderByOption={selectedStudentOrderByOption}
+            selectedOrderByOption={selectedStudentOrderByOption!}
             setSelectedOrderByOption={setSelectedStudentOrderByOption}
             accountId={student.id}
             isSelf={isSelf}
@@ -195,7 +195,7 @@ export const getServerSideProps = protectedSsr<{
   allowedRoles: ['Student'],
   getProps: async (context) => {
     const studentId = context.query.studentId as string;
-    const { accountId, refreshToken } = context.session;
+    const { accountId } = context.session;
     const isSelf = studentId === accountId;
 
     try {

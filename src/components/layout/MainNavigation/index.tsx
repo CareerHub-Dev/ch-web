@@ -1,17 +1,3 @@
-import { useState } from 'react';
-import useSession from '@/hooks/useSession';
-import { useWindowSize } from 'usehooks-ts';
-import { useRouter } from 'next/router';
-import BurgerMenu from './BurgerMenu';
-import ProfileIcon from './ProfileIcon';
-import Link from 'next/link';
-import Button from '@/components/ui/Button';
-import SigOutIcon from '@/components/ui/icons/SignOutIcon';
-import LinkButton from '@/components/ui/LinkButton';
-
-import cn from 'classnames';
-import classes from './MainNavigation.module.scss';
-
 const MainNavigation = () => {
   // const router = useRouter();
   // const auth = useSession();

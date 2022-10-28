@@ -5,14 +5,9 @@ import classes from './SearchPanel.module.scss';
 const SearchPanel = ({ onChange }: { onChange: (value: string) => any }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const submitHandler = (event: any) => {
+  const submit = (event: any) => {
     event.preventDefault();
     onChange(inputRef.current!.value || '');
-  };
-  const resetHandler = (event: any) => {
-    event.preventDefault();
-    inputRef.current!.value = '';
-    onChange('');
   };
 
   return (
@@ -28,7 +23,7 @@ const SearchPanel = ({ onChange }: { onChange: (value: string) => any }) => {
           />
         </div>
       </div>
-      <LinkButton onClick={submitHandler}>Пошук</LinkButton>
+      <LinkButton onClick={submit}>Пошук</LinkButton>
     </form>
   );
 };

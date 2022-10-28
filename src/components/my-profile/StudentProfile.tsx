@@ -1,17 +1,4 @@
-import useStudentQuery from '@/hooks/useStudentQuery';
-import Card from '../ui/Card';
-import LoadingSpinner from '../ui/LoadingSpinner';
-import StudentAvatar from './StudentAvatar';
-import InfoSpan from './InfoSpan';
-import GroupIcon from '../ui/icons/GroupIcon';
-import MailIcon from '../ui/icons/MailIcon';
-import DateIcon from '../ui/icons/DateIcon';
-import PhoneIcon from '../ui/icons/PhoneIcon';
-import classes from './StudentProfile.module.scss';
-
-const StudentProfile: React.FC<{
-  studentQuery: ReturnType<typeof useStudentQuery>;
-}> = ({ studentQuery }) => {
+const StudentProfile = () => {
   return null;
   // if (studentQuery.isLoading) {
   //   return <LoadingSpinner />;
