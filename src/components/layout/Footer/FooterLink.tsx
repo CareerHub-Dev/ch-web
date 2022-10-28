@@ -25,8 +25,8 @@ const FooterLink = ({
   }
 
   return (
-    <Link href={item.href}>
-      <a className={linkClasses}>{item.text}</a>
+    <Link href={item.href} className={linkClasses}>
+      {item.text}
     </Link>
   );
 };

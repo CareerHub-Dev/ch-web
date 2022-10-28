@@ -1,4 +1,4 @@
-import Image from 'next/future/image';
+import Image from 'next/image';
 import Link from 'next/link';
 import type { CompanySubscription } from '@/lib/api/student/schemas';
 import { getImage } from '@/lib/api/image';
@@ -25,10 +25,11 @@ const SubscriptionCompanyItem = ({
       />
       <div className="flex-auto">
         <div className="flex items-center justify-between flex-wrap">
-          <Link href={`/company/${item.id}`} passHref>
-            <a className="cursor-pointer hover:text-primaryBlue hover:underline md:text-lg">
-              {item.name}
-            </a>
+          <Link
+            href={`/company/${item.id}`}
+            className="cursor-pointer hover:text-primaryBlue hover:underline md:text-lg"
+          >
+            {item.name}
           </Link>
           {onSelect && (
             <button

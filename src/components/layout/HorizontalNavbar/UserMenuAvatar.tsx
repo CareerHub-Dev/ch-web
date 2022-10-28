@@ -1,7 +1,7 @@
 import useSelfStudentQuery from '@/hooks/useStudentSelfQuery';
 import { getImage } from '@/lib/api/image';
 import { useBoolean } from 'usehooks-ts';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import cn from 'classnames';
 
 const UserMenuAvatar = () => {

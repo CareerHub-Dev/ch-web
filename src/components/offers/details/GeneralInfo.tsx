@@ -39,8 +39,8 @@ const GeneralInfo: React.FC<{
     <section className={classes.info}>
       <div className={classes.list}>
         <InfoItem icon={MailAtIcon}>
-          <Link href={`/companies/${companyId}`} passHref>
-            <h2>{companyName}</h2>
+          <Link href={`/companies/${companyId}`}>
+            {companyName}
           </Link>
         </InfoItem>
         <InfoItem icon={DateIcon}>

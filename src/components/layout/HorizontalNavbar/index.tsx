@@ -16,19 +16,20 @@ const HorizontalNavbar = () => {
       </h1>
       <nav className="flex gap-12 items-center">
         <ul className="flex gap-6">
-          {links.map((link) => (
-            <li key={link.href}>
-              <NavLink
-                text={link.text}
-                href={link.href}
-                active={
-                  link.exact
-                    ? pathname === link.href
-                    : pathname.includes(link.href)
-                }
-              />
-            </li>
-          ))}
+          {status !== 'loading' &&
+            links.map((link) => (
+              <li key={link.href}>
+                <NavLink
+                  text={link.text}
+                  href={link.href}
+                  active={
+                    link.exact
+                      ? pathname === link.href
+                      : pathname.includes(link.href)
+                  }
+                />
+              </li>
+            ))}
         </ul>
         {status === 'authenticated' && <UserMenu />}
       </nav>

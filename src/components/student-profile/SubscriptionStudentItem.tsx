@@ -1,6 +1,6 @@
 import { type StudentSubscription } from '@/lib/api/student/schemas';
 import { getImage } from '@/lib/api/image';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const SubscriptionStudentItem = ({
@@ -26,10 +26,11 @@ const SubscriptionStudentItem = ({
       />
       <div className="flex-auto">
         <div className="flex items-center justify-between flex-wrap">
-          <Link href={`/student-profile/${item.id}`} passHref>
-            <a className="cursor-pointer hover:text-primaryBlue hover:underline md:text-lg">
-              {studentFullName}
-            </a>
+          <Link
+            href={`/student-profile/${item.id}`}
+            className="cursor-pointer hover:text-primaryBlue hover:underline md:text-lg"
+          >
+            {studentFullName}
           </Link>
           {onSelect && (
             <button

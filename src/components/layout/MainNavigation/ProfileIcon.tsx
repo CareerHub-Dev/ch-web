@@ -8,16 +8,14 @@ const ProfileIcon: React.FC<{ src?: string; link?: string }> = ({
   link = '/my-profile',
 }) => {
   return (
-    <Link href={link}>
-      <a>
-        <Image
-          width={64}
-          height={64}
-          className={classes.image}
-          src={src}
-          alt="User Icon"
-        />
-      </a>
+    <Link href={link} passHref>
+      <Image
+        width={64}
+        height={64}
+        className={classes.image}
+        src={src}
+        alt="User Icon"
+      />
     </Link>
   );
 };

@@ -24,13 +24,13 @@ const LinkButton: React.FC<{
   const allClasses = cn(
     classes[style],
     additionalClasses,
-    disabled && classes.disabled,
+    disabled && classes.disabled
   );
 
   if (link) {
     return (
-      <Link href={link}>
-        <a className={allClasses}>{children}</a>
+      <Link href={link} className={allClasses}>
+        {children}
       </Link>
     );
   }

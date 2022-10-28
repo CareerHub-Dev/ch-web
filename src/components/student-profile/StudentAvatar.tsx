@@ -1,5 +1,5 @@
 import { useBoolean } from 'usehooks-ts';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { getImage } from '@/lib/api/image';
 
 import cn from 'classnames';

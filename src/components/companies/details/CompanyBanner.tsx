@@ -1,5 +1,5 @@
 import { getImage } from '@/lib/api/image';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import classes from './CompanyBanner.module.scss';
 
 const CompanyBanner: React.FC<{
