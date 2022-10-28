@@ -1,3 +1,18 @@
+type PaginatedRequestParams = {
+  pageNumber: number;
+  pageSize: number;
+  searchTerm?: string;
+  orderByExpression?: string;
+};
+
+type PaginatedQueryParams = Omit<PaginatedQueryParams, 'pageNumber'>;
+
+interface AppNavigationLink {
+  href: string;
+  text: string;
+  exact?: boolean;
+}
+
 interface JobOfferFilter {
   searchTerm?: string;
   jobType?: string;
@@ -9,7 +24,7 @@ interface JobOfferFilter {
 
 interface Tag {
   id: string;
-  title: string;
+  name: string;
 }
 
 namespace JobOffersFeed {

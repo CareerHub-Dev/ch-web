@@ -1,7 +1,7 @@
-import { baseURL, retrieveErrorMessage } from '.';
+import { backendApiBaseUrl, retrieveErrorMessage } from '..';
 
-export const fetchJobPositions = (accessToken: string | null) => async () => {
-  const url = `${baseURL}JobPositions`;
+export const fetchJobPositions = async (accessToken?: string) => {
+  const url = `${backendApiBaseUrl}JobPositions`;
   const response = await fetch(url, {
     method: 'GET',
     headers: {

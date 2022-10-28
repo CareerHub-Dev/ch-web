@@ -1,0 +1,71 @@
+@import '@/styles/variables.scss';
+
+@mixin btn($backgroundColor) {
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 14.5px;
+  max-width: 238px;
+  max-height: 56px;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  background: $backgroundColor;
+  border: 2px solid $darkerBlue;
+  cursor: pointer;
+}
+
+@mixin btnText($textColor) {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 27px;
+  text-align: center;
+  letter-spacing: -0.015em;
+  color: $textColor;
+}
+
+@mixin btnHover($bgColor, $textColor) {
+  transition: all ease-in-out 300ms;
+  background: $bgColor;
+  color: $textColor;
+}
+
+@media (max-width: 700px) {
+  .title {
+    font-size: 72px;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.actions {
+  margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  max-width: 100%;
+}
+
+.register {
+  @include btn($darkerBlue);
+  @include btnText(#fff);
+}
+
+.register:hover {
+  @include btnHover(#fff, $darkerBlue);
+}
+
+.login {
+  @include btn(#fff);
+  @include btnText($darkerBlue);
+}
+
+.login:hover {
+  @include btnHover($darkerBlue, #fff);
+}

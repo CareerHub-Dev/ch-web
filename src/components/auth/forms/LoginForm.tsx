@@ -1,58 +1,36 @@
-import { FormEventHandler, useRef, useState } from 'react';
-import useAuth from '@/hooks/useAuth';
+import { FormEventHandler, useRef } from 'react';
 import { useRouter } from 'next/router';
+import useSession from '@/hooks/useSession';
+import useToast from '@/hooks/useToast';
 import useInput from '@/hooks/useInput';
+import { useMutation } from '@tanstack/react-query';
 import { getEmailValidity, getPasswordValidity } from '@/lib/util';
-import { sendLocalGatewayAuthRequest } from '@/lib/api/local/auth';
-import RequestStatus from '@/models/enums/RequestStatus';
-import type { CallbackFn } from '@/lib/callback/types';
+import { LocalGateway } from '@/lib/api/account';
 import AuthField from '../AuthField';
 import KeyIcon from '@/components/ui/icons/KeyIcon';
 import EnvelopeIcon from '@/components/ui/icons/EnvelopeIcon';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
-import ToastContext from '@/lib/toasts/ToastContext';
-import ErrorToastStrategy from '@/lib/toasts/strategies/ErrorToastStrategy';
-import RoleSelect from '../RoleSelect';
-import UserRole from '@/models/enums/UserRole';
 import classes from './forms.module.scss';
+import type { SessionData } from '@/lib/schemas/SessionData';
 
 const LoginForm = () => {
-  const auth = useAuth();
   const router = useRouter();
-  const toastRef = useRef<any>(null);
-  const [isProcessingRequest, setIsProcessingRequest] = useState(false);
-  const selectedRoleRef = useRef<HTMLSelectElement>(null);
+  const session = useSession();
+  const toast = useToast();
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const emailInput = useInput(getEmailValidity);
   const passwordInput = useInput(getPasswordValidity);
   const formIsValid = emailInput.isValid && passwordInput.isValid;
-
-  const requestCallback: CallbackFn = (response) => {
-    switch (response.status) {
-      case RequestStatus.ResponseRecieved:
-        setIsProcessingRequest(false);
-        break;
-      case RequestStatus.Error:
-        const toastContext = new ToastContext();
-        toastContext.setStrategy(new ErrorToastStrategy());
-        toastContext.notify(response.message, toastRef.current);
-        break;
-      case RequestStatus.Success:
-        const { sessionData, role } = response.data;
-        console.log(response.data);
-
-        auth.login(
-          sessionData.accessToken,
-          sessionData.authorityToken,
-          sessionData.accountId,
-          role,
-        );
-        break;
-      default:
-        break;
-    }
-  };
+  const authMutation = useMutation(['auth'], LocalGateway.authenticate, {
+    onSuccess: (data: SessionData) => {
+      session.login(data);
+      router.push('/my-profile');
+    },
+    onError: (error: string) => {
+      toast.error(error);
+    },
+  });
 
   const formSubmissionHandler: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
@@ -66,21 +44,16 @@ const LoginForm = () => {
       }
       return;
     }
-    setIsProcessingRequest(true);
-    sendLocalGatewayAuthRequest(
-      emailInput.value,
-      passwordInput.value,
-      true,
-      selectedRoleRef.current!.value as UserRole,
-      requestCallback,
-    );
+    authMutation.mutate({
+      email: emailInput.value,
+      password: passwordInput.value,
+    });
   };
 
   return (
     <form onSubmit={formSubmissionHandler} id="loginForm">
-      {isProcessingRequest && <ModalLoading />}
+      {authMutation.isLoading && <ModalLoading />}
       <div className={classes.fields} id="authFieldsDiv">
-        <RoleSelect id="role" refObject={selectedRoleRef} />
         <AuthField
           ref={emailInputRef}
           id="email"

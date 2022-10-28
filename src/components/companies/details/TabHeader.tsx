@@ -3,7 +3,7 @@ import classes from './TabHeader.module.scss';
 
 const TabHeader: React.FC<{
   label: string;
-  currentTab: string;
+  currentTab?: string | string[];
   onClick: (tabId: string) => any;
   tabId: string;
 }> = ({ label, currentTab, onClick, tabId }) => {

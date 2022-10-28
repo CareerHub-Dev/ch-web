@@ -1,6 +1,6 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import { removeLink } from '@/store/cv-constructor';
-import Link from '@/models/CV/Link';
+import { removeLink } from '@/context/cv-constructor';
+import Link from '@/lib/cv/Link';
 import TrashIcon from '@/components/ui/icons/TrashIcon';
 
 import classes from './ListItem.module.scss';

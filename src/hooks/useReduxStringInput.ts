@@ -1,7 +1,7 @@
 import useAppDispatch from './useAppDispatch';
 import { useSelector } from 'react-redux';
-import { TransformedStringInput } from '../store/cv-constructor';
-import { RootState } from '../store';
+import { TransformedStringInput } from '../context/cv-constructor';
+import { RootState } from '../context';
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 
 type ChangeEvent =

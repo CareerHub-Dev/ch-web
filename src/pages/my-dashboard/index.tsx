@@ -1,6 +1,4 @@
-import protectedServerSideProps from '@/lib/protected-server-side-props';
-import UserRole from '@/models/enums/UserRole';
-import { GetServerSidePropsContext } from 'next/types';
+import { protectedSsr } from '@/lib/protected-ssr';
 
 const CompanyDashboard = () => {
   return (
@@ -11,4 +9,6 @@ const CompanyDashboard = () => {
 };
 export default CompanyDashboard;
 
-export const getServerSideProps = protectedServerSideProps([UserRole.Company]);
+export const getServerSideProps = protectedSsr({
+  allowedRoles: ['Company'],
+});

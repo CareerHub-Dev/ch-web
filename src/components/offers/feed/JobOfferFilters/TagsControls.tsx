@@ -6,8 +6,8 @@ import {
   selectTagsSearch,
   setTagsSearch,
   selectTags,
-} from '@/store/job-offers-feed';
-import { getTags } from '@/lib/api/remote/tags';
+} from '@/context/job-offers-feed';
+import { getTags } from '@/lib/api/tags';
 import SelectedTags from './SelectedTags';
 import Overlay from '@/components/ui/Overlay';
 import TagsSuggestions from './TagsSuggestions';
@@ -16,9 +16,7 @@ import cn from 'classnames';
 import classes from './JobOffersFilters.module.scss';
 
 const TagsControls = () => {
-  const tagsQuery = useProtectedQuery(['tags'], getTags, {
-    refetchOnWindowFocus: false,
-  });
+  const tagsQuery = useProtectedQuery(['tags'], getTags);
   const dispatch = useAppDispatch();
   const selectedTags = useSelector(selectTags);
   const tagsSearch = useSelector(selectTagsSearch);
@@ -27,9 +25,7 @@ const TagsControls = () => {
     ? []
     : tagsQuery.data.filter(
         (item: Tag) =>
-          item.title
-            .toLowerCase()
-            .includes(debouncedTagsSearch.toLowerCase()) &&
+          item.name.toLowerCase().includes(debouncedTagsSearch.toLowerCase()) &&
           !selectedTags.some((tag: Tag) => tag.id === item.id)
       );
   const suggestionsAreShown = useBoolean(false);

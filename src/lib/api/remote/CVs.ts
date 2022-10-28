@@ -1,4 +1,4 @@
-import { baseURL, retrieveErrorMessage } from '.';
+import { backendApiBaseUrl, retrieveErrorMessage } from '..';
 
 export const postCv = async ({
   accessToken,
@@ -15,7 +15,7 @@ export const postCv = async ({
     }
   }
 
-  const response = await fetch(`${baseURL}/CV`, {
+  const response = await fetch(`${backendApiBaseUrl}/CV`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -32,7 +32,7 @@ export const postCv = async ({
 export const fetchCv =
   ({ accessToken, cvId }: { accessToken: string; cvId: string }) =>
   async () => {
-    const response = await fetch(`${baseURL}/CV/${cvId}`, {
+    const response = await fetch(`${backendApiBaseUrl}/CV/${cvId}`, {
       headers: {
         Accept: 'text/plain',
         'Content-Type': 'application/json-patch+json',
@@ -49,7 +49,7 @@ export const fetchCv =
 export const deleteCv =
   ({ accessToken, cvId }: { accessToken: string; cvId: string }) =>
   async () => {
-    const response = await fetch(`${baseURL}/CV/${cvId}`, {
+    const response = await fetch(`${backendApiBaseUrl}/CV/${cvId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${accessToken}`,

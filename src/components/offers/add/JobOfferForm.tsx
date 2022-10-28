@@ -1,4 +1,4 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import useToast from '@/hooks/useToast';
 import { useMutation } from '@tanstack/react-query';
 import useEditor from '@/hooks/useEditor';
@@ -7,11 +7,11 @@ import useImageUpload from '@/hooks/useImageUpload';
 import useDatepicker from '@/hooks/useDatepicker';
 import { createJobOffer } from '@/lib/api/remote/jobOffers';
 
-import JobType, { jobTypeOptions } from '@/models/enums/_JobType';
-import WorkFormat, { workFormatOptions } from '@/models/enums/WorkFormat';
+import JobType, { jobTypeOptions } from '@/lib/enums/_JobType';
+import WorkFormat, { workFormatOptions } from '@/lib/enums/WorkFormat';
 import ExperienceLevel, {
   experienceLevelOptions,
-} from '@/models/enums/ExperienceLevel';
+} from '@/lib/enums/ExperienceLevel';
 
 import LoadedImage from '@/components/ui/LoadedImage';
 import EditorsList from './EditorsList';
@@ -42,7 +42,7 @@ const JobOfferForm = () => {
   const responsibilitiesEditor = useEditor();
   const { startDate, endDate, dateFrameIsValid } = useDatepicker(maxDaysFrame);
 
-  const { accessToken } = useAuth();
+  const { data: session } = useSession();
   const submitMutation = useMutation(['job-offer-form'], createJobOffer, {
     onError: (error) => {
       let msg;
@@ -51,13 +51,10 @@ const JobOfferForm = () => {
       } else {
         msg = 'Не вдалося створити вакансію';
       }
-      toast.notify({ type: 'error', msg, current: true });
+      toast.error(msg, true);
     },
     onSuccess: () => {
-      toast.notify({
-        msg: `\u2713 Вакансію ${titleInput.value} створено`,
-        current: true,
-      });
+      toast.success(`\u2713 Вакансію ${titleInput.value} створено`, true);
       titleInput.reset();
       uploadedImage.reset();
       overviewEditor.reset();
@@ -128,7 +125,10 @@ const JobOfferForm = () => {
       preferences: 'none', // TODO: add preferences input and conversion
     };
 
-    submitMutation.mutate({ data: requestBody, accessToken });
+    submitMutation.mutate({
+      data: requestBody,
+      accessToken: session?.jwtToken as string,
+    });
   };
 
   return (

@@ -1,9 +1,9 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import { experienceLevelOptions } from '@/models/enums/ExperienceLevel';
+import { experienceLevelOptions } from '@/lib/enums/ExperienceLevel';
 import {
   selectExperienceLevel,
   setExperienceLevel,
-} from '@/store/job-offers-feed';
+} from '@/context/job-offers-feed';
 import { useSelector } from 'react-redux';
 
 const ExperienceLevelSelect = () => {

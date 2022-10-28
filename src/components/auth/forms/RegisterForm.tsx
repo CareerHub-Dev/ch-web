@@ -1,23 +1,17 @@
 import { FormEventHandler, useRef, useState } from 'react';
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import useInput from '@/hooks/useInput';
 import { getStudentEmailValidity, getPasswordValidity } from '@/lib/util';
 import AuthField from '../AuthField';
 import KeyIcon from '@/components/ui/icons/KeyIcon';
 import EnvelopeIcon from '@/components/ui/icons/EnvelopeIcon';
-import { CallbackFn } from '@/lib/callback/types';
-import RequestStatus from '@/models/enums/RequestStatus';
 import { useRouter } from 'next/router';
-import ToastContext from '@/lib/toasts/ToastContext';
-import ErrorToastStrategy from '@/lib/toasts/strategies/ErrorToastStrategy';
-import { sendLocalGatewayAuthRequest } from '@/lib/api/local/auth';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
 import classes from './forms.module.scss';
-import UserRole from '@/models/enums/UserRole';
 
 const RegisterForm = () => {
   const router = useRouter();
-  const auth = useAuth();
+  const session = useSession();
   const toastRef = useRef<any>(null);
   const [isProcessingRequest, setIsProcessingRequest] = useState(false);
   const emailInput = useInput(getStudentEmailValidity);
@@ -26,31 +20,30 @@ const RegisterForm = () => {
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const formIsValid = emailInput.isValid && passwordInput.isValid;
 
-  const requestCallback: CallbackFn = (response) => {
-    switch (response.status) {
-      case RequestStatus.ResponseRecieved:
-        setIsProcessingRequest(false);
-        break;
-      case RequestStatus.Error:
-        const toastContext = new ToastContext();
-        toastContext.setStrategy(new ErrorToastStrategy());
-        toastContext.notify(response.message, toastRef.current);
-        break;
-      case RequestStatus.Success:
-        const { sessionData, role } = response.data;
-        console.log(response.data);
-
-        auth.login(
-          sessionData.accessToken,
-          sessionData.authorityToken,
-          sessionData.accountId,
-          role,
-        );
-        router.push('/offers');
-        break;
-      default:
-        break;
-    }
+  const requestCallback = (response: any) => {
+    // switch (response.status) {
+    //   case RequestStatus.ResponseRecieved:
+    //     setIsProcessingRequest(false);
+    //     break;
+    //   case RequestStatus.Error:
+    //     const toastContext = new ToastContext();
+    //     toastContext.setStrategy(new ErrorToastStrategy());
+    //     toastContext.notify(response.message, toastRef.current);
+    //     break;
+    //   case RequestStatus.Success:
+    //     const { sessionData, role } = response.data;
+    //     console.log(response.data);
+    //     auth.login(
+    //       sessionData.accessToken,
+    //       sessionData.authorityToken,
+    //       sessionData.accountId,
+    //       role,
+    //     );
+    //     router.push('/offers');
+    //     break;
+    //   default:
+    //     break;
+    // }
   };
 
   const formSubmissionHandler: FormEventHandler<HTMLFormElement> = (event) => {
@@ -65,14 +58,14 @@ const RegisterForm = () => {
       }
       return;
     }
-    setIsProcessingRequest(true);
-    sendLocalGatewayAuthRequest(
-      emailInput.value,
-      passwordInput.value,
-      false,
-      UserRole.Student, // TODO: выпилить этот костыль
-      requestCallback,
-    );
+    // setIsProcessingRequest(true);
+    // sendLocalGatewayAuthRequest(
+    //   emailInput.value,
+    //   passwordInput.value,
+    //   false,
+    //   UserRole.Student, // TODO: выпилить этот костыль
+    //   requestCallback
+    // );
   };
 
   return (

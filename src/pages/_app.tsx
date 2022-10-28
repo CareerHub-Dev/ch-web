@@ -1,63 +1,55 @@
-import type { AppProps } from 'next/app';
-import store from '@/store/index';
-import dynamic from 'next/dynamic';
-import { ToastContainer } from 'react-toastify';
+import store from '@/context/index';
 import { Provider } from 'react-redux';
-import { AuthContextProvider } from '@/store/auth-context';
+import { SessionContextProvider } from '@/context/session-context';
 import { useState } from 'react';
 import {
   Hydrate,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import ToastContainer from '@/components/layout/ToastContainer';
+import Head from 'next/head';
 
 import 'react-image-crop/dist/ReactCrop.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/MarkdownEditor.scss';
 import '@/styles/globals.scss';
-import type { ReactElement, ReactNode } from 'react';
-import type { NextPage } from 'next';
-
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: ReactElement) => ReactNode;
-};
-
-type AppPropsWithLayout<P> = AppProps<P> & {
-  Component: NextPageWithLayout;
-};
-
-const CommonLayout = dynamic(() => import('@/components/layout/CommonLayout'), {
-  ssr: false,
-});
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+            retryDelay: (attemptIndex) =>
+              Math.min(1000 * 2 ** attemptIndex, 30000),
+          },
+        },
+      })
+  );
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return getLayout(
-    <AuthContextProvider>
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <Hydrate state={pageProps.dehydratedState}>
-            <CommonLayout>
-              <Component {...pageProps} />
-              <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                style={{ zIndex: 1000 }}
-              />
-            </CommonLayout>
-          </Hydrate>
-        </QueryClientProvider>
-      </Provider>
-    </AuthContextProvider>
+  return (
+    <>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        ></meta>
+      </Head>
+      <QueryClientProvider client={queryClient}>
+        <SessionContextProvider>
+          <Provider store={store}>
+            <Hydrate state={pageProps.dehydratedState}>
+              {getLayout(<Component {...pageProps} />)}
+              <ToastContainer />
+            </Hydrate>
+          </Provider>
+        </SessionContextProvider>
+      </QueryClientProvider>
+    </>
   );
 }
 

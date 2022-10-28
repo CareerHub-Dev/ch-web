@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
-import { selectEntireCVState } from '@/store/cv-constructor';
-import { cvTemplateLocalization } from '@/models/resources/localization';
-import { matchJobTypeToLocalizedString } from '@/models/enums/CVJobType';
+import { selectEntireCVState } from '@/context/cv-constructor';
+import { cvTemplateLocalization } from '@/resources/cv-localization';
+import { matchJobTypeToLocalizedString } from '@/lib/enums/CVJobType';
 import { getFormattedDate, notEmpty } from '@/lib/util';
 
 import PlainParagraph from './preview-elements/PlainParagraph';

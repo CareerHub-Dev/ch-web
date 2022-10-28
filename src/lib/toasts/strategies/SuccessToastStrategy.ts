@@ -9,6 +9,7 @@ class SuccessToastStrategy implements IToastStrategy {
         type: toast.TYPE.SUCCESS,
         autoClose: 5000,
         closeButton: null,
+        isLoading: false,
       });
     else
       toast.success(message, {

@@ -1,4 +1,4 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import { useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchCompanies } from '@/lib/api/remote/companies';
@@ -6,13 +6,14 @@ import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
 import FeedWrapper from '@/components/layout/FeedWrapper';
 import SearchPanel from '@/components/companies/feed/SearchPanel';
 import LoadMoreSection from '@/components/layout/LoadMoreSection';
-import UserRole from '@/models/enums/UserRole';
-import protectedServerSideProps from '@/lib/protected-server-side-props';
-import WithVerification from '@/components/HOC/WithVerification';
+import { protectedSsr } from '@/lib/protected-ssr';
+import CommonLayout from '@/components/layout/CommonLayout';
+
 const defaultPageSize = 50;
 
-const CompaniesFeedPage = () => {
-  const { accessToken } = useAuth();
+const CompaniesFeedPage: NextPageWithLayout = () => {
+  const { data: session } = useSession();
+  const accessToken = session?.jwtToken as string;
   const [searchTerm, setSearchTerm] = useState('');
   const companiesQuery = useInfiniteQuery(
     [
@@ -52,6 +53,11 @@ const CompaniesFeedPage = () => {
     </>
   );
 };
-export default WithVerification(CompaniesFeedPage);
 
-export const getServerSideProps = protectedServerSideProps([UserRole.Student]);
+CompaniesFeedPage.getLayout = CommonLayout;
+
+export default CompaniesFeedPage;
+
+export const getServerSideProps = protectedSsr({
+  allowedRoles: ['Student', 'Company'],
+});

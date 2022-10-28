@@ -1,4 +1,4 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   fetchJobOfferSubscriptionStatus,
@@ -10,16 +10,17 @@ import LinkButton from '@/components/ui/LinkButton';
 import classes from './GeneralInfo.module.scss';
 
 const SubscriptionButton = ({ jobOfferId }: { jobOfferId: string }) => {
-  const { accessToken } = useAuth();
+  const { data: session } = useSession();
+  const token = session?.jwtToken as string;
   const queryClient = useQueryClient();
   const subscriptionStatusQuery = useQuery(
     ['jobOffer', jobOfferId, 'subscriptions', 'self'],
     fetchJobOfferSubscriptionStatus({
-      token: accessToken as string,
+      token,
       jobOfferId,
     }),
     {
-      enabled: !!accessToken,
+      enabled: !!token,
     }
   );
   const isFollowed = subscriptionStatusQuery.data;
@@ -27,7 +28,7 @@ const SubscriptionButton = ({ jobOfferId }: { jobOfferId: string }) => {
   const subscriptionMutation = useMutation(
     ['jobOffer', jobOfferId, 'subscribe'],
     changeSubscriptionStatus({
-      accessToken: accessToken,
+      accessToken: token,
       jobOfferId,
       currentSubscriptionStatus: isFollowed,
     }),

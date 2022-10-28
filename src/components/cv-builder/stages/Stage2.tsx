@@ -2,11 +2,11 @@ import {
   selectIsAssistEnabled,
   selectPhoto,
   setPhoto,
-} from '@/store/cv-constructor';
+} from '@/context/cv-constructor';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import { useSelector } from 'react-redux';
-import { loadPhoto } from '@/store/cv-constructor-actions';
-import store from '@/store';
+import { loadPhoto } from '@/context/cv-constructor-actions';
+import store from '@/context';
 import FormImageUpload from '@/components/ui/form/FormImageUpload';
 import Card from '@/components/ui/Card';
 import AssistantTip from './AssistantTip';

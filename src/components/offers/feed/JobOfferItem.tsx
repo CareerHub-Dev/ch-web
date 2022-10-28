@@ -1,5 +1,5 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import { addTag } from '@/store/job-offers-feed';
+import { addTag } from '@/context/job-offers-feed';
 import { getReadableDateFromString } from '@/lib/util';
 import Image from 'next/image';
 import LinkButton from '@/components/ui/LinkButton';

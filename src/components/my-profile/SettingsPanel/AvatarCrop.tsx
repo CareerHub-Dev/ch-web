@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState, useRef } from 'react';
 import ReactCrop, {
   centerCrop,
@@ -15,7 +16,7 @@ function centerAspectCrop(
     makeAspectCrop(
       {
         unit: '%',
-        width: 90,
+        width: 100,
       },
       aspect,
       mediaWidth,
@@ -37,7 +38,10 @@ const AvatarCrop = ({ src }: { src: string }) => {
     width: 50,
     height: 50,
   });
-  const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
+  const [_completedCrop, setCompletedCrop] = useState<PixelCrop>({
+    ...crop,
+    unit: 'px',
+  });
 
   const onImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const { width, height } = e.currentTarget;

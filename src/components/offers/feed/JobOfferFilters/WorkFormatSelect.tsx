@@ -1,7 +1,7 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
 import { useSelector } from 'react-redux';
-import { workFormatOptions } from '@/models/enums/WorkFormat';
-import { selectWorkFormat, setWorkFormat } from '@/store/job-offers-feed';
+import { workFormatOptions } from '@/lib/enums/WorkFormat';
+import { selectWorkFormat, setWorkFormat } from '@/context/job-offers-feed';
 
 const WorkFormatSelect = () => {
   const dispatch = useAppDispatch();

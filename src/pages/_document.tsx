@@ -3,7 +3,7 @@ import Document, {
   Head,
   Main,
   NextScript,
-  DocumentContext,
+  type DocumentContext,
 } from 'next/document';
 
 class MyDocument extends Document {
@@ -15,16 +15,10 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head>
-          <link
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"
-          />
-        </Head>
+        <Head></Head>
         <body>
-          <Main />
-          <div id="appBackground" />
           <div id="modal" />
+          <Main />
           <NextScript />
         </body>
       </Html>

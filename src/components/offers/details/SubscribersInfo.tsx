@@ -1,11 +1,12 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import { useQuery } from '@tanstack/react-query';
 import { fetchJobOfferSubscribedStudentsAmount } from '@/lib/api/remote/jobOffers';
 import InfoItem from './InfoItem';
 import PeopleIcon from '@/components/ui/icons/PeopleIcon';
 
 const SubscribersInfo: React.FC<{ jobOfferId: string }> = ({ jobOfferId }) => {
-  const { accessToken } = useAuth();
+  const { data: session } = useSession();
+  const accessToken = session?.jwtToken as string;
   const { data, isLoading } = useQuery(
     ['jobOffer', jobOfferId, 'subscriptions', 'amount'],
     fetchJobOfferSubscribedStudentsAmount({

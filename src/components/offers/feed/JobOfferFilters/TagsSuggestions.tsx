@@ -1,5 +1,5 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import { addTag } from '@/store/job-offers-feed';
+import { addTag } from '@/context/job-offers-feed';
 import cn from 'classnames';
 import classes from './TagsSuggestions.module.scss';
 
@@ -26,7 +26,7 @@ const TagsSuggestions = ({
       {items.length > 0 ? (
         items.map((item, index) => (
           <li key={index} className={classes.tag} onClick={clickHandler(item)}>
-            {item.title}
+            {item.name}
           </li>
         ))
       ) : (

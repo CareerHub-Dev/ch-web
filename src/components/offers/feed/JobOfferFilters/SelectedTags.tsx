@@ -1,7 +1,7 @@
 import { MouseEventHandler } from 'react';
 import { useSelector } from 'react-redux';
 import useAppDispatch from '@/hooks/useAppDispatch';
-import { removeTag, selectTags } from '@/store/job-offers-feed';
+import { removeTag, selectTags } from '@/context/job-offers-feed';
 import RemoveIconAlt from '@/components/ui/icons/RemoveIconAlt';
 
 import classes from './SelectedTags.module.scss';
@@ -24,7 +24,7 @@ const SelectedTags = () => {
         {tags.map((tag) => (
           <li key={tag.id}>
             <span>
-              <div className={classes['tag-title']}>{tag.title}</div>
+              <div className={classes['tag-title']}>{tag.name}</div>
               <div
                 role="button"
                 className={classes['tag-remove']}

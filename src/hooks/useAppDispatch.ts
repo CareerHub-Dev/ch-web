@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/store';
+import { AppDispatch } from '@/context';
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 

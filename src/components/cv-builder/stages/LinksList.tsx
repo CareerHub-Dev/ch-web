@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { selectLinks } from '@/store/cv-constructor';
+import { selectLinks } from '@/context/cv-constructor';
 import LinkItem from './LinkItem';
 import FormErrorMessage from '@/components/ui/form/FormErrorMessage';
 

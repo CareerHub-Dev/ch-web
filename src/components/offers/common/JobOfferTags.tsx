@@ -11,19 +11,22 @@ const JobOfferTags = ({
   onClick?: (tag: Tag) => void;
 }) => {
   const tagClasses = cn(classes[variant], !!onClick && classes.clickable);
-  const clickHandler = (tag: Tag) => (event: any) => {
-    event.preventDefault();
+  const clickHandler = (tag: Tag) => () => {
+    console.log(tag);
+    console.log(typeof tag);
+
     if (onClick) {
       onClick(tag);
     }
   };
+
   return (
     <span className={classes.wrapper}>
       <ul className={classes.tags}>
         {tags.map((tag) => (
           <li key={tag.id}>
             <span className={tagClasses} onClick={clickHandler(tag)}>
-              {tag.title}
+              {tag.name}
             </span>
           </li>
         ))}

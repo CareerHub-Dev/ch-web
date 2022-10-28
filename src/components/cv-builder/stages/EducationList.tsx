@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { selectEducation } from '../../../store/cv-constructor';
+import { selectEducation } from '../../../context/cv-constructor';
 import EducationItem from './EducationItem';
 import FormErrorMessage from '@/components/ui/form/FormErrorMessage';
 

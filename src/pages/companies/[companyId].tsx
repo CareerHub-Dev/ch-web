@@ -1,33 +1,33 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import useShallowRoutes from '@/hooks/useShallowRoutes';
-import { GetServerSidePropsContext } from 'next';
 import { useQuery } from '@tanstack/react-query';
 import { fetchCompanyDetails } from '@/lib/api/remote/companies';
 import { useRouter } from 'next/router';
 import CompanyHeader from '@/components/companies/details/CompanyHeader';
 import CompanyBody from '@/components/companies/details/CompanyBody';
-import UserRole from '@/models/enums/UserRole';
-import protecedServerSideProps from '@/lib/protected-server-side-props';
+import { protectedSsr } from '@/lib/protected-ssr';
 
 const CompanyDetailsPage = () => {
   const router = useRouter();
   const companyId = router.query.companyId as string;
-  const { accessToken } = useAuth();
+  const { data: session } = useSession();
+  const token = session?.jwtToken as string;
+
   const companyQuery = useQuery(
     ['company', companyId],
     fetchCompanyDetails({
-      token: accessToken as string,
+      token,
       companyId,
     }),
     {
-      enabled: accessToken !== null,
+      enabled: token !== null,
       onError: (err: any) =>
         alert(err.message || 'Помилка при завантаженні компанії'),
     }
   );
   const { currentSection, changeSection } = useShallowRoutes({
-    url: `/companies/${companyId}`,
     defaultSection: 'about',
+    sections: ['about'],
   });
 
   if (companyQuery.isLoading) {
@@ -44,7 +44,6 @@ const CompanyDetailsPage = () => {
     companyLogo,
     companyBanner,
   } = companyQuery.data;
-  console.log(companyMotto);
 
   return (
     <>
@@ -66,4 +65,6 @@ const CompanyDetailsPage = () => {
 };
 export default CompanyDetailsPage;
 
-export const getServerSideProps = protecedServerSideProps([UserRole.Student]);
+export const getServerSideProps = protectedSsr({
+  allowedRoles: ['Student', 'Company'],
+});

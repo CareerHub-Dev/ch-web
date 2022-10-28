@@ -1,33 +1,30 @@
-import useAuth from './useAuth';
+import useSession from './useSession';
 import {
   useQuery,
-  type QueryFunction,
   type UseQueryOptions,
-  type UseQueryResult,
   type QueryKey,
 } from '@tanstack/react-query';
+import { type AxiosInstance } from 'axios';
 
 export default function useProtectedQuery<
+  TQueryKey extends QueryKey = QueryKey,
   TQueryFnData = unknown,
   TError = unknown,
-  TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey
+  TData = TQueryFnData
 >(
   queryKey: TQueryKey,
-  queryFnCreator: (
-    accessToken: string | null
-  ) => QueryFunction<TQueryFnData, TQueryKey>,
-  options: Omit<
+  queryFn: (instance: AxiosInstance) => Promise<TQueryFnData>,
+  options?: Omit<
     UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     'queryFn' | 'queryKey'
   >
-): UseQueryResult<TData, TError> {
-  const { accessToken } = useAuth();
-  const q = useQuery({
+) {
+  const { axios, status } = useSession();
+
+  return useQuery<TQueryFnData, TError, TData, TQueryKey>({
     queryKey,
-    enabled: !!accessToken,
+    enabled: status === 'authenticated',
     ...options,
-    queryFn: queryFnCreator(accessToken),
+    queryFn: () => queryFn(axios),
   });
-  return q;
 }

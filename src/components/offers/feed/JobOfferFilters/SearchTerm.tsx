@@ -1,5 +1,5 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import { selectSearchTerm, setSearchTerm } from '@/store/job-offers-feed';
+import { selectSearchTerm, setSearchTerm } from '@/context/job-offers-feed';
 import { useSelector } from 'react-redux';
 
 const SearchTerm = () => {

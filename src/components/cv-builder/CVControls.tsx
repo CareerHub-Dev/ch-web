@@ -6,7 +6,7 @@ import {
   selectStageErrors,
   enforceStageValidation,
   setSaveModalIsOpen,
-} from '@/store/cv-constructor';
+} from '@/context/cv-constructor';
 import ProgressBar from './ProgressBar';
 import StageDisplay from './StageDisplay';
 import Card from '@/components/ui/Card';

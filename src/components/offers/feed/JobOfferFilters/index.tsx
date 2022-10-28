@@ -4,7 +4,7 @@ import {
   reset,
   selectFilterApplied,
   setFilterApplied,
-} from '@/store/job-offers-feed';
+} from '@/context/job-offers-feed';
 import { useSelector } from 'react-redux';
 import ExperienceLevelSelect from './ExperienceLevelSelect';
 import JobTypeSelect from './JobTypeSelect';

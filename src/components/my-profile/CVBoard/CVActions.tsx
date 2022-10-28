@@ -1,4 +1,4 @@
-import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 import { useMutation } from '@tanstack/react-query';
 import { deleteCv } from '@/lib/api/remote/CVs';
 import ModalWithBackdrop from '@/components/ui/Modal/ModalWithBackdrop';
@@ -11,11 +11,12 @@ const CVActions: React.FC<{
   cvId: string;
   onClose: AnyFn;
 }> = ({ title, cvId, onClose }) => {
-  const { accessToken } = useAuth();
+  const { data: session } = useSession();
+  const accessToken = session?.jwtToken as string;
   const deleteMutation = useMutation(
     ['deleteCv', cvId],
     deleteCv({
-      accessToken: accessToken as string,
+      accessToken,
       cvId,
     }),
     {

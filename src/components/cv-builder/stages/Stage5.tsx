@@ -2,12 +2,12 @@ import {
   selectIsAssistEnabled,
   selectLanguages,
   addLanguage,
-} from '@/store/cv-constructor';
+} from '@/context/cv-constructor';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import useInput from '@/hooks/useInput';
-import { ProficiencyLevel } from '@/models/CV/Language';
+import { ProficiencyLevel } from '@/lib/cv/Language';
 import AssistantTip from './AssistantTip';
 import AddItemButton from './AddItemButton';
 import AddLanguageForm from './AddLanguageForm';

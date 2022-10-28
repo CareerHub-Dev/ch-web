@@ -1,16 +1,19 @@
-import MainNavigation from './MainNavigation';
+import type { ReactNode } from 'react';
+import HorizontalNavbar from './HorizontalNavbar';
+import Footer from './Footer';
 import Background from './Background';
-import { type ReactNode } from 'react';
-import classes from './CommonLayout.module.scss';
 
-const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
+export default function CommonLayout(page: ReactNode) {
   return (
     <>
+      <main className="flex flex-col h-screen">
+        <div className="grow">
+          <HorizontalNavbar />
+          {page}
+        </div>
+        <Footer />
+      </main>
       <Background />
-      <MainNavigation />
-      <main className={classes.main}>{children}</main>
     </>
   );
-};
-
-export default Layout;
+}
