@@ -20,7 +20,7 @@ const JobOffersList: React.FC<{
         <div className="g__center">
           <p>{`Помилка: ${error}`}</p>
         </div>
-      ) : data.pages[0].data.length ? (
+      ) : data.pages[0]?.data.length ? (
         <div className="g__center">
           <p>{`Нічого не знайдено`}</p>
         </div>

@@ -18,12 +18,12 @@ const Button: React.FC<{
   type,
   customClasses,
 }) => {
-  const buttonClasses = customClasses ? customClasses : classes[className];
+  const buttonClasses = !!customClasses ? customClasses : classes[className];
 
   return (
     <button
       id={id}
-      className={cn(buttonClasses, classes[buttonClasses])}
+      className={cn(buttonClasses, classes[buttonClasses!])}
       onClick={onClick}
       disabled={disabled}
       type={type || 'button'}

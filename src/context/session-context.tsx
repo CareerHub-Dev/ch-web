@@ -43,7 +43,7 @@ const SessionContext = createContext<SessionContextData>({
 export default SessionContext;
 
 const sessionStateReducer = (
-  state: SessionContextState,
+  _state: SessionContextState,
   action: SessionContextAction
 ): SessionContextState => {
   if (action.type === 'UPDATE') {

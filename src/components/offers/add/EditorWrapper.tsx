@@ -4,7 +4,6 @@ import { UseEditorResult } from '@/hooks/useEditor';
 import classes from './EditorWrapper.module.scss';
 
 const EditorWrapper = ({
-  id,
   label,
   editor,
   validationMessage,

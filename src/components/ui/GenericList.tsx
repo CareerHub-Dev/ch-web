@@ -1,4 +1,4 @@
-import { type ReactNode, Fragment } from 'react';
+import { Fragment } from 'react';
 
 type Props<T> = {
   renderItem: (item: T, ...args: any) => JSX.Element;

@@ -1,12 +1,3 @@
-import useProtectedQuery from '@/hooks/useProtectedQuery';
-import { useState } from 'react';
-import { getStudentCvs } from '@/lib/api/student';
-import LinkButton from '@/components/ui/LinkButton';
-import CVItem from './CVItem';
-import CVActions from './CVActions';
-
-import classes from './CVBoard.module.scss';
-
 const CVBoard = () => {
   // const accountId = session?.accountId as string;
   // const [actionModalIsOpen, setActionModalIsOpen] = useState(false);

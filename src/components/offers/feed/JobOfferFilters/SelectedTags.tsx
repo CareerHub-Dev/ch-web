@@ -1,4 +1,3 @@
-import { MouseEventHandler } from 'react';
 import { useSelector } from 'react-redux';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import { removeTag, selectTags } from '@/context/job-offers-feed';

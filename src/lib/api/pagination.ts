@@ -10,7 +10,11 @@ export const parsePaginatedResponse =
   <T>(dataSchema: ZodSchema<T>) =>
   (response: AxiosResponse) => {
     const { data, headers } = response;
-    const parsedHeader = JSON.parse(headers['x-pagination']);
+    const unparsedPaginationHeaders = headers['x-pagination'];
+    if (!unparsedPaginationHeaders) {
+      throw new Error('No pagination headers found');
+    }
+    const parsedHeader = JSON.parse(unparsedPaginationHeaders);
     const pagination = XPaginationHeaderSchema.parse(parsedHeader);
     const parsedData = dataSchema.parse(data);
     return {
@@ -23,7 +27,11 @@ export const parsePaginatedResponseAsync =
   <T>(dataSchema: ZodSchema<T>) =>
   async (response: AxiosResponse) => {
     const { data, headers } = response;
-    const parsedHeader = JSON.parse(headers['x-pagination']);
+    const unparsedPaginationHeaders = headers['x-pagination'];
+    if (!unparsedPaginationHeaders) {
+      throw new Error('No pagination headers found');
+    }
+    const parsedHeader = JSON.parse(unparsedPaginationHeaders);
     const pagination = XPaginationHeaderSchema.parse(parsedHeader);
     const parsedData = await dataSchema.parseAsync(data);
     return {

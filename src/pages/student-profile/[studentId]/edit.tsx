@@ -84,7 +84,7 @@ export const getServerSideProps = protectedSsr<{ student: Student }>({
   allowedRoles: ['Student'],
   getProps: async (context) => {
     const studentId = context.query.studentId as string;
-    const { accountId, refreshToken } = context.session;
+    const { accountId } = context.session;
     if (studentId !== accountId) {
       return {
         redirect: {

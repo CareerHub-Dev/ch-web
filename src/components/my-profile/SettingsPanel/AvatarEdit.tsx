@@ -1,8 +1,6 @@
 import Hr from '@/components/ui/Hr';
 import Card from '@/components/ui/Card';
-import useImageUpload, {
-  type UseImageUploadResult,
-} from '@/hooks/useImageUpload/v2';
+import useImageUpload from '@/hooks/useImageUpload/v2';
 import FormImageUpload from '@/components/ui/form/v2/FormImageUpload';
 import AvatarCrop from './AvatarCrop';
 
