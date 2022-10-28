@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 
 const EditPageHeader = ({
@@ -7,7 +7,7 @@ const EditPageHeader = ({
   firstName,
   lastName,
 }: {
-  avatarData: string;
+  avatarData: string | StaticImageData;
   firstName: string;
   lastName: string;
   groupName: string;
