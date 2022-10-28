@@ -2,6 +2,7 @@ import NoCompanySubscriptions from './NoCompanySubscriptions';
 import SubscriptionCompanyItem from './SubscriptionCompanyItem';
 import StudentSubscriptionsList from './StudentSubscriptionsList';
 import { getStudentCompanySubscriptions } from '@/lib/api/student';
+import { unsubscribeStudentFromCompany } from '@/lib/api/company';
 
 const StudentSubscriptionsCompanies = (props: {
   accountId: string;
@@ -21,13 +22,7 @@ const StudentSubscriptionsCompanies = (props: {
       item={SubscriptionCompanyItem}
       noItems={NoCompanySubscriptions}
       getItems={getStudentCompanySubscriptions}
-      mutateItem={() => (id: string) => {
-        return new Promise<void>((resolve, reject) => {
-          setTimeout(() => {
-            resolve();
-          }, 3000);
-        });
-      }}
+      mutateItem={unsubscribeStudentFromCompany}
       extractItemName={(item) => item.name}
     />
   );

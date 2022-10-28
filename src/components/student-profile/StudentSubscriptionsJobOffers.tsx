@@ -1,6 +1,7 @@
 import NoJobOfferSubscriptions from './NoJobOfferSubscriptions';
 import StudentSubscriptionsList from './StudentSubscriptionsList';
 import { getStudentJobOfferSubscriptions } from '@/lib/api/student';
+import { unsubscribeStudentFromJobOffer } from '@/lib/api/job-offer';
 import SubscriptionJobOfferItem from './SubscriptionJobOfferItem';
 
 const StudentSubscriptionsJobOffers = (props: {
@@ -21,13 +22,7 @@ const StudentSubscriptionsJobOffers = (props: {
       item={SubscriptionJobOfferItem}
       noItems={NoJobOfferSubscriptions}
       getItems={getStudentJobOfferSubscriptions}
-      mutateItem={() => (id: string) => {
-        return new Promise<void>((resolve, reject) => {
-          setTimeout(() => {
-            resolve();
-          }, 3000);
-        });
-      }}
+      mutateItem={unsubscribeStudentFromJobOffer}
       extractItemName={(item) => item.id}
     />
   );
