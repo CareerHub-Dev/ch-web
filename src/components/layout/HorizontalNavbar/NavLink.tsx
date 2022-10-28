@@ -14,8 +14,8 @@ const NavLink = ({
     <Link href={href} passHref>
       <a
         className={cn(
-          'text-primaryGrayDarker hover:text-primaryBlack transition-all ease duration-200',
-          active && 'text-lightBlueAccent hover:text-lightBlueAccent font-semibold'
+          'hover:text-primaryBlack transition-all ease duration-200',
+          active && 'text-lightBlueAccent hover:text-lightBlueAccent'
         )}
       >
         {text}
