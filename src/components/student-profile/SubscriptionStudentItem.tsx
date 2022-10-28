@@ -2,6 +2,7 @@ import { type StudentSubscription } from '@/lib/api/student/schemas';
 import { getImage } from '@/lib/api/image';
 import Image from 'next/image';
 import Link from 'next/link';
+import defaultCompanyLogo from '@/resources/images/company-dummy-logo.png';
 
 const SubscriptionStudentItem = ({
   item,
@@ -13,7 +14,7 @@ const SubscriptionStudentItem = ({
   const studentFullName = `${item.firstName} ${item.lastName}`;
   const studentAvatarSource = item.photo
     ? getImage(item.photo)
-    : '/company-dummy-logo.png';
+    : defaultCompanyLogo;
 
   return (
     <div className="p-4 rounded-xl border border-x-primaryGray w-full flex gap-4 bg-lightGray">

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { CompanySubscription } from '@/lib/api/student/schemas';
 import { getImage } from '@/lib/api/image';
+import defaultCompanyLogo from '@/resources/images/company-dummy-logo.png';
 
 const SubscriptionCompanyItem = ({
   item,
@@ -10,9 +11,7 @@ const SubscriptionCompanyItem = ({
   item: CompanySubscription;
   onSelect?: () => void;
 }) => {
-  const imageSource = item.photo
-    ? getImage(item.photo)
-    : '/company-dummy-logo.png';
+  const imageSource = item.photo ? getImage(item.photo) : defaultCompanyLogo;
 
   return (
     <div className="p-4 rounded-xl border border-x-primaryGray w-full flex gap-4 bg-lightGray">

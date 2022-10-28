@@ -1,11 +1,12 @@
 import { useBoolean } from 'usehooks-ts';
 import Image from 'next/image';
 import { getImage } from '@/lib/api/image';
+import defaultAvatar from '@/resources/images/default-avatar.png';
 
 import cn from 'classnames';
 
 const StudentAvatar = ({ photoId }: { photoId: string | null }) => {
-  const imageSource = photoId ? getImage(photoId) : '/default-avatar.png';
+  const imageSource = photoId ? getImage(photoId) : defaultAvatar;
   const imageMightBeLoading = useBoolean(true);
 
   return (

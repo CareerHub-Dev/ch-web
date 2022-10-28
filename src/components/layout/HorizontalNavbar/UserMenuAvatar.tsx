@@ -2,6 +2,7 @@ import useSelfStudentQuery from '@/hooks/useStudentSelfQuery';
 import { getImage } from '@/lib/api/image';
 import { useBoolean } from 'usehooks-ts';
 import Image from 'next/image';
+import defaultAvatar from '@/resources/images/default-avatar.png';
 import cn from 'classnames';
 
 const UserMenuAvatar = () => {
@@ -10,7 +11,7 @@ const UserMenuAvatar = () => {
   const imageMightBeLoading = useBoolean(true);
   const imageSource = studentData?.photo
     ? getImage(studentData.photo)
-    : '/default-avatar.png';
+    : defaultAvatar;
 
   return (
     <span
