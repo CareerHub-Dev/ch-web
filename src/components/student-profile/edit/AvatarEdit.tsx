@@ -7,14 +7,14 @@ import { useBoolean } from 'usehooks-ts';
 import { useState, useCallback, type ChangeEvent } from 'react';
 import parseUnknownError from '@/lib/parse-unknown-error';
 import Overlay from '@/components/ui/Overlay';
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import PencilIcon from '@/components/ui/icons/PencilIcon';
 import AvatarCrop from './AvatarCrop';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
 
 import cn from 'classnames';
 
-const AvatarEdit = ({ initialData }: { initialData: string }) => {
+const AvatarEdit = ({ initialData }: { initialData: string | StaticImageData }) => {
   const toast = useToast();
   const queryClient = useQueryClient();
   const avatarUpload = useImageUpload({ initialData });
