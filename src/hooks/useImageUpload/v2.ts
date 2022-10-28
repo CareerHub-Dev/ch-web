@@ -1,15 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useBoolean } from 'usehooks-ts';
 import { isImageTypeValid } from '@/lib/images';
+import { type StaticImageData } from 'next/image';
 
 export default function useImageUpload({
   initialData,
 }: {
-  initialData: string;
+  initialData: string | StaticImageData;
 }) {
-  const [source, setSource] = useState<File | string>(initialData);
+  const [source, setSource] = useState<File | string | StaticImageData>(
+    initialData
+  );
   const [fileExtension, setFileExtension] = useState<string>('');
-  const [url, setUrl] = useState(initialData);
+  const [url, setUrl] = useState(() => {
+    if (typeof source === 'string') {
+      return source;
+    }
+    if ('src' in source) {
+      return source.src;
+    }
+    return '';
+  });
   const isTouched = useBoolean(false);
 
   const change = (image: File) => {
@@ -24,7 +35,11 @@ export default function useImageUpload({
 
   const reset = () => {
     setSource(initialData);
-    setUrl(initialData);
+    if (typeof initialData === 'string') {
+      setUrl(initialData);
+    } else if ('src' in initialData) {
+      setUrl(initialData.src);
+    }
     isTouched.setFalse();
   };
 

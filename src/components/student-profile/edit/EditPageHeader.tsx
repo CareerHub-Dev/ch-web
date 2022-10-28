@@ -1,4 +1,4 @@
-import Image from 'next/future/image';
+import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 
 const EditPageHeader = ({
@@ -7,7 +7,7 @@ const EditPageHeader = ({
   firstName,
   lastName,
 }: {
-  avatarData: string;
+  avatarData: string | StaticImageData;
   firstName: string;
   lastName: string;
   groupName: string;
@@ -26,10 +26,11 @@ const EditPageHeader = ({
         </span>
 
         <div className="flex-auto">
-          <Link href="/my-profile" passHref>
-            <h2 className="text-xl font-bold hover:underline cursor-pointer">
-              <a>{`${firstName} ${lastName}`}</a>
-            </h2>
+          <Link
+            href="/my-profile"
+            className="text-xl font-bold hover:underline cursor-pointer"
+          >
+            {`${firstName} ${lastName}`}
           </Link>
           <p className="text-sm text-darkGray">{groupName}</p>
         </div>

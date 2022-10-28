@@ -114,10 +114,11 @@ const StudentProfilePage: NextPageWithLayout<
             <div>
               <StudentAvatar photoId={student.photo} />
               {isSelf && (
-                <Link href={`/my-profile/edit`}>
-                  <a className="p-2 mt-4 text-sm block tracking-wider w-full text-center btn-primary">
-                    {'Редагувати'}
-                  </a>
+                <Link
+                  href="/my-profile/edit"
+                  className="p-2 mt-4 text-sm block tracking-wider w-full text-center btn-primary"
+                >
+                  Редагувати
                 </Link>
               )}
             </div>
@@ -200,7 +201,7 @@ export const getServerSideProps = protectedSsr<{
     try {
       const student = await getStudent(studentId)(
         createAxiosInstance({
-          data: context.session
+          data: context.session,
         })
       );
       return {

@@ -1,7 +1,8 @@
 import { type StudentSubscription } from '@/lib/api/student/schemas';
 import { getImage } from '@/lib/api/image';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import Link from 'next/link';
+import defaultCompanyLogo from '@/resources/images/company-dummy-logo.png';
 
 const SubscriptionStudentItem = ({
   item,
@@ -13,7 +14,7 @@ const SubscriptionStudentItem = ({
   const studentFullName = `${item.firstName} ${item.lastName}`;
   const studentAvatarSource = item.photo
     ? getImage(item.photo)
-    : '/company-dummy-logo.png';
+    : defaultCompanyLogo;
 
   return (
     <div className="p-4 rounded-xl border border-x-primaryGray w-full flex gap-4 bg-lightGray">
@@ -26,10 +27,11 @@ const SubscriptionStudentItem = ({
       />
       <div className="flex-auto">
         <div className="flex items-center justify-between flex-wrap">
-          <Link href={`/student-profile/${item.id}`} passHref>
-            <a className="cursor-pointer hover:text-primaryBlue hover:underline md:text-lg">
-              {studentFullName}
-            </a>
+          <Link
+            href={`/student-profile/${item.id}`}
+            className="cursor-pointer hover:text-primaryBlue hover:underline md:text-lg"
+          >
+            {studentFullName}
           </Link>
           {onSelect && (
             <button

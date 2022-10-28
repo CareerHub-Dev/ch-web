@@ -9,8 +9,8 @@ const CompanyLink: React.FC<{ companyId: string; companyName: string }> = ({
   return (
     <div className={classes.link}>
       <MailAtIcon />
-      <Link href={`companies/${companyId}`} passHref>
-        <address>{companyName}</address>
+      <Link href={`companies/${companyId}`}>
+        {companyName}
       </Link>
     </div>
   );

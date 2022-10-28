@@ -85,8 +85,11 @@ const ChangePassword = () => {
         >
           Оновити пароль
         </button>
-        <Link href="/auth/login" passHref>
-          <a className="block text-center btn-primary p-2 w-40">{`Я забув пароль`}</a>
+        <Link
+          href="/auth/login"
+          className="block text-center btn-primary p-2 w-40"
+        >
+          Я забув пароль
         </Link>
       </div>
     </>

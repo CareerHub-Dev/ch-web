@@ -13,6 +13,7 @@ import EditPageHeader from '@/components/student-profile/edit/EditPageHeader';
 import ChangePassword from '@/components/student-profile/edit/ChangePassword';
 import { getImage } from '@/lib/api/image';
 import createAxiosInstance from '@/lib/axios/create-instance';
+import defaultAvatar from '@/resources/images/default-avatar.png';
 
 const navigationItems = [
   {
@@ -43,11 +44,13 @@ const EditStudentPage: NextPageWithLayout<
   });
   const currentAvatar = syncData?.photo
     ? getImage(syncData.photo)
-    : '/default-avatar.png';
+    : defaultAvatar;
 
   return (
-    <div className="mx-8 lg:mx-auto max-w-full lg:max-w-[978px] bg-white px-4 rounded-md shadow-md
-      transition-all ease-in-out duration-200">
+    <div
+      className="mx-8 lg:mx-auto max-w-full lg:max-w-[978px] bg-white px-4 rounded-md shadow-md
+      transition-all ease-in-out duration-200"
+    >
       <div className="grid grid-cols-[auto_1fr] gap-8">
         <EditPageHeader
           avatarData={currentAvatar}

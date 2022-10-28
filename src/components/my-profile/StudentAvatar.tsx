@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import defaultAvatar from '@/resources/images/default-avatar.png';
 import classes from './StudentAvatar.module.scss';
 
 const StudentAvatar: React.FC<{
@@ -9,7 +10,7 @@ const StudentAvatar: React.FC<{
   return (
     <div className={classes.avatar}>
       <Image
-        src={photoIsSet ? photoId : '/default-avatar.png'}
+        src={photoIsSet ? photoId : defaultAvatar}
         alt="user-profile"
         width={300}
         height={300}
