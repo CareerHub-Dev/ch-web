@@ -1,8 +1,9 @@
 import { ZodSchema } from 'zod';
-import { type AxiosResponse } from 'axios';
 import XPaginationHeaderSchema, {
   type XPaginationHeader,
 } from '../schemas/XPaginationHeader';
+
+import { type AxiosResponse } from 'axios';
 
 export type PaginatedResponse<T> = { data: T; pagination: XPaginationHeader };
 

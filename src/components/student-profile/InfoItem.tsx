@@ -1,9 +1,12 @@
 import classes from './InfoItem.module.scss';
 
-const InfoItem: React.FC<{
+const InfoItem = ({
+  text,
+  icon,
+}: {
   text: string;
   icon: () => JSX.Element;
-}> = ({ text, icon }) => {
+}) => {
   return (
     <div className={classes.item}>
       {icon()}

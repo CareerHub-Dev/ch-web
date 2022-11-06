@@ -1,6 +1,5 @@
 import { getImage } from '@/lib/api/image';
 import Image from 'next/image';
-import classes from './CompanyLogo.module.scss';
 
 const CompanyLogo: React.FC<{
   imageId?: string | null;
@@ -10,10 +9,10 @@ const CompanyLogo: React.FC<{
 
   return (
     <Image
-      className={classes.logo}
+      className="aspect-square rounded-xl overflow-hidden w-20 lg:w-32"
       src={imageSrc}
-      width={400}
-      height={400}
+      width={200}
+      height={200}
       alt={companyName}
     />
   );

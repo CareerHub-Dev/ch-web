@@ -22,7 +22,12 @@ const Footer = ({ className }: { className?: string }) => {
             />
           </li>
           <li>
-            <a href="https://t.me/career_nure" target="_blank" rel="noreferrer">
+            <a
+              href="https://t.me/career_nure"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Career Nure Telegram"
+            >
               <TelegramIcon className="h-6 w-6 cursor-pointer text-darkerBlue hover:bg-lightBlue rounded-full" />
             </a>
           </li>
@@ -31,6 +36,7 @@ const Footer = ({ className }: { className?: string }) => {
               href="https://www.facebook.com/groups/career.nure/about"
               target="_blank"
               rel="noreferrer"
+              aria-label="Career Nure Facebook"
             >
               <FacebookIcon className="h-6 w-6 cursor-pointer text-darkerBlue hover:bg-lightBlue rounded-full" />
             </a>

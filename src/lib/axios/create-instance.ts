@@ -22,7 +22,7 @@ export default function createAxiosInstance({
   if (data) {
     const refresh =
       refreshToken ??
-      (async () => await LocalGateway.refreshToken(data.refreshToken));
+      (async () => LocalGateway.refreshToken(data.refreshToken));
 
     setupJwtInterceptor({ instance, jwt: data.jwtToken });
     setupRefreshTokenInterceptor({

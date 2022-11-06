@@ -1,56 +1,67 @@
-import useSession from '@/hooks/useSession';
 import { useState } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchCompanies } from '@/lib/api/remote/companies';
-import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
-import FeedWrapper from '@/components/layout/FeedWrapper';
+import { useDebounce } from 'usehooks-ts';
+import { getCompanies } from '@/lib/api/company';
+import useProtectedPaginatedQuery from '@/hooks/useProtectedPaginatedQuery';
 import SearchPanel from '@/components/companies/feed/SearchPanel';
-import LoadMoreSection from '@/components/layout/LoadMoreSection';
+import LoadMore from '@/components/ui/LoadMore';
 import { protectedSsr } from '@/lib/protected-ssr';
 import CommonLayout from '@/components/layout/CommonLayout';
+import parseUnknownError from '@/lib/parse-unknown-error';
+import createAxiosInstance from '@/lib/axios/create-instance';
+import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
+import WrappedSpinner from '@/components/companies/feed/WrappedSpinner';
 
-const defaultPageSize = 50;
+import { type CompanyInFeedArray } from '@/lib/api/company/schemas';
+import { type PaginatedResponse } from '@/lib/api/pagination';
+import { type InferGetServerSidePropsType } from 'next';
 
-const CompaniesFeedPage: NextPageWithLayout = () => {
-  const { data: session } = useSession();
-  const accessToken = session?.jwtToken as string;
+const CompaniesFeedPage: NextPageWithLayout<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ initialData }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const companiesQuery = useInfiniteQuery(
-    [
-      'companies',
-      {
-        searchTerm,
-      },
-    ],
-    async ({ pageParam = 1 }) =>
-      await fetchCompanies({
-        accessToken,
-        pageNumber: pageParam,
-        pageSize: defaultPageSize,
-        searchTerm,
-      })(),
-    {
-      enabled: !!accessToken,
-      getNextPageParam: (lastPage) => lastPage.nextPage,
-      onError: (error: any) => {
-        alert && alert(error.message || 'Помилка при завантаженні компанії');
-      },
-    }
-  );
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const loadMore = (event: any) => {
-    event.preventDefault();
-    companiesQuery.hasNextPage && companiesQuery.fetchNextPage();
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+    error,
+    isFetchingNextPage,
+  } = useProtectedPaginatedQuery({
+    queryKey: ['companies'],
+    getItems: getCompanies,
+    params: {
+      pageSize: 25,
+      searchTerm: debouncedSearchTerm,
+    },
+    initialData: initialData ?? undefined,
+  });
+
+  const loadMore = () => {
+    hasNextPage && fetchNextPage();
   };
 
   return (
-    <>
-      <SearchPanel onChange={setSearchTerm} />
-      <FeedWrapper>
-        <CompaniesGrid query={companiesQuery} />
-      </FeedWrapper>
-      {companiesQuery.hasNextPage && <LoadMoreSection onClick={loadMore} />}
-    </>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white py-4 shadow-md rounded-b-md mb-4">
+      <SearchPanel value={searchTerm} onChange={setSearchTerm} />
+      <div className="mt-8 px-2 md:px-8">
+        {isLoading ? (
+          <WrappedSpinner />
+        ) : isError ? (
+          <p>{parseUnknownError(error)}</p>
+        ) : (
+          <CompaniesGrid data={data} />
+        )}
+      </div>
+
+      {isFetchingNextPage ? (
+        <WrappedSpinner />
+      ) : hasNextPage ? (
+        <LoadMore onClick={loadMore} />
+      ) : null}
+    </div>
   );
 };
 
@@ -58,6 +69,31 @@ CompaniesFeedPage.getLayout = CommonLayout;
 
 export default CompaniesFeedPage;
 
-export const getServerSideProps = protectedSsr({
+export const getServerSideProps = protectedSsr<{
+  initialData: {
+    pages: PaginatedResponse<CompanyInFeedArray>[];
+    pageParams: { pageSize: number; searchTerm: string }[];
+  } | null;
+}>({
   allowedRoles: ['Student', 'Company'],
+  getProps: async (context) => {
+    const params = { pageSize: 25, searchTerm: '' };
+    try {
+      const data = await getCompanies(params)(
+        createAxiosInstance({ data: context.session })
+      );
+
+      return {
+        props: {
+          initialData: { pages: [data], pageParams: [params] },
+        },
+      };
+    } catch (error) {
+      return {
+        props: {
+          initialData: null,
+        },
+      };
+    }
+  },
 });

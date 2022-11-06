@@ -1,4 +1,3 @@
-import { type AxiosInstance, type AxiosResponse } from 'axios';
 import { request } from '../../axios';
 import { z } from 'zod';
 import StudentSchema from '../../schemas/Student';
@@ -8,6 +7,8 @@ import {
 } from './schemas';
 import { JobOfferArraySchema } from '../../schemas/JobOffer';
 import { parsePaginatedResponseAsync } from '../pagination';
+
+import { type AxiosInstance, type AxiosResponse } from 'axios';
 
 const parseStudentAsync = async (response: AxiosResponse) =>
   StudentSchema.parseAsync(response.data);

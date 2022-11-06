@@ -7,7 +7,7 @@ import useProtectedMutation from '@/hooks/useProtectedMutation';
 import parseUnknownError from '@/lib/parse-unknown-error';
 import ErrorWhileLoading from './ErrorWhileLoading';
 import LoadingPage from './LoadingPage';
-import LoadMoreButton from './LoadMoreButton';
+import LoadMore from '../ui/LoadMore';
 import OrderByOptions from './OrderByOptions';
 import { type PaginatedResponse } from '@/lib/api/pagination';
 import dynamic from 'next/dynamic';
@@ -169,7 +169,7 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
         {query.isFetchingNextPage ? (
           <LoadingPage />
         ) : query.hasNextPage ? (
-          <LoadMoreButton onClick={query.fetchNextPage} />
+          <LoadMore onClick={query.fetchNextPage} />
         ) : null}
       </div>
     </div>

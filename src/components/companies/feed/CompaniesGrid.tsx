@@ -1,41 +1,25 @@
-import React from 'react';
-import type { UseInfiniteQueryResult } from '@tanstack/react-query';
+import { Fragment } from 'react';
 import CompanyCard from './CompanyCard';
-import classes from './CompaniesGrid.module.scss';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
-const CompaniesGrid: React.FC<{
-  query: UseInfiniteQueryResult<
-    {
-      companies: any;
-      nextPage: number | null;
-    },
-    any
-  >;
-}> = ({ query }) => {
-  const { data, status, error } = query;
+import { type InfiniteData } from '@tanstack/react-query';
+import { type PaginatedResponse } from '@/lib/api/pagination';
+import { type CompanyInFeedArray } from '@/lib/api/company/schemas';
+
+const CompaniesGrid = ({
+  data,
+}: {
+  data: InfiniteData<PaginatedResponse<CompanyInFeedArray>>;
+}) => {
   return (
-    <>
-      {status === 'loading' ? (
-        <div className="g__center">
-          <LoadingSpinner />
-        </div>
-      ) : status === 'error' ? (
-        <span>Помилка: {error.message}</span>
-      ) : !data?.pages[0]?.companies?.length ? (
-        <div className="g__center">Нічого не знайдено</div>
-      ) : (
-        <div className={classes.grid}>
-          {data.pages.map((page) => (
-            <React.Fragment key={page.nextPage}>
-              {page.companies.map((company: any) => (
-                <CompanyCard key={company.id} company={company} />
-              ))}
-            </React.Fragment>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 mb-8">
+      {data.pages.map((page, pageIndex) => (
+        <Fragment key={pageIndex}>
+          {page.data.map((company) => (
+            <CompanyCard key={company.id} company={company} />
           ))}
-        </div>
-      )}
-    </>
+        </Fragment>
+      ))}
+    </div>
   );
 };
 export default CompaniesGrid;

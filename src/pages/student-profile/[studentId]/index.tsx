@@ -5,19 +5,19 @@ import CommonLayout from '@/components/layout/CommonLayout';
 import StudentAvatar from '@/components/student-profile/StudentAvatar';
 import StudentInfo from '@/components/student-profile/StudentInfo';
 import StudentSubscriptions from '@/components/student-profile/StudentSubscriptions';
-
 import StudentWorkExperience from '@/components/student-profile/StudentWorkExperience';
 import StudentSubscriptionsJobOffers from '@/components/student-profile/StudentSubscriptionsJobOffers';
 import StudentSubscriptionsCompanies from '@/components/student-profile/StudentSubscriptionsCompanies';
 import StudentSubscriptionsStudents from '@/components/student-profile/StudentSubscriptionsStudents';
-
 import Link from 'next/link';
 import NavigationMenu from '@/components/student-profile/NavigationMenu';
-import { type Student } from '@/lib/schemas/Student';
-import { type InferGetServerSidePropsType } from 'next';
 import { getStudent } from '@/lib/api/student';
 import { protectedSsr } from '@/lib/protected-ssr';
 import createAxiosInstance from '@/lib/axios/create-instance';
+import Head from 'next/head';
+
+import { type Student } from '@/lib/schemas/Student';
+import { type InferGetServerSidePropsType } from 'next';
 
 const navigationItems = [
   {
@@ -107,80 +107,87 @@ const StudentProfilePage: NextPageWithLayout<
   const debouncedJobOfferSearch = useDebounce(jobOfferSearch, 500);
 
   return (
-    <div className="mx-auto bg-white pt-12 shadow-lg rounded-b-lg mb-20 max-w-full lg:max-w-4xl">
-      <div className="grid grid-cols-[1fr_0.5fr] grid-rows-[minmax(0,_1fr)_auto] gap-4">
-        <section className="px-4 col-span-2 md:col-auto">
-          <div className="grid grid-cols-[auto_1fr] gap-8">
-            <div>
-              <StudentAvatar photoId={student.photo} />
-              {isSelf && (
-                <Link
-                  href="/my-profile/edit"
-                  className="p-2 mt-4 text-sm block tracking-wider w-full text-center btn-primary"
-                >
-                  Редагувати
-                </Link>
-              )}
+    <>
+      <Head>
+        <title>{`${fullName} | CareerHub 🇺🇦`}</title>
+        <meta name="description" content="Student profile" />
+      </Head>
+
+      <div className="mx-auto bg-white pt-12 shadow-md rounded-b-lg mb-20 max-w-full lg:max-w-4xl">
+        <div className="grid grid-cols-[1fr_0.5fr] grid-rows-[minmax(0,_1fr)_auto] gap-4">
+          <section className="px-4 col-span-2 md:col-auto">
+            <div className="grid grid-cols-[auto_1fr] gap-8">
+              <div>
+                <StudentAvatar photoId={student.photo} />
+                {isSelf && (
+                  <Link
+                    href="/my-profile/edit"
+                    className="p-2 mt-4 text-sm block tracking-wider w-full text-center btn-primary"
+                  >
+                    Редагувати
+                  </Link>
+                )}
+              </div>
+              <div>
+                <StudentInfo
+                  fullName={fullName}
+                  email={student.email}
+                  group={student.studentGroup.name}
+                  phone={student.phone}
+                  birthDate={student.birthDate}
+                />
+              </div>
             </div>
-            <div>
-              <StudentInfo
-                fullName={fullName}
-                email={student.email}
-                group={student.studentGroup.name}
-                phone={student.phone}
-                birthDate={student.birthDate}
-              />
-            </div>
-          </div>
+          </section>
+          <aside className="px-4 col-span-2 md:col-auto">
+            <StudentSubscriptions accountId={student.id} />
+          </aside>
+        </div>
+        <section className="p-4">
+          <NavigationMenu
+            sections={navigationItems}
+            currentSection={currentSection}
+            onChangeRoute={changeSection}
+          />
+          {currentSection === 'experience' ? (
+            <StudentWorkExperience items={[]} editable={isSelf} />
+          ) : currentSection === 'jobOffers' ? (
+            <StudentSubscriptionsJobOffers
+              debouncedSearchValue={debouncedJobOfferSearch}
+              search={jobOfferSearch}
+              setSearch={setJobOfferSearch}
+              orderByOptions={jobOfferOrderByOptions}
+              selectedOrderByOption={selectedJobOfferOrderByOption!}
+              setSelectedOrderByOption={setSelectedJobOfferOrderByOption}
+              accountId={student.id}
+              isSelf={isSelf}
+            />
+          ) : currentSection === 'companies' ? (
+            <StudentSubscriptionsCompanies
+              debouncedSearchValue={debouncedCompanySearch}
+              search={companySearch}
+              setSearch={setCompanySearch}
+              orderByOptions={companyOrderByOptions}
+              selectedOrderByOption={selectedCompanyOrderByOption!}
+              setSelectedOrderByOption={setSelectedCompanyOrderByOption}
+              accountId={student.id}
+              isSelf={isSelf}
+            />
+          ) : currentSection === 'students' ? (
+            <StudentSubscriptionsStudents
+              search={studentSearch}
+              debouncedSearchValue={debouncedStudentSearch}
+              setSearch={setStudentSearch}
+              orderByOptions={studentOrderByOptions}
+              selectedOrderByOption={selectedStudentOrderByOption!}
+              setSelectedOrderByOption={setSelectedStudentOrderByOption}
+              accountId={student.id}
+              isSelf={isSelf}
+            />
+          ) : null}
         </section>
-        <aside className="px-4 col-span-2 md:col-auto">
-          <StudentSubscriptions accountId={student.id} />
-        </aside>
       </div>
-      <section className="p-4">
-        <NavigationMenu
-          sections={navigationItems}
-          currentSection={currentSection}
-          onChangeRoute={changeSection}
-        />
-        {currentSection === 'experience' ? (
-          <StudentWorkExperience items={[]} editable={isSelf} />
-        ) : currentSection === 'jobOffers' ? (
-          <StudentSubscriptionsJobOffers
-            debouncedSearchValue={debouncedJobOfferSearch}
-            search={jobOfferSearch}
-            setSearch={setJobOfferSearch}
-            orderByOptions={jobOfferOrderByOptions}
-            selectedOrderByOption={selectedJobOfferOrderByOption!}
-            setSelectedOrderByOption={setSelectedJobOfferOrderByOption}
-            accountId={student.id}
-            isSelf={isSelf}
-          />
-        ) : currentSection === 'companies' ? (
-          <StudentSubscriptionsCompanies
-            debouncedSearchValue={debouncedCompanySearch}
-            search={companySearch}
-            setSearch={setCompanySearch}
-            orderByOptions={companyOrderByOptions}
-            selectedOrderByOption={selectedCompanyOrderByOption!}
-            setSelectedOrderByOption={setSelectedCompanyOrderByOption}
-            accountId={student.id}
-            isSelf={isSelf}
-          />
-        ) : currentSection === 'students' ? (
-          <StudentSubscriptionsStudents
-            search={studentSearch}
-            debouncedSearchValue={debouncedStudentSearch}
-            setSearch={setStudentSearch}
-            orderByOptions={studentOrderByOptions}
-            selectedOrderByOption={selectedStudentOrderByOption!}
-            setSelectedOrderByOption={setSelectedStudentOrderByOption}
-            accountId={student.id}
-            isSelf={isSelf}
-          />
-        ) : null}
-      </section>
-    </div>
+    </>
   );
 };
 

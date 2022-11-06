@@ -8,9 +8,9 @@ import classes from './CompanyHeader.module.scss';
 const CompanyHeader: React.FC<{
   id: string;
   name: string;
-  motto?: string;
-  companyLogo: string;
-  companyBanner: string;
+  motto: string;
+  companyLogo: string | null | undefined;
+  companyBanner: string | null | undefined;
   currentSection?: string | string[];
   changeSection: (section: string) => void;
 }> = ({
@@ -25,20 +25,14 @@ const CompanyHeader: React.FC<{
   return (
     <>
       <CompanyBanner imageId={companyBanner} />
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-        }}
-      >
+      <div className="flex justify-around">
         <div className={classes.header}>
           <CompanyLogo imageId={companyLogo} />
           <CompanyInfo companyId={id} name={name} motto={motto} />
           <CompanySocials companyId={id} />
         </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div className="flex justify-center">
         <div className={classes.tabs}>
           <TabHeader
             label="Про компанію"

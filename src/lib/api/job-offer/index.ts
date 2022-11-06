@@ -1,7 +1,8 @@
-import { type AxiosInstance } from 'axios';
 import { request } from '@/lib/axios';
 import { parsePaginatedResponseAsync } from '../pagination';
 import { JobOfferFeedSchema } from './schemas';
+
+import { type AxiosInstance } from 'axios';
 
 export const unsubscribeStudentFromJobOffer =
   (instance: AxiosInstance) => (jobOfferId: string) => {

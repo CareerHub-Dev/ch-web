@@ -1,15 +1,15 @@
-import classes from './CompanyInfoBlock.module.scss';
+import { type ReactNode } from 'react';
 
-type Props = {
-  icon: React.FC;
+const CompanyInfoBlock = ({
+  icon,
+  value,
+}: {
+  icon: ReactNode;
   value: string;
-};
-
-const CompanyInfoBlock = ({ icon, value }: Props) => {
-  const Icon = icon;
+}) => {
   return (
-    <p className={classes.info}>
-      <Icon />
+    <p className="inline-flex items-center justify-center gap-2 text-lightBlueAccent">
+      {icon}
       {value}
     </p>
   );
