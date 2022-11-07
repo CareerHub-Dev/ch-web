@@ -17,7 +17,7 @@ export default function createAxiosInstance({
   const instance = axios.create({
     baseURL: backendApiBaseUrl,
     headers: { 'Content-Type': 'application/json' },
-  });
+  });  
 
   if (data) {
     const refresh =
@@ -28,9 +28,10 @@ export default function createAxiosInstance({
     setupRefreshTokenInterceptor({
       instance,
       onRefresh: async () => {
-        const refrshedData = await refresh();
+        const refreshedData = await refresh();
+        
         instance.interceptors.request.eject(0);
-        setupJwtInterceptor({ instance, jwt: refrshedData.jwtToken });
+        setupJwtInterceptor({ instance, jwt: refreshedData.jwtToken });
       },
     });
   }

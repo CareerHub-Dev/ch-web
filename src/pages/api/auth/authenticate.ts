@@ -1,6 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import { authenticate } from '@/lib/api/account';
 import cookieMiddleware from '@/lib/middleware/cookieMiddleware';
+
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
@@ -9,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const data = await authenticate(req.body);
-    return cookieMiddleware(res, data);
+    return res.status(201).json(cookieMiddleware(res, data));
   } catch (err) {
     let message = 'Невідома помилка';
     if (typeof err === 'string') {

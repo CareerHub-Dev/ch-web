@@ -13,7 +13,7 @@ import Link from 'next/link';
 import NavigationMenu from '@/components/student-profile/NavigationMenu';
 import { getStudent } from '@/lib/api/student';
 import { protectedSsr } from '@/lib/protected-ssr';
-import createAxiosInstance from '@/lib/axios/create-instance';
+import axiosMiddleware from '@/lib/middleware/axiosMiddleware';
 import Head from 'next/head';
 
 import { type Student } from '@/lib/schemas/Student';
@@ -207,9 +207,7 @@ export const getServerSideProps = protectedSsr<{
 
     try {
       const student = await getStudent(studentId)(
-        createAxiosInstance({
-          data: context.session,
-        })
+        axiosMiddleware(context)
       );
       return {
         props: {

@@ -1,6 +1,8 @@
 import { serialize, CookieSerializeOptions } from 'cookie';
-import { NextApiResponse } from 'next';
 import SessionDataSchema from '@/lib/schemas/SessionData';
+
+import { type NextApiResponse } from 'next';
+import { type ServerResponse } from 'http';
 
 /**
  * Sets multiple `cookies` using the `res` object.
@@ -12,7 +14,7 @@ import SessionDataSchema from '@/lib/schemas/SessionData';
  * - `sameSite` will be set to `'lax'`
  */
 const setCookies = (
-  res: NextApiResponse,
+  res: NextApiResponse | ServerResponse,
   cookies: Array<{
     name: string;
     value: unknown;
@@ -21,12 +23,14 @@ const setCookies = (
 ) => {
   const cookiesToSet = cookies.map((cookie) => {
     const { name, value, options } = cookie;
-    const cookieOptions: CookieSerializeOptions = { ...options,
+    const cookieOptions: CookieSerializeOptions = {
+      ...options,
       path: '/',
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       httpOnly: options.httpOnly ?? true,
-      expires: options.expires ?? new Date(Date.now() + (options.maxAge ?? 1000)),
+      expires:
+        options.expires ?? new Date(Date.now() + (options.maxAge ?? 1000)),
     };
     const stringValue =
       typeof value === 'object' ? JSON.stringify(value) : String(value);
@@ -40,7 +44,7 @@ const setCookies = (
  * @param res - the response object
  * @param name - the name of the cookie to delete
  */
-const deleteCookie = (res: NextApiResponse, name: string) => {
+const deleteCookie = (res: NextApiResponse | ServerResponse, name: string) => {
   res.setHeader(
     'Set-Cookie',
     `${name}=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`
@@ -51,7 +55,7 @@ const deleteCookie = (res: NextApiResponse, name: string) => {
  * Deletes the authority cookie.
  * @param res - the response object
  */
-export const cleanSessionCookies = (res: NextApiResponse) => {
+export const cleanSessionCookies = (res: NextApiResponse | ServerResponse) => {
   deleteCookie(res, 'ch-http');
 };
 
@@ -64,13 +68,14 @@ export const cleanSessionCookies = (res: NextApiResponse) => {
  * @param res - the response object
  * @param backendResponse - the response object from the remote backend
  */
-const cookieMiddleware = (res: NextApiResponse, backendResponse: unknown) => {
+const cookieMiddleware = (
+  res: NextApiResponse | ServerResponse,
+  backendResponse: unknown
+) => {
   const sessionData = SessionDataSchema.safeParse(backendResponse);
 
   if (!sessionData.success) {
-    return res.status(500).json({
-      message: 'Неочікувана відповідь від сервера',
-    });
+    throw new Error('Unable to parse session data');
   }
   const validatedData = sessionData.data;
 
@@ -85,6 +90,6 @@ const cookieMiddleware = (res: NextApiResponse, backendResponse: unknown) => {
     },
   ]);
 
-  return res.status(201).json(validatedData);
+  return validatedData;
 };
 export default cookieMiddleware;

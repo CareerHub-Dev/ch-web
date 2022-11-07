@@ -19,7 +19,6 @@ export namespace LocalGateway {
       url: 'auth/refresh-token',
       method: 'POST',
       data: { refreshToken },
-      withCredentials: true,
     });
 
   export const logout = () =>

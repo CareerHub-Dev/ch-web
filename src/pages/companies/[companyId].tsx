@@ -5,7 +5,7 @@ import CompanyBanner from '@/components/companies/details/CompanyBanner';
 import CompanyHeader from '@/components/companies/details/CompanyHeader';
 import CompanyDescription from '@/components/companies/details/CompanyDescription';
 import { protectedSsr } from '@/lib/protected-ssr';
-import createAxiosInstance from '@/lib/axios/create-instance';
+import axiosMiddleware from '@/lib/middleware/axiosMiddleware';
 import CommonLayout from '@/components/layout/CommonLayout';
 
 import { type CompanyDetails } from '@/lib/api/company/schemas';
@@ -53,11 +53,8 @@ export const getServerSideProps = protectedSsr<{ company: CompanyDetails }>({
   getProps: async (context) => {
     const companyId = context.query.companyId as string;
     try {
-      const company = await getCompany(companyId)(
-        createAxiosInstance({
-          data: context.session,
-        })
-      );
+      const axios = axiosMiddleware(context);
+      const company = await getCompany(companyId)(axios);
       return {
         props: { company },
       };

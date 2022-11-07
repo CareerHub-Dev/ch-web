@@ -43,8 +43,7 @@ const JobOfferDetailPage = () => {
     );
   }
 
-  const jobOffer = jobOfferQuery.data as JobOfferDetails.JobOffer;
-  console.log(jobOffer);
+  const jobOffer = jobOfferQuery.data as JobOfferDetails.JobOffer;;
 
   return (
     <>
