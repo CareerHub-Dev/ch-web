@@ -22,7 +22,7 @@ const OrderByOptions = ({
           className="relative w-full cursor-default bg-lightBlueAccent border border-solid 
           border-lightBlueAccent rounded-lg text-white pl-4 pr-10 py-2 text-sm focus:outline-none"
         >
-          <span className="block truncate cursor-pointer">Порядок</span>
+          <span className="block truncate cursor-pointer">Сортування</span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <ChevronUpDownIcon
               className="h-5 w-5 text-white"
