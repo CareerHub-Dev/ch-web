@@ -1,7 +1,7 @@
 import useProtectedPaginatedQuery from '@/hooks/useProtectedPaginatedQuery';
 import { useSelector } from 'react-redux';
 import { selectFilterOptions } from '@/context/job-offers-feed';
-import LoadMoreSection from '@/components/layout/LoadMoreSection';
+import LoadMore from '@/components/ui/LoadMore';
 import FeedWrapper from '@/components/layout/FeedWrapper';
 import JobOffersFilters from '@/components/offers/feed/JobOfferFilters';
 import JobOffersList from '@/components/offers/feed/JobOffersList';
@@ -45,7 +45,7 @@ const JobOffersFeedPage: NextPageWithLayout = () => {
         <JobOffersFilters />
         <JobOffersList query={jobOffersQuery} />
       </FeedWrapper>
-      {jobOffersQuery.hasNextPage && <LoadMoreSection onClick={loadMore} />}
+      {jobOffersQuery.hasNextPage && <LoadMore onClick={loadMore} />}
     </>
   );
 };

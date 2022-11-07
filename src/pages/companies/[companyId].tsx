@@ -1,34 +1,29 @@
-import useSession from '@/hooks/useSession';
-import useShallowRoutes from '@/hooks/useShallowRoutes';
-import { useQuery } from '@tanstack/react-query';
-import { fetchCompanyDetails } from '@/lib/api/remote/companies';
+import useProtectedQuery from '@/hooks/useProtectedQuery';
+import { getCompany } from '@/lib/api/company';
 import { useRouter } from 'next/router';
+import CompanyBanner from '@/components/companies/details/CompanyBanner';
 import CompanyHeader from '@/components/companies/details/CompanyHeader';
-import CompanyBody from '@/components/companies/details/CompanyBody';
+import CompanyDescription from '@/components/companies/details/CompanyDescription';
 import { protectedSsr } from '@/lib/protected-ssr';
+import createAxiosInstance from '@/lib/axios/create-instance';
+import CommonLayout from '@/components/layout/CommonLayout';
 
-const CompanyDetailsPage = () => {
+import { type CompanyDetails } from '@/lib/api/company/schemas';
+import { type InferGetServerSidePropsType } from 'next/types';
+
+const CompanyDetailsPage: NextPageWithLayout<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ company }) => {
   const router = useRouter();
   const companyId = router.query.companyId as string;
-  const { data: session } = useSession();
-  const token = session?.jwtToken as string;
 
-  const companyQuery = useQuery(
+  const companyQuery = useProtectedQuery(
     ['company', companyId],
-    fetchCompanyDetails({
-      token,
-      companyId,
-    }),
+    getCompany(companyId),
     {
-      enabled: token !== null,
-      onError: (err: any) =>
-        alert(err.message || 'Помилка при завантаженні компанії'),
+      initialData: company,
     }
   );
-  const { currentSection, changeSection } = useShallowRoutes({
-    defaultSection: 'about',
-    sections: ['about'],
-  });
 
   if (companyQuery.isLoading) {
     return <div>Завантаження компанії...</div>;
@@ -36,35 +31,38 @@ const CompanyDetailsPage = () => {
   if (companyQuery.isError) {
     return <div>Помилка при завантаженні компанії</div>;
   }
-  const {
-    id,
-    companyName,
-    companyMotto,
-    companyDescription,
-    companyLogo,
-    companyBanner,
-  } = companyQuery.data;
+  const { id, name, motto, description, logo, banner } = companyQuery.data;
 
   return (
-    <>
-      <CompanyHeader
-        id={id}
-        name={companyName}
-        motto={companyMotto}
-        companyLogo={companyLogo}
-        companyBanner={companyBanner}
-        currentSection={currentSection}
-        changeSection={changeSection}
-      />
-      <CompanyBody
-        description={companyDescription}
-        currentSection={currentSection}
-      />
-    </>
+    <div className="max-w-7xl mx-auto bg-white shadow-md rounded-b-lg mb-8">
+      <CompanyBanner imageId={banner} />
+      <div className="p-4">
+        <CompanyHeader id={id} name={name} motto={motto} companyLogo={logo} />
+        <CompanyDescription description={description} />
+      </div>
+    </div>
   );
 };
+
+CompanyDetailsPage.getLayout = CommonLayout;
+
 export default CompanyDetailsPage;
 
-export const getServerSideProps = protectedSsr({
+export const getServerSideProps = protectedSsr<{ company: CompanyDetails }>({
   allowedRoles: ['Student', 'Company'],
+  getProps: async (context) => {
+    const companyId = context.query.companyId as string;
+    try {
+      const company = await getCompany(companyId)(
+        createAxiosInstance({
+          data: context.session,
+        })
+      );
+      return {
+        props: { company },
+      };
+    } catch (error) {
+      return { notFound: true };
+    }
+  },
 });

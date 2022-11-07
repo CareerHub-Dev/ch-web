@@ -19,12 +19,12 @@ const NavigationMenuItem = ({
         isCurrent ? 'border-lightBlueAccent text-lightBlueAccent' : 'border-transparent'
       )}
     >
-      <a
+      <button
         onClick={onClick}
         className="flex px-2 my-2 cursor-pointer bg-transparent rounded-md leading-8 text-center hover:bg-lightBlue ease-in duration-200"
       >
         {title}
-      </a>
+      </button>
     </li>
   );
 };

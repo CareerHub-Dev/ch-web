@@ -1,10 +1,7 @@
 import { getSelfStudent } from '@/lib/api/student';
 import { protectedSsr } from '@/lib/protected-ssr';
-import { type InferGetServerSidePropsType } from 'next';
-import { type Student } from '@/lib/schemas/Student';
 import useSelfStudentQuery from '@/hooks/useStudentSelfQuery';
 import useShallowRoutes from '@/hooks/useShallowRoutes';
-
 import CommonLayout from '@/components/layout/CommonLayout';
 import NavigationItems from '@/components/student-profile/edit/NavigationItems';
 import GeneralInfo from '@/components/student-profile/edit/GeneralInfo';
@@ -14,6 +11,9 @@ import ChangePassword from '@/components/student-profile/edit/ChangePassword';
 import { getImage } from '@/lib/api/image';
 import createAxiosInstance from '@/lib/axios/create-instance';
 import defaultAvatar from '@/resources/images/default-avatar.png';
+
+import { type InferGetServerSidePropsType } from 'next';
+import { type Student } from '@/lib/schemas/Student';
 
 const navigationItems = [
   {
@@ -48,7 +48,7 @@ const EditStudentPage: NextPageWithLayout<
 
   return (
     <div
-      className="mx-8 lg:mx-auto max-w-full lg:max-w-[978px] bg-white px-4 rounded-md shadow-md
+      className="md:mx-8 mb-2  lg:mx-auto max-w-full lg:max-w-[978px] bg-white px-4 rounded-md shadow-md
       transition-all ease-in-out duration-200"
     >
       <div className="grid grid-cols-[auto_1fr] gap-8">

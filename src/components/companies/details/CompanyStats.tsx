@@ -6,9 +6,8 @@ import {
 } from '@/lib/api/remote/companies';
 import SocialInfoBlock from './SocialInfoBlock';
 import FollowButton from './FollowButton';
-import classes from './CompanySocials.module.scss';
 
-const CompanySocials: React.FC<{ companyId: string }> = ({ companyId }) => {
+const CompanyStats: React.FC<{ companyId: string }> = ({ companyId }) => {
   const { data: session } = useSession();
   const accessToken = session?.jwtToken as string;
   const subscribersQuery = useQuery(
@@ -46,8 +45,8 @@ const CompanySocials: React.FC<{ companyId: string }> = ({ companyId }) => {
     : jobOffersQuery.data || '0';
 
   return (
-    <div className={classes.social}>
-      <div className={classes.blocks}>
+    <div className="flex flex-col gap-8">
+      <div className="grid gap-4 grid-cols-2">
         <SocialInfoBlock title="Підписники" value={subscribersAmount} />
         <SocialInfoBlock title="Вакансії" value={jobOffersAmount} />
       </div>
@@ -55,4 +54,4 @@ const CompanySocials: React.FC<{ companyId: string }> = ({ companyId }) => {
     </div>
   );
 };
-export default CompanySocials;
+export default CompanyStats;

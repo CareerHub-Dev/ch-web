@@ -1,6 +1,5 @@
 import { getImage } from '@/lib/api/image';
 import Image from 'next/image';
-import classes from './CompanyBanner.module.scss';
 
 const CompanyBanner: React.FC<{
   imageId?: string | null;
@@ -8,9 +7,13 @@ const CompanyBanner: React.FC<{
   const banner = imageId ? getImage(imageId) : '/company-dummy-banner.png';
 
   return (
-    <div className={classes.wrapper}>
-      <Image alt="Company Banner" src={banner} />
-    </div>
+    <Image
+      alt="Company Banner"
+      src={banner}
+      width={1280}
+      height={256}
+      className="w-full h-full object-cover max-h-64"
+    />
   );
 };
 export default CompanyBanner;

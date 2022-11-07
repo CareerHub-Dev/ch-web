@@ -1,30 +1,23 @@
-import LinkButton from '@/components/ui/LinkButton';
 import { useRef } from 'react';
-import classes from './SearchPanel.module.scss';
 
-const SearchPanel = ({ onChange }: { onChange: (value: string) => any }) => {
+const SearchPanel = ({
+  onChange,
+  value,
+}: {
+  onChange: (value: string) => any;
+  value: string;
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const submit = (event: any) => {
-    event.preventDefault();
-    onChange(inputRef.current!.value || '');
-  };
-
   return (
-    <form className={classes.form}>
-      <div className={classes.controls}>
-        <div className={classes.control}>
-          <label htmlFor="companyName">Назва</label>
-          <input
-            id="companyName"
-            type="search"
-            ref={inputRef}
-            placeholder={'Уведіть назву компанії'}
-          />
-        </div>
-      </div>
-      <LinkButton onClick={submit}>Пошук</LinkButton>
-    </form>
+    <input
+      type="search"
+      className="block form-input px-4 py-2 text-sm w-full md:max-w-3xl mx-auto"
+      ref={inputRef}
+      onChange={(e) => onChange(e.target.value)}
+      value={value}
+      placeholder={'Уведіть назву компанії'}
+    />
   );
 };
 export default SearchPanel;

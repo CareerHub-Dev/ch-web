@@ -22,7 +22,12 @@ const LandingPage: NextPageWithLayout = () => {
           <NureIcon />
           <CareerCenterIcon />
         </div>
-        <h1 className={classes.title}>CareerHub</h1>
+        <h1
+          id="chTitle"
+          className="font-rancho mt-4 text-6xl md:text-8xl lg:text-[150px] text-darkerBlue"
+        >
+          CareerHub
+        </h1>
       </header>
       <AuthButtons />
     </>

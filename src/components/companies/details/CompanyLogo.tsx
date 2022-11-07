@@ -8,9 +8,13 @@ const CompanyLogo: React.FC<{
   const logo = imageId ? getImage(imageId) : '/company-dummy-logo.png';
 
   return (
-    <div className={classes.wrapper}>
-      <Image alt="Company Logo" src={logo} />
-    </div>
+    <Image
+      alt="Company Logo"
+      src={logo}
+      width={180}
+      height={180}
+      className={classes.img}
+    />
   );
 };
 export default CompanyLogo;

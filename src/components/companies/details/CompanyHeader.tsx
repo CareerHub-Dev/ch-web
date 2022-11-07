@@ -1,60 +1,19 @@
-import CompanyBanner from './CompanyBanner';
 import CompanyInfo from './CompanyInfo';
 import CompanyLogo from './CompanyLogo';
-import CompanySocials from './CompanySocials';
-import TabHeader from './TabHeader';
-import classes from './CompanyHeader.module.scss';
+import CompanyStats from './CompanyStats';
 
 const CompanyHeader: React.FC<{
   id: string;
   name: string;
-  motto?: string;
-  companyLogo: string;
-  companyBanner: string;
-  currentSection?: string | string[];
-  changeSection: (section: string) => void;
-}> = ({
-  id,
-  name,
-  motto,
-  companyLogo,
-  companyBanner,
-  changeSection,
-  currentSection,
-}) => {
+  motto: string;
+  companyLogo: string | null | undefined;
+}> = ({ id, name, motto, companyLogo }) => {
   return (
-    <>
-      <CompanyBanner imageId={companyBanner} />
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-        }}
-      >
-        <div className={classes.header}>
-          <CompanyLogo imageId={companyLogo} />
-          <CompanyInfo companyId={id} name={name} motto={motto} />
-          <CompanySocials companyId={id} />
-        </div>
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <div className={classes.tabs}>
-          <TabHeader
-            label="Про компанію"
-            tabId="about"
-            currentTab={currentSection}
-            onClick={changeSection}
-          />
-          <TabHeader
-            tabId="offers"
-            label="Вакансії"
-            currentTab={currentSection}
-            onClick={changeSection}
-          />
-        </div>
-      </div>
-    </>
+    <div className="flex w-full justify-center">
+      <CompanyLogo imageId={companyLogo} />
+      <CompanyInfo companyId={id} name={name} motto={motto} />
+      <CompanyStats companyId={id} />
+    </div>
   );
 };
 
