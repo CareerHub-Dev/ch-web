@@ -1,15 +1,18 @@
-import classes from './CompanyInfo.module.scss';
 import CompanyLinks from './CompanyLinks';
 
-const CompanyInfo: React.FC<{
+const CompanyInfo = ({
+  companyId,
+  name,
+  motto,
+}: {
   companyId: string;
   name: string;
   motto?: string;
-}> = ({ companyId, name, motto }) => {
+}) => {
   return (
-    <div className={classes.info}>
-      <h1 className={classes.title}>{name}</h1>
-      {!!motto && <h2 className={classes.moto}>{`"${motto}"`}</h2>}
+    <div className="grow pl-4">
+      <h2 className="text-3xl font-semibold leading-relaxed">{name}</h2>
+      {!!motto && <p className="italic tracking-wide">{`"${motto}"`}</p>}
       <CompanyLinks companyId={companyId} />
     </div>
   );

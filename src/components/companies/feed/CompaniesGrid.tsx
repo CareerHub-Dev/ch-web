@@ -10,6 +10,10 @@ const CompaniesGrid = ({
 }: {
   data: InfiniteData<PaginatedResponse<CompanyInFeedArray>>;
 }) => {
+  if (data.pages.at(0)?.data.length === 0) {
+    return <p className="p-8 text-center">{`Нічого не знайдено :(`}</p>;
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 mb-8">
       {data.pages.map((page, pageIndex) => (

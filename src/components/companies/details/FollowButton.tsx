@@ -1,24 +1,10 @@
-import FollowIcon from '@/components/ui/icons/FollowIcon';
+import { UserPlusIcon } from '@heroicons/react/24/outline';
 import useSession from '@/hooks/useSession';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   fetchCompanySubscriptionStatus,
   changeSubscriptionStatus,
 } from '@/lib/api/remote/companies';
-import classes from './FollowButton.module.scss';
-
-const unFollowedStyle = {
-  color: `#c20a0a`,
-  background: `#ffc8c8`,
-};
-const undefinedStyle = {
-  color: `#c20a0a`,
-  background: `#ffc8c8`,
-};
-const followedStyle = {
-  color: 'white',
-  background: 'grey',
-};
 
 const FollowButton: React.FC<{
   companyId: string;
@@ -108,25 +94,17 @@ const FollowButton: React.FC<{
       : isFollowed
       ? 'Відписатись'
       : 'Підписатись';
-  const activeStyle =
-    subscriptionStatusQuery.isLoading || subscriptionMutation.isLoading
-      ? undefinedStyle
-      : isFollowed
-      ? followedStyle
-      : unFollowedStyle;
 
-  const clickHandler = (event: any) => {
-    event.preventDefault();
+  const click = () => {
     subscriptionMutation.mutate();
   };
 
   return (
     <button
-      style={activeStyle}
-      onClick={clickHandler}
-      className={classes.follow}
+      onClick={click}
+      className="flex items-center justify-center gap-4 rounded-lg bg-lightBlueAccent text-darkerBlue py-2 px-4 tracking-wide"
     >
-      <FollowIcon fill={activeStyle.color} />
+      <UserPlusIcon className="w-6 h-6 text-darkerBlue" title="Підписатися" />
       <p>{buttonText}</p>
     </button>
   );

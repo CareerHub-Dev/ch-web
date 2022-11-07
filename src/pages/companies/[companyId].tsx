@@ -1,9 +1,9 @@
-import useShallowRoutes from '@/hooks/useShallowRoutes';
 import useProtectedQuery from '@/hooks/useProtectedQuery';
 import { getCompany } from '@/lib/api/company';
 import { useRouter } from 'next/router';
+import CompanyBanner from '@/components/companies/details/CompanyBanner';
 import CompanyHeader from '@/components/companies/details/CompanyHeader';
-import CompanyBody from '@/components/companies/details/CompanyBody';
+import CompanyDescription from '@/components/companies/details/CompanyDescription';
 import { protectedSsr } from '@/lib/protected-ssr';
 import createAxiosInstance from '@/lib/axios/create-instance';
 import CommonLayout from '@/components/layout/CommonLayout';
@@ -13,7 +13,7 @@ import { type InferGetServerSidePropsType } from 'next/types';
 
 const CompanyDetailsPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = (props) => {
+> = ({ company }) => {
   const router = useRouter();
   const companyId = router.query.companyId as string;
 
@@ -21,13 +21,9 @@ const CompanyDetailsPage: NextPageWithLayout<
     ['company', companyId],
     getCompany(companyId),
     {
-      initialData: props,
+      initialData: company,
     }
   );
-  const { currentSection, changeSection } = useShallowRoutes({
-    defaultSection: 'about',
-    sections: ['about'],
-  });
 
   if (companyQuery.isLoading) {
     return <div>Завантаження компанії...</div>;
@@ -39,16 +35,11 @@ const CompanyDetailsPage: NextPageWithLayout<
 
   return (
     <div className="max-w-7xl mx-auto bg-white shadow-md rounded-b-lg mb-8">
-      <CompanyHeader
-        id={id}
-        name={name}
-        motto={motto}
-        companyLogo={logo}
-        companyBanner={banner}
-        currentSection={currentSection}
-        changeSection={changeSection}
-      />
-      <CompanyBody description={description} currentSection={currentSection} />
+      <CompanyBanner imageId={banner} />
+      <div className="p-4">
+        <CompanyHeader id={id} name={name} motto={motto} companyLogo={logo} />
+        <CompanyDescription description={description} />
+      </div>
     </div>
   );
 };
@@ -57,7 +48,7 @@ CompanyDetailsPage.getLayout = CommonLayout;
 
 export default CompanyDetailsPage;
 
-export const getServerSideProps = protectedSsr<CompanyDetails>({
+export const getServerSideProps = protectedSsr<{ company: CompanyDetails }>({
   allowedRoles: ['Student', 'Company'],
   getProps: async (context) => {
     const companyId = context.query.companyId as string;
@@ -68,7 +59,7 @@ export const getServerSideProps = protectedSsr<CompanyDetails>({
         })
       );
       return {
-        props: company,
+        props: { company },
       };
     } catch (error) {
       return { notFound: true };
