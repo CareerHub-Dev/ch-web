@@ -40,3 +40,11 @@ export const unsubscribeStudentFromCompany =
       url: `Companies/${companyId}/subscribe`,
       method: 'DELETE',
     });
+
+export const getCompanyStat =
+  (stat: string) => (instance: AxiosInstance) => (companyId: string) =>
+    request({
+      instance,
+      prefix: 'Student',
+      url: `Companies/${companyId}/${stat}`,
+    });

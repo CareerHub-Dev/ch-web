@@ -9,9 +9,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const token = req.body.refreshToken as string;
-    return res
-      .status(201)
-      .json(refreshTokenMiddleware({ token, response: res }));
+    const data = await refreshTokenMiddleware({ token, response: res });
+    return res.status(201).json(data);
   } catch (err) {
     let message = 'Невідома помилка';
     if (err instanceof Error) {
