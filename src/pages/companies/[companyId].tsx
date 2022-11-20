@@ -1,22 +1,26 @@
 import useProtectedQuery from '@/hooks/useProtectedQuery';
-import { getCompany } from '@/lib/api/company';
-import { useRouter } from 'next/router';
+import useProtectedPaginatedQuery from '@/hooks/useProtectedPaginatedQuery';
+import { getCompany, getCompanyJobOffers } from '@/lib/api/company';
 import CompanyBanner from '@/components/companies/details/CompanyBanner';
 import CompanyHeader from '@/components/companies/details/CompanyHeader';
 import CompanyDescription from '@/components/companies/details/CompanyDescription';
+import CompanyJobOffersList from '@/components/companies/details/CompanyJobOffersList';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import CommonLayout from '@/components/layout/CommonLayout';
 import { protectedSsr } from '@/lib/protected-ssr';
 import axiosMiddleware from '@/lib/middleware/axiosMiddleware';
-import CommonLayout from '@/components/layout/CommonLayout';
 
 import { type CompanyDetails } from '@/lib/api/company/schemas';
 import { type InferGetServerSidePropsType } from 'next/types';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 const CompanyDetailsPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ company }) => {
-  const router = useRouter();
-  const companyId = router.query.companyId as string;
+  const companyId = company.id;
+  const params = {
+    companyId,
+    pageSize: 25,
+  };
 
   const companyQuery = useProtectedQuery(
     ['company', companyId],
@@ -25,6 +29,11 @@ const CompanyDetailsPage: NextPageWithLayout<
       initialData: company,
     }
   );
+  const companyJobOffersQuery = useProtectedPaginatedQuery({
+    queryKey: ['companyJobOffers', companyId],
+    getItems: getCompanyJobOffers,
+    params,
+  });
 
   if (companyQuery.isLoading) {
     return (
@@ -44,6 +53,18 @@ const CompanyDetailsPage: NextPageWithLayout<
       <div className="p-4">
         <CompanyHeader id={id} name={name} motto={motto} companyLogo={logo} />
         <CompanyDescription description={description} />
+
+        <section className="p-4">
+          {companyJobOffersQuery.isLoading ? (
+            <div className="flex justify-center mt-12">
+              <LoadingSpinner />
+            </div>
+          ) : companyJobOffersQuery.isError ? (
+            <div>Помилка при завантаженні вакансій</div>
+          ) : (
+            <p>Tttx</p>
+          )}
+        </section>
       </div>
     </div>
   );

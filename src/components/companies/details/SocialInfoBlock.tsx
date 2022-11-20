@@ -17,10 +17,8 @@ const SocialInfoBlock = ({
         noValue && 'animate-pulse'
       )}
     >
-      <p className={cn(noValue && 'invisible')}>{value}</p>
-      <label className={cn('text-darkerBlue', noValue && 'invisible')}>
-        {title}
-      </label>
+      <p>{noValue ? '...' : value}</p>
+      <label className="text-darkerBlue">{title}</label>
     </div>
   );
 };

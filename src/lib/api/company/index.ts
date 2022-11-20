@@ -1,7 +1,11 @@
 import { z } from 'zod';
 import { request } from '@/lib/axios';
 import { parsePaginatedResponseAsync } from '../pagination';
-import { CompanyInFeedArraySchema, CompanyDetailsSchema } from './schemas';
+import {
+  CompanyInFeedArraySchema,
+  CompanyDetailsSchema,
+  CompanyJobOffersArraySchema,
+} from './schemas';
 
 import { type AxiosInstance } from 'axios';
 
@@ -23,6 +27,23 @@ export const getCompany = (companyId: string) => (instance: AxiosInstance) =>
     url: `Companies/${companyId}`,
     select: (res) => CompanyDetailsSchema.parseAsync(res.data),
   });
+
+export const getCompanyJobOffers =
+  ({
+    companyId,
+    ...params
+  }: Omit<PaginatedRequestParams, 'pageNumber'> & {
+    companyId: string;
+  }) =>
+  (instance: AxiosInstance) => {
+    return request({
+      instance,
+      prefix: 'Student',
+      url: `Companies/${companyId}/JobOffers`,
+      params,
+      select: parsePaginatedResponseAsync(CompanyJobOffersArraySchema),
+    });
+  };
 
 export const subscribeStudentToCompany =
   (instance: AxiosInstance) => (companyId: string) =>
@@ -49,7 +70,7 @@ export const getCompanyStat =
     request({
       instance,
       prefix: 'Student',
-      url: `Companies/${companyId}/${stat}-amount`,
+      url: `Companies/${companyId}/amount-${stat}`,
       select: (res) => z.number().parseAsync(res.data),
     });
 
