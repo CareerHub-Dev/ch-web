@@ -1,11 +1,26 @@
-const SocialInfoBlock: React.FC<{
-  value: string;
+import cn from 'classnames';
+
+const SocialInfoBlock = ({
+  value,
+  title,
+}: {
+  value: number | undefined;
   title: string;
-}> = ({ value, title }) => {
+}) => {
+  const noValue = value === undefined;
+
   return (
-    <div className="flex flex-col justify-center items-center text-center bg-lightBlueAccent rounded-lg px-8 py-2">
-      <p>{value}</p>
-      <label className="text-darkerBlue">{title}</label>
+    <div
+      className={cn(
+        `flex flex-col justify-center items-center text-center bg-lightBlueAccent rounded-lg px-8 
+                        py-2`,
+        noValue && 'animate-pulse'
+      )}
+    >
+      <p className={cn(noValue && 'invisible')}>{value}</p>
+      <label className={cn('text-darkerBlue', noValue && 'invisible')}>
+        {title}
+      </label>
     </div>
   );
 };

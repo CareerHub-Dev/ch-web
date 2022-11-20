@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { request } from '@/lib/axios';
 import { parsePaginatedResponseAsync } from '../pagination';
 import { CompanyInFeedArraySchema, CompanyDetailsSchema } from './schemas';
@@ -42,9 +43,15 @@ export const unsubscribeStudentFromCompany =
     });
 
 export const getCompanyStat =
-  (stat: string) => (instance: AxiosInstance) => (companyId: string) =>
+  (stat: 'subscribers' | 'jobOffers') =>
+  (companyId: string) =>
+  (instance: AxiosInstance) =>
     request({
       instance,
       prefix: 'Student',
-      url: `Companies/${companyId}/${stat}`,
+      url: `Companies/${companyId}/${stat}-amount`,
+      select: (res) => z.number().parseAsync(res.data),
     });
+
+export const getCompanySubscribersAmount = getCompanyStat('subscribers');
+export const getCompanyJobOffersAmount = getCompanyStat('jobOffers');

@@ -10,6 +10,7 @@ import CommonLayout from '@/components/layout/CommonLayout';
 
 import { type CompanyDetails } from '@/lib/api/company/schemas';
 import { type InferGetServerSidePropsType } from 'next/types';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 const CompanyDetailsPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -26,7 +27,11 @@ const CompanyDetailsPage: NextPageWithLayout<
   );
 
   if (companyQuery.isLoading) {
-    return <div>Завантаження компанії...</div>;
+    return (
+      <div className="flex justify-center mt-12">
+        <LoadingSpinner />
+      </div>
+    );
   }
   if (companyQuery.isError) {
     return <div>Помилка при завантаженні компанії</div>;
