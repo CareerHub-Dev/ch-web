@@ -15,16 +15,14 @@ const ExperienceLevelSelect = () => {
 
   return (
     <>
-      <label htmlFor="jobType" className="g__text-bold">
+      <label htmlFor="jobType" className="font-semibold">
         Рівень
       </label>
       <select
         id="jobType"
         onChange={experienceLevelChangeHandler}
         value={experienceLevel || ''}
-        style={{
-          width: '100%',
-        }}
+        className="form-input w-full p-1"
       >
         {experienceLevelOptions.map((option) => (
           <option key={option.value} value={option.value}>

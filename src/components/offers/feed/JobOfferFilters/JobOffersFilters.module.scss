@@ -13,18 +13,6 @@
   gap: 4px;
   align-items: flex-start;
 
-  input[type=text],
-  input[type=search] {
-    width: 100%;
-    padding: 4px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-
-    &:focus {
-      border: 1px solid #0a66c2;
-      outline: none;
-    }
-  }
 }
 
 .form button {

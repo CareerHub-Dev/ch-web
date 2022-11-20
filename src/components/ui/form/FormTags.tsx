@@ -55,12 +55,7 @@ const FormTags = ({ tags, onAdd, onRemove, onReset }: Props) => {
           </div>
         </div>
       </div>
-      <div
-        className={cn(
-          classes['tags-control'],
-          insertionIsOpen && 'g__display-none'
-        )}
-      >
+      <div className={cn(classes['tags-control'], insertionIsOpen && 'hidden')}>
         <div className={classes.tags}>
           <input className={classes['tag-insert']} ref={tagInsertionInputRef} />
         </div>

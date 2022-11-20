@@ -12,16 +12,14 @@ const WorkFormatSelect = () => {
 
   return (
     <>
-      <label htmlFor="workFormat" className="g__text-bold">
+      <label htmlFor="workFormat" className="font-semibold">
         Формат
       </label>
       <select
         id="workFormat"
         onChange={workFormatChangeHandler}
         value={workFormat || ''}
-        style={{
-          width: '100%',
-        }}
+        className="form-input w-full p-1"
       >
         {workFormatOptions.map((option) => (
           <option key={option.value} value={option.value}>
