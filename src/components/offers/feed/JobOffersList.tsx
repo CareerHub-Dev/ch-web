@@ -7,15 +7,17 @@ import { PaginatedResponse } from '@/lib/api/pagination';
 import type { JobOfferFeed } from '@/lib/api/job-offer/schemas';
 import type { UseInfiniteQueryResult } from '@tanstack/react-query';
 
-const JobOffersList: React.FC<{
+const JobOffersList = ({
+  query,
+}: {
   query: UseInfiniteQueryResult<PaginatedResponse<JobOfferFeed>>;
-}> = ({ query }) => {
+}) => {
   const { status, data, error } = query;
 
   return (
     <>
       {status === 'loading' ? (
-        <div className="flex justify-center mt-12">
+        <div className="mt-12 mx-auto">
           <LoadingSpinner />
         </div>
       ) : status === 'error' ? (
