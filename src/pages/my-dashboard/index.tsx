@@ -2,7 +2,7 @@ import { protectedSsr } from '@/lib/protected-ssr';
 
 const CompanyDashboard = () => {
   return (
-    <div className="g__center p-5 m-5 font-bold">
+    <div className="text-center p-5 m-5 font-bold">
       Company Dashboard: In progress (components/company-dashboard/index.tsx)
     </div>
   );

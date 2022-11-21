@@ -8,11 +8,11 @@ import FollowButton from './FollowButton';
 
 const CompanyStats = ({ companyId }: { companyId: string }) => {
   const { data: subscribers } = useProtectedQuery(
-    ['company', companyId, 'subscribersAmount'],
+    ['company', companyId, 'subscriptions', 'amount'],
     getCompanySubscribersAmount(companyId)
   );
   const { data: jobOffers } = useProtectedQuery(
-    ['company', companyId, 'jobOffersAmount'],
+    ['company', companyId, 'jobOffers', 'amount'],
     getCompanyJobOffersAmount(companyId)
   );
 
