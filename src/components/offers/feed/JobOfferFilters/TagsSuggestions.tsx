@@ -18,7 +18,8 @@ const TagsSuggestions = ({
 
   const className = cn(
     classes.suggestions,
-    display ? classes.show : classes.none
+    'form-input shadow-xl',
+    display ? 'block' : 'hidden'
   );
 
   return (

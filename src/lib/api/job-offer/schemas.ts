@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const JobOfferInFeedSchema = z.object({
   id: z.string(),
   title: z.string(),
-  image: z.string(),
+  image: z.string().nullish(),
   startDate: z.string(),
   endDate: z.string(),
   jobType: z.string(),

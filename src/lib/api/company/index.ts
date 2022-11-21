@@ -45,25 +45,40 @@ export const getCompanyJobOffers =
     });
   };
 
-export const subscribeStudentToCompany =
-  (instance: AxiosInstance) => (companyId: string) =>
-    request({
-      instance,
+const doOnCompanySubscription =
+  (method: 'POST' | 'DELETE') =>
+  (companyId: string) =>
+  (instance: AxiosInstance) =>
+  () => {
+    return request({
+      method,
       prefix: 'Student',
       url: `Companies/${companyId}/subscribe`,
-      method: 'POST',
-    });
-
-export const unsubscribeStudentFromCompany =
-  (instance: AxiosInstance) => (companyId: string) =>
-    request({
       instance,
+    });
+  };
+
+export const changeCompanySubscriptionStatus = (currentlySubscribed: boolean) =>
+  currentlySubscribed
+    ? doOnCompanySubscription('DELETE')
+    : doOnCompanySubscription('POST');
+
+export const unsubscribeStudentFromCompanyById =
+  (instance: AxiosInstance) => (companyId: string) =>
+    doOnCompanySubscription('DELETE')(companyId)(instance)();
+export const unsubscribeStudentFromCompany = doOnCompanySubscription('DELETE');
+export const subscribeStudentToCompany = doOnCompanySubscription('POST');
+export const getSubscriptionOnCompany =
+  (companyId: string) => (instance: AxiosInstance) => {
+    return request({
+      method: 'GET',
       prefix: 'Student',
       url: `Companies/${companyId}/subscribe`,
-      method: 'DELETE',
+      instance,
     });
+  };
 
-export const getCompanyStat =
+const getCompanyStat =
   (stat: 'subscribers' | 'jobOffers') =>
   (companyId: string) =>
   (instance: AxiosInstance) =>
