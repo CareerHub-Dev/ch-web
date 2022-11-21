@@ -10,7 +10,9 @@ const SelectedTags = () => {
   const tags = useSelector(selectTags);
 
   if (tags.length === 0) {
-    return <div className="g__center">{`Тегів не обрано`}</div>;
+    return (
+      <div className="text-center italic text-sm">{`Тегів не обрано`}</div>
+    );
   }
 
   const removeHandler = (tag: Tag) => () => {

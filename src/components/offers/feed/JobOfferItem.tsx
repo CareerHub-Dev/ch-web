@@ -7,25 +7,30 @@ import DateIcon from '@/components/ui/icons/DateIcon';
 import ArrowRightIcon from '@/components/ui/icons/ArrowRightIcon';
 import CompanyLink from './CompanyLink';
 import JobOfferTags from '../common/JobOfferTags';
+import defaultJobOfferImage from '@/resources/images/general.jpg';
 
 import classes from './JobOfferItem.module.scss';
 
-const JobOfferItem: React.FC<{ item: JobOffersFeed.JobOffer }> = ({ item }) => {
+import { type JobOfferInFeed } from '@/lib/api/job-offer/schemas';
+import { getImage } from '@/lib/api/image';
+
+const JobOfferItem = ({ item }: { item: JobOfferInFeed }) => {
   const dispatch = useAppDispatch();
-  const { id, title, endDate, companyName, companyId, tags } = item;
+  const { id, title, endDate, company, tags, image } = item;
   const humanReadableExpirationDate = getReadableDateFromString(endDate);
-  const exploreLink = `/offers/${id}`;
+  const exploreLink = `/job-offers/${id}`;
   const tagClickHandler = (tag: Tag) => {
     dispatch(addTag(tag));
   };
+  const imageSource = image ? getImage(image) : defaultJobOfferImage;
 
   return (
     <li className={classes.item}>
-      <Image src={'/general.jpg'} alt={title} width={250} height={160} />
+      <Image src={imageSource} alt={title} width={250} height={160} />
       <div className={classes.content}>
         <div className={classes.summary}>
           <h2>{title}</h2>
-          <CompanyLink companyId={companyId} companyName={companyName} />
+          <CompanyLink companyId={company.id} companyName={company.name} />
           <div className={classes.date}>
             <DateIcon />
             <p>{`Закінчується: ${humanReadableExpirationDate}`}</p>

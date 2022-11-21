@@ -1,39 +1,31 @@
-import { UserPlusIcon } from '@heroicons/react/24/outline';
-import useSession from '@/hooks/useSession';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import useProtectedQuery from '@/hooks/useProtectedQuery';
+import useToast from '@/hooks/useToast';
+import useProtectedMutation from '@/hooks/useProtectedMutation';
+import { useQueryClient } from '@tanstack/react-query';
 import {
-  fetchCompanySubscriptionStatus,
-  changeSubscriptionStatus,
-} from '@/lib/api/remote/companies';
+  getSubscriptionOnCompany,
+  changeCompanySubscriptionStatus,
+} from '@/lib/api/company';
+import { UserPlusIcon } from '@heroicons/react/24/outline';
 
-const FollowButton: React.FC<{
-  companyId: string;
-}> = ({ companyId }) => {
-  const { data: session } = useSession();
-  const accessToken = session?.jwtToken as string;
+import cn from 'classnames';
+
+const FollowButton = ({ companyId }: { companyId: string }) => {
+  const toast = useToast();
   const queryClient = useQueryClient();
-  const subscriptionStatusQuery = useQuery(
+  const subscriptionStatusQuery = useProtectedQuery(
     ['company', companyId, 'subscriptions', 'self'],
-    fetchCompanySubscriptionStatus({
-      accessToken,
-      companyId,
-    }),
-    {
-      enabled: !!accessToken,
-    }
+    getSubscriptionOnCompany(companyId)
   );
-  const isFollowed = subscriptionStatusQuery.data;
+  const currentlySubscribed = subscriptionStatusQuery.data;
 
-  const subscriptionMutation = useMutation(
+  const subscriptionMutation = useProtectedMutation(
     ['company', companyId, 'subscribe'],
-    changeSubscriptionStatus({
-      accessToken,
-      companyId,
-      subscriptionStatus: isFollowed,
-    }),
+    changeCompanySubscriptionStatus(currentlySubscribed)(companyId),
     {
       onError: (_error, _variables, restoreCache) => {
         restoreCache && restoreCache();
+        toast.error('Помилка при зміні статусу підписки на компанію');
       },
       onMutate: () => {
         const cachedStatus = queryClient.getQueryData([
@@ -57,8 +49,8 @@ const FollowButton: React.FC<{
           ['company', companyId, 'subscriptions', 'amount'],
           (_: any) =>
             cachedStatus
-              ? --(cachedAmount as number)
-              : ++(cachedAmount as number)
+              ? (cachedAmount as number) - 1
+              : (cachedAmount as number) + 1
         );
 
         return () => {
@@ -80,7 +72,8 @@ const FollowButton: React.FC<{
         );
         queryClient.setQueryData(
           ['company', companyId, 'subscriptions', 'amount'],
-          (prev: any) => (isFollowed ? --(prev as number) : ++(prev as number))
+          (prev: any) =>
+            currentlySubscribed ? --(prev as number) : ++(prev as number)
         );
       },
       onSettled: () => {
@@ -88,12 +81,12 @@ const FollowButton: React.FC<{
       },
     }
   );
-  const buttonText =
-    subscriptionStatusQuery.isLoading || subscriptionMutation.isLoading
-      ? '...'
-      : isFollowed
-      ? 'Відписатись'
-      : 'Підписатись';
+
+  const buttonText = subscriptionStatusQuery.isLoading
+    ? '...'
+    : currentlySubscribed
+    ? 'Відписатися'
+    : 'Підписатися';
 
   const click = () => {
     subscriptionMutation.mutate();
@@ -102,9 +95,14 @@ const FollowButton: React.FC<{
   return (
     <button
       onClick={click}
-      className="flex items-center justify-center gap-4 rounded-lg bg-lightBlueAccent text-darkerBlue py-2 px-4 tracking-wide"
+      disabled={subscriptionMutation.isLoading}
+      className={cn(
+        `flex items-center justify-center gap-4 rounded-lg tracking-wide
+       text-white bg-lightBlueAccent py-2 px-4 hover:bg-opacity-90 disabled:cursor-wait disabled:opacity-50`,
+        subscriptionStatusQuery.isLoading && 'animate-pulse'
+      )}
     >
-      <UserPlusIcon className="w-6 h-6 text-darkerBlue" title="Підписатися" />
+      <UserPlusIcon className="w-6 h-6 text-white" title="Підписатися" />
       <p>{buttonText}</p>
     </button>
   );

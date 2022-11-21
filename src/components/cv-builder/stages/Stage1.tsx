@@ -29,7 +29,7 @@ const Stage1 = () => {
   });
   if (studentDataIsLoading) {
     return (
-      <div className="g__center">
+      <div className="text-center">
         <LoadingSpinner />
       </div>
     );

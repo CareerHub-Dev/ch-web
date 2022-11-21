@@ -10,7 +10,7 @@ const SearchTerm = () => {
   };
   return (
     <>
-      <label htmlFor="title" className="g__text-bold">
+      <label htmlFor="title" className="font-semibold">
         Назва
       </label>
       <input
@@ -18,6 +18,7 @@ const SearchTerm = () => {
         type="search"
         value={searchTerm}
         onChange={searchTermChangeHandler}
+        className="form-input w-full p-1"
       />
     </>
   );

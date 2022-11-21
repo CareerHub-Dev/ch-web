@@ -46,7 +46,7 @@ const TagsControls = () => {
 
   return (
     <>
-      <label htmlFor="tags" className="g__text-bold">
+      <label htmlFor="tags" className="font-semibold">
         {`Теги`}
       </label>
       <SelectedTags />
@@ -57,6 +57,7 @@ const TagsControls = () => {
           value={tagsSearch}
           onChange={tagsSearchChangeHandler}
           onFocus={tagsSearchFocusHandler}
+          className="form-input w-full p-1"
         />
         <Overlay
           onOutsideClick={tagsSearchHideHandler}

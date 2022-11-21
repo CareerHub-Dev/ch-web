@@ -7,7 +7,7 @@ import LoadMore from '@/components/ui/LoadMore';
 import { protectedSsr } from '@/lib/protected-ssr';
 import CommonLayout from '@/components/layout/CommonLayout';
 import parseUnknownError from '@/lib/parse-unknown-error';
-import createAxiosInstance from '@/lib/axios/create-instance';
+import axiosMiddleware from '@/lib/middleware/axiosMiddleware';
 import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
 import WrappedSpinner from '@/components/companies/feed/WrappedSpinner';
 
@@ -79,9 +79,7 @@ export const getServerSideProps = protectedSsr<{
   getProps: async (context) => {
     const params = { pageSize: 25, searchTerm: '' };
     try {
-      const data = await getCompanies(params)(
-        createAxiosInstance({ data: context.session })
-      );
+      const data = await getCompanies(params)(axiosMiddleware(context));
 
       return {
         props: {

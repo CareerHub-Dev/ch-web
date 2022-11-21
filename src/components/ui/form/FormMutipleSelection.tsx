@@ -20,7 +20,7 @@ const FormMultipleSelection = ({
 }: Props) => {
   return (
     <>
-      {label && <label className="g__text-bold">{label}</label>}
+      {label && <label className="font-semibold">{label}</label>}
       {options.map(({ label, value }) => {
         const isSelected = isItemSelected(value);
         const changeHandler = onSelect.bind(null, value);

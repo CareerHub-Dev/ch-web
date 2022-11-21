@@ -1,7 +1,7 @@
 import LinkButton from '@/components/ui/LinkButton';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import {
-  reset,
+  reset as resetFilters,
   selectFilterApplied,
   setFilterApplied,
 } from '@/context/job-offers-feed';
@@ -17,22 +17,20 @@ const JobOffersFilters = () => {
   const dispatch = useAppDispatch();
   const filterApplied = useSelector(selectFilterApplied);
 
-  const submissionHandler = (event: any) => {
+  const submit = (event: any) => {
     event.preventDefault();
     dispatch(setFilterApplied(true));
   };
 
-  const resetHandler = (event: any) => {
+  const reset = (event: any) => {
     event.preventDefault();
-    dispatch(reset());
+    dispatch(resetFilters());
   };
 
   return (
     <div className={classes.filters}>
-      <form className={classes.form}>
+      <form onSubmit={submit} className={classes.form}>
         <div className={classes.controls}>
-          <h1>Фільтри</h1>
-
           <div className={classes.control}>
             <SearchTerm />
           </div>
@@ -47,10 +45,8 @@ const JobOffersFilters = () => {
           </div>
         </div>
 
-        <LinkButton onClick={submissionHandler}>Пошук</LinkButton>
-        {filterApplied && (
-          <LinkButton onClick={resetHandler}>Очистити</LinkButton>
-        )}
+        <LinkButton onClick={submit}>Пошук</LinkButton>
+        {filterApplied && <LinkButton onClick={reset}>Очистити</LinkButton>}
       </form>
     </div>
   );

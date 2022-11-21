@@ -12,16 +12,14 @@ const JobTypeSelect = () => {
 
   return (
     <>
-      <label htmlFor="jobType" className="g__text-bold">
+      <label htmlFor="jobType" className="font-semibold">
         Тип
       </label>
       <select
         id="jobType"
         onChange={jobTypeChangeHandler}
         value={jobType || ''}
-        style={{
-          width: '100%',
-        }}
+        className="form-input w-full p-1"
       >
         {jobTypeOptions.map((option) => (
           <option key={option.value} value={option.value}>

@@ -2,7 +2,7 @@ import NoCompanySubscriptions from './NoCompanySubscriptions';
 import SubscriptionCompanyItem from './SubscriptionCompanyItem';
 import StudentSubscriptionsList from './StudentSubscriptionsList';
 import { getStudentCompanySubscriptions } from '@/lib/api/student';
-import { unsubscribeStudentFromCompany } from '@/lib/api/company';
+import { unsubscribeStudentFromCompanyById } from '@/lib/api/company';
 
 const StudentSubscriptionsCompanies = (props: {
   accountId: string;
@@ -22,7 +22,7 @@ const StudentSubscriptionsCompanies = (props: {
       item={SubscriptionCompanyItem}
       noItems={NoCompanySubscriptions}
       getItems={getStudentCompanySubscriptions}
-      mutateItem={unsubscribeStudentFromCompany}
+      mutateItem={unsubscribeStudentFromCompanyById}
       extractItemName={(item) => item.name}
     />
   );

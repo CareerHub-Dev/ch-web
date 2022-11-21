@@ -9,7 +9,7 @@ import AvatarEdit from '@/components/student-profile/edit/AvatarEdit';
 import EditPageHeader from '@/components/student-profile/edit/EditPageHeader';
 import ChangePassword from '@/components/student-profile/edit/ChangePassword';
 import { getImage } from '@/lib/api/image';
-import createAxiosInstance from '@/lib/axios/create-instance';
+import axiosMiddleware from '@/lib/middleware/axiosMiddleware';
 import defaultAvatar from '@/resources/images/default-avatar.png';
 
 import { type InferGetServerSidePropsType } from 'next';
@@ -93,11 +93,7 @@ export const getServerSideProps = protectedSsr<{ student: Student }>({
         },
       };
     }
-    const student = await getSelfStudent(
-      createAxiosInstance({
-        data: context.session,
-      })
-    );
+    const student = await getSelfStudent(axiosMiddleware(context));
     return { props: { student } };
   },
 });

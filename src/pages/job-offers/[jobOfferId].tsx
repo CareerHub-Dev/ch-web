@@ -29,7 +29,7 @@ const JobOfferDetailPage = () => {
 
   if (jobOfferQuery.isLoading) {
     return (
-      <div className="g__center">
+      <div className="text-center">
         <LoadingSpinner />
       </div>
     );
@@ -37,14 +37,13 @@ const JobOfferDetailPage = () => {
 
   if (jobOfferQuery.isError) {
     return (
-      <div className="g__center">
+      <div className="text-center">
         <p>Помилка при завантаженні вакансії</p>
       </div>
     );
   }
 
   const jobOffer = jobOfferQuery.data as JobOfferDetails.JobOffer;
-  console.log(jobOffer);
 
   return (
     <>
