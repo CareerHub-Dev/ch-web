@@ -95,12 +95,14 @@ const FollowButton = ({ companyId }: { companyId: string }) => {
   return (
     <button
       onClick={click}
+      disabled={subscriptionMutation.isLoading}
       className={cn(
-        'flex items-center justify-center gap-4 rounded-lg bg-lightBlueAccent text-darkerBlue py-2 px-4 tracking-wide',
+        `flex items-center justify-center gap-4 rounded-lg tracking-wide
+       text-white bg-lightBlueAccent py-2 px-4 hover:bg-opacity-90 disabled:cursor-wait disabled:opacity-50`,
         subscriptionStatusQuery.isLoading && 'animate-pulse'
       )}
     >
-      <UserPlusIcon className="w-6 h-6 text-darkerBlue" title="Підписатися" />
+      <UserPlusIcon className="w-6 h-6 text-white" title="Підписатися" />
       <p>{buttonText}</p>
     </button>
   );
