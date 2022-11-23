@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import useSession from '@/hooks/useSession';
 import NavLink from './NavLink';
 import UserMenu from './UserMenu';
+import PopOverMenu from './PopoverMenu';
 import getNavigationLinks from '@/lib/navigation-links';
 
 const HorizontalNavbar = () => {
@@ -14,7 +15,10 @@ const HorizontalNavbar = () => {
       <h1 className="font-rancho pointer-events-none text-3xl select-none inline-block">
         CareerHub
       </h1>
-      <nav className="flex gap-12 items-center">
+      <div className="-mr-2 flex items-center md:hidden">
+        <PopOverMenu />
+      </div>
+      <nav className="hidden md:flex gap-12 items-center">
         <ul className="flex gap-6">
           {status !== 'loading' &&
             links.map((link) => (
