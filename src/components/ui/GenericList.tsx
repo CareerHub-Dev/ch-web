@@ -1,16 +1,14 @@
 import { Fragment } from 'react';
 
-type Props<T> = {
-  renderItem: (item: T, ...args: any) => JSX.Element;
-  keyExtractor: (item: T, index: number) => string | number;
-  items: T[];
-};
-
 const GenericList = <T extends unknown>({
-  renderItem,
-  keyExtractor,
   items,
-}: Props<T>) => {
+  renderItem,
+  keyExtractor = (_item, index) => index,
+}: {
+  items: T[];
+  renderItem: (item: T, ...args: any) => JSX.Element;
+  keyExtractor?: (item: T, index: number) => string | number;
+}) => {
   return (
     <Fragment>
       {items.map((item, index) => (

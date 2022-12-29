@@ -15,7 +15,7 @@
   }
 
   .form-input {
-    @apply border-darkGray border border-solid rounded-lg bg-lightGray transition ease-in-out duration-200 focus:border-lightBlueAccent focus:outline-none;
+    @apply border-darkGray border border-solid rounded-lg bg-lightGray transition ease-in-out duration-200 focus:border-blue-500 focus:outline-none;
   }
 }
 

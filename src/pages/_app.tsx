@@ -38,7 +38,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
           name="viewport"
           content="width=device-width, initial-scale=1.0"
         ></meta>
-        <meta name="theme-color" content="#ffffff"/>
+        <meta name="theme-color" content="#ffffff" />
         <link rel="manifest" href="/site.webmanifest" />
         <link rel="shortcut icon" href="/favicon.ico"></link>
         <link rel="apple-touch-icon" href="/apple-touch-icon.png"></link>

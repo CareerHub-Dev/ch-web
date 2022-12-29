@@ -2,11 +2,13 @@ import { Fragment } from 'react';
 import { useRouter } from 'next/router';
 import useSession from '@/hooks/useSession';
 import UserMenuAvatar from './UserMenuAvatar';
+import Link from 'next/link';
 import { Menu, Transition } from '@headlessui/react';
 import {
   UserCircleIcon,
   Cog6ToothIcon,
   ArrowLeftOnRectangleIcon,
+  DocumentIcon,
 } from '@heroicons/react/24/outline';
 
 import cn from 'classnames';
@@ -23,7 +25,7 @@ const UserMenu = () => {
     router.push('/');
   };
 
-  const pushRoute = (route: string) => () => router.push(route);
+  // const pushRoute = (route: string) => () => router.push(route);
 
   return (
     <section className="hidden md:flex items-center justify-between">
@@ -52,24 +54,38 @@ const UserMenu = () => {
             >
               <Menu.Item>
                 {({ active }) => (
-                  <button
-                    onClick={pushRoute('/my-profile')}
+                  <Link
+                    href={'/my-profile'}
+                    passHref
                     className={cn(itemClassName, active && 'bg-lightBlue')}
                   >
                     <UserCircleIcon className="w-6 h-6" />
                     Мій профіль
-                  </button>
+                  </Link>
                 )}
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
-                  <button
-                    onClick={pushRoute('/my-profile/edit')}
+                  <Link
+                    href={'/my-cvs'}
+                    passHref
+                    className={cn(itemClassName, active && 'bg-lightBlue')}
+                  >
+                    <DocumentIcon className="w-6 h-6" />
+                    Мої резюме
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    href={'/my-profile/edit'}
+                    passHref
                     className={cn(itemClassName, active && 'bg-lightBlue')}
                   >
                     <Cog6ToothIcon className="w-6 h-6" />
                     Налаштування
-                  </button>
+                  </Link>
                 )}
               </Menu.Item>
               <Menu.Item>

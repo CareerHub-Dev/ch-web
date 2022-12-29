@@ -1,5 +1,11 @@
 import type { UseInputResult } from '@/hooks/useInput/v3';
 import cn from 'classnames';
+import { type InputHTMLAttributes, type DetailedHTMLProps } from 'react';
+
+type MiscellaneousInputProps = DetailedHTMLProps<
+  InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+>;
 
 const FormInput = ({
   value,
@@ -11,12 +17,8 @@ const FormInput = ({
   disabled = false,
   type = 'text',
   id,
-}: UseInputResult & {
-  className?: string;
-  disabled?: boolean;
-  type?: string;
-  id?: string;
-}) => {
+  ...otherProps
+}: UseInputResult & MiscellaneousInputProps) => {
   return (
     <>
       <input
@@ -27,6 +29,7 @@ const FormInput = ({
         onBlur={blur}
         value={value}
         disabled={disabled}
+        {...otherProps}
       />
       {hasError && <span className="text-primaryRed">{error}</span>}
     </>

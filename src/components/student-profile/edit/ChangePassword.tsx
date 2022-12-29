@@ -20,7 +20,9 @@ const ChangePassword = () => {
       },
     ],
   });
+  const repeatedNewPasswordInput = useInput();
   const newPasswordIsVisible = useBoolean(false);
+
   const mutation = useProtectedMutation(['changePassword'], changePassword, {
     onSuccess: () => {
       toast.success('Пароль успішно змінено');
@@ -61,6 +63,7 @@ const ChangePassword = () => {
             {...oldPasswordInput}
             type={oldPasswordIsVisible.value ? 'text' : 'password'}
             className="w-full p-2"
+            autoComplete="off"
             id="oldPassword"
           />
         </div>
@@ -74,6 +77,20 @@ const ChangePassword = () => {
             type={newPasswordIsVisible.value ? 'text' : 'password'}
             className="w-full p-2"
             id="newPassword"
+            autoComplete="off"
+          />
+        </div>
+        <div className="mb-8">
+          <label
+            htmlFor="repeatedNewPassword"
+            className="font-bold"
+          >{`Повторіть Новий пароль`}</label>
+          <FormInput
+            {...repeatedNewPasswordInput}
+            type={newPasswordIsVisible.value ? 'text' : 'password'}
+            className="w-full p-2"
+            id="repeatedNewPassword"
+            autoComplete="off"
           />
         </div>
       </form>
