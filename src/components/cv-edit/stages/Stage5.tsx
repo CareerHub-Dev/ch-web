@@ -1,8 +1,8 @@
 import GenericList from '@/components/ui/GenericList';
-import { useReducer } from 'react';
+import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
 import LanguageItem from '../LanguageItem';
-import AddLanguageModal from '../AddLanguageModal';
-import EditLanguageModal from '../EditLanguageModal';
+import RemoveItemModal from '../item-list/RemoveItemModal';
+import { AddOrEditLanguageModal } from '../AddOrEditLanguageModal';
 
 type Language = {
   name: string;
@@ -21,49 +21,65 @@ const languages: Language[] = [
 ];
 
 export default function Stage5() {
-  const [state, dispatch] = useReducer(stage5Reducer, {
-    modal: null,
-    editedLanguage: null,
-    editedLanguageIndex: null,
-  });
+  const [state, dispatch] = useDialogActionsListReducer<Language>();
 
-  const handleAdd = () => dispatch({ type: 'add' });
-
-  const createEditHandler =
-    (opts: { language: Language; languageIndex: number }) => () => {
+  const createModificationHandler =
+    (type: 'edit' | 'remove') =>
+    (opts: { language: Language; languageIndex: number }) =>
+    () => {
       dispatch({
-        type: 'edit',
-        language: opts.language,
-        languageIndex: opts.languageIndex,
+        type,
+        item: opts.language,
+        itemIndex: opts.languageIndex,
       });
     };
 
+  const createEditHandler = createModificationHandler('edit');
+  const createRemoveHandler = createModificationHandler('remove');
+
+  const handleAdd = () => dispatch({ type: 'add' });
   const handleClose = () =>
     dispatch({
       type: 'close',
     });
 
   const handleAddLanguage = () => {};
-
   const handleEditLanguage = () => {};
+  const handleRemoveLanguage = () => {};
 
-  const { modal, editedLanguage, editedLanguageIndex } = state;
+  const {
+    dialog,
+    editedItem: editedLanguage,
+    editedItemIndex: editedLanguageIndex,
+  } = state;
 
   return (
     <>
-      {modal === 'add' ? (
-        <AddLanguageModal close={handleClose} action={handleAddLanguage} />
-      ) : modal === 'edit' ? (
-        <EditLanguageModal
-          close={handleClose}
-          action={handleEditLanguage}
-          initialValues={editedLanguage}
-          languageIndex={editedLanguageIndex}
+      {dialog === null ? null : dialog === 'remove' ? (
+        <RemoveItemModal
+          onClose={handleClose}
+          onConfirm={handleRemoveLanguage}
+          title="Видалити мову?"
+          descriptionText={`Мова ${editedLanguage.name} буде видалена зі списку`}
         />
-      ) : null}
+      ) : dialog === 'edit' ? (
+        <AddOrEditLanguageModal
+          onClose={handleClose}
+          onConfirm={handleEditLanguage}
+          initialPayload={{
+            item: editedLanguage,
+            itemIndex: editedLanguageIndex,
+          }}
+        />
+      ) : (
+        <AddOrEditLanguageModal
+          onClose={handleClose}
+          onConfirm={handleAddLanguage}
+        />
+      )}
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-xl font-semibold text-gray-900">Іноземні мови</h1>
+          <h3 className="text-xl font-semibold text-gray-900">Іноземні мови</h3>
           <p className="mt-2 text-sm text-gray-700">
             Додайте знайомі іноземні мови
           </p>
@@ -79,56 +95,27 @@ export default function Stage5() {
         </div>
       </div>
 
-      <div className="mt-10 flow-root">
-        <ul role="list" className="-my-5 divide-y divide-gray-200">
+      <div className="mt-5 flow-root">
+        <ul role="list" className="divide-y divide-gray-200">
           <GenericList
             items={languages}
             keyExtractor={(_, index) => index}
             renderItem={(language, languageIndex) => (
-              <LanguageItem {...language} languageIndex={languageIndex} />
+              <LanguageItem
+                {...language}
+                onEditClick={createEditHandler({
+                  language,
+                  languageIndex,
+                })}
+                onRemoveClick={createRemoveHandler({
+                  language,
+                  languageIndex,
+                })}
+              />
             )}
           />
         </ul>
       </div>
     </>
   );
-}
-
-type Stage5State =
-  | {
-      modal: null;
-      editedLanguage: null;
-      editedLanguageIndex: null;
-    }
-  | {
-      modal: 'add';
-      editedLanguage: null;
-      editedLanguageIndex: null;
-    }
-  | {
-      modal: 'edit';
-      editedLanguage: Language;
-      editedLanguageIndex: number;
-    };
-
-type Stage5Action =
-  | { type: 'add' }
-  | { type: 'close' }
-  | { type: 'edit'; language: Language; languageIndex: number };
-
-function stage5Reducer(state: Stage5State, action: Stage5Action): Stage5State {
-  switch (action.type) {
-    case 'close':
-      return { modal: null, editedLanguage: null, editedLanguageIndex: null };
-    case 'add':
-      return { modal: 'add', editedLanguage: null, editedLanguageIndex: null };
-    case 'edit':
-      return {
-        modal: 'edit',
-        editedLanguage: action.language,
-        editedLanguageIndex: action.languageIndex,
-      };
-    default:
-      return state;
-  }
 }

@@ -36,11 +36,11 @@ export default function StageCircleButtons() {
                   className="absolute inset-0 flex items-center"
                   aria-hidden="true"
                 >
-                  <div className="h-0.5 w-full bg-indigo-600" />
+                  <div className="h-0.5 w-full bg-blue-600" />
                 </div>
                 <a
                   onClick={() => goToStage(stageIndex as StageIndex)}
-                  className="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900"
+                  className="relative flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 hover:bg-blue-900"
                 >
                   <CheckIcon
                     className="h-5 w-5 text-white"
@@ -59,11 +59,11 @@ export default function StageCircleButtons() {
                 </div>
                 <a
                   onClick={() => goToStage(stageIndex as StageIndex)}
-                  className="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white"
+                  className="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-blue-600 bg-white"
                   aria-current="step"
                 >
                   <span
-                    className="h-2.5 w-2.5 rounded-full bg-indigo-600"
+                    className="h-2.5 w-2.5 rounded-full bg-blue-600"
                     aria-hidden="true"
                   />
                   <span className="sr-only">{stage.name}</span>

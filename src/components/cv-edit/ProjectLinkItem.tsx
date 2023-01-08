@@ -1,16 +1,16 @@
 import ListItemEditMenu from '@/components/ui/ListItemEditMenu';
 
-type Language = {
-  name: string;
-  level: string;
+type ProjectLink = {
+  title: string;
+  url: string;
 };
 
 export default function LanguageItem({
-  name,
-  level,
+  title,
+  url,
   onEditClick,
   onRemoveClick,
-}: Language & {
+}: ProjectLink & {
   onEditClick: () => void;
   onRemoveClick: () => void;
 }) {
@@ -18,8 +18,14 @@ export default function LanguageItem({
     <li className="py-4">
       <div className="flex items-center space-x-4">
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium text-gray-900">{name}</p>
-          <p className="truncate text-sm text-gray-500">{level}</p>
+          <a
+            target={'_blank'}
+            rel="noreferrer"
+            href={url}
+            className="truncate text-sm font-medium text-blue-900 underline"
+          >
+            {title}
+          </a>
         </div>
         <ListItemEditMenu
           onEditClick={onEditClick}

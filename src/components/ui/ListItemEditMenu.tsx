@@ -1,22 +1,18 @@
-import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import { Menu, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import cn from 'classnames';
+import { Fragment } from 'react';
 
 export default function LanguageActionsButton({
-  languageIndex,
+  onEditClick,
+  onRemoveClick,
 }: {
-  languageIndex: number;
+  onEditClick: () => void;
+  onRemoveClick: () => void;
 }) {
-  const handleRemove = () => {
-    if (typeof alert === 'function') {
-      alert(`Are you sure you want to remove ${languageIndex}?`);
-    }
-  };
-
   return (
     <Menu as={'div'} className="relative inline-block text-left">
-      <Menu.Button className="p-2 bg-transparent rounded-md cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+      <Menu.Button className="p-2 bg-transparent rounded-md cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-opacity-75">
         <EllipsisVerticalIcon title="Дії" className="h-6 w-6" />
       </Menu.Button>
 
@@ -34,6 +30,7 @@ export default function LanguageActionsButton({
             {({ active }) => (
               <button
                 type="button"
+                onClick={onEditClick}
                 className={cn(
                   active && 'bg-blue-500 text-white',
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm'
@@ -46,7 +43,7 @@ export default function LanguageActionsButton({
           <Menu.Item>
             {({ active }) => (
               <button
-                onClick={handleRemove}
+                onClick={onRemoveClick}
                 className={cn(
                   active && 'bg-red-500 text-white',
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm'

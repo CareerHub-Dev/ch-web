@@ -2,7 +2,7 @@ export default function Stage2() {
   return (
     <div className="space-y-6 sm:space-y-5">
       <div>
-        <h3 className="text-lg font-medium leading-6 text-gray-900">
+        <h3 className="text-xl font-medium leading-6 text-gray-900">
           {'Фотографія'}
         </h3>
         <p className="mt-1 max-w-2xl text-sm text-gray-500">

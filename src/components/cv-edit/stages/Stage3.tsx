@@ -3,7 +3,7 @@ export default function Stage3() {
     <div className="space-y-4">
       <label
         htmlFor="goals"
-        className="block text-lg font-medium leading-6 text-gray-900 sm:mt-px sm:pt-2"
+        className="block text-xl font-medium leading-6 text-gray-900 sm:mt-px sm:pt-2"
       >
         Цілі
       </label>
