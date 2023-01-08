@@ -4,21 +4,28 @@ import { UseQueryOptions } from '@tanstack/react-query';
 
 export default function useJobPositionsQuery(
   options?: Omit<
-    UseQueryOptions<any, unknown, any, string[]>,
+    UseQueryOptions<
+      Array<{
+        id: string;
+        name: string;
+      }>,
+      unknown,
+      Array<{
+        id: string;
+        name: string;
+      }>,
+      string[]
+    >,
     'queryKey' | 'queryFn'
   >
 ) {
-  const q = useProtectedQuery(['jobPositions'], getJobPositions, {
+  return useProtectedQuery<
+    string[],
+    Array<{
+      id: string;
+      name: string;
+    }>
+  >(['jobPositions'], getJobPositions, {
     ...options,
   });
-  const jobPositionOptions =
-    q.data?.map((item: any) => ({
-      value: item['id'],
-      text: item['name'],
-    })) || [];
-
-  return {
-    ...q,
-    options: jobPositionOptions,
-  };
 }
