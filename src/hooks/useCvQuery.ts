@@ -8,6 +8,9 @@ export type CvQueryData = {
     id: string;
     name: string;
   };
+  goals: string;
+  skillsAndTechnologies: string;
+  experienceHighlights: string;
 };
 
 export function useCvQuery({

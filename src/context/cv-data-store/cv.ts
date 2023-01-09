@@ -12,6 +12,9 @@ export type CvData = {
   };
   firstName: StringInput;
   lastName: StringInput;
+  goals: StringInput;
+  skillsAndTechnologies: StringInput;
+  experienceHighlights: StringInput;
 };
 
 export function getEmptyCvData(): CvData {
@@ -21,6 +24,9 @@ export function getEmptyCvData(): CvData {
     jobPosition: null,
     firstName: getStringInput(),
     lastName: getStringInput(),
+    goals: getStringInput(),
+    skillsAndTechnologies: getStringInput(),
+    experienceHighlights: getStringInput(),
   };
 }
 
@@ -31,6 +37,9 @@ export function restoreToCvQueryData(data: CvQueryData): CvData {
     templateLanguage: matchTemplateLanguage(data.templateLanguage),
     firstName: getStringInput(''),
     lastName: getStringInput(''),
+    goals: getStringInput(data.goals),
+    skillsAndTechnologies: getStringInput(data.skillsAndTechnologies),
+    experienceHighlights: getStringInput(data.experienceHighlights),
   };
 }
 

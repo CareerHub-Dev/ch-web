@@ -1,4 +1,14 @@
+import { type ChangeEvent } from 'react';
+import { useCvDataStore } from '@/context/cv-data-store';
+
 export default function Stage3() {
+  const goals = useCvDataStore((s) => s.cvData.goals);
+  const changeGoals = useCvDataStore((s) => s.changeGoals);
+
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    changeGoals(e.target.value);
+  };
+
   return (
     <div className="space-y-4">
       <label
@@ -13,7 +23,8 @@ export default function Stage3() {
           name="goals"
           rows={3}
           className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          defaultValue={''}
+          value={goals.value}
+          onChange={handleChange}
         />
         <p className="mt-2 text-sm text-gray-500">
           Напишіть не більше 200 слів про свої цілі у праці

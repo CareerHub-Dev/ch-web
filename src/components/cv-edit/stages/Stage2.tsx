@@ -25,7 +25,7 @@ export default function Stage2() {
             >
               Змінити
             </button>
-            <span className="h-12 w-12 overflow-hidden rounded-full bg-gray-100">
+            <span className="h-48 w-48 overflow-hidden rounded-full bg-gray-100">
               <svg
                 className="h-full w-full text-gray-300"
                 fill="currentColor"

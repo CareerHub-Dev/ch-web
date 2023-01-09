@@ -21,6 +21,10 @@ export type CvDataStore = {
   changeJobPosition: (value: { id: string; name: string }) => void;
   changeFirstName: (value: string) => void;
   changeLastName: (value: string) => void;
+  
+  changeGoals: (value: string) => void;
+  changeSkillsAndTechnologies: (value: string) => void;
+  changeExperienceHighlights: (value: string) => void;
 };
 
 const useCvDataStoreBase = create<CvDataStore>()(
@@ -98,6 +102,51 @@ const useCvDataStoreBase = create<CvDataStore>()(
               ],
             });
           }),
+        changeGoals: (value) =>
+          set((state) => {
+            state.cvData.goals = validateStringValue({
+              value,
+              validators: [
+                (val) =>
+                  val.length > 0
+                    ? { type: 'success' }
+                    : {
+                        type: 'warning',
+                        message: 'Це поле краще заповнити',
+                      },
+              ],
+            });
+          }),
+        changeSkillsAndTechnologies: (value) =>
+          set((state) => {
+            state.cvData.skillsAndTechnologies = validateStringValue({
+              value,
+              validators: [
+                (val) =>
+                  val.length > 0
+                    ? { type: 'success' }
+                    : {
+                        type: 'warning',
+                        message: 'Це поле краще заповнити',
+                      },
+              ],
+            });
+          }),
+        changeExperienceHighlights: (value) =>
+          set((state) => {
+            state.cvData.experienceHighlights = validateStringValue({
+              value,
+              validators: [
+                (val) =>
+                  val.length > 0
+                    ? { type: 'success' }
+                    : {
+                        type: 'warning',
+                        message: 'Це поле краще заповнити',
+                      },
+              ],
+            });
+          }),
       })),
       { name: 'cv-store' }
     )
@@ -114,6 +163,9 @@ const emptyState = {
   changeJobPosition: () => {},
   changeFirstName: () => {},
   changeLastName: () => {},
+  changeGoals: () => {},
+  changeSkillsAndTechnologies: () => {},
+  changeExperienceHighlights: () => {},
 };
 
 export const useCvDataStore = ((selector, compare) => {
