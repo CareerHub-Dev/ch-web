@@ -48,7 +48,7 @@ const EditStudentPage: NextPageWithLayout<
 
   return (
     <div
-      className="md:mx-8 mb-2  lg:mx-auto max-w-full lg:max-w-[978px] bg-white px-4 rounded-md shadow-md
+      className="md:mx-8 mb-2 lg:mx-auto max-w-full lg:max-w-[978px] bg-white px-4 rounded-md shadow-md
       transition-all ease-in-out duration-200"
     >
       <div className="grid grid-cols-[auto_1fr] gap-8">

@@ -1,6 +1,8 @@
 import { type StateCreator } from 'zustand';
 
-type StageNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export const CV_EDITOR_STAGES = [0, 1, 2, 3, 4, 5, 6, 7] as const;
+
+export type StageNumber = typeof CV_EDITOR_STAGES[number];
 
 export type StagesSlice = {
   currentStage: StageNumber;

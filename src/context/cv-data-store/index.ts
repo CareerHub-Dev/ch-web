@@ -1,2 +1,2 @@
 export * from './cv-data-store';
-export * from './selectors';
+export * from './cv-data-selectors';

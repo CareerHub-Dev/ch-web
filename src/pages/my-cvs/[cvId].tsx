@@ -33,7 +33,7 @@ const CVDetailsPage: NextPageWithLayout<
   }, [id, previousCvId, reInit]);
 
   return (
-    <div className="mx-auto container w-fit rounded-b-2xl bg-white p-4 shadow-md">
+    <div className="mx-auto container lg:mx-auto max-w-full lg:max-w-[978px] rounded-b-2xl bg-white p-4 shadow-md">
       <div className="flex mb-8 justify-between">
         <CvEditMenu />
         <AssistanceCheckBox />
