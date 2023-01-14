@@ -1,19 +1,5 @@
-import { CheckIcon } from '@heroicons/react/20/solid';
 import { useCvUiStore } from '@/context/cv-ui-store';
 import cn from 'classnames';
-
-const stages = [
-  { name: 'Stage 1', href: '#', status: 'complete' },
-  { name: 'Stage 2', href: '#', status: 'complete' },
-  { name: 'Stage 3', href: '#', status: 'current' },
-  { name: 'Stage 4', href: '#', status: 'upcoming' },
-  { name: 'Stage 5', href: '#', status: 'upcoming' },
-  { name: 'Stage 6', href: '#', status: 'upcoming' },
-  { name: 'Stage 7', href: '#', status: 'upcoming' },
-  { name: 'Stage 8', href: '#', status: 'upcoming' },
-] as const;
-
-type StageIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 export default function StageCircleButtons() {
   const currentStage = useCvUiStore((state) => state.currentStage);

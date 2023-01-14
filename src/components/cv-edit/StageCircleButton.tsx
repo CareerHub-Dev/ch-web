@@ -1,5 +1,6 @@
 import {
   getStageCompletionStatus,
+  StageCompletionStatus,
   useCvDataStore,
 } from '@/context/cv-data-store';
 import { useCvUiStore } from '@/context/cv-ui-store';
@@ -13,6 +14,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/20/solid';
 import cn from 'classnames';
+import StageIconButton from './StageIconButton';
 
 export default function StageCircleButton({
   stageNumber,
@@ -33,23 +35,7 @@ export default function StageCircleButton({
         'relative'
       )}
     >
-      {stageStatus === 'complete' ? (
-        <>
-          <div
-            className="absolute inset-0 flex items-center"
-            aria-hidden="true"
-          >
-            <div className="h-0.5 w-full bg-blue-600" />
-          </div>
-          <a
-            onClick={() => goToStage(stageNumber)}
-            className="relative flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 hover:bg-blue-900"
-          >
-            <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" />
-            <span className="sr-only">{stageName}</span>
-          </a>
-        </>
-      ) : stageNumber === currentStageNumber ? (
+      {stageNumber === currentStageNumber ? (
         <>
           <div
             className="absolute inset-0 flex items-center"
@@ -70,25 +56,39 @@ export default function StageCircleButton({
           </a>
         </>
       ) : (
-        <>
-          <div
-            className="absolute inset-0 flex items-center"
-            aria-hidden="true"
-          >
-            <div className="h-0.5 w-full bg-gray-200" />
-          </div>
-          <a
-            onClick={() => goToStage(stageNumber)}
-            className="group relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white hover:border-gray-400"
-          >
-            <span
-              className="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-gray-300"
-              aria-hidden="true"
-            />
-            <span className="sr-only">{stageName}</span>
-          </a>
-        </>
+        <StageButtonComponentFromStatus
+          stageStatus={stageStatus}
+          stageNumber={stageNumber}
+          stageName={stageName}
+        />
       )}
     </li>
   );
+}
+
+function StageButtonComponentFromStatus(props: {
+  stageStatus: StageCompletionStatus;
+  stageNumber: StageNumber;
+  stageName: string;
+}) {
+  const iconProps = {
+    className: 'h-5 w-5 text-white',
+    'aria-hidden': true,
+  };
+
+  switch (props.stageStatus) {
+    case 'complete':
+      return <StageIconButton {...props} icon={<CheckIcon {...iconProps} />} />;
+    case 'hasErrors':
+      return <StageIconButton {...props} icon={<XMarkIcon {...iconProps} />} />;
+    case 'hasWarnings':
+      return (
+        <StageIconButton
+          {...props}
+          icon={<ExclamationTriangleIcon {...iconProps} />}
+        />
+      );
+    default:
+      return null;
+  }
 }

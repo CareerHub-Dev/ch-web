@@ -1,9 +1,11 @@
 import { type StageNumber } from '../cv-ui-store/stages-slice';
 import { type CvDataStore } from './cv-data-store';
 
+export type StageCompletionStatus = 'complete' | 'hasErrors' | 'hasWarnings';
+
 export const getStageCompletionStatus =
   (stage: StageNumber) =>
-  (store: CvDataStore): 'complete' | 'hasErrors' | 'hasWarnings' => {
+  (store: CvDataStore): StageCompletionStatus => {
     switch (stage) {
       case 0: {
         const jobPositionNotSpecified = !store.cvData.jobPosition;

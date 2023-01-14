@@ -1,15 +1,17 @@
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { type ReactNode } from 'react';
 import { useCvUiStore } from '@/context/cv-ui-store';
 import { type StageNumber } from '@/context/cv-ui-store/stages-slice';
 
-export default function StageCompleteButton({
+export default function StageIconButton({
   stageName,
   stageNumber,
+  icon,
 }: {
   stageNumber: StageNumber;
   stageName: string;
+  icon: ReactNode;
 }) {
-  const goToStage = useCvUiStore(s => s.goToStage);
+  const goToStage = useCvUiStore((s) => s.goToStage);
 
   return (
     <>
@@ -20,7 +22,7 @@ export default function StageCompleteButton({
         onClick={() => goToStage(stageNumber)}
         className="relative flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 hover:bg-blue-900"
       >
-        <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" />
+        {icon}
         <span className="sr-only">{stageName}</span>
       </a>
     </>
