@@ -28,7 +28,7 @@ export default function SaveModal() {
         </label>
         <input
           id="cvTitleInput"
-          className="px-4 py-2 rounded-md bg-gray-100 outline-none border-2 border-solid focus:border-indigo-500 transition-all ease-in-out duration-200"
+          className="px-4 py-2 rounded-md bg-gray-100 outline-none border-2 border-solid focus:border-blue-500 transition-all ease-in-out duration-200"
           type="text"
           placeholder="Дайте цьому резюме назву"
           value={titleValue}

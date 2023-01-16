@@ -1,15 +1,22 @@
 import GenericList from '@/components/ui/GenericList';
+import { useCvDataStore } from '@/context/cv-data-store';
+import { type ProjectLink } from '@/context/cv-data-store/cv';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
+import { type ChangeEvent } from 'react';
+import { AddOrEditProjectLinkModal } from '../AddOrEditProjectLinkModal';
 import RemoveItemModal from '../item-list/RemoveItemModal';
 import ProjectLinkItem from '../ProjectLinkItem';
-import { AddOrEditProjectLinkModal } from '../AddOrEditProjectLinkModal';
-
-type ProjectLink = {
-  title: string;
-  url: string;
-};
 
 export default function Stage6() {
+  const experienceHighlights = useCvDataStore(
+    (s) => s.cvData.experienceHighlights
+  );
+  const changeExperienceHighlights = useCvDataStore(
+    (s) => s.changeExperienceHighlights
+  );
+  const projectLinks = useCvDataStore((s) => s.cvData.projectLinks);
+  const dispatchProjectLinks = useCvDataStore((s) => s.dispatchProjectLinks);
+
   const [state, dispatch] = useDialogActionsListReducer<ProjectLink>();
 
   const createModificationHandler =
@@ -33,7 +40,13 @@ export default function Stage6() {
   const handleEditItem = () => {};
   const handleRemoveItem = () => {};
 
-  const { dialog, editedItem, editedItemIndex } = state;
+  const handleChangeExperienceHighlightsChange = (
+    e: ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    changeExperienceHighlights(e.target.value);
+  };
+
+  const { dialog, focusedItem, focusedItemIndex } = state;
 
   return (
     <>
@@ -42,15 +55,15 @@ export default function Stage6() {
           onClose={closeDialog}
           onConfirm={handleRemoveItem}
           title="Видалити посилання?"
-          descriptionText={`Посилання ${editedItem.title} буде видалено зі списку`}
+          descriptionText={`Посилання ${focusedItem.title} буде видалено зі списку`}
         />
       ) : dialog === 'edit' ? (
         <AddOrEditProjectLinkModal
           onClose={closeDialog}
           onConfirm={handleEditItem}
           initialPayload={{
-            item: editedItem,
-            itemIndex: editedItemIndex,
+            item: focusedItem,
+            itemIndex: focusedItemIndex,
           }}
         />
       ) : (
@@ -72,7 +85,8 @@ export default function Stage6() {
             name="experienceHighlights"
             rows={3}
             className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-            defaultValue={''}
+            value={experienceHighlights.value}
+            onChange={handleChangeExperienceHighlightsChange}
           />
           <p className="mt-2 text-sm text-gray-500">
             {

@@ -3,11 +3,7 @@ import { useState } from 'react';
 import NativeItemSelection from '../ui/NativeItemSelection';
 import ValidatedInput from '../ui/ValidatedInput';
 import AddOrEditItemModal from './item-list/AddOrEditItemModal';
-
-type Language = {
-  name: string;
-  level: string;
-};
+import { type ForeignLanguage } from '@/context/cv-data-store/cv';
 
 const LEVEL_OPTIONS = [
   { name: 'A1', id: 'A1' },
@@ -18,26 +14,15 @@ const LEVEL_OPTIONS = [
   { name: 'C2', id: 'C2' },
 ];
 
-export function AddOrEditLanguageModal(props: {
+export default function AddOrEditLanguageModal(props: {
   onClose: () => void;
-  onConfirm: (payload: { item: Language }) => void;
-}): JSX.Element;
-
-export function AddOrEditLanguageModal(props: {
-  onClose: () => void;
-  onConfirm: (payload: { item: Language; itemIndex: number }) => void;
-  initialPayload: { item: Language; itemIndex: number };
-}): JSX.Element;
-
-export function AddOrEditLanguageModal(props: {
-  onClose: () => void;
-  onConfirm: (payload: { item: Language; itemIndex: number }) => void;
-  initialPayload?: { item: Language; itemIndex: number };
+  onConfirm: (payload: { item: ForeignLanguage; itemIndex: number }) => void;
+  initialPayload?: { item: ForeignLanguage; itemIndex: number };
 }) {
-  const type = typeof props.initialPayload === 'undefined' ? 'add' : 'edit';
+  const formType = !props.initialPayload ? 'add' : 'edit';
 
   const nameInput = useInput({
-    initialValue: props.initialPayload?.item.name || '',
+    initialValue: props.initialPayload?.item.name ?? '',
     validators: [
       (val) => {
         return val.length > 0
@@ -51,30 +36,31 @@ export function AddOrEditLanguageModal(props: {
   });
   const [level, setLevel] = useState(
     LEVEL_OPTIONS.find(
-      (item) => item.name === props.initialPayload?.item.name
+      (item) => item.id === props.initialPayload?.item.languageLevel
     ) || LEVEL_OPTIONS.at(0)!
   );
 
   const handleConfirm = () => {
-    let payload = {
-      item: {
-        level: level.id,
-        name: nameInput.value,
-      },
-    } as { item: Language; itemIndex: number };
+    const item = {
+      name: nameInput.value,
+      languageLevel: level.id,
+    } satisfies ForeignLanguage;
 
-    if (type === 'edit') {
+    const payload = {
+      item,
+    } as unknown as { item: ForeignLanguage; itemIndex: number };
+
+    if (formType === 'edit') {
       payload.itemIndex = props.initialPayload!.itemIndex;
     }
-
-    props.onConfirm(payload as { item: Language; itemIndex: number });
+    props.onConfirm(payload);
   };
 
   return (
     <AddOrEditItemModal
       onClose={props.onClose}
       onConfirm={handleConfirm}
-      type={type}
+      type={formType}
       confirmationDisabled={nameInput.errors.length > 0}
     >
       <div className="mt-4 flex flex-col gap-4">

@@ -1,15 +1,12 @@
-import { type ReactNode } from 'react';
 import { useCvUiStore } from '@/context/cv-ui-store';
 import { type StageNumber } from '@/context/cv-ui-store/stages-slice';
 
-export default function StageIconButton({
+export default function StageIncompleteButton({
   stageName,
   stageNumber,
-  icon,
 }: {
   stageNumber: StageNumber;
   stageName: string;
-  icon: ReactNode;
 }) {
   const goToStage = useCvUiStore((s) => s.goToStage);
 
@@ -20,9 +17,12 @@ export default function StageIconButton({
       </div>
       <a
         onClick={() => goToStage(stageNumber)}
-        className="relative flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 hover:bg-blue-900"
+        className="group relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white hover:border-gray-400"
       >
-        {icon}
+        <span
+          className="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-gray-300"
+          aria-hidden="true"
+        />
         <span className="sr-only">{stageName}</span>
       </a>
     </>

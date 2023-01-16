@@ -1,4 +1,4 @@
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import WrappedSpinner from '@/components/companies/feed/WrappedSpinner';
 import ValidatedInput from '@/components/ui/ValidatedInput';
 import { useCvDataStore } from '@/context/cv-data-store';
 import useSelfStudentQuery from '@/hooks/useStudentSelfQuery';
@@ -16,11 +16,7 @@ export default function Stage1() {
     },
   });
   if (studentDataIsLoading) {
-    return (
-      <div className="text-center p-2">
-        <LoadingSpinner />
-      </div>
-    );
+    return <WrappedSpinner />;
   }
 
   return (

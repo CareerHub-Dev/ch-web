@@ -2,15 +2,39 @@ import useProtectedQuery from './useProtectedQuery';
 import { useQueryClient } from '@tanstack/react-query';
 
 export type CvQueryData = {
+  id: string;
   title: string;
-  templateLanguage: string;
+  created: string;
+  modified: string;
   jobPosition: {
     id: string;
     name: string;
   };
+  templateLanguage: string;
+  lastName: string;
+  firstName: string;
+  photo: string;
   goals: string;
   skillsAndTechnologies: string;
   experienceHighlights: string;
+  studentId: string;
+  foreignLanguages: Array<{
+    name: string;
+    languageLevel: string;
+  }>;
+  projectLinks: Array<{
+    title: string;
+    url: string;
+  }>;
+  educations: Array<{
+    university: string;
+    city: string;
+    country: string;
+    speciality: string;
+    degree: string;
+    startDate: string;
+    endDate: string;
+  }>;
 };
 
 export function useCvQuery({

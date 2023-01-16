@@ -1,7 +1,19 @@
 import { type CvQueryData } from '@/hooks/useCvQuery';
 import { getStringInput } from '@/lib/string-input/v2';
+import { getArrayInput } from '@/lib/array-input/v2';
 
 type StringInput = Inputs.StringInput;
+type ArrayInput<T> = Inputs.ArrayInput<T>;
+
+export type ForeignLanguage = {
+  name: string;
+  languageLevel: string;
+};
+
+export type ProjectLink = {
+  title: string;
+  url: string;
+};
 
 export type CvData = {
   title: StringInput;
@@ -15,6 +27,8 @@ export type CvData = {
   goals: StringInput;
   skillsAndTechnologies: StringInput;
   experienceHighlights: StringInput;
+  foreignLanguages: ArrayInput<ForeignLanguage>;
+  projectLinks: ArrayInput<ProjectLink>;
 };
 
 export function getEmptyCvData(): CvData {
@@ -27,6 +41,8 @@ export function getEmptyCvData(): CvData {
     goals: getStringInput(),
     skillsAndTechnologies: getStringInput(),
     experienceHighlights: getStringInput(),
+    foreignLanguages: getArrayInput(),
+    projectLinks: getArrayInput(),
   };
 }
 
@@ -40,6 +56,8 @@ export function restoreToCvQueryData(data: CvQueryData): CvData {
     goals: getStringInput(data.goals),
     skillsAndTechnologies: getStringInput(data.skillsAndTechnologies),
     experienceHighlights: getStringInput(data.experienceHighlights),
+    foreignLanguages: getArrayInput({ initialItems: data.foreignLanguages }),
+    projectLinks: getArrayInput({ initialItems: data.projectLinks }),
   };
 }
 

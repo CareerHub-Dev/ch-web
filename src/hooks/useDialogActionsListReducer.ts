@@ -11,8 +11,8 @@ export function useDialogActionsListReducer<TListItem>(options?: {
     dialogActionsListReducer<TListItem>,
     options?.initialValue || {
       dialog: null,
-      editedItem: null,
-      editedItemIndex: null,
+      focusedItem: null,
+      focusedItemIndex: null,
     }
   );
 }

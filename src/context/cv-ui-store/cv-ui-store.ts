@@ -1,18 +1,15 @@
-import create from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { createStagesSlice, type StagesSlice } from './stages-slice';
+import { create } from 'zustand';
 import {
   createAssistanceSlice,
-  type AssistanceSlice,
+  type AssistanceSlice
 } from './assistance-slice';
 import { createModalSlice, type ModalSlice } from './modal-slice';
+import { createStagesSlice, type StagesSlice } from './stages-slice';
 
 export const useCvUiStore = create<
   StagesSlice & AssistanceSlice & ModalSlice
->()(
-  devtools((...a) => ({
-    ...createStagesSlice(...a),
-    ...createAssistanceSlice(...a),
-    ...createModalSlice(...a),
-  }))
-);
+>()((...a) => ({
+  ...createStagesSlice(...a),
+  ...createAssistanceSlice(...a),
+  ...createModalSlice(...a),
+}));

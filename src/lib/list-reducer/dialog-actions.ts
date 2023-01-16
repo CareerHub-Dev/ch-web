@@ -1,26 +1,26 @@
 export type ItemListState<TItem> =
   | {
       dialog: null;
-      editedItem: null;
-      editedItemIndex: null;
+      focusedItem: null;
+      focusedItemIndex: null;
     }
   | {
       dialog: 'add';
-      editedItem: null;
-      editedItemIndex: null;
+      focusedItem: null;
+      focusedItemIndex: null;
     }
   | {
       dialog: 'edit';
-      editedItem: TItem;
-      editedItemIndex: number;
+      focusedItem: TItem;
+      focusedItemIndex: number;
     }
   | {
       dialog: 'remove';
-      editedItem: TItem;
-      editedItemIndex: number;
+      focusedItem: TItem;
+      focusedItemIndex: number;
     };
 
-type ItemListActions<TItem> =
+type ItemListAction<TItem> =
   | { type: 'add' }
   | { type: 'close' }
   | { type: 'edit'; item: TItem; itemIndex: number }
@@ -28,24 +28,24 @@ type ItemListActions<TItem> =
 
 export function dialogActionsListReducer<TItem>(
   state: ItemListState<TItem>,
-  action: ItemListActions<TItem>
+  action: ItemListAction<TItem>
 ): ItemListState<TItem> {
   switch (action.type) {
     case 'close':
-      return { dialog: null, editedItem: null, editedItemIndex: null };
+      return { dialog: null, focusedItem: null, focusedItemIndex: null };
     case 'add':
-      return { dialog: 'add', editedItem: null, editedItemIndex: null };
+      return { dialog: 'add', focusedItem: null, focusedItemIndex: null };
     case 'edit':
       return {
         dialog: 'edit',
-        editedItem: action.item,
-        editedItemIndex: action.itemIndex,
+        focusedItem: action.item,
+        focusedItemIndex: action.itemIndex,
       };
     case 'remove':
       return {
         dialog: 'remove',
-        editedItem: action.item,
-        editedItemIndex: action.itemIndex,
+        focusedItem: action.item,
+        focusedItemIndex: action.itemIndex,
       };
     default:
       return state;
