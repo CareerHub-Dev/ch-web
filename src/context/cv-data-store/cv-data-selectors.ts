@@ -33,14 +33,15 @@ export const getStageCompletionStatus =
       case 5:
         const { foreignLanguages } = store.cvData;
         return summarizeInputs(foreignLanguages);
+      case 6:
+        const { experienceHighlights, projectLinks } = store.cvData;
+        return summarizeInputs(experienceHighlights, projectLinks);
       default:
         return 'hasErrors';
     }
   };
 
-function summarizeInputs<TInput extends Inputs.BaseInput>(
-  ...inputs: TInput[]
-): StageCompletionStatus {
+function summarizeInputs(...inputs: Inputs.BaseInput[]): StageCompletionStatus {
   if (inputs.some((item) => item.errors.length > 0)) {
     return 'hasErrors';
   }

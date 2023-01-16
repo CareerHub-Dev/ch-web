@@ -1,29 +1,14 @@
+import { type ProjectLink } from '@/context/cv-data-store/cv';
 import useInput from '@/hooks/useInput/v4';
 import ValidatedInput from '../ui/ValidatedInput';
 import AddOrEditItemModal from './item-list/AddOrEditItemModal';
-
-type ProjectLink = {
-  title: string;
-  url: string;
-};
-
-export function AddOrEditProjectLinkModal(props: {
-  onClose: () => void;
-  onConfirm: (payload: { item: ProjectLink }) => void;
-}): JSX.Element;
-
-export function AddOrEditProjectLinkModal(props: {
-  onClose: () => void;
-  onConfirm: (payload: { item: ProjectLink; itemIndex: number }) => void;
-  initialPayload: { item: ProjectLink; itemIndex: number };
-}): JSX.Element;
 
 export function AddOrEditProjectLinkModal(props: {
   onClose: () => void;
   onConfirm: (payload: { item: ProjectLink; itemIndex: number }) => void;
   initialPayload?: { item: ProjectLink; itemIndex: number };
 }) {
-  const type = typeof props.initialPayload === 'undefined' ? 'add' : 'edit';
+  const type = !props.initialPayload ? 'add' : 'edit';
 
   const titleInput = useInput({
     initialValue: props.initialPayload?.item.title || '',

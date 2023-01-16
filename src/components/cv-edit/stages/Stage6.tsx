@@ -1,6 +1,5 @@
 import GenericList from '@/components/ui/GenericList';
 import { useCvDataStore } from '@/context/cv-data-store';
-import { type ProjectLink } from '@/context/cv-data-store/cv';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
 import { type ChangeEvent } from 'react';
 import { AddOrEditProjectLinkModal } from '../AddOrEditProjectLinkModal';
@@ -15,6 +14,9 @@ export default function Stage6() {
     (s) => s.changeExperienceHighlights
   );
   const projectLinks = useCvDataStore((s) => s.cvData.projectLinks);
+
+  type ProjectLink = typeof projectLinks.items[number];
+
   const dispatchProjectLinks = useCvDataStore((s) => s.dispatchProjectLinks);
 
   const [state, dispatch] = useDialogActionsListReducer<ProjectLink>();
@@ -36,10 +38,6 @@ export default function Stage6() {
   const handleAddClick = () => dispatch({ type: 'add' });
   const closeDialog = () => dispatch({ type: 'close' });
 
-  const handleAddItem = () => {};
-  const handleEditItem = () => {};
-  const handleRemoveItem = () => {};
-
   const handleChangeExperienceHighlightsChange = (
     e: ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -48,19 +46,56 @@ export default function Stage6() {
 
   const { dialog, focusedItem, focusedItemIndex } = state;
 
+  const handleDialogConfirm = (payload: {
+    item: ProjectLink;
+    itemIndex: number;
+  }) => {
+    switch (dialog) {
+      case 'add':
+        dispatchProjectLinks({
+          type: 'add',
+          item: payload.item,
+        });
+        break;
+      case 'edit':
+        dispatchProjectLinks({
+          type: 'edit',
+          itemIndex: payload.itemIndex,
+          newValue: payload.item,
+        });
+        break;
+      case 'remove':
+        dispatchProjectLinks({
+          type: 'remove',
+          itemIndex: focusedItemIndex,
+        });
+        break;
+      default:
+        break;
+    }
+    dispatch({
+      type: 'close',
+    });
+  };
+
   return (
     <>
       {dialog === null ? null : dialog === 'remove' ? (
         <RemoveItemModal
           onClose={closeDialog}
-          onConfirm={handleRemoveItem}
+          onConfirm={() =>
+            handleDialogConfirm({
+              item: focusedItem,
+              itemIndex: focusedItemIndex,
+            })
+          }
           title="Видалити посилання?"
           descriptionText={`Посилання ${focusedItem.title} буде видалено зі списку`}
         />
       ) : dialog === 'edit' ? (
         <AddOrEditProjectLinkModal
           onClose={closeDialog}
-          onConfirm={handleEditItem}
+          onConfirm={handleDialogConfirm}
           initialPayload={{
             item: focusedItem,
             itemIndex: focusedItemIndex,
@@ -69,7 +104,7 @@ export default function Stage6() {
       ) : (
         <AddOrEditProjectLinkModal
           onClose={closeDialog}
-          onConfirm={handleAddItem}
+          onConfirm={handleDialogConfirm}
         />
       )}
       <div className="space-y-6 sm:space-y-5">
@@ -115,7 +150,7 @@ export default function Stage6() {
         <div className="mt-5 flow-root">
           <ul role="list" className="divide-y divide-gray-200">
             <GenericList
-              items={[]}
+              items={projectLinks.items}
               keyExtractor={(_, index) => index}
               renderItem={(item, itemIndex) => (
                 <ProjectLinkItem
