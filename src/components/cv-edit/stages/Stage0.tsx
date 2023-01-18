@@ -49,7 +49,7 @@ export default function Stage0() {
           </div>
         </div>
       </div>
-      {isAssistEnabled && ['Dev', 'Qa'].includes(selectedJobPosition.name) && (
+      {isAssistEnabled && ['Dev', 'QA'].includes(selectedJobPosition.name) && (
         <div className="mt-6">
           <AssistantTip
             type={
