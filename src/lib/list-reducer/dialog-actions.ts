@@ -20,7 +20,7 @@ export type ItemListState<TItem> =
       focusedItemIndex: number;
     };
 
-type ItemListAction<TItem> =
+export type ItemListAction<TItem> =
   | { type: 'add' }
   | { type: 'close' }
   | { type: 'edit'; item: TItem; itemIndex: number }

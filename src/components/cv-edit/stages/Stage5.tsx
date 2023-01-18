@@ -1,5 +1,6 @@
-import GenericList from '@/components/ui/GenericList';
+import AssistantTip from '@/components/cv-builder/stages/AssistantTip';
 import { useCvDataStore } from '@/context/cv-data-store';
+import { useCvUiStore } from '@/context/cv-ui-store';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
 import AddOrEditLanguageModal from '../AddOrEditLanguageModal';
 import RemoveItemModal from '../item-list/RemoveItemModal';
@@ -10,7 +11,7 @@ export default function Stage5() {
   const dispatchForeignLanguages = useCvDataStore(
     (s) => s.dispatchForeignLanguages
   );
-
+  const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
   type ForeignLanguage = typeof foreignLanguages.items[number];
 
   const [state, dispatch] = useDialogActionsListReducer<ForeignLanguage>();
@@ -122,25 +123,38 @@ export default function Stage5() {
 
       <div className="mt-5 flow-root">
         <ul role="list" className="divide-y divide-gray-200">
-          <GenericList
-            items={foreignLanguages.items}
-            keyExtractor={(_, index) => index}
-            renderItem={(language, languageIndex) => (
-              <LanguageItem
-                {...language}
-                onEditClick={createEditHandler({
-                  language,
-                  languageIndex,
-                })}
-                onRemoveClick={createRemoveHandler({
-                  language,
-                  languageIndex,
-                })}
-              />
-            )}
-          />
+          {foreignLanguages.items.map((language, languageIndex) => (
+            <LanguageItem
+              key={languageIndex}
+              {...language}
+              onEditClick={createEditHandler({
+                language,
+                languageIndex,
+              })}
+              onRemoveClick={createRemoveHandler({
+                language,
+                languageIndex,
+              })}
+            />
+          ))}
         </ul>
       </div>
+
+      {isAssistEnabled && (
+        <div className='mt-6'>
+          <AssistantTip>
+            <p>Перелічи, які мови ти знаєш і на якому рівні</p>
+            <br />
+            <p>
+              Важливо вказати іноземні мови, які будуть корисні в роботі. Наприклад, англійська
+            </p>
+          </AssistantTip>
+          <AssistantTip type="good-example">
+            <p>English - C1</p>
+            <p>German - B2</p>
+          </AssistantTip>
+        </div>
+      )}
     </>
   );
 }

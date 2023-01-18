@@ -15,6 +15,16 @@ export type ProjectLink = {
   url: string;
 };
 
+export type Education = {
+  university: string;
+  city: string;
+  country: string;
+  speciality: string;
+  degree: string;
+  startYear: string;
+  endYear: string;
+};
+
 export type CvData = {
   title: StringInput;
   templateLanguage: TemplateLanguage;
@@ -29,6 +39,7 @@ export type CvData = {
   experienceHighlights: StringInput;
   foreignLanguages: ArrayInput<ForeignLanguage>;
   projectLinks: ArrayInput<ProjectLink>;
+  educations: ArrayInput<Education>;
 };
 
 export function getEmptyCvData(): CvData {
@@ -43,10 +54,23 @@ export function getEmptyCvData(): CvData {
     experienceHighlights: getStringInput(),
     foreignLanguages: getArrayInput(),
     projectLinks: getArrayInput(),
+    educations: getArrayInput(),
   };
 }
 
 export function restoreToCvQueryData(data: CvQueryData): CvData {
+  const mappedEducations = data.educations.map((item) => {
+    const { startDate, endDate, ...otherProperties } = item;
+    const startYear = new Date(startDate).getFullYear().toString();
+    const endYear = new Date(endDate).getFullYear().toString();
+
+    return {
+      startYear,
+      endYear,
+      ...otherProperties,
+    };
+  });
+
   return {
     ...data,
     title: getStringInput(data.title),
@@ -58,6 +82,9 @@ export function restoreToCvQueryData(data: CvQueryData): CvData {
     experienceHighlights: getStringInput(data.experienceHighlights),
     foreignLanguages: getArrayInput({ initialItems: data.foreignLanguages }),
     projectLinks: getArrayInput({ initialItems: data.projectLinks }),
+    educations: getArrayInput({
+      initialItems: mappedEducations,
+    }),
   };
 }
 

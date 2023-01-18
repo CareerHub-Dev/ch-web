@@ -32,25 +32,30 @@ export function arrayInputReducer<TItem>({
   action: ArrayInputAction<TItem>;
   validators: Array<Inputs.Validator<Array<TItem>>>;
 }): ArrayInput<TItem> {
-  const newInput = { ...input };
+  let { items, errors, warnings } = { ...input };
 
   switch (action.type) {
     case 'add':
-      newInput.items.push(action.item);
+      items.push(action.item);
       break;
     case 'remove':
-      newInput.items.splice(action.itemIndex, 1);
+      items.splice(action.itemIndex, 1);
       break;
     case 'edit':
-      if (newInput.items.at(action.itemIndex))
-        newInput.items[action.itemIndex] = action.newValue;
+      if (items[action.itemIndex]) items[action.itemIndex] = action.newValue;
       break;
   }
-  validateInput({
+
+  const newInput: ArrayInput<TItem> = {
+    items,
+    errors,
+    warnings,
+    isTouched: true,
+  };
+
+  return validateInput({
     input: newInput,
     validators,
     getValidatedValue: (inp) => inp.items,
   });
-  newInput.isTouched = true;
-  return newInput;
 }

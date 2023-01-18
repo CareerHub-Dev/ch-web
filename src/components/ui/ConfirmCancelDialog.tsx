@@ -3,11 +3,11 @@ import cn from 'classnames';
 import { Fragment, type ReactNode } from 'react';
 
 const buttonClass =
-  'inline-flex w-full justify-center rounded-md border px-4 py-2 text-base font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto transition-all ease-in-out duration-200';
+  'inline-flex w-full justify-center rounded-md border px-4 py-2 text-base font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto transition-all ease-in-out duration-200 disabled:cursor-not-allowed disabled:opacity-50';
 
 export function ConfirmCancelDialog(props: {
   title: string;
-  children: ReactNode;
+  children?: ReactNode;
   cancelText: string;
   confirmText: string;
   confirmationDisabled?: boolean;

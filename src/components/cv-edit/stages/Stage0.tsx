@@ -1,63 +1,74 @@
+import AssistantTip from '@/components/cv-builder/stages/AssistantTip';
 import { useCvDataStore } from '@/context/cv-data-store';
-import ItemSelection from '../../ui/ItemsSelection';
 import { TEMPLATE_LANGUAGES } from '@/context/cv-data-store/cv';
-import useJobPositionsQuery from '@/hooks/useJobPositionsQuery';
-import LoadingJobPositions from '../LoadingJobPositions';
+import { useCvUiStore } from '@/context/cv-ui-store';
+import ItemSelection from '../../ui/ItemsSelection';
 
 export default function Stage0() {
   const selectedTemplateLanguage = useCvDataStore(
     (store) => store.cvData.templateLanguage
   );
+  const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
   const setTemplateLanguage = useCvDataStore((s) => s.changeTemplateLanguage);
 
   const selectedJobPosition = useCvDataStore(
     (store) => store.cvData.jobPosition
-  );
+  ) ?? { id: '0', name: 'Оберіть опцію' };
 
   const setJobPosition = useCvDataStore((s) => s.changeJobPosition);
 
-  const jobPositions = useJobPositionsQuery({
-    onSuccess: (data) => {
-      if (data.length > 0) {
-        setJobPosition(data.at(0)!);
-      }
-    },
-  });
-
   return (
-    <div className="space-y-6 sm:space-y-5">
-      <div>
-        <h3 className="text-xl font-medium leading-6 text-gray-900">
-          Загальна інформація
-        </h3>
-        <p className="mt-1 max-w-2xl text-sm text-gray-500">
-          Загальна інформація про тип роботи та вибір мови, на якій
-          створюватиметься резюме
-        </p>
-      </div>
-
-      <div className="space-y-6 sm:space-y-5 divide-y divide-gray-200">
-        <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
-          <ItemSelection
-            items={TEMPLATE_LANGUAGES}
-            selectedItem={selectedTemplateLanguage}
-            setSelected={setTemplateLanguage}
-            label="Мова шаблону"
-          />
+    <>
+      <div className="space-y-6 sm:space-y-5">
+        <div>
+          <h3 className="text-xl font-medium leading-6 text-gray-900">
+            Загальна інформація
+          </h3>
+          <p className="mt-1 max-w-2xl text-sm text-gray-500">
+            Загальна інформація про тип роботи та вибір мови, на якій
+            створюватиметься резюме
+          </p>
         </div>
-        <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
-          {selectedJobPosition && jobPositions.data ? (
+
+        <div className="space-y-6 sm:space-y-5 divide-y divide-gray-200">
+          <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
             <ItemSelection
-              items={jobPositions.data}
+              items={TEMPLATE_LANGUAGES}
+              selectedItem={selectedTemplateLanguage}
+              setSelected={setTemplateLanguage}
+              label="Мова шаблону"
+            />
+          </div>
+          <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
+            <ItemSelection
+              items={MOCK_JOB_POSITIONS}
               selectedItem={selectedJobPosition}
               setSelected={setJobPosition}
               label="Бажана Посада"
             />
-          ) : (
-            <LoadingJobPositions />
-          )}
+          </div>
         </div>
       </div>
-    </div>
+      {isAssistEnabled && ['Dev', 'Qa'].includes(selectedJobPosition.name) && (
+        <div className="mt-6">
+          <AssistantTip
+            type={
+              selectedTemplateLanguage.id === 'EN' ? 'good-example' : 'default'
+            }
+          >
+            <p>
+              У сфері IT всюди використовується англійська мова, тому у якості
+              мови шаблону краще обрати саме її.
+            </p>
+          </AssistantTip>
+        </div>
+      )}
+    </>
   );
 }
+
+const MOCK_JOB_POSITIONS = [
+  { id: '1', name: 'Dev' },
+  { id: '2', name: 'QA' },
+  { id: '3', name: 'Devops' },
+];

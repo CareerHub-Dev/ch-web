@@ -3,15 +3,19 @@ import useInput from '@/hooks/useInput/v4';
 import ValidatedInput from '../ui/ValidatedInput';
 import AddOrEditItemModal from './item-list/AddOrEditItemModal';
 
-export function AddOrEditProjectLinkModal(props: {
+export function AddOrEditProjectLinkModal({
+  onClose,
+  onConfirm,
+  initialPayload,
+}: {
   onClose: () => void;
   onConfirm: (payload: { item: ProjectLink; itemIndex: number }) => void;
   initialPayload?: { item: ProjectLink; itemIndex: number };
 }) {
-  const type = !props.initialPayload ? 'add' : 'edit';
+  const modalType = typeof initialPayload === 'undefined' ? 'add' : 'edit';
 
   const titleInput = useInput({
-    initialValue: props.initialPayload?.item.title || '',
+    initialValue: initialPayload?.item.title || '',
     validators: [
       (val) => {
         return val.length > 0
@@ -25,38 +29,52 @@ export function AddOrEditProjectLinkModal(props: {
   });
 
   const urlInput = useInput({
-    initialValue: props.initialPayload?.item.url || '',
+    initialValue: initialPayload?.item.url || '',
     validators: [
-      (val) => {
-        return val.length > 0
+      (val) =>
+        val.length > 0
           ? { type: 'success' }
           : {
               type: 'error',
               message: 'Адреса має містити хоча б один символ',
-            };
-      },
+            },
+      (val) =>
+        val.startsWith('http://') || val.startsWith('https://')
+          ? {
+              type: 'success',
+            }
+          : {
+              type: 'warning',
+              message:
+                'Краще почати посилання з протоколу (`http://` або `https://`)',
+            },
     ],
   });
 
   const handleConfirm = () => {
-    let payload = {
-      item: {
-        title: titleInput.value,
-        url: urlInput.value,
-      },
-    } as { item: ProjectLink; itemIndex: number };
+    const item: ProjectLink = {
+      title: titleInput.value,
+      url: urlInput.value,
+    };
 
-    if (type === 'edit') {
-      payload.itemIndex = props.initialPayload!.itemIndex;
+    let payload = {
+      item,
+    } as {
+      item: ProjectLink;
+      itemIndex: number;
+    };
+
+    if (modalType === 'edit') {
+      payload.itemIndex = initialPayload!.itemIndex;
     }
-    props.onConfirm(payload);
+    onConfirm(payload);
   };
 
   return (
     <AddOrEditItemModal
-      onClose={props.onClose}
+      onClose={onClose}
       onConfirm={handleConfirm}
-      type={type}
+      type={modalType}
       confirmationDisabled={
         titleInput.errors.length > 0 || urlInput.errors.length > 0
       }

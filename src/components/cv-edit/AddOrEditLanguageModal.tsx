@@ -41,10 +41,10 @@ export default function AddOrEditLanguageModal(props: {
   );
 
   const handleConfirm = () => {
-    const item = {
+    const item: ForeignLanguage = {
       name: nameInput.value,
       languageLevel: level.id,
-    } satisfies ForeignLanguage;
+    };
 
     const payload = {
       item,

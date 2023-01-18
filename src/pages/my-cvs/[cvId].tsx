@@ -11,6 +11,7 @@ import {
 } from 'next';
 import { useEffect } from 'react';
 import StageCircleButtons from '@/components/cv-edit/StageCircleButtons';
+import Link from 'next/link';
 
 const ModalView = dynamic(() => import('@/components/cv-edit/ModalView'), {
   ssr: false,
@@ -18,7 +19,8 @@ const ModalView = dynamic(() => import('@/components/cv-edit/ModalView'), {
 
 const CVDetailsPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ id, ...cvData }) => {
+> = (cvData) => {
+  const { id } = cvData;
   useCvQuery({
     cvId: id,
     initialData: cvData,
@@ -27,13 +29,17 @@ const CVDetailsPage: NextPageWithLayout<
   const reInit = useCvDataStore((s) => s.reInit);
 
   useEffect(() => {
-    if (id !== previousCvId) {
+    if (previousCvId !== null && id !== previousCvId) {
       reInit(id);
     }
-  }, [id, previousCvId, reInit]);
+  }, [previousCvId, id, reInit]);
 
   return (
-    <div className="mx-auto container lg:mx-auto max-w-full lg:max-w-[978px] rounded-b-2xl bg-white p-4 shadow-md">
+    <div className="mx-auto container lg:mx-auto max-w-full lg:max-w-3xl rounded-b-2xl bg-white p-4 shadow-md mb-4">
+      <Link href="/my-cvs" className="block text-sm text-blue-500 mb-2">
+        Назад до усіх резюме
+      </Link>
+
       <div className="flex mb-8 justify-between">
         <CvEditMenu />
         <AssistanceCheckBox />
@@ -87,7 +93,7 @@ export const getServerSideProps = async (
           university: 'string',
           city: 'string',
           country: 'string',
-          specialty: 'string',
+          speciality: 'string',
           degree: 'Bachelor',
           startDate: '2022-12-29T15:43:35.865Z',
           endDate: '2022-12-29T15:43:35.865Z',

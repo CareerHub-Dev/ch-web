@@ -1,5 +1,6 @@
-import GenericList from '@/components/ui/GenericList';
+import AssistantTip from '@/components/cv-builder/stages/AssistantTip';
 import { useCvDataStore } from '@/context/cv-data-store';
+import { useCvUiStore } from '@/context/cv-ui-store';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
 import { type ChangeEvent } from 'react';
 import { AddOrEditProjectLinkModal } from '../AddOrEditProjectLinkModal';
@@ -7,6 +8,7 @@ import RemoveItemModal from '../item-list/RemoveItemModal';
 import ProjectLinkItem from '../ProjectLinkItem';
 
 export default function Stage6() {
+  const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
   const experienceHighlights = useCvDataStore(
     (s) => s.cvData.experienceHighlights
   );
@@ -130,6 +132,12 @@ export default function Stage6() {
           </p>
         </div>
 
+        {isAssistEnabled && (
+          <AssistantTip>
+            <p>{`Опишіть найважливіші аспекти вашої професійної діяльності. Навіть у разі відсутності комерційного досвіду варто вказати те, що, пов'язано із вакансією`}</p>
+          </AssistantTip>
+        )}
+
         <div className="sm:border-t sm:border-gray-200 sm:pt-5 sm:flex sm:items-center">
           <div className="sm:flex-auto">
             <h4 className="text-lg font-medium text-gray-900">Посилання</h4>
@@ -149,26 +157,41 @@ export default function Stage6() {
         </div>
         <div className="mt-5 flow-root">
           <ul role="list" className="divide-y divide-gray-200">
-            <GenericList
-              items={projectLinks.items}
-              keyExtractor={(_, index) => index}
-              renderItem={(item, itemIndex) => (
-                <ProjectLinkItem
-                  {...item}
-                  onEditClick={createEditHandler({
-                    item,
-                    itemIndex,
-                  })}
-                  onRemoveClick={createRemoveHandler({
-                    item,
-                    itemIndex,
-                  })}
-                />
-              )}
-            />
+            {projectLinks.items.map((item, itemIndex) => (
+              <ProjectLinkItem
+                key={itemIndex}
+                {...item}
+                onEditClick={createEditHandler({
+                  item,
+                  itemIndex,
+                })}
+                onRemoveClick={createRemoveHandler({
+                  item,
+                  itemIndex,
+                })}
+              />
+            ))}
           </ul>
         </div>
       </div>
+
+      {isAssistEnabled && (
+        <div className="mt-6">
+          <AssistantTip>
+            <p>
+              Ще можна залишити корисні посилання на власні проекти для
+              дмеонстрації портфоліо.
+            </p>
+          </AssistantTip>
+          <AssistantTip>
+            <p>Переконайтеся, що усі посилання клікабельні.</p>
+          </AssistantTip>
+
+          <AssistantTip type="bad-example">
+            <p>Не потрібно залишати посилання на непрофесійні соцмережи</p>
+          </AssistantTip>
+        </div>
+      )}
     </>
   );
 }

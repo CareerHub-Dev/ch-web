@@ -21,9 +21,7 @@ export default function CVItemActionsButton({
     <div className="absolute top-0 right-0">
       <Menu as={'div'} className="relative inline-block text-left">
         <Menu.Button
-          className="p-2 bg-transparent rounded-md cursor-pointer
-          hover:bg-blue-100 
-          focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          className="p-2 bg-transparent rounded-md cursor-pointer hover:bg-blue-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-opacity-75"
         >
           <EllipsisHorizontalIcon title="Дії" className="h-8 w-8" />
         </Menu.Button>
@@ -38,9 +36,7 @@ export default function CVItemActionsButton({
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items
-            className="absolute z-10 right-0 w-48 origin-top-right rounded-md 
-          bg-blue-100 shadow-lg ring-1 ring-black 
-          ring-opacity-5 focus:outline-none p-1"
+            className="absolute z-10 right-0 w-48 origin-top-right rounded-md bg-blue-100 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-1"
           >
             <Menu.Item>
               {({ active }) => (

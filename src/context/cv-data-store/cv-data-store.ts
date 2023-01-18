@@ -6,8 +6,7 @@ import { immer } from 'zustand/middleware/immer';
 import {
   getEmptyCvData,
   restoreToCvQueryData,
-  type CvData,
-  type ForeignLanguage,
+  type CvData, type Education, type ForeignLanguage,
   type ProjectLink,
   type TemplateLanguage
 } from './cv';
@@ -27,6 +26,7 @@ export type CvDataStore = {
   changeExperienceHighlights: (value: string) => void;
   dispatchForeignLanguages: (action: ArrayInputAction<ForeignLanguage>) => void;
   dispatchProjectLinks: (action: ArrayInputAction<ProjectLink>) => void;
+  dispatchEducations: (action: ArrayInputAction<Education>) => void;
 };
 
 export const useCvDataStore = create<CvDataStore>()(
@@ -180,6 +180,14 @@ export const useCvDataStore = create<CvDataStore>()(
       set((state) => {
         state.cvData.projectLinks = arrayInputReducer({
           input: state.cvData.projectLinks,
+          action,
+          validators: [],
+        });
+      }),
+    dispatchEducations: (action) =>
+      set((state) => {
+        state.cvData.educations = arrayInputReducer({
+          input: state.cvData.educations,
           action,
           validators: [],
         });

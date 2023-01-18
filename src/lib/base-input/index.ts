@@ -8,15 +8,17 @@ export function validateInput<TInput extends BaseInput, TValue>({
   getValidatedValue: (input: TInput) => TValue;
   input: TInput;
   validators: Array<Inputs.Validator<TValue>>;
-}) {
-  const validatedValue = getValidatedValue(input);
+}): TInput {
+  const newInstance = { ...input };
+  const validatedValue = getValidatedValue(newInstance);
 
   for (const validator of validators) {
     const result = validator(validatedValue);
     if (result.type === 'success') continue;
 
     const arrayToAppend =
-      result.type === 'warning' ? input.warnings : input.errors;
+      result.type === 'warning' ? newInstance.warnings : newInstance.errors;
     arrayToAppend.push(result.message);
   }
+  return newInstance;
 }

@@ -36,6 +36,9 @@ export const getStageCompletionStatus =
       case 6:
         const { experienceHighlights, projectLinks } = store.cvData;
         return summarizeInputs(experienceHighlights, projectLinks);
+      case 7:
+        const { educations } = store.cvData;
+        return summarizeInputs(educations);
       default:
         return 'hasErrors';
     }
