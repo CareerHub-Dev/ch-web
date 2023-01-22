@@ -1,4 +1,4 @@
-import AssistantTip from '@/components/cv-builder/stages/AssistantTip';
+import AssistanceAlert from '../AssistantAlert';
 import ValidatedInput from '@/components/ui/ValidatedInput';
 import { useCvDataStore } from '@/context/cv-data-store';
 import { useCvUiStore } from '@/context/cv-ui-store';
@@ -42,14 +42,13 @@ export default function Stage1() {
       </div>
 
       {isAssistEnabled && ['Dev', 'QA'].includes(jobPosition) && (
-        <div className='mt-6'>
-
-        <AssistantTip>
-          <p>
-            В ІТ-сфері всюди використовується англійська, тому краще заповнювати
-            резюме на ньому. Давай почнемо з імені та прізвища
-          </p>
-        </AssistantTip>
+        <div className="mt-6">
+          <AssistanceAlert title="Обрано англійську мову">
+            <p>
+              В ІТ-сфері всюди використовується англійська, тому краще
+              заповнювати резюме на ньому. Давай почнемо з імені та прізвища
+            </p>
+          </AssistanceAlert>
         </div>
       )}
     </>

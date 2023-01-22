@@ -6,11 +6,11 @@ import AddOrEditEducationModal from '../AddOrEditEducation';
 import RemoveItemModal from '../item-list/RemoveItemModal';
 
 export default function Stage7() {
+  const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
   const educations = useCvDataStore((s) => s.cvData.educations);
   const dispatchEducations = useCvDataStore((s) => s.dispatchEducations);
   type Education = typeof educations.items[number];
   const [dialogState, dispatch] = useDialogActionsListReducer<Education>();
-  const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
 
   const handleAddClick = () =>
     dispatch({

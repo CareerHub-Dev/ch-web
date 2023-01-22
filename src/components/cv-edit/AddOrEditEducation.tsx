@@ -73,24 +73,26 @@ export default function AddOrEditEducationModal({
   const formType = !initialPayload ? 'add' : 'edit';
 
   const handleConfirm = () => {
+    const values = {
+      university: university.value,
+      country: country.value,
+      city: city.value,
+      speciality: speciality.value,
+      degree: degree.value.id,
+      startYear: startYear.value.id,
+      endYear: endYear.value.id,
+    };
+
     if (!initialPayload) {
       dispatchEducations({
         type: 'add',
-        item: {
-          university: university.value,
-          country: country.value,
-          city: city.value,
-          speciality: speciality.value,
-          degree: degree.value.id,
-          startYear: startYear.value.id,
-          endYear: endYear.value.id,
-        },
+        item: values,
       });
     } else {
       dispatchEducations({
         type: 'edit',
         itemIndex: initialPayload.itemIndex,
-        newValue: initialPayload.item,
+        newValue: values,
       });
     }
     onClose();

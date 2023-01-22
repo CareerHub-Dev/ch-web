@@ -1,25 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
+import { centerAspectCrop, cropImage } from '@/lib/images';
 import {
-  useRef,
-  useState,
   useCallback,
   useEffect,
+  useRef,
+  useState,
   type SyntheticEvent,
 } from 'react';
 import ReactCrop, { type Crop, type PixelCrop } from 'react-image-crop';
-import { centerAspectCrop, cropImage } from '@/lib/images';
 
-const avatarAspect = 1;
-
-const AvatarCrop = ({
+export default function ImageCrop({
   src,
   onCropComplete,
   fileType,
+  aspect = ONE_TO_ONE_ASPECT,
 }: {
   src: string;
-  onCropComplete: (data: { url?: string; blob?: Blob }) => void;
+  onCropComplete: (data: { url: string; blob: Blob }) => void;
   fileType: string;
-}) => {
+  aspect?: number;
+}) {
   const cropImgRef = useRef<HTMLImageElement>(null);
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
@@ -34,10 +34,13 @@ const AvatarCrop = ({
     revokeUrl: () => void;
   }>();
 
-  const onImageLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
-    const { width, height } = e.currentTarget;
-    setCrop(centerAspectCrop(width, height, avatarAspect));
-  }, []);
+  const onImageLoad = useCallback(
+    (e: SyntheticEvent<HTMLImageElement>) => {
+      const { width, height } = e.currentTarget;
+      setCrop(centerAspectCrop(width, height, aspect));
+    },
+    [aspect]
+  );
 
   const cropCompleteHandler = useCallback(
     async (completedCrop: PixelCrop) => {
@@ -66,7 +69,7 @@ const AvatarCrop = ({
         ruleOfThirds
         onChange={(_, percentCrop) => setCrop(percentCrop)}
         onComplete={cropCompleteHandler}
-        aspect={1}
+        aspect={aspect}
         className="block w-fit mx-auto"
       >
         <img
@@ -79,5 +82,6 @@ const AvatarCrop = ({
       </ReactCrop>
     </div>
   );
-};
-export default AvatarCrop;
+}
+
+const ONE_TO_ONE_ASPECT = 1;

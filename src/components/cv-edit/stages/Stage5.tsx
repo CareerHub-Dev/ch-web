@@ -1,4 +1,4 @@
-import AssistantTip from '@/components/cv-builder/stages/AssistantTip';
+import AssistanceAlert from '../AssistantAlert';
 import { useCvDataStore } from '@/context/cv-data-store';
 import { useCvUiStore } from '@/context/cv-ui-store';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
@@ -14,25 +14,12 @@ export default function Stage5() {
   const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
   type ForeignLanguage = typeof foreignLanguages.items[number];
 
-  const [state, dispatch] = useDialogActionsListReducer<ForeignLanguage>();
+  const [state, dispatchAction] =
+    useDialogActionsListReducer<ForeignLanguage>();
 
-  const createModificationHandler =
-    (type: 'edit' | 'remove') =>
-    (opts: { language: ForeignLanguage; languageIndex: number }) =>
-    () => {
-      dispatch({
-        type,
-        item: opts.language,
-        itemIndex: opts.languageIndex,
-      });
-    };
-
-  const createEditHandler = createModificationHandler('edit');
-  const createRemoveHandler = createModificationHandler('remove');
-
-  const handleAdd = () => dispatch({ type: 'add' });
+  const handleAdd = () => dispatchAction({ type: 'add' });
   const handleClose = () =>
-    dispatch({
+    dispatchAction({
       type: 'close',
     });
 
@@ -42,46 +29,14 @@ export default function Stage5() {
     focusedItemIndex: focusedLanguageIndex,
   } = state;
 
-  const handleDialogConfirm = (payload: {
-    item: ForeignLanguage;
-    itemIndex: number;
-  }) => {
-    switch (dialog) {
-      case 'add':
-        dispatchForeignLanguages({
-          type: 'add',
-          item: payload.item,
-        });
-        break;
-      case 'edit':
-        dispatchForeignLanguages({
-          type: 'edit',
-          itemIndex: payload.itemIndex,
-          newValue: payload.item,
-        });
-        break;
-      case 'remove':
-        dispatchForeignLanguages({
-          type: 'remove',
-          itemIndex: focusedLanguageIndex,
-        });
-        break;
-      default:
-        break;
-    }
-    dispatch({
-      type: 'close',
-    });
-  };
-
   return (
     <>
       {dialog === null ? null : dialog === 'remove' ? (
         <RemoveItemModal
           onClose={handleClose}
           onConfirm={() =>
-            handleDialogConfirm({
-              item: focusedLanguage,
+            dispatchForeignLanguages({
+              type: 'remove',
               itemIndex: focusedLanguageIndex,
             })
           }
@@ -91,17 +46,13 @@ export default function Stage5() {
       ) : dialog === 'edit' ? (
         <AddOrEditLanguageModal
           onClose={handleClose}
-          onConfirm={handleDialogConfirm}
           initialPayload={{
             item: focusedLanguage,
             itemIndex: focusedLanguageIndex,
           }}
         />
       ) : (
-        <AddOrEditLanguageModal
-          onClose={handleClose}
-          onConfirm={handleDialogConfirm}
-        />
+        <AddOrEditLanguageModal onClose={handleClose} />
       )}
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
@@ -126,33 +77,28 @@ export default function Stage5() {
           {foreignLanguages.items.map((language, languageIndex) => (
             <LanguageItem
               key={languageIndex}
-              {...language}
-              onEditClick={createEditHandler({
-                language,
-                languageIndex,
-              })}
-              onRemoveClick={createRemoveHandler({
-                language,
-                languageIndex,
-              })}
+              itemIndex={languageIndex}
+              item={language}
+              actionHandler={dispatchAction}
             />
           ))}
         </ul>
       </div>
 
       {isAssistEnabled && (
-        <div className='mt-6'>
-          <AssistantTip>
+        <div className="mt-6 flex flex-col gap-4">
+          <AssistanceAlert>
             <p>Перелічи, які мови ти знаєш і на якому рівні</p>
             <br />
             <p>
-              Важливо вказати іноземні мови, які будуть корисні в роботі. Наприклад, англійська
+              Важливо вказати іноземні мови, які будуть корисні в роботі.
+              Наприклад, англійська
             </p>
-          </AssistantTip>
-          <AssistantTip type="good-example">
+          </AssistanceAlert>
+          <AssistanceAlert type="positive">
             <p>English - C1</p>
             <p>German - B2</p>
-          </AssistantTip>
+          </AssistanceAlert>
         </div>
       )}
     </>

@@ -13,12 +13,7 @@ const studentNavLinks: AppNavigationLink[] = [
   },
 ];
 
-const defaultNavLinks: AppNavigationLink[] = [
-  {
-    text: 'Увійти',
-    href: '/auth/login',
-  },
-];
+const defaultNavLinks: AppNavigationLink[] = [];
 
 export default function getNavigationLinks(userRole?: UserRole) {
   if (userRole === 'Student') {

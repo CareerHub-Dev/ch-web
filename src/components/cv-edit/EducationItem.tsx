@@ -13,19 +13,14 @@ export default function EducationItem({
   itemIndex: number;
   dispatchAction: Dispatch<ItemListAction<Education>>;
 }) {
-  const createActionHandler = (type: 'add' | 'edit' | 'remove') => () => {
+  const createActionHandler = (type: 'edit' | 'remove') => () => {
     dispatchAction({
       type,
       itemIndex,
       item,
     });
   };
-  const handleEditClick = () =>
-    dispatchAction({
-      type: 'edit',
-      itemIndex,
-      item,
-    });
+  const handleEditClick = createActionHandler('edit');
   const handleRemoveClick = createActionHandler('remove');
 
   return (

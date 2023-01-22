@@ -1,4 +1,4 @@
-import AssistantTip from '@/components/cv-builder/stages/AssistantTip';
+import AssistanceAlert from '../AssistantAlert';
 import { useCvDataStore } from '@/context/cv-data-store';
 import { useCvUiStore } from '@/context/cv-ui-store';
 import { type ChangeEvent } from 'react';
@@ -31,30 +31,30 @@ export default function Stage3() {
             onChange={handleChange}
           />
           <p className="mt-2 text-sm text-gray-500">
-            Напишіть не більше 200 слів про свої цілі у праці
+            Напишіть не більше 200 символів про свої цілі у праці
           </p>
         </div>
       </div>
       {isAssistEnabled && (
-        <div className='mt-6'>
-          <AssistantTip>
+        <div className='mt-6 flex flex-col gap-4'>
+          <AssistanceAlert>
             <p>
               Цілі - це те, чим саме ти хочеш займатися на роботі, чого ти хочеш
               досягти, з якими людьми працювати і в якій компанії
             </p>
-          </AssistantTip>
-          <AssistantTip type="good-example">
+          </AssistanceAlert>
+          <AssistanceAlert type="positive">
             <p>
               Seeking a position as a Javascript trainee, to leverage my skills
               and passion for learning to make interesting and useful projects
               in a team of professionals.
             </p>
-          </AssistantTip>
-          <AssistantTip type="bad-example">
+          </AssistanceAlert>
+          <AssistanceAlert type="negative">
             <p>
               Хочу бути розробником, знайомий з безліччю технологій у сфері IT.
             </p>
-          </AssistantTip>
+          </AssistanceAlert>
         </div>
       )}
     </>

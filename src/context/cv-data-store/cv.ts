@@ -40,6 +40,14 @@ export type CvData = {
   foreignLanguages: ArrayInput<ForeignLanguage>;
   projectLinks: ArrayInput<ProjectLink>;
   educations: ArrayInput<Education>;
+  photo:
+    | null
+    | string
+    | {
+        fileName: string;
+        croppedPhoto: Blob;
+        croppedPhotoUrl: string;
+      };
 };
 
 export function getEmptyCvData(): CvData {
@@ -55,6 +63,7 @@ export function getEmptyCvData(): CvData {
     foreignLanguages: getArrayInput(),
     projectLinks: getArrayInput(),
     educations: getArrayInput(),
+    photo: null,
   };
 }
 
@@ -85,6 +94,7 @@ export function restoreToCvQueryData(data: CvQueryData): CvData {
     educations: getArrayInput({
       initialItems: mappedEducations,
     }),
+    photo: null,
   };
 }
 

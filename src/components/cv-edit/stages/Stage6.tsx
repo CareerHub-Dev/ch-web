@@ -1,4 +1,4 @@
-import AssistantTip from '@/components/cv-builder/stages/AssistantTip';
+import AssistanceAlert from '../AssistantAlert';
 import { useCvDataStore } from '@/context/cv-data-store';
 import { useCvUiStore } from '@/context/cv-ui-store';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
@@ -16,78 +16,37 @@ export default function Stage6() {
     (s) => s.changeExperienceHighlights
   );
   const projectLinks = useCvDataStore((s) => s.cvData.projectLinks);
-
   type ProjectLink = typeof projectLinks.items[number];
 
   const dispatchProjectLinks = useCvDataStore((s) => s.dispatchProjectLinks);
 
   const [state, dispatch] = useDialogActionsListReducer<ProjectLink>();
+  const { dialog, focusedItem, focusedItemIndex } = state;
 
-  const createModificationHandler =
-    (type: 'edit' | 'remove') =>
-    (opts: { item: ProjectLink; itemIndex: number }) =>
-    () => {
-      dispatch({
-        type,
-        item: opts.item,
-        itemIndex: opts.itemIndex,
-      });
-    };
-
-  const createEditHandler = createModificationHandler('edit');
-  const createRemoveHandler = createModificationHandler('remove');
-
-  const handleAddClick = () => dispatch({ type: 'add' });
-  const closeDialog = () => dispatch({ type: 'close' });
-
-  const handleChangeExperienceHighlightsChange = (
+  const handleExperienceHighlightsChange = (
     e: ChangeEvent<HTMLTextAreaElement>
   ) => {
     changeExperienceHighlights(e.target.value);
   };
 
-  const { dialog, focusedItem, focusedItemIndex } = state;
+  const handleAddClick = () =>
+    dispatch({
+      type: 'add',
+    });
 
-  const handleDialogConfirm = (payload: {
-    item: ProjectLink;
-    itemIndex: number;
-  }) => {
-    switch (dialog) {
-      case 'add':
-        dispatchProjectLinks({
-          type: 'add',
-          item: payload.item,
-        });
-        break;
-      case 'edit':
-        dispatchProjectLinks({
-          type: 'edit',
-          itemIndex: payload.itemIndex,
-          newValue: payload.item,
-        });
-        break;
-      case 'remove':
-        dispatchProjectLinks({
-          type: 'remove',
-          itemIndex: focusedItemIndex,
-        });
-        break;
-      default:
-        break;
-    }
+  const handleDialogClose = () =>
     dispatch({
       type: 'close',
     });
-  };
 
   return (
     <>
       {dialog === null ? null : dialog === 'remove' ? (
         <RemoveItemModal
-          onClose={closeDialog}
+          onClose={handleDialogClose}
           onConfirm={() =>
-            handleDialogConfirm({
-              item: focusedItem,
+            dispatchProjectLinks({
+              type: 'remove',
               itemIndex: focusedItemIndex,
             })
           }
@@ -96,18 +55,14 @@ export default function Stage6() {
         />
       ) : dialog === 'edit' ? (
         <AddOrEditProjectLinkModal
-          onClose={closeDialog}
-          onConfirm={handleDialogConfirm}
+          onClose={handleDialogClose}
           initialPayload={{
             item: focusedItem,
             itemIndex: focusedItemIndex,
           }}
         />
       ) : (
-        <AddOrEditProjectLinkModal
-          onClose={closeDialog}
-          onConfirm={handleDialogConfirm}
-        />
+        <AddOrEditProjectLinkModal onClose={handleDialogClose} />
       )}
       <div className="space-y-6 sm:space-y-5">
         <div>
@@ -123,7 +78,7 @@ export default function Stage6() {
             rows={3}
             className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
             value={experienceHighlights.value}
-            onChange={handleChangeExperienceHighlightsChange}
+            onChange={handleExperienceHighlightsChange}
           />
           <p className="mt-2 text-sm text-gray-500">
             {
@@ -133,9 +88,9 @@ export default function Stage6() {
         </div>
 
         {isAssistEnabled && (
-          <AssistantTip>
+          <AssistanceAlert>
             <p>{`Опишіть найважливіші аспекти вашої професійної діяльності. Навіть у разі відсутності комерційного досвіду варто вказати те, що, пов'язано із вакансією`}</p>
-          </AssistantTip>
+          </AssistanceAlert>
         )}
 
         <div className="sm:border-t sm:border-gray-200 sm:pt-5 sm:flex sm:items-center">
@@ -160,15 +115,9 @@ export default function Stage6() {
             {projectLinks.items.map((item, itemIndex) => (
               <ProjectLinkItem
                 key={itemIndex}
-                {...item}
-                onEditClick={createEditHandler({
-                  item,
-                  itemIndex,
-                })}
-                onRemoveClick={createRemoveHandler({
-                  item,
-                  itemIndex,
-                })}
+                itemIndex={itemIndex}
+                item={item}
+                actionHandler={dispatch}
               />
             ))}
           </ul>
@@ -176,20 +125,20 @@ export default function Stage6() {
       </div>
 
       {isAssistEnabled && (
-        <div className="mt-6">
-          <AssistantTip>
+        <div className="mt-6 flex flex-col gap-4">
+          <AssistanceAlert>
             <p>
               Ще можна залишити корисні посилання на власні проекти для
               дмеонстрації портфоліо.
             </p>
-          </AssistantTip>
-          <AssistantTip>
+          </AssistanceAlert>
+          <AssistanceAlert type="warning">
             <p>Переконайтеся, що усі посилання клікабельні.</p>
-          </AssistantTip>
+          </AssistanceAlert>
 
-          <AssistantTip type="bad-example">
+          <AssistanceAlert type="negative">
             <p>Не потрібно залишати посилання на непрофесійні соцмережи</p>
-          </AssistantTip>
+          </AssistanceAlert>
         </div>
       )}
     </>

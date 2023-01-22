@@ -1,59 +1,19 @@
-import CvEditMenu from '@/components/cv-edit/CvEditMenu';
-import AssistanceCheckBox from '@/components/cv-edit/AssistanceCheckBox';
-import dynamic from 'next/dynamic';
-import StageView from '@/components/cv-edit/StageView';
+import CvBuilder from '@/components/cv-edit/CvBuilder';
 import CommonLayout from '@/components/layout/CommonLayout';
-import { useCvDataStore } from '@/context/cv-data-store';
-import { useCvQuery } from '@/hooks/useCvQuery';
 import {
   GetServerSidePropsContext,
   type InferGetServerSidePropsType,
 } from 'next';
-import { useEffect } from 'react';
-import StageCircleButtons from '@/components/cv-edit/StageCircleButtons';
-import Link from 'next/link';
 
-const ModalView = dynamic(() => import('@/components/cv-edit/ModalView'), {
-  ssr: false,
-});
-
-const CVDetailsPage: NextPageWithLayout<
+const EditCvPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = (cvData) => {
-  const { id } = cvData;
-  useCvQuery({
-    cvId: id,
-    initialData: cvData,
-  });
-  const previousCvId = useCvDataStore((s) => s.cvId);
-  const reInit = useCvDataStore((s) => s.reInit);
-
-  useEffect(() => {
-    if (previousCvId !== null && id !== previousCvId) {
-      reInit(id);
-    }
-  }, [previousCvId, id, reInit]);
-
-  return (
-    <div className="mx-auto container lg:mx-auto max-w-full lg:max-w-3xl rounded-b-2xl bg-white p-4 shadow-md mb-4">
-      <Link href="/my-cvs" className="block text-sm text-blue-500 mb-2">
-        Назад до усіх резюме
-      </Link>
-
-      <div className="flex mb-8 justify-between">
-        <CvEditMenu />
-        <AssistanceCheckBox />
-      </div>
-      <StageCircleButtons />
-      <StageView />
-      <ModalView />
-    </div>
-  );
+> = (props) => {
+  return <CvBuilder initialData={props} />;
 };
 
-CVDetailsPage.getLayout = CommonLayout;
+EditCvPage.getLayout = CommonLayout;
 
-export default CVDetailsPage;
+export default EditCvPage;
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext

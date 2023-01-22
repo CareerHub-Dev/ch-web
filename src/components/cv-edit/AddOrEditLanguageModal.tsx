@@ -1,5 +1,6 @@
 import useInput from '@/hooks/useInput/v4';
 import { useState } from 'react';
+import { useCvDataStore } from '@/context/cv-data-store';
 import NativeItemSelection from '../ui/NativeItemSelection';
 import ValidatedInput from '../ui/ValidatedInput';
 import AddOrEditItemModal from './item-list/AddOrEditItemModal';
@@ -14,15 +15,18 @@ const LEVEL_OPTIONS = [
   { name: 'C2', id: 'C2' },
 ];
 
-export default function AddOrEditLanguageModal(props: {
+export default function AddOrEditLanguageModal({
+  onClose,
+  initialPayload,
+}: {
   onClose: () => void;
-  onConfirm: (payload: { item: ForeignLanguage; itemIndex: number }) => void;
   initialPayload?: { item: ForeignLanguage; itemIndex: number };
 }) {
-  const formType = !props.initialPayload ? 'add' : 'edit';
+  const formType = !initialPayload ? 'add' : 'edit';
+  const dispatchLanguages = useCvDataStore((s) => s.dispatchForeignLanguages);
 
   const nameInput = useInput({
-    initialValue: props.initialPayload?.item.name ?? '',
+    initialValue: initialPayload?.item.name ?? '',
     validators: [
       (val) => {
         return val.length > 0
@@ -36,29 +40,35 @@ export default function AddOrEditLanguageModal(props: {
   });
   const [level, setLevel] = useState(
     LEVEL_OPTIONS.find(
-      (item) => item.id === props.initialPayload?.item.languageLevel
+      (item) => item.id === initialPayload?.item.languageLevel
     ) || LEVEL_OPTIONS.at(0)!
   );
 
   const handleConfirm = () => {
-    const item: ForeignLanguage = {
-      name: nameInput.value,
-      languageLevel: level.id,
-    };
-
-    const payload = {
-      item,
-    } as unknown as { item: ForeignLanguage; itemIndex: number };
-
-    if (formType === 'edit') {
-      payload.itemIndex = props.initialPayload!.itemIndex;
+    if (!initialPayload) {
+      dispatchLanguages({
+        type: 'add',
+        item: {
+          name: nameInput.value,
+          languageLevel: level.id,
+        },
+      });
+    } else {
+      dispatchLanguages({
+        type: 'edit',
+        itemIndex: initialPayload.itemIndex,
+        newValue: {
+          name: nameInput.value,
+          languageLevel: level.id,
+        },
+      });
     }
-    props.onConfirm(payload);
+    onClose();
   };
 
   return (
     <AddOrEditItemModal
-      onClose={props.onClose}
+      onClose={onClose}
       onConfirm={handleConfirm}
       type={formType}
       confirmationDisabled={nameInput.errors.length > 0}

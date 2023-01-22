@@ -1,30 +1,34 @@
-import useImageUpload from '@/hooks/useImageUpload/v2';
-import useToast from '@/hooks/useToast';
-import useProtectedMutation from '@/hooks/useProtectedMutation';
-import { useQueryClient } from '@tanstack/react-query';
-import { updateStudentPhoto } from '@/lib/api/student';
-import { useBoolean } from 'usehooks-ts';
-import { useState, useCallback, type ChangeEvent } from 'react';
-import parseUnknownError from '@/lib/parse-unknown-error';
-import Overlay from '@/components/ui/Overlay';
-import Image, { type StaticImageData } from 'next/image';
 import PencilIcon from '@/components/ui/icons/PencilIcon';
-import AvatarCrop from './AvatarCrop';
+import ImageCrop from '@/components/ui/ImageCrop';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
+import Overlay from '@/components/ui/Overlay';
+import useImageUpload from '@/hooks/useImageUpload/v2';
+import useProtectedMutation from '@/hooks/useProtectedMutation';
+import useToast from '@/hooks/useToast';
+import { updateStudentPhoto } from '@/lib/api/student';
+import parseUnknownError from '@/lib/parse-unknown-error';
+import { useQueryClient } from '@tanstack/react-query';
+import Image, { type StaticImageData } from 'next/image';
+import { useCallback, useState, type ChangeEvent } from 'react';
+import { useBoolean } from 'usehooks-ts';
 
 import cn from 'classnames';
 
-const AvatarEdit = ({ initialData }: { initialData: string | StaticImageData }) => {
+const AvatarEdit = ({
+  initialData,
+}: {
+  initialData: string | StaticImageData;
+}) => {
   const toast = useToast();
   const queryClient = useQueryClient();
   const avatarUpload = useImageUpload({ initialData });
   const [completedCrop, setCompletedCrop] = useState<{
-    url?: string;
-    blob?: Blob;
-  }>({});
+    url: string;
+    blob: Blob;
+  }>();
 
   const editPopupIsOpen = useBoolean(false);
-  const imageSource = completedCrop.url ? completedCrop.url : initialData;
+  const imageSource = completedCrop?.url ?? initialData;
 
   const updateStudentPhotoMutation = useProtectedMutation(
     ['updateSelfStudentPhoto'],
@@ -42,7 +46,7 @@ const AvatarEdit = ({ initialData }: { initialData: string | StaticImageData }) 
         }
         toast.success('Фото успішно оновлено');
         avatarUpload.reset();
-        setCompletedCrop({});
+        setCompletedCrop(undefined);
       },
       onError: (error) => {
         toast.error(parseUnknownError(error));
@@ -62,11 +66,11 @@ const AvatarEdit = ({ initialData }: { initialData: string | StaticImageData }) 
 
   const cancelNewAvatar = () => {
     avatarUpload.reset();
-    setCompletedCrop({});
+    setCompletedCrop(undefined);
   };
 
   const saveNewAvatar = useCallback(() => {
-    if (completedCrop.blob) {
+    if (!!completedCrop) {
       updateStudentPhotoMutation.mutate(
         new File([completedCrop.blob], `file.${avatarUpload.fileExtension}`, {
           type: avatarUpload.fileType ?? undefined,
@@ -76,7 +80,7 @@ const AvatarEdit = ({ initialData }: { initialData: string | StaticImageData }) 
   }, [
     avatarUpload.fileExtension,
     avatarUpload.fileType,
-    completedCrop.blob,
+    completedCrop,
     updateStudentPhotoMutation,
   ]);
 
@@ -142,7 +146,7 @@ const AvatarEdit = ({ initialData }: { initialData: string | StaticImageData }) 
 
         {avatarUpload.isTouched && (
           <>
-            <AvatarCrop
+            <ImageCrop
               src={avatarUpload.url}
               onCropComplete={setCompletedCrop}
               fileType={avatarUpload.fileType as string}

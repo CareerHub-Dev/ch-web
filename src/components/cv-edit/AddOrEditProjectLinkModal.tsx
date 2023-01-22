@@ -1,3 +1,4 @@
+import { useCvDataStore } from '@/context/cv-data-store';
 import { type ProjectLink } from '@/context/cv-data-store/cv';
 import useInput from '@/hooks/useInput/v4';
 import ValidatedInput from '../ui/ValidatedInput';
@@ -5,14 +6,13 @@ import AddOrEditItemModal from './item-list/AddOrEditItemModal';
 
 export function AddOrEditProjectLinkModal({
   onClose,
-  onConfirm,
   initialPayload,
 }: {
   onClose: () => void;
-  onConfirm: (payload: { item: ProjectLink; itemIndex: number }) => void;
   initialPayload?: { item: ProjectLink; itemIndex: number };
 }) {
   const modalType = typeof initialPayload === 'undefined' ? 'add' : 'edit';
+  const dispatchProjectLinks = useCvDataStore((s) => s.dispatchProjectLinks);
 
   const titleInput = useInput({
     initialValue: initialPayload?.item.title || '',
@@ -52,22 +52,24 @@ export function AddOrEditProjectLinkModal({
   });
 
   const handleConfirm = () => {
-    const item: ProjectLink = {
+    const values = {
       title: titleInput.value,
       url: urlInput.value,
     };
 
-    let payload = {
-      item,
-    } as {
-      item: ProjectLink;
-      itemIndex: number;
-    };
-
-    if (modalType === 'edit') {
-      payload.itemIndex = initialPayload!.itemIndex;
+    if (!initialPayload) {
+      dispatchProjectLinks({
+        type: 'add',
+        item: values,
+      });
+    } else {
+      dispatchProjectLinks({
+        type: 'edit',
+        itemIndex: initialPayload.itemIndex,
+        newValue: values,
+      });
     }
-    onConfirm(payload);
+    onClose();
   };
 
   return (

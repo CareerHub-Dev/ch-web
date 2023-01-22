@@ -1,4 +1,4 @@
-import AssistantTip from '@/components/cv-builder/stages/AssistantTip';
+import AssistanceAlert from '../AssistantAlert';
 import { useCvDataStore } from '@/context/cv-data-store';
 import { useCvUiStore } from '@/context/cv-ui-store';
 import { type ChangeEvent } from 'react';
@@ -43,7 +43,7 @@ export default function Stage4() {
 
       {isAssistEnabled && (
         <div className='mt-6'>
-          <AssistantTip>
+          <AssistanceAlert>
             <p>
               Подумай про те, як твої цілі співвідносяться з твоїми навичками:
               як головне вміння варто вказати те, що найбільше корисно для
@@ -60,7 +60,7 @@ export default function Stage4() {
               <li>Сервіси</li>
               <li>Протоколи</li>
             </ul>
-          </AssistantTip>
+          </AssistanceAlert>
         </div>
       )}
     </>

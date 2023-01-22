@@ -1,15 +1,29 @@
 import ListItemEditMenu from '@/components/ui/ListItemEditMenu';
 import { type ForeignLanguage } from '@/context/cv-data-store/cv';
+import { type ItemListAction } from '@/lib/list-reducer/dialog-actions';
+import { type Dispatch } from 'react';
 
 export default function LanguageItem({
-  name,
-  languageLevel,
-  onEditClick,
-  onRemoveClick,
-}: ForeignLanguage & {
-  onEditClick: () => void;
-  onRemoveClick: () => void;
+  item,
+  itemIndex,
+  actionHandler,
+}: {
+  item: ForeignLanguage;
+  itemIndex: number;
+  actionHandler: Dispatch<ItemListAction<ForeignLanguage>>;
 }) {
+  const createActionHandler = (type: 'edit' | 'remove') => () => {
+    actionHandler({
+      type,
+      itemIndex,
+      item,
+    });
+  };
+  const handleEditClick = createActionHandler('edit');
+  const handleRemoveClick = createActionHandler('remove');
+
+  const { name, languageLevel } = item;
+
   return (
     <li className="py-4">
       <div className="flex items-center space-x-4">
@@ -18,8 +32,8 @@ export default function LanguageItem({
           <p className="truncate text-sm text-gray-500">{languageLevel}</p>
         </div>
         <ListItemEditMenu
-          onEditClick={onEditClick}
-          onRemoveClick={onRemoveClick}
+          onEditClick={handleEditClick}
+          onRemoveClick={handleRemoveClick}
         />
       </div>
     </li>

@@ -1,4 +1,4 @@
-import AssistantTip from '@/components/cv-builder/stages/AssistantTip';
+import AssistanceAlert from '../AssistantAlert';
 import { useCvDataStore } from '@/context/cv-data-store';
 import { TEMPLATE_LANGUAGES } from '@/context/cv-data-store/cv';
 import { useCvUiStore } from '@/context/cv-ui-store';
@@ -51,16 +51,15 @@ export default function Stage0() {
       </div>
       {isAssistEnabled && ['Dev', 'QA'].includes(selectedJobPosition.name) && (
         <div className="mt-6">
-          <AssistantTip
-            type={
-              selectedTemplateLanguage.id === 'EN' ? 'good-example' : 'default'
-            }
+          <AssistanceAlert
+            title='Мова шаблону'
+            type={selectedTemplateLanguage.id === 'EN' ? 'positive' : 'info'}
           >
             <p>
               У сфері IT всюди використовується англійська мова, тому у якості
               мови шаблону краще обрати саме її.
             </p>
-          </AssistantTip>
+          </AssistanceAlert>
         </div>
       )}
     </>

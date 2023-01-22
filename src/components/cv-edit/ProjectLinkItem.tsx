@@ -1,19 +1,29 @@
 import ListItemEditMenu from '@/components/ui/ListItemEditMenu';
-
-type ProjectLink = {
-  title: string;
-  url: string;
-};
+import { type ProjectLink } from '@/context/cv-data-store/cv';
+import { type ItemListAction } from '@/lib/list-reducer/dialog-actions';
+import { type Dispatch } from 'react';
 
 export default function LanguageItem({
-  title,
-  url,
-  onEditClick,
-  onRemoveClick,
-}: ProjectLink & {
-  onEditClick: () => void;
-  onRemoveClick: () => void;
+  item,
+  itemIndex,
+  actionHandler,
+}: {
+  item: ProjectLink;
+  itemIndex: number;
+  actionHandler: Dispatch<ItemListAction<ProjectLink>>;
 }) {
+  const createActionHandler = (type: 'edit' | 'remove') => () => {
+    actionHandler({
+      type,
+      itemIndex,
+      item,
+    });
+  };
+  const handleEditClick = createActionHandler('edit');
+  const handleRemoveClick = createActionHandler('remove');
+
+  const { title, url } = item;
+
   return (
     <li className="py-4">
       <div className="flex items-center space-x-4">
@@ -28,8 +38,8 @@ export default function LanguageItem({
           </a>
         </div>
         <ListItemEditMenu
-          onEditClick={onEditClick}
-          onRemoveClick={onRemoveClick}
+          onEditClick={handleEditClick}
+          onRemoveClick={handleRemoveClick}
         />
       </div>
     </li>

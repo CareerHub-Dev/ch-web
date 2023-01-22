@@ -1,4 +1,9 @@
-import { centerCrop, makeAspectCrop, PixelCrop } from 'react-image-crop';
+import {
+  centerCrop,
+  makeAspectCrop,
+  PercentCrop,
+  PixelCrop,
+} from 'react-image-crop';
 
 const supportedFileTypes = ['image/jpeg', 'image/png'];
 
@@ -22,6 +27,11 @@ export const readUploadedImage = (file: File) => {
   });
 };
 
+export const getFileNameExtension = (fileName: string) =>
+  fileName.split('.').pop() ?? '';
+
+export const getFileExtension = (file: File) => getFileNameExtension(file.name);
+
 export const isImageTypeValid = (file: File) => {
   return supportedFileTypes.includes(file.type);
 };
@@ -42,8 +52,8 @@ export const centerAspectCrop = (
   mediaWidth: number,
   mediaHeight: number,
   aspect: number
-) => {
-  return centerCrop(
+) =>
+  centerCrop(
     makeAspectCrop(
       {
         unit: '%',
@@ -56,8 +66,11 @@ export const centerAspectCrop = (
     mediaWidth,
     mediaHeight
   );
-};
 
+/**
+ * @deprecated
+ * Use Crop namespace instead
+ */
 const getBlobFromCanvas = (canvas: HTMLCanvasElement, fileType: string) =>
   new Promise<{
     blob: Blob;
@@ -76,6 +89,10 @@ const getBlobFromCanvas = (canvas: HTMLCanvasElement, fileType: string) =>
     }, fileType);
   });
 
+/**
+ * @deprecated
+ * Use Crop namespace cropImage instead
+ */
 export const cropImage = async (
   imgElement: HTMLImageElement,
   fileType: string,
@@ -106,4 +123,114 @@ export const cropImage = async (
   );
 
   return getBlobFromCanvas(canvas, fileType);
+};
+
+const percentCropToPixelCrop = ({
+  crop,
+  dimensions,
+}: {
+  crop: PercentCrop;
+  dimensions: { width: number; height: number };
+}): PixelCrop => {
+  const { width, height } = dimensions;
+
+  return {
+    unit: 'px',
+    x: (width * crop.x) / 100,
+    y: (height * crop.y) / 100,
+    width: (width * crop.width) / 100,
+    height: (height * crop.height) / 100,
+  };
+};
+
+export namespace Crop {
+  const getBlobFromCanvas = ({
+    canvas,
+    fileType,
+  }: {
+    canvas: HTMLCanvasElement;
+    fileType: string;
+  }) =>
+    new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject(new Error('Canvas is empty'));
+        }
+      }, fileType);
+    });
+
+  export const cropImage = async ({
+    image,
+    fileType,
+    crop,
+  }: {
+    image: HTMLImageElement;
+    fileType: string;
+    crop: PixelCrop;
+  }) => {
+    const canvas = document.createElement('canvas');
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    const pixelRatio = window.devicePixelRatio;
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = crop.width * pixelRatio * scaleX;
+    canvas.height = crop.height * pixelRatio * scaleY;
+
+    ctx!.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    ctx!.imageSmoothingQuality = 'high';
+
+    ctx!.drawImage(
+      image,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      crop.width * scaleX,
+      crop.height * scaleY
+    );
+
+    return getBlobFromCanvas({ canvas, fileType });
+  };
+}
+
+export const fileUrlToImage = (fileUrl: string) =>
+  new Promise<HTMLImageElement>((resolve, _reject) => {
+    const image = new Image();
+    image.src = fileUrl;
+    image.onload = () => resolve(image);
+    image.onerror = () => _reject(new Error('Failed to load image'));
+  });
+
+export const croppedImageFromFileAndCrop = async ({
+  file,
+  crop,
+}: {
+  file: File;
+  crop: PercentCrop | PixelCrop;
+}) => {
+  const fileUrl = URL.createObjectURL(file);
+  const image = await fileUrlToImage(fileUrl);
+  const pixelCrop: PixelCrop =
+    crop.unit === '%'
+      ? percentCropToPixelCrop({
+          crop,
+          dimensions: {
+            width: image.naturalWidth,
+            height: image.naturalHeight,
+          },
+        })
+      : crop;
+
+  const blob = await Crop.cropImage({
+    image,
+    fileType: file.type,
+    crop: pixelCrop,
+  });
+  URL.revokeObjectURL(fileUrl);
+  return blob;
 };

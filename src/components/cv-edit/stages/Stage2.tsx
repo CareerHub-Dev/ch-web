@@ -1,11 +1,40 @@
-import AssistantTip from '@/components/cv-builder/stages/AssistantTip';
+import AssistanceAlert from '../AssistantAlert';
+import ChangeOrRemovePhotoButton from '../ChangeOrRemovePhotoButton';
+import { ConfirmCancelDialog } from '@/components/ui/ConfirmCancelDialog';
+import { getPhotoDetails, useCvDataStore } from '@/context/cv-data-store';
 import { useCvUiStore } from '@/context/cv-ui-store';
+import { getImage } from '@/lib/api/image';
+import Image from 'next/image';
+import { useBoolean } from 'usehooks-ts';
+import PhotoEditDialog from '../PhotoEditDialog';
 
 export default function Stage2() {
+  const changePhotoModalIsOpen = useBoolean(false);
+  const removePhotoModalIsOpen = useBoolean(false);
   const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
+  const photoDetails = useCvDataStore(getPhotoDetails);
+  const removePhoto = useCvDataStore((s) => s.removePhoto);
+
+  const handlePhotoRemovalConfirmation = () => {
+    removePhoto();
+    removePhotoModalIsOpen.setFalse();
+  };
 
   return (
     <>
+      {changePhotoModalIsOpen.value && (
+        <PhotoEditDialog onClose={changePhotoModalIsOpen.setFalse} />
+      )}
+      <ConfirmCancelDialog
+        onConfirm={handlePhotoRemovalConfirmation}
+        onClose={removePhotoModalIsOpen.setFalse}
+        title={'Видалити фото?'}
+        cancelText={'Ні'}
+        confirmText={'Так'}
+        show={removePhotoModalIsOpen.value}
+        confirmClasses="bg-red-600 text-white focus:ring-red-500"
+      />
+
       <div className="space-y-6 sm:space-y-5">
         <h3 className="text-xl font-medium leading-6 text-gray-900">
           {'Фотографія'}
@@ -20,20 +49,37 @@ export default function Stage2() {
           </label>
           <div className="mt-1 sm:mt-0">
             <div className="flex items-center flex-row-reverse">
-              <button
-                type="button"
-                className="ml-5 rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Змінити
-              </button>
-              <span className="h-48 w-48 overflow-hidden rounded-full bg-gray-100">
-                <svg
-                  className="h-full w-full text-gray-300"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
+              <ChangeOrRemovePhotoButton
+                onChangeClick={changePhotoModalIsOpen.setTrue}
+                onRemoveClick={removePhotoModalIsOpen.setTrue}
+              />
+
+              <span className="h-48 w-48 overflow-hidden rounded-full bg-gray-100 mr-5">
+                {photoDetails === null ? (
+                  <svg
+                    className="h-full w-full text-gray-300"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                ) : photoDetails.type === 'imagePath' ? (
+                  <Image
+                    src={getImage(photoDetails.path)}
+                    alt="Ваше фото"
+                    width={200}
+                    height={200}
+                    className="h-full w-full"
+                  />
+                ) : (
+                  <Image
+                    src={photoDetails.croppedPhotoUrl}
+                    alt="Ваше фото"
+                    width={200}
+                    height={200}
+                    className="h-full w-full"
+                  />
+                )}
               </span>
             </div>
           </div>
@@ -42,8 +88,7 @@ export default function Stage2() {
 
       {isAssistEnabled && (
         <div className="mt-6">
-          <AssistantTip>
-            <p>Чим може стати у нагоді фотографія в резюме?</p>
+          <AssistanceAlert title="Чим може стати у нагоді фотографія в резюме?">
             <ul>
               <li>Деякі вакансії вимагають фотографію у резюме;</li>
               <li>
@@ -54,10 +99,9 @@ export default function Stage2() {
             </ul>
             <br />
             <p>
-              {`Якщо вирішив додавати фотографію, то переконайся, що вона виглядає
-            доречною і що ти на ній схожий на самого себе`}
+              {`Якщо вирішив додавати фотографію, то переконайся, що вона виглядає доречною і що ти на ній схожий на самого себе`}
             </p>
-          </AssistantTip>
+          </AssistanceAlert>
         </div>
       )}
     </>

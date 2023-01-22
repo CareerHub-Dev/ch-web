@@ -1,5 +1,6 @@
 import { type StageNumber } from '../cv-ui-store/stages-slice';
 import { type CvDataStore } from './cv-data-store';
+import { getFileNameExtension } from '@/lib/images';
 
 export type StageCompletionStatus =
   | 'complete'
@@ -43,6 +44,25 @@ export const getStageCompletionStatus =
         return 'hasErrors';
     }
   };
+
+export const getPhotoDetails = (store: CvDataStore) => {
+  const { photo } = store.cvData;
+
+  if (photo === null) return null;
+
+  if (typeof photo === 'string') {
+    return {
+      type: 'imagePath' as const,
+      path: photo,
+    };
+  }
+
+  return {
+    type: 'uploadedFile' as const,
+    ...photo,
+    extension: getFileNameExtension(photo.fileName),
+  };
+};
 
 function summarizeInputs(...inputs: Inputs.BaseInput[]): StageCompletionStatus {
   if (inputs.some((item) => item.errors.length > 0)) {
