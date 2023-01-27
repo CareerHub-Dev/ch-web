@@ -1,15 +1,12 @@
-import Link from 'next/link';
-import { Fragment } from 'react';
-import { Popover, Transition } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import cn from 'classnames';
-import { useRouter } from 'next/router';
 import useSession from '@/hooks/useSession';
 import getNavigationLinks from '@/lib/navigation-links';
+import { Popover, Transition } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/router';
+import { Fragment } from 'react';
 import { AuthLinks, MobileAuthLinks } from './AuthLinks';
-import NavLink from './NavLink';
-import { UserMenu } from './UserMenu';
+import NavLink, { MobileNavLink } from './NavLink';
+import { MobileUserMenu, UserMenu } from './UserMenu';
 
 export default function HorizontalNavbar() {
   const { pathname } = useRouter();
@@ -21,12 +18,12 @@ export default function HorizontalNavbar() {
       <div className="flex items-center justify-between px-12 h-16 md:justify-start md:space-x-10">
         <div>
           <h1 className="font-rancho pointer-events-none text-3xl select-none inline-block">
-            CareerHub
+            {'CareerHub'}
           </h1>
         </div>
         <div className="-my-2 -mr-2 md:hidden">
           <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">{'Відкрити меню'}</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </Popover.Button>
         </div>
@@ -61,29 +58,29 @@ export default function HorizontalNavbar() {
       >
         <Popover.Panel
           focus
-          className="absolute inset-x-0 top-0 origin-top-right transform p-2 transition md:hidden"
+          className="absolute inset-x-0 top-0 origin-top-right transform p-2 transition md:hidden z-20"
         >
           <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
             <div className="px-5 pt-5 pb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="font-rancho pointer-events-none text-3xl select-none inline-block">
-                    CareerHub
+                    {'CareerHub'}
                   </h1>
                 </div>
                 <div className="-mr-2">
                   <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
-                    <span className="sr-only">Close menu</span>
+                    <span className="sr-only">{'Закрити меню'}</span>
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>
                 </div>
               </div>
             </div>
             <div className="py-6 px-5">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col space-y-1 px-2 pt-2 pb-3 sm:px-3">
                 {status !== 'loading' &&
                   links.map((link) => (
-                    <NavLink
+                    <MobileNavLink
                       key={link.href}
                       text={link.text}
                       href={link.href}
@@ -98,7 +95,7 @@ export default function HorizontalNavbar() {
               {status === 'unauthenticated' ? (
                 <MobileAuthLinks />
               ) : (
-                <UserMenu />
+                <MobileUserMenu />
               )}
             </div>
           </div>
