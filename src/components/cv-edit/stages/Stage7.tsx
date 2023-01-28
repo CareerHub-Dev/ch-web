@@ -1,12 +1,13 @@
+import { useCvAssistanceStore } from '@/context/cv-assistance-store';
 import { useCvDataStore } from '@/context/cv-data-store';
-import { useCvUiStore } from '@/context/cv-ui-store';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
-import EducationItem from '../EducationItem';
 import AddOrEditEducationModal from '../AddOrEditEducation';
+import EducationItem from '../EducationItem';
+import { EmptyState } from '../EmptyState';
 import RemoveItemModal from '../item-list/RemoveItemModal';
 
 export default function Stage7() {
-  const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
+  const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
   const educations = useCvDataStore((s) => s.cvData.educations);
   const dispatchEducations = useCvDataStore((s) => s.dispatchEducations);
   type Education = typeof educations.items[number];
@@ -68,26 +69,27 @@ export default function Stage7() {
             </button>
           </div>
         </div>
-        <div className="mt-5 flow-root">
-          <ul role="list" className="divide-y divide-gray-200">
-            {educations.items.map((item, itemIndex) => (
-              <EducationItem
-                key={itemIndex}
-                item={item}
-                itemIndex={itemIndex}
-                dispatchAction={dispatch}
-              />
-            ))}
-          </ul>
-        </div>
-      </div>
-      {
-        isAssistEnabled && (
-          <div className='mt-6'>
-
+        {educations.items.length > 0 ? (
+          <div className="mt-5 flow-root">
+            <ul role="list" className="divide-y divide-gray-200">
+              {educations.items.map((item, itemIndex) => (
+                <EducationItem
+                  key={itemIndex}
+                  item={item}
+                  itemIndex={itemIndex}
+                  dispatchAction={dispatch}
+                />
+              ))}
+            </ul>
           </div>
-        )
-      }
+        ) : (
+          <EmptyState
+            noItemsText="Інформації про освіту не додано"
+            addItemHandler={handleAddClick}
+          />
+        )}
+      </div>
+      {isAssistEnabled && <div className="mt-6"></div>}
     </>
   );
 }

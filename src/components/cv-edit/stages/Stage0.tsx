@@ -1,14 +1,14 @@
 import AssistanceAlert from '../AssistantAlert';
 import { useCvDataStore } from '@/context/cv-data-store';
 import { TEMPLATE_LANGUAGES } from '@/context/cv-data-store/cv';
-import { useCvUiStore } from '@/context/cv-ui-store';
+import { useCvAssistanceStore } from '@/context/cv-assistance-store';
 import ItemSelection from '../../ui/ItemsSelection';
 
 export default function Stage0() {
   const selectedTemplateLanguage = useCvDataStore(
     (store) => store.cvData.templateLanguage
   );
-  const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
+  const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
   const setTemplateLanguage = useCvDataStore((s) => s.changeTemplateLanguage);
 
   const selectedJobPosition = useCvDataStore(
@@ -52,7 +52,7 @@ export default function Stage0() {
       {isAssistEnabled && ['Dev', 'QA'].includes(selectedJobPosition.name) && (
         <div className="mt-6">
           <AssistanceAlert
-            title='Мова шаблону'
+            title="Мова шаблону"
             type={selectedTemplateLanguage.id === 'EN' ? 'positive' : 'info'}
           >
             <p>

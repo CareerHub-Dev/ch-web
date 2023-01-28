@@ -1,12 +1,12 @@
-import AssistanceAlert from '../AssistantAlert';
+import { useCvAssistanceStore } from '@/context/cv-assistance-store';
 import { useCvDataStore } from '@/context/cv-data-store';
-import { useCvUiStore } from '@/context/cv-ui-store';
 import { type ChangeEvent } from 'react';
+import AssistanceAlert from '../AssistantAlert';
 
 export default function Stage3() {
   const goals = useCvDataStore((s) => s.cvData.goals);
   const changeGoals = useCvDataStore((s) => s.changeGoals);
-  const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
+  const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     changeGoals(e.target.value);
@@ -36,7 +36,7 @@ export default function Stage3() {
         </div>
       </div>
       {isAssistEnabled && (
-        <div className='mt-6 flex flex-col gap-4'>
+        <div className="mt-6 flex flex-col gap-4">
           <AssistanceAlert>
             <p>
               Цілі - це те, чим саме ти хочеш займатися на роботі, чого ти хочеш

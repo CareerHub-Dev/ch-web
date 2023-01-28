@@ -1,10 +1,10 @@
-import AssistanceAlert from '../AssistantAlert';
+import { useCvAssistanceStore } from '@/context/cv-assistance-store';
 import { useCvDataStore } from '@/context/cv-data-store';
-import { useCvUiStore } from '@/context/cv-ui-store';
 import { type ChangeEvent } from 'react';
+import AssistanceAlert from '../AssistantAlert';
 
 export default function Stage4() {
-  const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
+  const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
   const skillsAndTechnologiesInput = useCvDataStore(
     (s) => s.cvData.skillsAndTechnologies
   );
@@ -42,7 +42,7 @@ export default function Stage4() {
       </div>
 
       {isAssistEnabled && (
-        <div className='mt-6'>
+        <div className="mt-6">
           <AssistanceAlert>
             <p>
               Подумай про те, як твої цілі співвідносяться з твоїми навичками:

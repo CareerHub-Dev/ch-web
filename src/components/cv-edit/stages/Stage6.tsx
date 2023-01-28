@@ -1,14 +1,15 @@
-import AssistanceAlert from '../AssistantAlert';
+import { useCvAssistanceStore } from '@/context/cv-assistance-store';
 import { useCvDataStore } from '@/context/cv-data-store';
-import { useCvUiStore } from '@/context/cv-ui-store';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
 import { type ChangeEvent } from 'react';
 import { AddOrEditProjectLinkModal } from '../AddOrEditProjectLinkModal';
+import AssistanceAlert from '../AssistantAlert';
+import { EmptyState } from '../EmptyState';
 import RemoveItemModal from '../item-list/RemoveItemModal';
 import ProjectLinkItem from '../ProjectLinkItem';
 
 export default function Stage6() {
-  const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
+  const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
   const experienceHighlights = useCvDataStore(
     (s) => s.cvData.experienceHighlights
   );
@@ -110,20 +111,26 @@ export default function Stage6() {
             </button>
           </div>
         </div>
-        <div className="mt-5 flow-root">
-          <ul role="list" className="divide-y divide-gray-200">
-            {projectLinks.items.map((item, itemIndex) => (
-              <ProjectLinkItem
-                key={itemIndex}
-                itemIndex={itemIndex}
-                item={item}
-                actionHandler={dispatch}
-              />
-            ))}
-          </ul>
-        </div>
+        {projectLinks.items.length > 0 ? (
+          <div className="mt-5 flow-root">
+            <ul role="list" className="divide-y divide-gray-200">
+              {projectLinks.items.map((item, itemIndex) => (
+                <ProjectLinkItem
+                  key={itemIndex}
+                  itemIndex={itemIndex}
+                  item={item}
+                  actionHandler={dispatch}
+                />
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <EmptyState
+            noItemsText="Посилань не додано"
+            addItemHandler={handleAddClick}
+          />
+        )}
       </div>
-
       {isAssistEnabled && (
         <div className="mt-6 flex flex-col gap-4">
           <AssistanceAlert>

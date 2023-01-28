@@ -1,7 +1,7 @@
 import useToast from '@/hooks/useToast';
 import { croppedImageFromFileAndCrop, isImageTypeValid } from '@/lib/images';
 import cn from 'classnames';
-import { type DragEvent } from 'react';
+import { ChangeEvent, type DragEvent } from 'react';
 import { PercentCrop } from 'react-image-crop';
 import { useBoolean } from 'usehooks-ts';
 
@@ -26,31 +26,42 @@ export default function PhotoDragAndDropInput({
     dragAndDropAreaFocused.setFalse();
   };
 
-  const handleDrop = async (event: DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    dragAndDropAreaFocused.setFalse();
-
-    const imageFile = event.dataTransfer.files[0];
-    if (!imageFile) {
-      toast.error('Помилка при обробці зображення');
+  const validateImageFile = async (file: File | undefined) => {
+    if (!file) {
+      toast.error('Помилка при обробці файлу');
       return;
     }
 
-    if (!isImageTypeValid(imageFile)) {
+    if (!isImageTypeValid(file)) {
       toast.error('Формат файлу не підтримується');
       return;
     }
 
     const croppedPhoto = await croppedImageFromFileAndCrop({
-      file: imageFile,
+      file,
       crop: DEFAULT_PHOTO_CROP,
     });
 
     onPhotoLoaded({
-      photoSource: imageFile,
+      photoSource: file,
       croppedPhotoBlob: croppedPhoto,
     });
+  };
+
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    dragAndDropAreaFocused.setFalse();
+
+    const file = event.dataTransfer.files[0];
+    validateImageFile(file);
+  };
+
+  const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+
+    const file = event.target.files?.[0];
+    validateImageFile(file);
   };
 
   return (
@@ -91,6 +102,7 @@ export default function PhotoDragAndDropInput({
                   name="file-upload"
                   type="file"
                   className="sr-only"
+                  onChange={handleFileInputChange}
                 />
               </label>
               <p className="pl-1">або перетягніть сюди</p>

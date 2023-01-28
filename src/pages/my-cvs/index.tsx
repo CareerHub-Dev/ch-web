@@ -1,7 +1,7 @@
 import CommonLayout from '@/components/layout/CommonLayout';
 import { type InferGetServerSidePropsType } from 'next';
-import CVItemsGrid from '@/components/student-cvs/CVItemsGrid';
-import CVItemsSearch from '@/components/student-cvs/CVItemsSearch';
+import { CvItemsGrid } from '@/components/student-cvs/CvItemsGrid';
+import { CvItemsSearch } from '@/components/student-cvs/CvItemsSearch';
 import { AddCvButton } from '@/components/student-cvs/AddCvButton';
 
 const StudentCVsPage: NextPageWithLayout<
@@ -9,7 +9,7 @@ const StudentCVsPage: NextPageWithLayout<
 > = ({ cvs }) => {
   return (
     <div className="border-b border-x border-gray-200 bg-white container mx-auto rounded-b-lg px-4 sm:px-6">
-      <div className="flex flex-wrap items-center justify-between sm:flex-nowrap border-b border-gray-200 py-5">
+      <div className="flex flex-wrap items-center justify-between sm:flex-nowrap border-b border-gray-200 py-5 mb-5">
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           {'Мої резюме'}
         </h3>
@@ -18,8 +18,8 @@ const StudentCVsPage: NextPageWithLayout<
           <AddCvButton />
         </div>
       </div>
-      <CVItemsSearch />
-      <CVItemsGrid items={cvs} />
+      <CvItemsSearch />
+      <CvItemsGrid items={cvs} />
     </div>
   );
 };

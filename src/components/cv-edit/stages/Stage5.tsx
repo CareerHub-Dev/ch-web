@@ -1,8 +1,9 @@
-import AssistanceAlert from '../AssistantAlert';
+import { useCvAssistanceStore } from '@/context/cv-assistance-store';
 import { useCvDataStore } from '@/context/cv-data-store';
-import { useCvUiStore } from '@/context/cv-ui-store';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
 import AddOrEditLanguageModal from '../AddOrEditLanguageModal';
+import AssistanceAlert from '../AssistantAlert';
+import { EmptyState } from '../EmptyState';
 import RemoveItemModal from '../item-list/RemoveItemModal';
 import LanguageItem from '../LanguageItem';
 
@@ -11,7 +12,7 @@ export default function Stage5() {
   const dispatchForeignLanguages = useCvDataStore(
     (s) => s.dispatchForeignLanguages
   );
-  const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
+  const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
   type ForeignLanguage = typeof foreignLanguages.items[number];
 
   const [state, dispatchAction] =
@@ -29,17 +30,22 @@ export default function Stage5() {
     focusedItemIndex: focusedLanguageIndex,
   } = state;
 
+  const handleRemoveItem = () => {
+    if (focusedLanguageIndex === null) return;
+
+    dispatchForeignLanguages({
+      type: 'remove',
+      itemIndex: focusedLanguageIndex,
+    });
+    handleClose();
+  };
+
   return (
     <>
       {dialog === null ? null : dialog === 'remove' ? (
         <RemoveItemModal
           onClose={handleClose}
-          onConfirm={() =>
-            dispatchForeignLanguages({
-              type: 'remove',
-              itemIndex: focusedLanguageIndex,
-            })
-          }
+          onConfirm={handleRemoveItem}
           title="Видалити мову?"
           descriptionText={`Мова ${focusedLanguage.name} буде видалена зі списку`}
         />
@@ -72,18 +78,25 @@ export default function Stage5() {
         </div>
       </div>
 
-      <div className="mt-5 flow-root">
-        <ul role="list" className="divide-y divide-gray-200">
-          {foreignLanguages.items.map((language, languageIndex) => (
-            <LanguageItem
-              key={languageIndex}
-              itemIndex={languageIndex}
-              item={language}
-              actionHandler={dispatchAction}
-            />
-          ))}
-        </ul>
-      </div>
+      {foreignLanguages.items.length > 0 ? (
+        <div className="mt-5 flow-root">
+          <ul role="list" className="divide-y divide-gray-200">
+            {foreignLanguages.items.map((language, languageIndex) => (
+              <LanguageItem
+                key={languageIndex}
+                itemIndex={languageIndex}
+                item={language}
+                actionHandler={dispatchAction}
+              />
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <EmptyState
+          noItemsText="Інозмених мов не додано"
+          addItemHandler={handleAdd}
+        />
+      )}
 
       {isAssistEnabled && (
         <div className="mt-6 flex flex-col gap-4">

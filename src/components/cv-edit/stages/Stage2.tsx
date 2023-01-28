@@ -1,17 +1,17 @@
-import AssistanceAlert from '../AssistantAlert';
-import ChangeOrRemovePhotoButton from '../ChangeOrRemovePhotoButton';
 import { ConfirmCancelDialog } from '@/components/ui/ConfirmCancelDialog';
+import { useCvAssistanceStore } from '@/context/cv-assistance-store';
 import { getPhotoDetails, useCvDataStore } from '@/context/cv-data-store';
-import { useCvUiStore } from '@/context/cv-ui-store';
 import { getImage } from '@/lib/api/image';
 import Image from 'next/image';
 import { useBoolean } from 'usehooks-ts';
+import AssistanceAlert from '../AssistantAlert';
+import ChangeOrRemovePhotoButton from '../ChangeOrRemovePhotoButton';
 import PhotoEditDialog from '../PhotoEditDialog';
 
 export default function Stage2() {
   const changePhotoModalIsOpen = useBoolean(false);
   const removePhotoModalIsOpen = useBoolean(false);
-  const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
+  const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
   const photoDetails = useCvDataStore(getPhotoDetails);
   const removePhoto = useCvDataStore((s) => s.removePhoto);
 

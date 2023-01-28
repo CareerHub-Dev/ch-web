@@ -1,10 +1,10 @@
 import AssistanceAlert from '../AssistantAlert';
 import ValidatedInput from '@/components/ui/ValidatedInput';
 import { useCvDataStore } from '@/context/cv-data-store';
-import { useCvUiStore } from '@/context/cv-ui-store';
+import { useCvAssistanceStore } from '@/context/cv-assistance-store';
 
 export default function Stage1() {
-  const isAssistEnabled = useCvUiStore((s) => s.isAssistanceEnabled);
+  const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
   const jobPosition = useCvDataStore((s) => s.cvData.jobPosition?.name) ?? '';
   const firstName = useCvDataStore((s) => s.cvData.firstName);
   const lastName = useCvDataStore((s) => s.cvData.lastName);

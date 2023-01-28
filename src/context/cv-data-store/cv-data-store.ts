@@ -219,28 +219,3 @@ export const useCvDataStore = create<CvDataStore>()(
     }))
   )
 );
-
-/* const emptyState = {
-  cvId: null,
-  cvData: getEmptyCvData(),
-  reInit: () => {},
-  discardChanges: () => {},
-  changeTitle: () => {},
-  changeTemplateLanguage: () => {},
-  changeJobPosition: () => {},
-  changeFirstName: () => {},
-  changeLastName: () => {},
-  changeGoals: () => {},
-  changeSkillsAndTechnologies: () => {},
-  changeExperienceHighlights: () => {},
-  dispatchForeignLanguages: () => {},
-};
-
-export const useCvDataStore = ((selector, compare) => {
-  const store = useCvDataStoreBase(selector, compare);
-  const [hydrated, setHydrated] = useState(false);
-  useEffect(() => setHydrated(true), []);
-
-  return hydrated ? store : selector(emptyState);
-}) as typeof useCvDataStoreBase;
- */
