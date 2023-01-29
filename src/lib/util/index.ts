@@ -1,18 +1,18 @@
 export const studentEmailRegex = /^[\w]+\.{1}[\w]+@nure.ua$/;
 
-export const emailRegex = /^[\w-.]+@[\w-]+\.{1}[\w-]{2,}$/;
+export const emailPattern = /^[\w-.]+@[\w-]+\.{1}[\w-]{2,}$/;
 
-export const passwordRegex =
+export const passwordPattern =
   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9#?!@$%^&*-]).{8,32}$/;
 
 export const getEmailValidity = (email: string) =>
-  email.match(emailRegex) !== null;
+  email.match(emailPattern) !== null;
 
 export const getStudentEmailValidity = (email: string) =>
   email.match(studentEmailRegex) !== null;
 
 export const getPasswordValidity = (password: string) =>
-  password.match(passwordRegex) !== null;
+  password.match(passwordPattern) !== null;
 
 export const getFormattedDate = (month: string, year: string) => {
   return month.padStart(2, '0') + '.' + year;

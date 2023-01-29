@@ -49,7 +49,7 @@ const inputStateReducer = (
   };
 };
 
-const useInput = (opts?: {
+export const useInput = (opts?: {
   validators?: Array<Inputs.Validator<string>>;
   initialValue?: string;
 }) => {
@@ -74,15 +74,20 @@ const useInput = (opts?: {
     dispatch({ type: 'INPUT', value });
   };
 
+  const blur = () => {
+    dispatch({ type: 'BLUR' });
+  };
+
   return {
     value: inputState.value,
     isTouched: inputState.isTouched,
     errors,
     warnings,
     change,
+    blur,
+    hasErrors: errors.length > 0,
+    hasWarnings: warnings.length > 0,
   };
 };
-
-export default useInput;
 
 export type UseInputResult = ReturnType<typeof useInput>;

@@ -1,17 +1,15 @@
-import { useRouter } from 'next/router';
-import useToast from '@/hooks/useToast';
-import { useMutation } from '@tanstack/react-query';
-import { FormEventHandler, useRef } from 'react';
 import useInput from '@/hooks/useInput';
-import { getEmailValidity, getPasswordValidity } from '@/lib/util';
+import useToast from '@/hooks/useToast';
 import { forgotPassword, resetPassword } from '@/lib/api/account';
-import AuthField from '../AuthField';
-import KeyIcon from '@/components/ui/icons/KeyIcon';
-import EnvelopeIcon from '@/components/ui/icons/EnvelopeIcon';
+import { getEmailValidity, getPasswordValidity } from '@/lib/util';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import { FormEventHandler, useRef } from 'react';
+import { AuthField } from './AuthField';
 
 import classes from './forms.module.scss';
 
-const ForgotPasswordForm = () => {
+export const ForgotPasswordForm = () => {
   const router = useRouter();
   const toast = useToast();
   const emailInputRef = useRef<HTMLInputElement>(null);
@@ -100,56 +98,18 @@ const ForgotPasswordForm = () => {
         {!forgotPasswordMutationPassed && (
           <AuthField
             ref={emailInputRef}
+            label="Пошта"
             id="email"
             placeholder="Уведіть email"
             type="email"
-            isInputInvalid={emailInput.hasError}
+            showError={emailInput.hasError}
             onChange={emailInput.valueChangeHandler}
             onBlur={emailInput.inputBlurHandler}
-            validationMessage="Перевірте коректність поштової адреси"
-          >
-            <EnvelopeIcon />
-          </AuthField>
+            errorMessage="Перевірте коректність поштової адреси"
+          />
         )}
 
-        {forgotPasswordMutationPassed && (
-          <>
-            <AuthField
-              ref={resetTokenInputRef}
-              id="resetToken"
-              placeholder="Введіть код з листу"
-              type="text"
-              isInputInvalid={resetTokenInput.hasError}
-              onChange={resetTokenInput.valueChangeHandler}
-              onBlur={resetTokenInput.inputBlurHandler}
-              validationMessage="Перевірте що код введено"
-            />
-            <AuthField
-              ref={newPasswordInputRef}
-              id="newPassword"
-              placeholder="Уведіть пароль"
-              type="password"
-              isInputInvalid={newPasswordInput.hasError}
-              onChange={newPasswordInput.valueChangeHandler}
-              onBlur={newPasswordInput.inputBlurHandler}
-              validationMessage="Пароль повинен бути від 8 до 33 символів серед яких: літери верхнього й нижнього регістру, хоча б одна цифра або спеціальний символ"
-            >
-              <KeyIcon />
-            </AuthField>
-            <AuthField
-              ref={newPasswordRepeatInputRef}
-              id="repeatNewPassword"
-              placeholder="Півторить пароль"
-              type="password"
-              isInputInvalid={newPasswordRepeatInput.hasError}
-              onChange={newPasswordRepeatInput.valueChangeHandler}
-              onBlur={newPasswordRepeatInput.inputBlurHandler}
-              validationMessage="Паролі мають бути однаковими"
-            >
-              <KeyIcon />
-            </AuthField>
-          </>
-        )}
+        {forgotPasswordMutationPassed && <p>Passed! Check your inbox</p>}
         <input
           id="submitButton"
           type="submit"
@@ -162,5 +122,3 @@ const ForgotPasswordForm = () => {
     </form>
   );
 };
-
-export default ForgotPasswordForm;
