@@ -2,6 +2,7 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 
 export const EmptyState = (props: {
   noItemsText: string;
+  addItemText?: string;
   addItemHandler: () => void;
 }) => {
   return (
@@ -31,7 +32,7 @@ export const EmptyState = (props: {
           onClick={props.addItemHandler}
         >
           <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-          Додати
+          {props.addItemText ?? 'Додати'}
         </button>
       </div>
     </div>

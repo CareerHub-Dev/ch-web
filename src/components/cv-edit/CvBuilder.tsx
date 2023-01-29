@@ -24,10 +24,6 @@ export default function CvBuilder(props: { initialData?: CvQueryData }) {
   return (
     <div className="mx-auto container lg:mx-auto max-w-full lg:max-w-3xl rounded-b-2xl bg-white p-4 shadow-md mb-4">
       <CvBuilderHeading />
-      {/* <div className="flex mb-8 justify-between">
-        <CvEditMenu />
-        <AssistanceCheckBox />
-      </div> */}
       <StageCircleButtons />
       <StageView />
       <ModalView />

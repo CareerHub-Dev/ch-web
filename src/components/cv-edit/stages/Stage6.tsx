@@ -4,7 +4,7 @@ import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer
 import { type ChangeEvent } from 'react';
 import { AddOrEditProjectLinkModal } from '../AddOrEditProjectLinkModal';
 import AssistanceAlert from '../AssistantAlert';
-import { EmptyState } from '../EmptyState';
+import { EmptyState } from '../../ui/EmptyState';
 import RemoveItemModal from '../item-list/RemoveItemModal';
 import ProjectLinkItem from '../ProjectLinkItem';
 

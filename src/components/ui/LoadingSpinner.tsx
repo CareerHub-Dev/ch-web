@@ -1,7 +1,7 @@
 import cn from 'classnames';
 
 export default function LoadingSpinner({
-  className = 'text-blue-500 h-12 w-12',
+  className = 'text-blue-800 h-12 w-12',
 }: {
   className?: string;
 }) {

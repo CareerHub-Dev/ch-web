@@ -90,7 +90,7 @@ const AvatarEdit = ({
 
   return (
     <>
-      {updateStudentPhotoMutation.isLoading && <ModalLoading />}
+      <ModalLoading show={updateStudentPhotoMutation.isLoading} />
       <h2 className="text-2xl">Аватар</h2>
       <p className="text-sm text-darkGray mb-2">
         Завантаження фото для аватару

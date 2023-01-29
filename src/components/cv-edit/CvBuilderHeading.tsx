@@ -2,7 +2,11 @@ import { useCvDataStore } from '@/context/cv-data-store';
 import { CalendarIcon } from '@heroicons/react/24/outline';
 import { CvActionsButton } from './CvActionsButton';
 
-export const CvBuilderHeading = () => {
+export const CvBuilderHeading = ({
+  editing = false,
+}: {
+  editing?: boolean;
+}) => {
   const title = useCvDataStore((s) => s.cvData.title.value) || 'Без назви';
 
   return (
@@ -11,15 +15,17 @@ export const CvBuilderHeading = () => {
         <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
           {title}
         </h2>
-        <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
-          <div className="mt-2 flex items-center text-sm text-gray-500">
-            <CalendarIcon
-              className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-              aria-hidden="true"
-            />
-            Останнє редагування 9, 2020
+        {editing ? (
+          <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
+            <div className="mt-2 flex items-center text-sm text-gray-500">
+              <CalendarIcon
+                className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                aria-hidden="true"
+              />
+              Останнє редагування: n/a
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
       <div className="flex-shrink-0">
         <CvActionsButton />

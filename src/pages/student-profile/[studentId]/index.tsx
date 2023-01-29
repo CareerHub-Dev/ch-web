@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import { useDebounce } from 'usehooks-ts';
-import useShallowRoutes from '@/hooks/useShallowRoutes';
 import CommonLayout from '@/components/layout/CommonLayout';
+import NavigationMenu from '@/components/student-profile/NavigationMenu';
 import StudentAvatar from '@/components/student-profile/StudentAvatar';
 import StudentInfo from '@/components/student-profile/StudentInfo';
 import StudentSubscriptions from '@/components/student-profile/StudentSubscriptions';
-import StudentWorkExperience from '@/components/student-profile/StudentWorkExperience';
-import StudentSubscriptionsJobOffers from '@/components/student-profile/StudentSubscriptionsJobOffers';
 import StudentSubscriptionsCompanies from '@/components/student-profile/StudentSubscriptionsCompanies';
+import StudentSubscriptionsJobOffers from '@/components/student-profile/StudentSubscriptionsJobOffers';
 import StudentSubscriptionsStudents from '@/components/student-profile/StudentSubscriptionsStudents';
-import Link from 'next/link';
-import NavigationMenu from '@/components/student-profile/NavigationMenu';
+import StudentWorkExperience from '@/components/student-profile/StudentWorkExperience';
+import useShallowRoutes from '@/hooks/useShallowRoutes';
 import { getStudent } from '@/lib/api/student';
-import { protectedSsr } from '@/lib/protected-ssr';
 import axiosMiddleware from '@/lib/middleware/axiosMiddleware';
+import { protectedSsr } from '@/lib/protected-ssr';
 import Head from 'next/head';
+import Link from 'next/link';
+import { useState } from 'react';
+import { useDebounce } from 'usehooks-ts';
 
 import { type Student } from '@/lib/schemas/Student';
 import { type InferGetServerSidePropsType } from 'next';
@@ -206,9 +206,7 @@ export const getServerSideProps = protectedSsr<{
     const isSelf = studentId === accountId;
 
     try {
-      const student = await getStudent(studentId)(
-        axiosMiddleware(context)
-      );
+      const student = await getStudent(studentId)(axiosMiddleware(context));
       return {
         props: {
           isSelf,

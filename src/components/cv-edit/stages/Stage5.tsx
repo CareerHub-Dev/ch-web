@@ -3,7 +3,7 @@ import { useCvDataStore } from '@/context/cv-data-store';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
 import AddOrEditLanguageModal from '../AddOrEditLanguageModal';
 import AssistanceAlert from '../AssistantAlert';
-import { EmptyState } from '../EmptyState';
+import { EmptyState } from '../../ui/EmptyState';
 import RemoveItemModal from '../item-list/RemoveItemModal';
 import LanguageItem from '../LanguageItem';
 
