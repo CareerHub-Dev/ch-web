@@ -19,6 +19,7 @@ export const getStudentOwnCvs =
   };
 
 export const createCv =
+  (instance: AxiosInstance) =>
   (body: {
     title: string;
     jobPositionId: string;
@@ -40,9 +41,7 @@ export const createCv =
       startData: string;
       endDate: string;
     }>;
-  }) =>
-  (instance: AxiosInstance) =>
-  () => {
+  }) => {
     const formData = objectToFormData(body);
 
     return request({
