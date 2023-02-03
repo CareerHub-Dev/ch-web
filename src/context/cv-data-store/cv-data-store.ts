@@ -1,4 +1,5 @@
 import { type CvQueryData } from '@/hooks/useCvQuery';
+import { type StudentCvDetails } from '@/lib/api/cvs/schemas';
 import { arrayInputReducer, type ArrayInputAction } from '@/lib/array-input/v2';
 import { validateStringValue } from '@/lib/string-input/v2';
 import { create } from 'zustand';
@@ -17,7 +18,7 @@ import {
 export type CvDataStore = {
   cvId: null | string;
   cvData: CvData;
-  reInit: (newCvId: string | null) => void;
+  reInit: (newData: StudentCvDetails | null) => void;
   discardChanges: (lastSave: CvData | CvQueryData | null) => void;
   changeTitle: (value: string) => void;
   changeTemplateLanguage: (value: TemplateLanguage) => void;
@@ -43,10 +44,15 @@ export const useCvDataStore = create<CvDataStore>()(
     immer((set) => ({
       cvId: null,
       cvData: getEmptyCvData(),
-      reInit: (newCvId) =>
+      reInit: (newData) =>
         set((state) => {
-          state.cvId = newCvId;
-          state.cvData = getEmptyCvData();
+          if (newData === null) {
+            state.cvId = null;
+            state.cvData = getEmptyCvData();
+          } else {
+            state.cvId = newData.id;
+            state.cvData = restoreToCvQueryData(newData);
+          }
         }),
       discardChanges: (lastSave) =>
         set((state) => {

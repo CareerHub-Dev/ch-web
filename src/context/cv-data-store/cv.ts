@@ -1,6 +1,6 @@
-import { type CvQueryData } from '@/hooks/useCvQuery';
 import { getStringInput } from '@/lib/string-input/v2';
 import { getArrayInput } from '@/lib/array-input/v2';
+import { StudentCvDetails } from '@/lib/api/cvs/schemas';
 
 type StringInput = Inputs.StringInput;
 type ArrayInput<T> = Inputs.ArrayInput<T>;
@@ -68,7 +68,7 @@ export function getEmptyCvData(): CvData {
   };
 }
 
-export function restoreToCvQueryData(data: CvQueryData): CvData {
+export function restoreToCvQueryData(data: StudentCvDetails): CvData {
   const mappedEducations = data.educations.map((item) => {
     const { startDate, endDate, ...otherProperties } = item;
     const startYear = new Date(startDate).getFullYear().toString();

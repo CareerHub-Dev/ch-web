@@ -1,7 +1,7 @@
 import { type AxiosInstance } from 'axios';
 import { request } from '../../axios';
 import { parsePaginatedResponseAsync } from '../pagination';
-import { CvsArraySchema } from './schemas';
+import { CvDetailsSchema, CvsArraySchema } from './schemas';
 import { objectToFormData } from '@/lib/forms';
 
 type CvsRequestParams = Pick<PaginatedRequestParams, 'pageSize'> & {
@@ -40,6 +40,14 @@ export const getStudentOwnCvs =
       select: parsePaginatedResponseAsync(CvsArraySchema),
     });
   };
+
+export const getStudentOwnCv = (cvId: string) => (instance: AxiosInstance) => {
+  return request({
+    instance,
+    url: `/Student/self/CVs/${cvId}`,
+    select: (response) => CvDetailsSchema.parseAsync(response.data),
+  });
+};
 
 export const createCv =
   (instance: AxiosInstance) => (body: CvModificationData) => {

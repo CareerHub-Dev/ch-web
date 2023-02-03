@@ -1,64 +1,46 @@
 import CvBuilder from '@/components/cv-edit/CvBuilder';
 import CommonLayout from '@/components/layout/CommonLayout';
-import {
-  GetServerSidePropsContext,
-  type InferGetServerSidePropsType,
-} from 'next';
+import { getStudentOwnCv } from '@/lib/api/cvs';
+import { type StudentCvDetails } from '@/lib/api/cvs/schemas';
+import { getJobPositions } from '@/lib/api/job-positions';
+import { JobPositionArray } from '@/lib/api/job-positions/schema';
+import axiosMiddleware from '@/lib/middleware/axiosMiddleware';
+import { protectedSsr } from '@/lib/protected-ssr';
+import { type InferGetServerSidePropsType } from 'next';
+import { z } from 'zod';
+import useJobPositionsQuery from '@/hooks/useJobPositionsQuery';
 
 const EditCvPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = (props) => {
-  return <CvBuilder initialData={props} />;
+> = ({ initialCvData, jobPositions }) => {
+  useJobPositionsQuery({ initialData: jobPositions });
+
+  return <CvBuilder initialData={initialCvData} />;
 };
 
 EditCvPage.getLayout = CommonLayout;
 
 export default EditCvPage;
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  return {
-    props: {
-      id: context.query.cvId as string,
-      title: `CV Title ${Math.random()}`,
-      created: '2022-12-29T15:43:35.865Z',
-      modified: '2022-12-29T15:43:35.865Z',
-      jobPosition: {
-        id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        name: 'string',
+export const getServerSideProps = protectedSsr<{
+  initialCvData: StudentCvDetails;
+  jobPositions: JobPositionArray;
+}>({
+  allowedRoles: ['Student'],
+  getProps: async (context) => {
+    const cvId = z.string().parse(context.params?.cvId);
+    const axiosInstance = axiosMiddleware(context);
+
+    const [initialCvData, jobPositions] = await Promise.all([
+      getStudentOwnCv(cvId)(axiosInstance),
+      getJobPositions(axiosInstance),
+    ]);
+
+    return {
+      props: {
+        initialCvData,
+        jobPositions,
       },
-      templateLanguage: 'UA',
-      lastName: 'string',
-      firstName: 'string',
-      photo: 'string',
-      goals: 'string',
-      skillsAndTechnologies: 'string',
-      experienceHighlights: 'string',
-      studentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      foreignLanguages: [
-        {
-          name: 'string',
-          languageLevel: 'A1',
-        },
-      ],
-      projectLinks: [
-        {
-          title: 'string',
-          url: 'string',
-        },
-      ],
-      educations: [
-        {
-          university: 'string',
-          city: 'string',
-          country: 'string',
-          speciality: 'string',
-          degree: 'Bachelor',
-          startDate: '2022-12-29T15:43:35.865Z',
-          endDate: '2022-12-29T15:43:35.865Z',
-        },
-      ],
-    },
-  };
-};
+    };
+  },
+});
