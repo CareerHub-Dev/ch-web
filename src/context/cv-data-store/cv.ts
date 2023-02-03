@@ -51,7 +51,7 @@ export type CvData = {
       };
 };
 
-export function getEmptyCvData(): CvData {
+export const getEmptyCvData = (): CvData => {
   return {
     title: getStringInput(),
     templateLanguage: TEMPLATE_LANGUAGES[0]!,
@@ -66,9 +66,9 @@ export function getEmptyCvData(): CvData {
     educations: getArrayInput(),
     photo: null,
   };
-}
+};
 
-export function restoreToCvQueryData(data: StudentCvDetails): CvData {
+export const restoreToCvQueryData = (data: StudentCvDetails): CvData => {
   const mappedEducations = data.educations.map((item) => {
     const { startDate, endDate, ...otherProperties } = item;
     const startYear = new Date(startDate).getFullYear().toString();
@@ -97,7 +97,7 @@ export function restoreToCvQueryData(data: StudentCvDetails): CvData {
     }),
     photo: null,
   };
-}
+};
 
 export function matchTemplateLanguage(val: string): TemplateLanguage {
   switch (val.toUpperCase()) {
