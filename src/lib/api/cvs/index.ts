@@ -8,6 +8,29 @@ type CvsRequestParams = Pick<PaginatedRequestParams, 'pageSize'> & {
   order?: string;
 };
 
+export type CvModificationData = {
+  title: string;
+  jobPositionId: string;
+  templateLanguage: string;
+  lastName: string;
+  firstName: string;
+  photo?: File;
+  goals: string;
+  skillsAndTechnologies: string;
+  experienceHighlights: string;
+  foreignLanguages: Array<{ name: string; languageLevel: string }>;
+  projectLinks: Array<{ title: string; url: string }>;
+  educations: Array<{
+    university: string;
+    city: string;
+    country: string;
+    speciality: string;
+    degree: string;
+    startDate: string;
+    endDate: string;
+  }>;
+};
+
 export const getStudentOwnCvs =
   (params: CvsRequestParams) => (instance: AxiosInstance) => {
     return request({
@@ -19,29 +42,7 @@ export const getStudentOwnCvs =
   };
 
 export const createCv =
-  (instance: AxiosInstance) =>
-  (body: {
-    title: string;
-    jobPositionId: string;
-    templateLanguage: string;
-    lastName: string;
-    firstName: string;
-    photo: File;
-    goals: string;
-    skillsAndTechnologies: string;
-    experienceHighlights: string;
-    foreignLanguages: Array<{ name: string; languageLevel: string }>;
-    projectLinks: Array<{ title: string; url: string }>;
-    educations: Array<{
-      university: string;
-      city: string;
-      country: string;
-      speciality: string;
-      degree: string;
-      startData: string;
-      endDate: string;
-    }>;
-  }) => {
+  (instance: AxiosInstance) => (body: CvModificationData) => {
     const formData = objectToFormData(body);
 
     return request({
@@ -55,3 +56,12 @@ export const createCv =
       instance,
     });
   };
+
+export const deleteCv = (instance: AxiosInstance) => (id: string) => {
+  return request({
+    method: 'DELETE',
+    prefix: 'Student',
+    url: `self/Cvs/${id}`,
+    instance,
+  });
+};

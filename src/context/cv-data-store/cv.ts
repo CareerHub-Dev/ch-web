@@ -44,7 +44,8 @@ export type CvData = {
     | null
     | string
     | {
-        fileName: string;
+        sourceFileType: string;
+        sourceFileName: string;
         croppedPhoto: Blob;
         croppedPhotoUrl: string;
       };

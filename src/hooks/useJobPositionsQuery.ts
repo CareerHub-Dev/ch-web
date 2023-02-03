@@ -1,31 +1,28 @@
 import useProtectedQuery from './useProtectedQuery';
 import { getJobPositions } from '@/lib/api/job-positions';
-import { UseQueryOptions } from '@tanstack/react-query';
+import { useQueryClient, UseQueryOptions } from '@tanstack/react-query';
+import { JobPositionArray } from '@/lib/api/job-positions/schema';
 
-export default function useJobPositionsQuery(
+const JOB_POSITIONS_QUERY_KEY = ['jobPositions'];
+
+const useJobPositionsQuery = (
   options?: Omit<
-    UseQueryOptions<
-      Array<{
-        id: string;
-        name: string;
-      }>,
-      unknown,
-      Array<{
-        id: string;
-        name: string;
-      }>,
-      string[]
-    >,
+    UseQueryOptions<JobPositionArray, unknown, JobPositionArray, string[]>,
     'queryKey' | 'queryFn'
   >
-) {
-  return useProtectedQuery<
-    string[],
-    Array<{
-      id: string;
-      name: string;
-    }>
-  >(['jobPositions'], getJobPositions, {
-    ...options,
-  });
-}
+) => {
+  return useProtectedQuery<string[], JobPositionArray>(
+    JOB_POSITIONS_QUERY_KEY,
+    getJobPositions,
+    {
+      ...options,
+    }
+  );
+};
+
+export default useJobPositionsQuery;
+
+export const useJobPositionsQueryData = (): JobPositionArray => {
+  const client = useQueryClient();
+  return client.getQueryData(JOB_POSITIONS_QUERY_KEY) as JobPositionArray;
+};

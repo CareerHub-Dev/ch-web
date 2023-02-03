@@ -46,8 +46,9 @@ export default function PhotoEditDialog(props: { onClose: () => void }) {
     if (cannotSave) return;
 
     changePhoto({
-      fileName: temporaryPhoto.source.name,
-      blob: temporaryPhoto.cropped,
+      sourceFileName: temporaryPhoto.source.name,
+      sourceFileType: temporaryPhoto.source.type,
+      croppedImage: temporaryPhoto.cropped,
     });
     props.onClose();
   };

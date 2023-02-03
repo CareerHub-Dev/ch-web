@@ -8,7 +8,6 @@ import {
   setTemplateLanguage,
   setIsAssistEnabled,
 } from '@/context/cv-constructor';
-import useJobPositionsQuery from '@/hooks/useJobPositionsQuery';
 import { useSelector } from 'react-redux';
 import useReduxStringInput from '@/hooks/useReduxStringInput';
 import useAppDispatch from '@/hooks/useAppDispatch';
@@ -18,7 +17,6 @@ import AssistantTip from './AssistantTip';
 import Card from '@/components/ui/Card';
 import FormSelect from '@/components/ui/form/FormSelect';
 import FormCheckbox from '@/components/ui/form/FormCheckbox';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 import classes from './Stage.module.scss';
 
@@ -50,12 +48,6 @@ const Stage0 = () => {
     setTemplateLanguage
   );
   const isAssistEnabled = useSelector(selectIsAssistEnabled);
-  const jobPositionsQuery = useJobPositionsQuery({
-    onError: (err: any) => alert(err?.message || err || 'Невідома помилка'),
-    onSuccess: (data: any) => {
-      dispatch(setJobPosition(data[0]['id']));
-    },
-  });
 
   const isAssistEnabledChangeHandler = (event: InputChangeEvent) => {
     dispatch(setIsAssistEnabled(event.target.checked));
@@ -85,16 +77,13 @@ const Stage0 = () => {
             </p>
           </AssistantTip>
         )}
-        {jobPositionsQuery.isLoading ? (
-          <LoadingSpinner />
-        ) : (
-          <FormSelect
-            id="jobPosition"
-            selectionState={jobPositionInput}
-            options={jobPositionsQuery.options}
-            label="Виберіть цільову посаду:"
-          />
-        )}
+
+        <FormSelect
+          id="jobPosition"
+          selectionState={jobPositionInput}
+          options={[]}
+          label="Виберіть цільову посаду:"
+        />
 
         <FormSelect
           id="templateLanguage"

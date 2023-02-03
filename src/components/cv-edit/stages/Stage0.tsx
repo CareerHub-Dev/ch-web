@@ -1,10 +1,12 @@
 import AssistanceAlert from '../AssistantAlert';
 import { useCvDataStore } from '@/context/cv-data-store';
+import { useJobPositionsQueryData } from '@/hooks/useJobPositionsQuery';
 import { TEMPLATE_LANGUAGES } from '@/context/cv-data-store/cv';
 import { useCvAssistanceStore } from '@/context/cv-assistance-store';
 import ItemSelection from '../../ui/ItemsSelection';
 
 export default function Stage0() {
+  const jobPositionsQueryData = useJobPositionsQueryData();
   const selectedTemplateLanguage = useCvDataStore(
     (store) => store.cvData.templateLanguage
   );
@@ -41,7 +43,7 @@ export default function Stage0() {
           </div>
           <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
             <ItemSelection
-              items={MOCK_JOB_POSITIONS}
+              items={jobPositionsQueryData}
               selectedItem={selectedJobPosition}
               setSelected={setJobPosition}
               label="Бажана Посада"
@@ -65,9 +67,3 @@ export default function Stage0() {
     </>
   );
 }
-
-const MOCK_JOB_POSITIONS = [
-  { id: '1', name: 'Dev' },
-  { id: '2', name: 'QA' },
-  { id: '3', name: 'Devops' },
-];

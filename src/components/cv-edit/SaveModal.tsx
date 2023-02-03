@@ -1,8 +1,10 @@
-import { useCvDataStore } from '@/context/cv-data-store';
+import { getCvMutationData, useCvDataStore } from '@/context/cv-data-store';
 import { useCvUiStore } from '@/context/cv-ui-store';
 import { useCvQueryData } from '@/hooks/useCvQuery';
+import { useRouter } from 'next/router';
 import useProtectedMutation from '@/hooks/useProtectedMutation';
 import useToast from '@/hooks/useToast';
+import { useQueryClient } from '@tanstack/react-query';
 import { createCv } from '@/lib/api/cvs';
 import { type ChangeEvent } from 'react';
 import { ConfirmCancelDialog } from '../ui/ConfirmCancelDialog';
@@ -15,25 +17,48 @@ export default function SaveModal() {
   const title = useCvDataStore((state) => state.cvData.title);
   const changeTitle = useCvDataStore((s) => s.changeTitle);
   const toast = useToast();
-
+  const router = useRouter();
   const cvData = useCvQueryData(cvId);
+  const queryClient = useQueryClient();
+  const cvMutationData = useCvDataStore(getCvMutationData);
+
   const titleValue = title.isTouched ? title.value : cvData?.title || '';
 
   const mutationKey = [cvId === null ? 'create-cv' : `modify-cv-${cvId}`];
   // Todo: add modification handler
   // const mutationFn = cvId === null ? createCv : () => {};
 
-  const cvMutation = useProtectedMutation(mutationKey, createCv, {
-    onSuccess: () => toast.success('Резюме додано!'),
-    onError: () => toast.error('Не вдалося додати резюме'),
-  });
+  const { mutate, isLoading, isSuccess } = useProtectedMutation(
+    mutationKey,
+    createCv,
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries(['studentOwnCvs', { pageSize: 25 }]);
+        toast.success('Резюме збережено!');
+        router.push('/my-cvs').then((pushed) => {
+          if (pushed) {
+            closeModal();
+          }
+        });
+      },
+      onError: () => {
+        toast.error('Не вдалося зберегти резюме');
+      },
+    }
+  );
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     changeTitle(e.target.value);
   };
 
+  const noCvMutationData = cvMutationData === null;
+
   const handleConfirm = () => {
-    toast.error('Unimplemented!');
+    if (noCvMutationData) {
+      toast.error('Не можна зберегти резюме без обраної позиції');
+      return;
+    }
+    mutate(cvMutationData);
   };
 
   return (
@@ -44,8 +69,9 @@ export default function SaveModal() {
       confirmText="Зберегти"
       cancelText="Не зараз"
       onConfirm={handleConfirm}
+      confirmationDisabled={noCvMutationData}
     >
-      <ModalLoading show={cvMutation.isLoading} />
+      <ModalLoading show={isLoading || isSuccess} />
       <div className="mt-4 flex flex-col gap-1">
         <label htmlFor="cvTitleInput" className="text-gray-500">
           Назва

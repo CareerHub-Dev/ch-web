@@ -11,7 +11,7 @@ export const CvItem = ({
   id: string;
   title: string;
   created: string;
-  modified?: string;
+  modified: string | null;
 }) => {
   const titleInitials = getTitleInitials(title);
   const backgroundColor = getBackgroundColorForInitials(titleInitials);
@@ -32,14 +32,12 @@ export const CvItem = ({
       </div>
       <div className="flex flex-1 items-center justify-between rounded-r-md border-t border-r border-b border-gray-200 bg-white">
         <div className="flex-1 truncate px-4 py-2 text-sm">
-          <h4 className="font-medium text-gray-900 hover:text-gray-600">
-            {title}
-          </h4>
+          <h4 className="font-medium text-gray-900">{title}</h4>
           <div>
             <p className="text-gray-500">{`Створено: ${readableCreatedDate}`}</p>
             <p
               className={cn(
-                modified === undefined && 'hidden',
+                !modified && 'hidden',
                 'text-gray-500'
               )}
             >{`Редаговано: ${readableEditedDate}`}</p>
@@ -54,7 +52,12 @@ export const CvItem = ({
 };
 
 const getTitleInitials = (title: string) => {
+  if (title.length === 0) {
+    return 'N/A';
+  }
+
   const words = title.trim().split(/\s+/);
+
   const firstLetter = words.at(0)!.toUpperCase().at(0)!;
 
   if (words.length >= 2) {

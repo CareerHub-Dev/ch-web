@@ -4,7 +4,7 @@ export const objectToFormData = (obj: {
   const formData = new FormData();
 
   Object.entries(obj).forEach(([key, item]) => {
-    if (item instanceof File || typeof item === 'string') {
+    if (item instanceof File || (typeof item === 'string' && item.length > 0)) {
       formData.append(key, item);
       return;
     }

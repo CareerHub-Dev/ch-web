@@ -5,7 +5,7 @@ import { CvItem } from './CvItem';
 export const CvItemsGrid = ({
   items,
 }: {
-  items: { id: string; title: string; created: string; modified?: string }[];
+  items: { id: string; title: string; created: string; modified: string | null }[];
 }) => {
   const router = useRouter();
 

@@ -30,7 +30,11 @@ export type CvDataStore = {
   dispatchForeignLanguages: (action: ArrayInputAction<ForeignLanguage>) => void;
   dispatchProjectLinks: (action: ArrayInputAction<ProjectLink>) => void;
   dispatchEducations: (action: ArrayInputAction<Education>) => void;
-  changePhoto: (value: { blob: Blob; fileName: string }) => void;
+  changePhoto: (value: {
+    croppedImage: Blob;
+    sourceFileName: string;
+    sourceFileType: string;
+  }) => void;
   removePhoto: () => void;
 };
 
@@ -198,7 +202,7 @@ export const useCvDataStore = create<CvDataStore>()(
             validators: [],
           });
         }),
-      changePhoto: ({ blob, fileName }) =>
+      changePhoto: ({ croppedImage, sourceFileName, sourceFileType }) =>
         set((state) => {
           if (
             state.cvData.photo !== null &&
@@ -207,9 +211,10 @@ export const useCvDataStore = create<CvDataStore>()(
             URL.revokeObjectURL(state.cvData.photo.croppedPhotoUrl);
           }
           state.cvData.photo = {
-            fileName,
-            croppedPhoto: blob,
-            croppedPhotoUrl: URL.createObjectURL(blob),
+            sourceFileName,
+            sourceFileType,
+            croppedPhoto: croppedImage,
+            croppedPhotoUrl: URL.createObjectURL(croppedImage),
           };
         }),
       removePhoto: () =>
