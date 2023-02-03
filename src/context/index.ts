@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import cvConstructorReducer from './cv-constructor';
 import jobOffersFeedReducer from './job-offers-feed';
 
 const store = configureStore({
   reducer: {
-    cvConstructor: cvConstructorReducer,
     jobOffersFeed: jobOffersFeedReducer,
   },
 });
