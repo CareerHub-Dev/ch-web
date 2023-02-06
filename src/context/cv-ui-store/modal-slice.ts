@@ -1,6 +1,6 @@
 import { type StateCreator } from 'zustand';
 
-type Modal = 'save' | 'discard' | 'reInit';
+type Modal = 'save' | 'discard' | 'reInit' | 'preview';
 
 export type ModalSlice = {
   currentModal: null | Modal;
@@ -8,6 +8,7 @@ export type ModalSlice = {
   openModal: (modal: Modal) => void;
   openSaveModal: () => void;
   openDiscardModal: () => void;
+  openPreviewModal: () => void;
 };
 
 export const createModalSlice: StateCreator<ModalSlice> = (set) => ({
@@ -17,4 +18,5 @@ export const createModalSlice: StateCreator<ModalSlice> = (set) => ({
   openSaveModal: () => set({ currentModal: 'save' }),
   openDiscardModal: () => set({ currentModal: 'discard' }),
   openReInitModal: () => set({ currentModal: 'reInit' }),
+  openPreviewModal: () => set({ currentModal: 'preview' }),
 });

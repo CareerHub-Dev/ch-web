@@ -34,7 +34,7 @@ const ChangePassword = () => {
 
   const cannotSubmit = oldPasswordInput.hasError || newPasswordInput.hasError;
 
-  const save = async () => {
+  const save = () => {
     oldPasswordInput.blur();
     newPasswordInput.blur();
     if ([oldPasswordInput, newPasswordInput].some((input) => !input.isValid)) {
@@ -42,7 +42,7 @@ const ChangePassword = () => {
     }
     const oldPassword = oldPasswordInput.value;
     const newPassword = newPasswordInput.value;
-    await mutation.mutateAsync({ oldPassword, newPassword });
+    mutation.mutate({ oldPassword, newPassword });
   };
 
   return (

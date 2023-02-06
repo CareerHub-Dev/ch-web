@@ -95,7 +95,7 @@ export const restoreToCvQueryData = (data: StudentCvDetails): CvData => {
     educations: getArrayInput({
       initialItems: mappedEducations,
     }),
-    photo: null,
+    photo: data.photo,
   };
 };
 

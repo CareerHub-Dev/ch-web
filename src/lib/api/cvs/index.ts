@@ -65,6 +65,33 @@ export const createCv =
     });
   };
 
+export const modifyCv =
+  (instance: AxiosInstance) =>
+  ({ id, ...data }: Omit<CvModificationData, 'photo'> & { id: string }) => {
+    return request({
+      method: 'PUT',
+      prefix: 'Student',
+      url: `self/Cvs/${id}`,
+      data,
+      instance,
+    });
+  };
+
+export const modifyCvPhoto =
+  (instance: AxiosInstance) =>
+  ({ id, photo }: { id: string; photo?: File }) => {
+    const data = new FormData();
+    data.append('file', photo ?? '');
+
+    return request({
+      method: 'POST',
+      prefix: 'Student',
+      url: `self/Cvs/${id}/photo`,
+      data,
+      instance,
+    });
+  };
+
 export const deleteCv = (instance: AxiosInstance) => (id: string) => {
   return request({
     method: 'DELETE',

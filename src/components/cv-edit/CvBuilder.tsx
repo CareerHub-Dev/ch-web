@@ -24,7 +24,6 @@ export default function CvBuilder({
 
   useEffect(() => {
     if (cvId !== storedCvId) {
-      console.log('REstored photo', restoreData?.photo);
       reInit(restoreData);
       goToStage(0);
     }

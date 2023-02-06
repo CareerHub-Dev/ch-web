@@ -25,8 +25,7 @@ export default function SaveModal() {
   const titleValue = title.isTouched ? title.value : cvData?.title || '';
 
   const mutationKey = [cvId === null ? 'create-cv' : `modify-cv-${cvId}`];
-  // Todo: add modification handler
-  // const mutationFn = cvId === null ? createCv : () => {};
+  // const mutationFn = cvId === null ? createCv : modifyCv(cvId);
 
   const { mutate, isLoading, isSuccess } = useProtectedMutation(
     mutationKey,

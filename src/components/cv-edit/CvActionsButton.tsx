@@ -12,6 +12,7 @@ export const CvActionsButton = () => {
   const toggleAssistance = useCvAssistanceStore((s) => s.toggleAssistance);
   const openSaveModal = useCvUiStore((s) => s.openSaveModal);
   const openDiscardModal = useCvUiStore((s) => s.openDiscardModal);
+  const openPreviewModal = useCvUiStore((s) => s.openPreviewModal);
 
   return (
     <div className="inline-flex rounded-md shadow-sm">
@@ -55,6 +56,19 @@ export const CvActionsButton = () => {
                       name="select-all"
                       className="h-4 w-4 rounded-md border-gray-300 text-blue-600 focus:ring-blue-500 ml-2"
                     />
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    onClick={openPreviewModal}
+                    className={cn(
+                      active ? 'bg-blue-100 text-blue-900' : 'text-gray-700',
+                      'block px-4 py-2 text-sm text-left w-full'
+                    )}
+                  >
+                    {`Показати прев'ю`}
                   </button>
                 )}
               </Menu.Item>
