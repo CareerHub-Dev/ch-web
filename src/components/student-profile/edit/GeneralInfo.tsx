@@ -90,7 +90,7 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
   const someInputHasError = allInputs.some((input) => input.hasError);
   const cannotSubmit = someInputHasError || noInputTouched;
 
-  const save = async () => {
+  const save = () => {
     if (someInputIsInvalid) {
       allInputs.forEach((input) => input.blur());
       return;
@@ -106,7 +106,7 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
       birthDate: birthDate ? new Date(birthDate).toISOString() : null,
       studentGroupId: initialData?.studentGroup?.id,
     };
-    await mutation.mutateAsync(data);
+    mutation.mutate(data);
   };
 
   const cancel = () => {
