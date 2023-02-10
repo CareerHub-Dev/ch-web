@@ -6,8 +6,9 @@ import createAxiosInstance from '@/lib/axios/create-instance';
 import axios, { type AxiosInstance } from 'axios';
 
 type SessionContextState =
+  | { status: 'unauthenticated'; data: null; }
   | {
-      status: 'loading' | 'unauthenticated';
+      status: 'loading';
       data: null;
     }
   | {
@@ -71,7 +72,9 @@ export const SessionContextProvider = ({
     sessionContextInitialState
   );
 
-  useQuery(['session'], LocalGateway.getMe, {
+  useQuery({
+    queryKey: ['session'],
+    queryFn: LocalGateway.getMe,
     onError() {
       dispatch({ type: 'RESET' });
     },
@@ -81,13 +84,15 @@ export const SessionContextProvider = ({
     retry: false,
   });
 
-  const logoutMutation = useMutation(LocalGateway.logout, {
+  const logoutMutation = useMutation({
+    mutationFn: LocalGateway.logout,
     onSuccess() {
       dispatch({ type: 'RESET' });
     },
   });
 
-  const refreshTokenMutation = useMutation(LocalGateway.refreshToken, {
+  const refreshTokenMutation = useMutation({
+    mutationFn: LocalGateway.refreshToken,
     onSuccess(data) {
       dispatch({ type: 'UPDATE', data });
     },

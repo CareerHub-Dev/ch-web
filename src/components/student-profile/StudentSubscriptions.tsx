@@ -3,7 +3,7 @@ import {
   getStudentStudentSubscriptionsAmount,
   getStudentJobOfferSubscriptionsAmount,
 } from '@/lib/api/student';
-import useProtectedQuery from '@/hooks/useProtectedQuery';
+import { useProtectedQuery } from '@/hooks/useProtectedQuery';
 
 const StudentSubscriptions = ({ accountId }: { accountId: string }) => {
   const students = useProtectedQuery(
@@ -34,9 +34,7 @@ const StudentSubscriptions = ({ accountId }: { accountId: string }) => {
       <p className="text-lightBlue">
         Вакансії: {jobOffers.isLoading ? '...' : jobOffers.data}
       </p>
-      <p className='mt-2'>
-        Підписники: 0
-      </p>
+      <p className="mt-2">Підписники: 0</p>
     </div>
   );
 };

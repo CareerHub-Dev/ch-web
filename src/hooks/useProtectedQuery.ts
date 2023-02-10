@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { type AxiosInstance } from 'axios';
 
-export default function useProtectedQuery<
+export function useProtectedQuery<
   TQueryKey extends QueryKey = QueryKey,
   TQueryFnData = unknown,
   TError = unknown,
@@ -20,11 +20,15 @@ export default function useProtectedQuery<
   >
 ) {
   const { axios, status } = useSession();
+  const isAuthenticated = status === 'authenticated';
+  const enabled = !!options?.enabled
+    ? isAuthenticated && options.enabled
+    : isAuthenticated;
 
   return useQuery<TQueryFnData, TError, TData, TQueryKey>({
-    queryKey,
-    enabled: status === 'authenticated',
     ...options,
+    queryKey,
+    enabled,
     queryFn: () => queryFn(axios),
   });
 }

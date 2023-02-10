@@ -1,5 +1,5 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import useProtectedQuery from '@/hooks/useProtectedQuery';
+import { useProtectedQuery } from '@/hooks/useProtectedQuery';
 import { useBoolean, useDebounce } from 'usehooks-ts';
 import { useSelector } from 'react-redux';
 import {

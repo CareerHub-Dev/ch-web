@@ -1,4 +1,4 @@
-import useProtectedQuery from './useProtectedQuery';
+import { useProtectedQuery } from './useProtectedQuery';
 import { getJobPositions } from '@/lib/api/job-positions';
 import { useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import { JobPositionArray } from '@/lib/api/job-positions/schema';

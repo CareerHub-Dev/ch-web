@@ -1,4 +1,4 @@
-import useProtectedQuery from '@/hooks/useProtectedQuery';
+import { useProtectedQuery } from '@/hooks/useProtectedQuery';
 import {
   getCompanySubscribersAmount,
   getCompanyJobOffersAmount,

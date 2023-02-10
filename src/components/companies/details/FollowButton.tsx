@@ -1,4 +1,4 @@
-import useProtectedQuery from '@/hooks/useProtectedQuery';
+import { useProtectedQuery } from '@/hooks/useProtectedQuery';
 import useToast from '@/hooks/useToast';
 import useProtectedMutation from '@/hooks/useProtectedMutation';
 import { useQueryClient } from '@tanstack/react-query';

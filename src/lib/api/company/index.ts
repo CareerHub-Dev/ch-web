@@ -5,6 +5,7 @@ import {
   CompanyInFeedArraySchema,
   CompanyDetailsSchema,
   CompanyJobOffersArraySchema,
+  CompanyBriefSchema,
 } from './schemas';
 
 import { type AxiosInstance } from 'axios';
@@ -78,16 +79,24 @@ export const getSubscriptionOnCompany =
     });
   };
 
-const getCompanyStat =
-  (stat: 'subscribers' | 'jobOffers') =>
-  (companyId: string) =>
-  (instance: AxiosInstance) =>
+function getCompanyStat(stat: 'subscribers' | 'jobOffers') {
+  return (companyId: string) => (instance: AxiosInstance) =>
     request({
       instance,
       prefix: 'Student',
       url: `Companies/${companyId}/amount-${stat}`,
       select: (res) => z.number().parseAsync(res.data),
     });
+}
 
 export const getCompanySubscribersAmount = getCompanyStat('subscribers');
 export const getCompanyJobOffersAmount = getCompanyStat('jobOffers');
+
+export function getSelfCompany(instance: AxiosInstance) {
+  return request({
+    instance,
+    prefix: 'Company',
+    url: 'Companies/self',
+    select: (res) => CompanyBriefSchema.parseAsync(res.data),
+  });
+}

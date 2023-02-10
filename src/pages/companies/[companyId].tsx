@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import useProtectedQuery from '@/hooks/useProtectedQuery';
+import { useProtectedQuery } from '@/hooks/useProtectedQuery';
 import useProtectedPaginatedQuery from '@/hooks/useProtectedPaginatedQuery';
 import { useDebounce } from 'usehooks-ts';
 import { getCompany, getCompanyJobOffers } from '@/lib/api/company';

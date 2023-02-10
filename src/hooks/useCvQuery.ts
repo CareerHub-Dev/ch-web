@@ -1,4 +1,4 @@
-import useProtectedQuery from './useProtectedQuery';
+import { useProtectedQuery } from './useProtectedQuery';
 import { useQueryClient } from '@tanstack/react-query';
 
 export type CvQueryData = {

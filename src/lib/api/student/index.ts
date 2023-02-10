@@ -20,12 +20,13 @@ export const getStudent = (accountId: string) => (instance: AxiosInstance) =>
     select: parseStudentAsync,
   });
 
-export const getSelfStudent = (instance: AxiosInstance) =>
-  request({
+export function getSelfStudent(instance: AxiosInstance) {
+  return request({
     instance,
     url: '/Student/Students/self',
     select: parseStudentAsync,
   });
+}
 
 export const getStudentSubscriptionsAmount =
   (subscriptionType: string) =>
