@@ -21,15 +21,13 @@ export function ValidatedInput({
   warnings,
   onChange,
   wasBlurred,
-  wasChanged,
 }: Inputs.StringInput & {
   id: string;
   label?: string;
   onChange: (value: string) => void;
 }) {
-  const wasTouched = wasChanged && wasBlurred;
-  const hasErrors = wasTouched && errors.length > 0;
-  const hasWarnings = wasTouched && warnings.length > 0;
+  const hasErrors = wasBlurred && errors.length > 0;
+  const hasWarnings = wasBlurred && warnings.length > 0;
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };

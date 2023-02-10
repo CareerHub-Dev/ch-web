@@ -1,6 +1,7 @@
-import useInput from '@/hooks/useInput';
+import { useInput } from '@/hooks/useInput';
 import useToast from '@/hooks/useToast';
 import { forgotPassword, resetPassword } from '@/lib/api/account';
+import parseUnknownError from '@/lib/parse-unknown-error';
 import { getEmailValidity, getPasswordValidity } from '@/lib/util';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -13,13 +14,36 @@ export const ForgotPasswordForm = () => {
   const router = useRouter();
   const toast = useToast();
   const emailInputRef = useRef<HTMLInputElement>(null);
-  const emailInput = useInput(getEmailValidity);
+  const emailInput = useInput({
+    validators: [
+      (val) =>
+        getEmailValidity(val)
+          ? { type: 'success' }
+          : { type: 'error', message: 'Перевірте коректність поштової адреси' },
+    ],
+  });
   const newPasswordInputRef = useRef<HTMLInputElement>(null);
-  const newPasswordInput = useInput(getPasswordValidity);
+  const newPasswordInput = useInput({
+    validators: [
+      (val) =>
+        getPasswordValidity(val)
+          ? { type: 'success' }
+          : { type: 'error', message: 'Невалідний пароль' },
+    ],
+  });
   const newPasswordRepeatInputRef = useRef<HTMLInputElement>(null);
-  const newPasswordRepeatInput = useInput(
-    (value: string) => value === newPasswordInput.value
-  );
+  const newPasswordRepeatInput = useInput({
+    validators: [
+      (val) =>
+        getPasswordValidity(val)
+          ? { type: 'success' }
+          : { type: 'error', message: 'Невалідний пароль' },
+      (val) =>
+        val === newPasswordInput.value
+          ? { type: 'success' }
+          : { type: 'error', message: 'Паролі не співпадають' },
+    ],
+  });
   const forgotPasswordMutation = useMutation(
     ['forgotPassword'],
     forgotPassword,
@@ -27,14 +51,8 @@ export const ForgotPasswordForm = () => {
       onSuccess: (data: any) => {
         toast.success(data.message);
       },
-      onError: (error: unknown) => {
-        let msg = 'An unknown error occurred.';
-        if (error instanceof Error) {
-          msg = error.message;
-        } else if (typeof error === 'string') {
-          msg = error;
-        }
-        toast.error(msg);
+      onError: (e) => {
+        toast.error(parseUnknownError(e));
       },
     }
   );
@@ -48,7 +66,7 @@ export const ForgotPasswordForm = () => {
   const resetTokenInput = useInput();
 
   const validationHandler = () => {
-    emailInput.inputBlurHandler();
+    emailInput.blur();
     if (emailInput.isValid) {
       toast.setCurrent('Відправляємо листа...');
       forgotPasswordMutation.mutate(emailInput.value);
@@ -58,9 +76,9 @@ export const ForgotPasswordForm = () => {
   };
 
   const resetPasswordHandler = () => {
-    resetTokenInput.inputBlurHandler();
-    newPasswordInput.inputBlurHandler();
-    newPasswordRepeatInput.inputBlurHandler();
+    resetTokenInput.blur();
+    newPasswordInput.blur();
+    newPasswordRepeatInput.blur();
 
     if (
       resetTokenInput.isValid &&
@@ -102,9 +120,9 @@ export const ForgotPasswordForm = () => {
             id="email"
             placeholder="Уведіть email"
             type="email"
-            showError={emailInput.hasError}
-            onChange={emailInput.valueChangeHandler}
-            onBlur={emailInput.inputBlurHandler}
+            showError={emailInput.wasBlurred && emailInput.hasErrors}
+            onChange={emailInput.change}
+            onBlur={emailInput.blur}
             errorMessage="Перевірте коректність поштової адреси"
           />
         )}

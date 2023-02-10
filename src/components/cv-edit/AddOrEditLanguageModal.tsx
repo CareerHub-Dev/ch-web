@@ -1,4 +1,4 @@
-import { useInput } from '@/hooks/useInput/v4';
+import { useInput } from '@/hooks/useInput';
 import { useState } from 'react';
 import { useCvDataStore } from '@/context/cv-data-store';
 import NativeItemSelection from '../ui/NativeItemSelection';

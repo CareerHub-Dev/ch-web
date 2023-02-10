@@ -1,8 +1,17 @@
 import {
-  EnvelopeIcon, EyeIcon, EyeSlashIcon, KeyIcon
+  EnvelopeIcon,
+  EyeIcon,
+  EyeSlashIcon,
+  KeyIcon,
 } from '@heroicons/react/24/outline';
 import cn from 'classnames';
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 
 export const AuthField = forwardRef<
   {
@@ -12,8 +21,8 @@ export const AuthField = forwardRef<
     id?: string;
     type: 'email' | 'password';
     label: string;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+    onChange: (newValue: string) => void;
+    onBlur?: () => void;
     placeholder?: string;
     showError?: boolean;
     errorMessage?: string;
@@ -55,6 +64,10 @@ export const AuthField = forwardRef<
     );
   };
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value);
+  };
+
   return (
     <div>
       <label htmlFor={id} className="block text-sm font-medium text-gray-700">
@@ -70,7 +83,7 @@ export const AuthField = forwardRef<
           type={inputType}
           autoComplete={id}
           ref={inputRef}
-          onChange={onChange}
+          onChange={handleChange}
           onBlur={onBlur}
           placeholder={placeholder}
           required

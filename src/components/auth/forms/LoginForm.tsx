@@ -1,4 +1,4 @@
-import { useInput } from '@/hooks/useInput/v4';
+import { useInput } from '@/hooks/useInput';
 import useSession from '@/hooks/useSession';
 import useToast from '@/hooks/useToast';
 import { LocalGateway } from '@/lib/api/account';
@@ -6,7 +6,7 @@ import { emailPattern, passwordPattern } from '@/lib/util';
 import { useMutation } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { useRef, type ChangeEvent, type FormEventHandler } from 'react';
+import { useRef, type FormEventHandler } from 'react';
 import { AuthField } from './AuthField';
 
 const ModalLoading = dynamic(
@@ -67,14 +67,6 @@ export const LoginForm = () => {
     });
   };
 
-  const createHandler =
-    (handler: (val: string) => void) => (e: ChangeEvent<HTMLInputElement>) => {
-      handler(e.target.value);
-    };
-
-  const handleEmailChange = createHandler(emailInput.change);
-  const handlePasswordChange = createHandler(passwordInput.change);
-
   return (
     <form id="login-form" className="space-y-6" onSubmit={handleSubmit}>
       <ModalLoading show={authMutation.isLoading} />
@@ -83,7 +75,7 @@ export const LoginForm = () => {
         id="email"
         type="email"
         ref={emailInputRef}
-        onChange={handleEmailChange}
+        onChange={emailInput.change}
         onBlur={emailInput.blur}
         showError={emailInput.hasErrors}
         errorMessage={emailInput.errors.at(0)}
@@ -94,7 +86,7 @@ export const LoginForm = () => {
         id="password"
         type="password"
         ref={passwordInputRef}
-        onChange={handlePasswordChange}
+        onChange={passwordInput.change}
         onBlur={passwordInput.blur}
         showError={passwordInput.hasErrors}
         errorMessage={passwordInput.errors.at(0)}

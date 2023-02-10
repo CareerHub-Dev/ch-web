@@ -1,19 +1,41 @@
 import { FormEventHandler, useRef } from 'react';
-import useInput from '@/hooks/useInput';
+import { useInput } from '@/hooks/useInput';
 import { getStudentEmailValidity, getPasswordValidity } from '@/lib/util';
 import { AuthField } from './AuthField';
 
 export const RegisterForm = () => {
-  const emailInput = useInput(getStudentEmailValidity);
+  const emailInput = useInput({
+    validators: [
+      (val) =>
+        getStudentEmailValidity(val)
+          ? { type: 'success' }
+          : {
+              type: 'error',
+              message:
+                'Перевірте чи ваша пошта є у домені nure.ua та не містить невалідних символів',
+            },
+    ],
+  });
   const emailInputRef = useRef<HTMLInputElement>(null);
-  const passwordInput = useInput(getPasswordValidity);
+  const passwordInput = useInput({
+    validators: [
+      (val) =>
+        getPasswordValidity(val)
+          ? { type: 'success' }
+          : {
+              type: 'error',
+              message:
+                'Пароль повинен бути від 8 до 33 символів серед яких: літери верхнього й нижнього регістру, хоча б одна цифра або спеціальний символ',
+            },
+    ],
+  });
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const formIsValid = emailInput.isValid && passwordInput.isValid;
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    emailInput.inputBlurHandler();
-    passwordInput.inputBlurHandler();
+    emailInput.blur();
+    passwordInput.blur();
     if (!formIsValid) {
       if (!emailInput.isValid) {
         emailInputRef.current!.focus();
@@ -31,9 +53,9 @@ export const RegisterForm = () => {
         id="email"
         placeholder="Уведіть пошту"
         type="email"
-        showError={emailInput.hasError}
-        onChange={emailInput.valueChangeHandler}
-        onBlur={emailInput.inputBlurHandler}
+        showError={emailInput.wasBlurred && emailInput.hasErrors}
+        onChange={emailInput.change}
+        onBlur={emailInput.blur}
         errorMessage="Перевірте чи ваша пошта є у домені nure.ua та не містить невалідних символів"
         label={'Пошта'}
       />
@@ -42,9 +64,9 @@ export const RegisterForm = () => {
         id="password"
         placeholder="Уведіть пароль"
         type="password"
-        showError={passwordInput.hasError}
-        onChange={passwordInput.valueChangeHandler}
-        onBlur={passwordInput.inputBlurHandler}
+        showError={passwordInput.wasBlurred && passwordInput.hasErrors}
+        onChange={passwordInput.change}
+        onBlur={passwordInput.blur}
         errorMessage="Пароль повинен бути від 8 до 33 символів серед яких: літери верхнього й нижнього регістру, хоча б одна цифра або спеціальний символ"
         label="Пароль"
       />

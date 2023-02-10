@@ -1,4 +1,4 @@
-import useInput from '@/hooks/useInput/v3';
+import { useInput } from '@/hooks/useInput';
 import useToast from '@/hooks/useToast';
 import useProtectedMutation from '@/hooks/useProtectedMutation';
 import { useQueryClient } from '@tanstack/react-query';
@@ -14,32 +14,24 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
   const queryClient = useQueryClient();
   const firstNameInput = useInput({
     initialValue: initialData?.firstName,
-    validators: [
-      {
-        validate: (value) => value.length > 0,
-        message: 'Має бути хоча б один символ',
-      },
-    ],
+    validators: [valueIsNotEmpty],
   });
   const lastNameInput = useInput({
     initialValue: initialData?.lastName,
-    validators: [
-      {
-        validate: (value) => value.length > 0,
-        message: 'Має бути хоча б один символ',
-      },
-    ],
+    validators: [valueIsNotEmpty],
   });
   const phoneInput = useInput({
     initialValue: initialData?.phone,
     validators: [
-      {
-        validate: (value) => {
-          const withoutSpaces = value.replace(/\s/g, '');
-          return withoutSpaces.length === 0 || isPhoneNumber(withoutSpaces);
-        },
-        message:
-          'Номер телефону має відповідати формату XХХ-ХХХ-ХХХХ (без коду країни) або бути відсутнім',
+      (val) => {
+        const withoutSpaces = val.replace(/\s/g, '');
+        return withoutSpaces.length === 0 || isPhoneNumber(withoutSpaces)
+          ? {
+              type: 'error',
+              message:
+                'Номер телефону має відповідати формату XХХ-ХХХ-ХХХХ (без коду країни) або бути відсутнім',
+            }
+          : { type: 'success' };
       },
     ],
   });
@@ -85,9 +77,11 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
   );
 
   const allInputs = [firstNameInput, lastNameInput, phoneInput, birthDateInput];
-  const noInputTouched = allInputs.every((input) => input.isInitial);
+  const noInputTouched = allInputs.every((input) => !input.wasChanged);
   const someInputIsInvalid = allInputs.some((input) => !input.isValid);
-  const someInputHasError = allInputs.some((input) => input.hasError);
+  const someInputHasError = allInputs.some(
+    (input) => input.wasBlurred && input.hasErrors
+  );
   const cannotSubmit = someInputHasError || noInputTouched;
 
   const save = () => {
@@ -172,3 +166,9 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
   );
 };
 export default GeneralInfo;
+
+function valueIsNotEmpty(val: string) {
+  return val.trim().length > 0
+    ? ({ type: 'success' } as const)
+    : ({ type: 'error', message: 'Має бути хоча б один символ' } as const);
+}

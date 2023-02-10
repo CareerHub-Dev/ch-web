@@ -1,66 +1,77 @@
-import React, { useReducer } from 'react';
+import { useReducer } from 'react';
 
-type InputState = {
-  value: string;
-  isTouched: boolean;
+type InputState = Omit<Inputs.StringInput, 'warnings' | 'errors'> & {
+  initialValue: string;
 };
 
 type InputAction =
   | { type: 'INPUT'; value: string }
   | { type: 'FORCE'; value: string }
   | { type: 'BLUR' }
-  | { type: 'RESET' };
+  | { type: 'RESET'; value?: string };
 
-type InputValidationFunction = (value: string) => boolean;
-
-type InputChangeEvent = React.ChangeEvent<HTMLInputElement | HTMLSelectElement>;
-
-const initialInputState = {
-  value: '',
-  isTouched: false,
-};
-
-const valueIsNotEmpty = (value: string) => value.length !== 0;
-
-const inputStateReducer = (state: InputState, action: InputAction) => {
+function inputStateReducer(state: InputState, action: InputAction): InputState {
   if (action.type === 'INPUT') {
-    return { value: action.value, isTouched: state.isTouched };
+    return {
+      ...state,
+      value: action.value,
+      wasChanged: true,
+    };
   }
   if (action.type === 'BLUR') {
-    return { value: state.value, isTouched: true };
+    return { ...state, wasBlurred: true };
   }
   if (action.type === 'RESET') {
-    return { value: '', isTouched: false };
+    const initialValue = action.value ?? state.initialValue;
+    return {
+      value: initialValue,
+      wasChanged: false,
+      wasBlurred: false,
+      initialValue,
+    };
   }
   if (action.type === 'FORCE') {
-    return { value: action.value, isTouched: false };
+    return {
+      ...state,
+      value: action.value,
+    };
   }
 
-  return initialInputState;
-};
+  return { ...state };
+}
 
-const useInput = (
-  validateFunction: InputValidationFunction = valueIsNotEmpty,
-  initialValue: string = ''
-) => {
+export function useInput(opts?: {
+  validators?: Array<Inputs.Validator<string>>;
+  initialValue?: string;
+}) {
+  const initialValue = opts?.initialValue ?? '';
+  const validators = opts?.validators ?? [];
   const [inputState, dispatch] = useReducer(inputStateReducer, {
-    ...initialInputState,
+    wasChanged: false,
+    wasBlurred: false,
+    initialValue,
     value: initialValue,
   });
+  const warnings: string[] = [];
+  const errors: string[] = [];
 
-  const valueIsValid = validateFunction(inputState.value);
-  const hasError = !valueIsValid && inputState.isTouched;
+  for (const validator of validators) {
+    const result = validator(inputState.value);
+    if (result.type === 'success') continue;
+    const arrayToAppend = result.type === 'warning' ? warnings : errors;
+    arrayToAppend.push(result.message);
+  }
 
-  const valueChangeHandler = (event: InputChangeEvent) => {
-    dispatch({ type: 'INPUT', value: event.target.value });
+  const change = (value: string) => {
+    dispatch({ type: 'INPUT', value });
   };
 
-  const inputBlurHandler = () => {
+  const blur = () => {
     dispatch({ type: 'BLUR' });
   };
 
-  const reset = () => {
-    dispatch({ type: 'RESET' });
+  const reset = (value?: string) => {
+    dispatch({ type: 'RESET', value: value });
   };
 
   const force = (value: string) => {
@@ -69,16 +80,18 @@ const useInput = (
 
   return {
     value: inputState.value,
-    isValid: valueIsValid,
-    isTouched: inputState.isTouched,
-    hasError,
-    valueChangeHandler,
-    inputBlurHandler,
+    wasChanged: inputState.wasChanged,
+    wasBlurred: inputState.wasBlurred,
+    errors,
+    warnings,
+    change,
+    blur,
     reset,
     force,
+    hasErrors: errors.length > 0,
+    hasWarnings: warnings.length > 0,
+    isValid: errors.length === 0 && warnings.length === 0,
   };
-};
-
-export default useInput;
+}
 
 export type UseInputResult = ReturnType<typeof useInput>;

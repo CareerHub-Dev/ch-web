@@ -1,4 +1,4 @@
-import useInput from '@/hooks/useInput/v3';
+import { useInput } from '@/hooks/useInput';
 import useToast from '@/hooks/useToast';
 import useProtectedMutation from '@/hooks/useProtectedMutation';
 import { useBoolean } from 'usehooks-ts';
@@ -14,10 +14,13 @@ const ChangePassword = () => {
   const oldPasswordIsVisible = useBoolean(false);
   const newPasswordInput = useInput({
     validators: [
-      {
-        validate: (value) => value !== oldPasswordInput.value,
-        message: 'Новий пароль не повинен співпадати зі старим',
-      },
+      (val) =>
+        val === oldPasswordInput.value
+          ? { type: 'success' }
+          : {
+              type: 'error',
+              message: 'Новий пароль не повинен співпадати зі старим',
+            },
     ],
   });
   const repeatedNewPasswordInput = useInput();
@@ -32,7 +35,7 @@ const ChangePassword = () => {
     },
   });
 
-  const cannotSubmit = oldPasswordInput.hasError || newPasswordInput.hasError;
+  const cannotSubmit = oldPasswordInput.hasErrors || newPasswordInput.hasErrors;
 
   const save = () => {
     oldPasswordInput.blur();

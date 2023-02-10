@@ -1,6 +1,6 @@
 import { useCvDataStore } from '@/context/cv-data-store';
 import { type Education } from '@/context/cv-data-store/cv';
-import { useInput } from '@/hooks/useInput/v4';
+import { useInput } from '@/hooks/useInput';
 import { useObjectInput } from '@/hooks/useObjectInput';
 import { useMemo } from 'react';
 import { useBoolean } from 'usehooks-ts';
