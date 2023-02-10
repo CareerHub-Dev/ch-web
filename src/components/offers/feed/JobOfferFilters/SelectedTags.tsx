@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import useAppDispatch from '@/hooks/useAppDispatch';
 import { removeTag, selectTags } from '@/context/job-offers-feed';
-import RemoveIconAlt from '@/components/ui/icons/RemoveIconAlt';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 import classes from './SelectedTags.module.scss';
 
@@ -31,7 +31,7 @@ const SelectedTags = () => {
                 className={classes['tag-remove']}
                 onClick={removeHandler(tag)}
               >
-                <RemoveIconAlt />
+                <XMarkIcon />
               </div>
             </span>
           </li>

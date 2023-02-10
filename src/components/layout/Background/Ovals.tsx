@@ -1,7 +1,7 @@
 import { useWindowSize, useIsomorphicLayoutEffect } from 'usehooks-ts';
 import classes from './Background.module.scss';
 
-const Ovals = () => {
+export function Ovals() {
   const { width, height } = useWindowSize();
 
   useIsomorphicLayoutEffect(() => {
@@ -47,6 +47,4 @@ const Ovals = () => {
   }, [width, height]);
 
   return <canvas className={classes.canvas} width={width} height={height} />;
-};
-
-export default Ovals;
+}

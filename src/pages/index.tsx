@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import NureIcon from '@/components/ui/icons/NureIcon';
-import CareerCenterIcon from '@/components/ui/icons/CareerCenterIcon';
+import NureIcon from '@/components/icons/NureIcon';
+import CareerCenterIcon from '@/components/icons/CareerCenterIcon';
 import AuthButtons from '@/components/landing/AuthButtons';
 import CommonLayout from '@/components/layout/CommonLayout';
 

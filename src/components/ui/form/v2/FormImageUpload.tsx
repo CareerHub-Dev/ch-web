@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { type UseImageUploadResult } from '@/hooks/useImageUpload/v2';
 import cn from 'classnames';
 import classes from '../Form.module.scss';
-import UploadIcon from '../../icons/UploadIcon';
+import { ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import LinkButton from '../../LinkButton';
 
 const FormImageUpload = ({
@@ -34,7 +34,7 @@ const FormImageUpload = ({
       >
         <span>
           Завантажити зображення
-          <UploadIcon />
+          <ArrowUpTrayIcon />
         </span>
         <input
           id="photoInput"

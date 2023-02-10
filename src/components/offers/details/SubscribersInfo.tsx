@@ -2,7 +2,7 @@ import useSession from '@/hooks/useSession';
 import { useQuery } from '@tanstack/react-query';
 import { fetchJobOfferSubscribedStudentsAmount } from '@/lib/api/remote/jobOffers';
 import InfoItem from './InfoItem';
-import PeopleIcon from '@/components/ui/icons/PeopleIcon';
+import { UserGroupIcon } from '@heroicons/react/24/outline';
 
 const SubscribersInfo: React.FC<{ jobOfferId: string }> = ({ jobOfferId }) => {
   const { data: session } = useSession();
@@ -19,7 +19,7 @@ const SubscribersInfo: React.FC<{ jobOfferId: string }> = ({ jobOfferId }) => {
   );
   const subscribersAmount = isLoading ? '...' : (data as number);
   return (
-    <InfoItem icon={PeopleIcon}>
+    <InfoItem icon={<UserGroupIcon />}>
       <span>{`Підписки: ${subscribersAmount}`}</span>
     </InfoItem>
   );

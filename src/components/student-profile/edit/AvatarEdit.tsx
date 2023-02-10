@@ -1,4 +1,4 @@
-import PencilIcon from '@/components/ui/icons/PencilIcon';
+import { PencilIcon } from '@heroicons/react/24/outline';
 import ImageCrop from '@/components/ui/ImageCrop';
 import ModalLoading from '@/components/ui/Modal/ModalLoading';
 import Overlay from '@/components/ui/Overlay';

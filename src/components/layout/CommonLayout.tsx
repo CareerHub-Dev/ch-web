@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import HorizontalNavbar from './HorizontalNavbar';
-import Footer from './Footer';
-import Background from './Background';
+import { HorizontalNavbar } from './HorizontalNavbar';
+import { Footer } from './Footer';
+import { Background } from './Background';
 
 export default function CommonLayout(page: ReactNode) {
   return (
