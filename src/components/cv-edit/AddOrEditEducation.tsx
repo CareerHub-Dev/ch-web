@@ -5,7 +5,7 @@ import { useObjectInput } from '@/hooks/useObjectInput';
 import { useMemo } from 'react';
 import { useBoolean } from 'usehooks-ts';
 import NativeItemSelection from '../ui/NativeItemSelection';
-import ValidatedInput from '../ui/ValidatedInput';
+import { ValidatedInput } from '../ui/ValidatedInput';
 import AddOrEditItemModal from './item-list/AddOrEditItemModal';
 
 export default function AddOrEditEducationModal({
@@ -114,7 +114,8 @@ export default function AddOrEditEducationModal({
             onChange={university.change}
             warnings={university.warnings}
             errors={university.errors}
-            isTouched={university.isTouched}
+            wasBlurred={university.wasBlurred}
+            wasChanged={university.wasChanged}
           />
         </div>
 
@@ -126,7 +127,8 @@ export default function AddOrEditEducationModal({
             onChange={country.change}
             warnings={country.warnings}
             errors={country.errors}
-            isTouched={country.isTouched}
+            wasBlurred={country.wasBlurred}
+            wasChanged={country.wasChanged}
           />
         </div>
 
@@ -138,7 +140,8 @@ export default function AddOrEditEducationModal({
             onChange={city.change}
             warnings={city.warnings}
             errors={city.errors}
-            isTouched={city.isTouched}
+            wasBlurred={city.wasBlurred}
+            wasChanged={city.wasChanged}
           />
         </div>
 
@@ -150,7 +153,8 @@ export default function AddOrEditEducationModal({
             onChange={speciality.change}
             warnings={speciality.warnings}
             errors={speciality.errors}
-            isTouched={speciality.isTouched}
+            wasBlurred={speciality.wasBlurred}
+            wasChanged={speciality.wasChanged}
           />
         </div>
 

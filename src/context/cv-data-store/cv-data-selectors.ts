@@ -119,7 +119,7 @@ const summarizeInputs = (
   if (inputs.some((item) => item.warnings.length > 0)) {
     return 'hasWarnings';
   }
-  if (inputs.some((item) => !item.isTouched)) {
+  if (inputs.some((item) => !item.wasChanged)) {
     return 'incomplete';
   }
   return 'complete';

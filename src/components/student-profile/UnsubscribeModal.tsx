@@ -1,6 +1,6 @@
 import ModalPortal from '../ui/ModalPortal';
 
-const UnsubscribeModal = ({
+export default function UnsubscribeModal({
   from,
   onConfirm,
   disabled,
@@ -10,7 +10,7 @@ const UnsubscribeModal = ({
   disabled: boolean;
   onConfirm: () => void;
   onClose: () => void;
-}) => {
+}) {
   const close = (event: any) => {
     if (event.target.id === 'unsubscribeModal') {
       onClose();
@@ -56,5 +56,4 @@ const UnsubscribeModal = ({
       </div>
     </ModalPortal>
   );
-};
-export default UnsubscribeModal;
+}

@@ -1,14 +1,7 @@
 type StringInput = Inputs.StringInput;
 
-export function getStringInput(): StringInput;
-export function getStringInput(value: string): StringInput;
-export function getStringInput({
-  value,
-  isTouched,
-}: Pick<StringInput, 'value' | 'isTouched'>): StringInput;
-
 export function getStringInput(
-  val?: string | Pick<StringInput, 'value' | 'isTouched'>
+  val?: string | Pick<StringInput, 'value' | 'wasChanged'>
 ): StringInput {
   let value = '';
   if (typeof val === 'string') {
@@ -17,14 +10,17 @@ export function getStringInput(
     value = val.value;
   }
 
-  let isTouched = false;
-  if (val && typeof val === 'object' && 'isTouched' in val) {
-    isTouched = val.isTouched;
+  let wasChanged = false;
+  if (val && typeof val === 'object' && 'wasChanged' in val) {
+    wasChanged = val.wasChanged;
   }
+
+  let wasBlurred = wasChanged ? true : false;
 
   return {
     value,
-    isTouched,
+    wasChanged,
+    wasBlurred,
     errors: [],
     warnings: [],
   };
@@ -39,7 +35,7 @@ export function validateStringValue({
 }): StringInput {
   const resultInput = getStringInput({
     value,
-    isTouched: true,
+    wasChanged: true,
   });
   for (const validator of validators) {
     const result = validator(value);

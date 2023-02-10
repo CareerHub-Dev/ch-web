@@ -17,7 +17,7 @@ export function getArrayInput<TItem>(options?: {
 }): ArrayInput<TItem> {
   return {
     items: options?.initialItems ?? [],
-    isTouched: false,
+    wasChanged: false,
     errors: [],
     warnings: [],
   };
@@ -50,7 +50,7 @@ export function arrayInputReducer<TItem>({
     items,
     errors,
     warnings,
-    isTouched: true,
+    wasChanged: true,
   };
 
   return validateInput({

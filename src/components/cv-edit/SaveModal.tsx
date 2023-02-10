@@ -10,7 +10,7 @@ import { type ChangeEvent } from 'react';
 import { ConfirmCancelDialog } from '../ui/ConfirmCancelDialog';
 import ModalLoading from '../ui/Modal/ModalLoading';
 
-export default function SaveModal() {
+export function SaveModal() {
   const cvId = useCvDataStore((s) => s.cvId);
   const closeModal = useCvUiStore((s) => s.closeModal);
   const isOpen = useCvUiStore((s) => s.currentModal) === 'save';
@@ -22,7 +22,8 @@ export default function SaveModal() {
   const queryClient = useQueryClient();
   const cvMutationData = useCvDataStore(getCvMutationData);
 
-  const titleValue = title.isTouched ? title.value : cvData?.title || '';
+  const titleWasTouched = title.wasBlurred && title.wasChanged;
+  const titleValue = titleWasTouched ? title.value : cvData?.title || '';
 
   const mutationKey = [cvId === null ? 'create-cv' : `modify-cv-${cvId}`];
   // const mutationFn = cvId === null ? createCv : modifyCv(cvId);

@@ -2,7 +2,7 @@ import { useInput } from '@/hooks/useInput/v4';
 import { useState } from 'react';
 import { useCvDataStore } from '@/context/cv-data-store';
 import NativeItemSelection from '../ui/NativeItemSelection';
-import ValidatedInput from '../ui/ValidatedInput';
+import { ValidatedInput } from '../ui/ValidatedInput';
 import AddOrEditItemModal from './item-list/AddOrEditItemModal';
 import { type ForeignLanguage } from '@/context/cv-data-store/cv';
 
@@ -81,7 +81,8 @@ export default function AddOrEditLanguageModal({
             onChange={nameInput.change}
             errors={nameInput.errors}
             warnings={nameInput.warnings}
-            isTouched={nameInput.isTouched}
+            wasChanged={nameInput.wasChanged}
+            wasBlurred={nameInput.wasBlurred}
             label="Мова"
           />
         </div>

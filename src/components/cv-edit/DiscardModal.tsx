@@ -3,7 +3,7 @@ import { useCvUiStore } from '@/context/cv-ui-store';
 import { useCvQueryData } from '@/hooks/useCvQuery';
 import { ConfirmCancelDialog } from '../ui/ConfirmCancelDialog';
 
-export default function DiscardModal() {
+export function DiscardModal() {
   const cvId = useCvDataStore((s) => s.cvId);
   const closeModal = useCvUiStore((s) => s.closeModal);
   const discard = useCvDataStore((s) => s.discardChanges);

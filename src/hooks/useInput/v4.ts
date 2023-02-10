@@ -1,9 +1,7 @@
 import { useReducer } from 'react';
 
-type InputState = {
+type InputState = Omit<Inputs.StringInput, 'warnings' | 'errors'> & {
   initialValue: string;
-  value: string;
-  isTouched: boolean;
 };
 
 type InputAction =
@@ -12,51 +10,47 @@ type InputAction =
   | { type: 'BLUR' }
   | { type: 'RESET'; value?: string };
 
-const inputStateReducer = (
-  state: InputState,
-  action: InputAction
-): InputState => {
+function inputStateReducer(state: InputState, action: InputAction): InputState {
   if (action.type === 'INPUT') {
     return {
+      ...state,
       value: action.value,
-      isTouched: true,
-      initialValue: state.initialValue,
+      wasChanged: true,
     };
   }
   if (action.type === 'BLUR') {
-    return {
-      value: state.value,
-      isTouched: true,
-      initialValue: state.initialValue,
-    };
+    return { ...state, wasBlurred: true };
   }
   if (action.type === 'RESET') {
     const initialValue = action.value ?? state.initialValue;
-    return { value: initialValue, isTouched: false, initialValue };
+    return {
+      value: initialValue,
+      wasChanged: false,
+      wasBlurred: false,
+      initialValue,
+    };
   }
   if (action.type === 'FORCE') {
     return {
       value: action.value,
-      isTouched: false,
+      wasBlurred: false,
+      wasChanged: false,
       initialValue: state.initialValue,
     };
   }
 
-  return {
-    value: state.value,
-    isTouched: state.isTouched,
-    initialValue: state.initialValue,
-  };
-};
+  return { ...state };
+}
 
-export const useInput = (opts?: {
+export function useInput(opts?: {
   validators?: Array<Inputs.Validator<string>>;
   initialValue?: string;
-}) => {
+}) {
   const initialValue = opts?.initialValue ?? '';
   const validators = opts?.validators ?? [];
   const [inputState, dispatch] = useReducer(inputStateReducer, {
-    isTouched: false,
+    wasChanged: false,
+    wasBlurred: false,
     initialValue,
     value: initialValue,
   });
@@ -80,7 +74,8 @@ export const useInput = (opts?: {
 
   return {
     value: inputState.value,
-    isTouched: inputState.isTouched,
+    wasChanged: inputState.wasChanged,
+    wasBlurred: inputState.wasBlurred,
     errors,
     warnings,
     change,
@@ -88,6 +83,6 @@ export const useInput = (opts?: {
     hasErrors: errors.length > 0,
     hasWarnings: warnings.length > 0,
   };
-};
+}
 
 export type UseInputResult = ReturnType<typeof useInput>;

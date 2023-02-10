@@ -114,13 +114,14 @@ namespace Inputs {
       };
 
   type BaseInput = {
-    isTouched: boolean;
     errors: string[];
+    wasChanged: boolean;
     warnings: string[];
   };
 
   type StringInput = {
     value: string;
+    wasBlurred: boolean;
   } & BaseInput;
 
   type ArrayInput<T> = {

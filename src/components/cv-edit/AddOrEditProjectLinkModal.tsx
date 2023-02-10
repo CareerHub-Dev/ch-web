@@ -1,7 +1,7 @@
 import { useCvDataStore } from '@/context/cv-data-store';
 import { type ProjectLink } from '@/context/cv-data-store/cv';
 import { useInput } from '@/hooks/useInput/v4';
-import ValidatedInput from '../ui/ValidatedInput';
+import { ValidatedInput } from '../ui/ValidatedInput';
 import AddOrEditItemModal from './item-list/AddOrEditItemModal';
 
 export function AddOrEditProjectLinkModal({
@@ -89,7 +89,8 @@ export function AddOrEditProjectLinkModal({
             onChange={titleInput.change}
             errors={titleInput.errors}
             warnings={titleInput.warnings}
-            isTouched={titleInput.isTouched}
+            wasChanged={titleInput.wasChanged}
+            wasBlurred={titleInput.wasBlurred}
             label="Назва"
           />
         </div>
@@ -100,7 +101,8 @@ export function AddOrEditProjectLinkModal({
             onChange={urlInput.change}
             errors={urlInput.errors}
             warnings={urlInput.warnings}
-            isTouched={urlInput.isTouched}
+            wasChanged={urlInput.wasChanged}
+            wasBlurred={urlInput.wasBlurred}
             label="Адреса"
           />
         </div>

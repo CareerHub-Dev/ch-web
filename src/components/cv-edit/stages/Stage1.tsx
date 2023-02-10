@@ -1,5 +1,5 @@
 import AssistanceAlert from '../AssistantAlert';
-import ValidatedInput from '@/components/ui/ValidatedInput';
+import { ValidatedInput } from '@/components/ui/ValidatedInput';
 import { useCvDataStore } from '@/context/cv-data-store';
 import { useCvAssistanceStore } from '@/context/cv-assistance-store';
 

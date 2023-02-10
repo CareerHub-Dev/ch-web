@@ -2,8 +2,8 @@ import {
   ExclamationCircleIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/20/solid';
-import cn from 'classnames';
 import { type ChangeEvent } from 'react';
+import cn from 'classnames';
 
 const defaultClasses = 'focus:border-blue-500 focus:ring-blue-500';
 
@@ -13,20 +13,23 @@ const errorClasses =
 const warningClasses =
   'text-orange-900 placeholder-orange-300 focus:border-orange-500 focus:outline-none focus:ring-orange-500';
 
-export default function ValidatedInput({
+export function ValidatedInput({
   id,
   label,
   value,
   errors,
   warnings,
   onChange,
+  wasBlurred,
+  wasChanged,
 }: Inputs.StringInput & {
   id: string;
   label?: string;
   onChange: (value: string) => void;
 }) {
-  const hasErrors = errors.length > 0;
-  const hasWarnings = warnings.length > 0;
+  const wasTouched = wasChanged && wasBlurred;
+  const hasErrors = wasTouched && errors.length > 0;
+  const hasWarnings = wasTouched && warnings.length > 0;
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
