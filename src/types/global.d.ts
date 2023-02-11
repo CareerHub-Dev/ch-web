@@ -6,13 +6,6 @@ type PaginatedRequestParams = {
 };
 
 type PaginatedQueryParams = Omit<PaginatedQueryParams, 'pageNumber'>;
-
-interface AppNavigationLink {
-  href: string;
-  text: string;
-  exact?: boolean;
-}
-
 interface JobOfferFilter {
   searchTerm?: string;
   jobType?: string;

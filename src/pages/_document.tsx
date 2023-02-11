@@ -14,9 +14,9 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang="uk">
+      <Html lang="uk" className="h-full bg-gray-100">
         <Head></Head>
-        <body>
+        <body className="h-full">
           <div id="modal" />
           <Main />
           <NextScript />

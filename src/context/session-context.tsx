@@ -6,7 +6,7 @@ import createAxiosInstance from '@/lib/axios/create-instance';
 import axios, { type AxiosInstance } from 'axios';
 
 type SessionContextState =
-  | { status: 'unauthenticated'; data: null; }
+  | { status: 'unauthenticated'; data: null }
   | {
       status: 'loading';
       data: null;
@@ -33,7 +33,7 @@ const sessionContextInitialState: SessionContextState = {
   data: null,
 };
 
-const SessionContext = createContext<SessionContextData>({
+export const SessionContext = createContext<SessionContextData>({
   ...sessionContextInitialState,
   axios: axios.create(),
   logout: () => {},
@@ -41,25 +41,25 @@ const SessionContext = createContext<SessionContextData>({
   refreshToken: () => {},
   refreshTokenAsync: () => new Promise(() => {}),
 });
-export default SessionContext;
 
 const sessionStateReducer = (
-  _state: SessionContextState,
+  state: SessionContextState,
   action: SessionContextAction
 ): SessionContextState => {
-  if (action.type === 'UPDATE') {
-    return {
-      status: 'authenticated',
-      data: action.data,
-    };
+  switch (action.type) {
+    case 'UPDATE':
+      return {
+        status: 'authenticated',
+        data: action.data,
+      };
+    case 'RESET':
+      return {
+        status: 'unauthenticated',
+        data: null,
+      };
+    default:
+      return { ...state };
   }
-  if (action.type === 'RESET') {
-    return {
-      status: 'unauthenticated',
-      data: null,
-    };
-  }
-  return sessionContextInitialState;
 };
 
 export const SessionContextProvider = ({

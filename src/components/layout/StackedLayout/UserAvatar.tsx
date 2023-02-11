@@ -5,7 +5,7 @@ import Image from 'next/image';
 import defaultAvatar from '@/resources/images/default-avatar.png';
 import cn from 'classnames';
 
-const UserMenuAvatar = () => {
+export default function UserAvatar() {
   const { data, isLoading } = useSelfAvatarQuery();
   const imageMightBeLoading = useBoolean(true);
 
@@ -20,15 +20,14 @@ const UserMenuAvatar = () => {
     >
       {!isLoading && (
         <Image
+          className="rounded-full overflow-hidden aspect-square"
           width={32}
           height={32}
           src={imageSource}
           alt="Ваш аватар"
-          className="rounded-full overflow-hidden aspect-square"
           onLoadingComplete={imageMightBeLoading.setFalse}
         />
       )}
     </span>
   );
-};
-export default UserMenuAvatar;
+}
