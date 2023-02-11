@@ -113,7 +113,7 @@ const StudentProfilePage: NextPageWithLayout<
         <meta name="description" content="Student profile" />
       </Head>
 
-      <div className="mx-auto bg-white pt-8 shadow-md rounded-lg mb-20 max-w-full lg:max-w-4xl">
+      <div className="mx-auto bg-white pt-8 shadow-md rounded-2xl mb-20 max-w-full lg:max-w-4xl">
         <div className="grid grid-cols-[1fr_0.5fr] grid-rows-[minmax(0,_1fr)_auto] gap-4">
           <section className="px-4 col-span-2 md:col-auto">
             <div className="grid grid-cols-[auto_1fr] gap-8">

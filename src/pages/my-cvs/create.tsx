@@ -1,32 +1,19 @@
 import CvBuilder from '@/features/cv-builder/components/CvBuilder';
 import CommonLayout from '@/components/layout/CommonLayout';
 import useJobPositionsQuery from '@/hooks/useJobPositionsQuery';
-import { getJobPositions } from '@/lib/api/job-positions';
-import axiosMiddleware from '@/lib/middleware/axiosMiddleware';
-import { protectedSsr } from '@/lib/protected-ssr';
-import { InferGetServerSidePropsType } from 'next';
+import CenteredLoadingSpinner from '@/components/ui/CenteredLoadingSpinner';
+import parseUnknownError from '@/lib/parse-unknown-error';
 
-const CreateCvPage = (
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
-) => {
-  useJobPositionsQuery({ initialData: props.jobPositions });
+const CreateCvPage = () => {
+  const { isLoading, isError, error } = useJobPositionsQuery();
+
+  if (isLoading) return <CenteredLoadingSpinner />;
+
+  if (isError) return <div>{parseUnknownError(error)}</div>;
+
   return <CvBuilder />;
 };
 
 CreateCvPage.getLayout = CommonLayout;
 
 export default CreateCvPage;
-
-export const getServerSideProps = protectedSsr({
-  allowedRoles: ['Student'],
-  getProps: async (context) => {
-    const axiosInstance = axiosMiddleware(context);
-    const jobPositions = await getJobPositions(axiosInstance);
-
-    return {
-      props: {
-        jobPositions,
-      },
-    };
-  },
-});
