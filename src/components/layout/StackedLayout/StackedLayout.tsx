@@ -34,14 +34,14 @@ export default function StackedLayout(props: { children: ReactNode }) {
                 <div className="flex">
                   <div className="flex flex-shrink-0 items-center">
                     <Image
-                      className="block h-5 w-auto lg:hidden px-8"
+                      className="block h-5 w-auto lg:hidden"
                       height={20}
                       width={120}
                       src="/ch.svg"
                       alt="CareerHub"
                     />
                     <Image
-                      className="hidden h-5 w-auto lg:block px-8"
+                      className="hidden h-5 w-auto lg:block"
                       height={20}
                       width={120}
                       src="/ch.svg"

@@ -1,4 +1,4 @@
-import useProtectedPaginatedQuery from '@/hooks/useProtectedPaginatedQuery';
+import { useProtectedPaginatedQuery } from '@/hooks/useProtectedPaginatedQuery';
 import { useSelector } from 'react-redux';
 import { selectFilterOptions } from '@/context/job-offers-feed';
 import LoadMore from '@/components/ui/LoadMore';

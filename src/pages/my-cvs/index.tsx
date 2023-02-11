@@ -2,27 +2,20 @@ import CommonLayout from '@/components/layout/CommonLayout';
 import { AddCvButton } from '@/components/student-cvs/AddCvButton';
 import { CvItemsGrid } from '@/components/student-cvs/CvItemsGrid';
 import { CvItemsSearch } from '@/components/student-cvs/CvItemsSearch';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import CenteredLoadingSpinner from '@/components/ui/CenteredLoadingSpinner';
 import LoadMore from '@/components/ui/LoadMore';
-import useProtectedPaginatedQuery from '@/hooks/useProtectedPaginatedQuery';
+import { useProtectedPaginatedQuery } from '@/hooks/useProtectedPaginatedQuery';
 import { getStudentOwnCvs } from '@/lib/api/cvs';
-import { StudentCvs } from '@/lib/api/cvs/schemas';
-import { PaginatedResponse } from '@/lib/api/pagination';
-import axiosMiddleware from '@/lib/middleware/axiosMiddleware';
 import { protectedSsr } from '@/lib/protected-ssr';
-import { type InferGetServerSidePropsType } from 'next';
 
-const StudentCVsPage: NextPageWithLayout<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ initialData }) => {
+const StudentCVsPage: NextPageWithLayout = () => {
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useProtectedPaginatedQuery({
-      queryKey: ['studentOwnCvs'],
+      queryKey: ['student-own-cvs'],
       getItems: getStudentOwnCvs,
       params: {
         pageSize: 25,
       },
-      initialData,
     });
 
   const cvsToDisplay = data?.pages.flatMap((page) => page.data) ?? [];
@@ -40,12 +33,12 @@ const StudentCVsPage: NextPageWithLayout<
       </div>
       <CvItemsSearch />
       {isLoading ? (
-        <LoadingSpinner />
+        <CenteredLoadingSpinner />
       ) : (
         <>
           <CvItemsGrid items={cvsToDisplay} />
           {isFetchingNextPage ? (
-            <LoadingSpinner />
+            <CenteredLoadingSpinner />
           ) : hasNextPage ? (
             <LoadMore onClick={fetchNextPage} />
           ) : null}
@@ -59,22 +52,6 @@ StudentCVsPage.getLayout = CommonLayout;
 
 export default StudentCVsPage;
 
-export const getServerSideProps = protectedSsr<{
-  initialData: {
-    pages: PaginatedResponse<StudentCvs>[];
-    pageParams: { pageSize: number }[];
-  };
-}>({
+export const getServerSideProps = protectedSsr({
   allowedRoles: ['Student'],
-  getProps: async (context) => {
-    const params = { pageSize: 25 };
-
-    const firstPage = await getStudentOwnCvs(params)(axiosMiddleware(context));
-
-    return {
-      props: {
-        initialData: { pages: [firstPage], pageParams: [params] },
-      },
-    };
-  },
 });

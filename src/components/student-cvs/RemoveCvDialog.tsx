@@ -21,14 +21,13 @@ export const RemoveCvDialog = ({
 
   const { mutate } = useProtectedMutation(['delete-cv', cvId], deleteCv, {
     onMutate: async (removedItemId) => {
-      await queryClient.cancelQueries({ queryKey: ['studentOwnCvs'] });
+      await queryClient.cancelQueries({ queryKey: ['student-own-cvs'] });
 
       type CachedData = {
         pages: { data: { id: string }[] }[];
       };
       const cachedData = queryClient.getQueryData([
-        'studentOwnCvs',
-        { pageSize: 25 },
+        'student-own-cvs',
       ]) as CachedData; // | undefined;
 
       const cachedDataWithoutRemovedCv = {
@@ -41,19 +40,19 @@ export const RemoveCvDialog = ({
 
       onClose();
       queryClient.setQueryData(
-        ['studentOwnCvs', { pageSize: 25 }],
+        ['student-own-cvs'],
         cachedDataWithoutRemovedCv
       );
 
       return () => {
         queryClient.setQueryData(
-          ['studentOwnCvs', { pageSize: 25 }],
+          ['student-own-cvs'],
           cachedData
         );
       };
     },
     onSettled: () => {
-      queryClient.invalidateQueries(['studentOwnCvs', { pageSize: 25 }]);
+      queryClient.invalidateQueries(['student-own-cvs']);
     },
     onError: (error, _variables, restoreCache) => {
       if (!!restoreCache) restoreCache();

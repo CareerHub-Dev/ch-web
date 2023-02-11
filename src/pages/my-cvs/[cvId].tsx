@@ -1,4 +1,4 @@
-import CvBuilder from '@/features/cv-builder/CvBuilder';
+import CvBuilder from '@/features/cv-builder/components/CvBuilder';
 import CommonLayout from '@/components/layout/CommonLayout';
 import { getStudentOwnCv } from '@/lib/api/cvs';
 import { type StudentCvDetails } from '@/lib/api/cvs/schemas';

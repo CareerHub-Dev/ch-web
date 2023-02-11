@@ -1,4 +1,4 @@
-import CvBuilder from '@/features/cv-builder/CvBuilder';
+import CvBuilder from '@/features/cv-builder/components/CvBuilder';
 import CommonLayout from '@/components/layout/CommonLayout';
 import useJobPositionsQuery from '@/hooks/useJobPositionsQuery';
 import { getJobPositions } from '@/lib/api/job-positions';
