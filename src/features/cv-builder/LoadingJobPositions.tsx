@@ -1,5 +1,5 @@
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import LoadingSpinner from '../ui/LoadingSpinner';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function LoadingJobPositions() {
   return (

@@ -1,8 +1,8 @@
 import { useInput } from '@/hooks/useInput';
 import { useState } from 'react';
 import { useCvDataStore } from '@/context/cv-data-store';
-import NativeItemSelection from '../ui/NativeItemSelection';
-import { ValidatedInput } from '../ui/ValidatedInput';
+import NativeItemSelection from '@/components/ui/NativeItemSelection';
+import { ValidatedInput } from '@/components/ui/ValidatedInput';
 import AddOrEditItemModal from './item-list/AddOrEditItemModal';
 import { type ForeignLanguage } from '@/context/cv-data-store/cv';
 

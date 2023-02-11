@@ -2,7 +2,7 @@ import { type Education } from '@/context/cv-data-store/cv';
 import { type ItemListAction } from '@/lib/list-reducer/dialog-actions';
 import { CalendarIcon } from '@heroicons/react/20/solid';
 import { type Dispatch } from 'react';
-import ListItemEditMenu from '../ui/ListItemEditMenu';
+import ListItemEditMenu from '@/components/ui/ListItemEditMenu';
 
 export default function EducationItem({
   item,

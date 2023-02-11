@@ -3,7 +3,7 @@ import { useCvDataStore } from '@/context/cv-data-store';
 import { useJobPositionsQueryData } from '@/hooks/useJobPositionsQuery';
 import { TEMPLATE_LANGUAGES } from '@/context/cv-data-store/cv';
 import { useCvAssistanceStore } from '@/context/cv-assistance-store';
-import ItemSelection from '../../ui/ItemsSelection';
+import ItemSelection from '@/components/ui/ItemsSelection';
 
 export default function Stage0() {
   const jobPositionsQueryData = useJobPositionsQueryData();

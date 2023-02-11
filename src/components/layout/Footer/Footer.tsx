@@ -4,6 +4,9 @@ import cn from 'classnames';
 import FacebookIcon from '@/components/icons/FacebookIcon';
 
 export function Footer({ className }: { className?: string }) {
+  const currentYear = new Date().getFullYear();
+  const copyRight = `CareerHub © ${currentYear}`;
+
   return (
     <footer
       className={cn(
@@ -17,7 +20,7 @@ export function Footer({ className }: { className?: string }) {
             <FooterLink
               item={{
                 href: '/',
-                text: 'CareerHub © 2022',
+                text: copyRight,
               }}
             />
           </li>

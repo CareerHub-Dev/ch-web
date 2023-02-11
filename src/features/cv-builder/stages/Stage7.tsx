@@ -3,7 +3,7 @@ import { useCvDataStore } from '@/context/cv-data-store';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
 import AddOrEditEducationModal from '../AddOrEditEducation';
 import EducationItem from '../EducationItem';
-import { EmptyState } from '../../ui/EmptyState';
+import { EmptyState } from '@/components/ui/EmptyState';
 import RemoveItemModal from '../item-list/RemoveItemModal';
 
 export default function Stage7() {

@@ -1,7 +1,7 @@
 import { useCvDataStore } from '@/context/cv-data-store';
 import { useCvUiStore } from '@/context/cv-ui-store';
 import { useCvQueryData } from '@/hooks/useCvQuery';
-import { ConfirmCancelDialog } from '../ui/ConfirmCancelDialog';
+import { ConfirmCancelDialog } from '@/components/ui/ConfirmCancelDialog';
 
 export function DiscardModal() {
   const cvId = useCvDataStore((s) => s.cvId);

@@ -4,8 +4,8 @@ import { useInput } from '@/hooks/useInput';
 import { useObjectInput } from '@/hooks/useObjectInput';
 import { useMemo } from 'react';
 import { useBoolean } from 'usehooks-ts';
-import NativeItemSelection from '../ui/NativeItemSelection';
-import { ValidatedInput } from '../ui/ValidatedInput';
+import NativeItemSelection from '@/components/ui/NativeItemSelection';
+import { ValidatedInput } from '@/components/ui/ValidatedInput';
 import AddOrEditItemModal from './item-list/AddOrEditItemModal';
 
 export default function AddOrEditEducationModal({

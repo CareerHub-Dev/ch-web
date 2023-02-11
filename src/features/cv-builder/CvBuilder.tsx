@@ -1,13 +1,13 @@
 import dynamic from 'next/dynamic';
-import StageView from '@/components/cv-edit/StageView';
+import StageView from './StageView';
 import { useCvDataStore } from '@/context/cv-data-store';
 import { useCvUiStore } from '@/context/cv-ui-store';
 import { useEffect } from 'react';
-import StageCircleButtons from '@/components/cv-edit/StageCircleButtons';
+import StageCircleButtons from './StageCircleButtons';
 import { CvBuilderHeading } from './CvBuilderHeading';
 import { type StudentCvDetails } from '@/lib/api/cvs/schemas';
 
-const ModalView = dynamic(() => import('@/components/cv-edit/ModalView'), {
+const ModalView = dynamic(() => import('./ModalView'), {
   ssr: false,
 });
 

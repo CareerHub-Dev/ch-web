@@ -7,8 +7,8 @@ import useToast from '@/hooks/useToast';
 import { useQueryClient } from '@tanstack/react-query';
 import { createCv } from '@/lib/api/cvs';
 import { type ChangeEvent } from 'react';
-import { ConfirmCancelDialog } from '../ui/ConfirmCancelDialog';
-import ModalLoading from '../ui/Modal/ModalLoading';
+import { ConfirmCancelDialog } from '@/components/ui/ConfirmCancelDialog';
+import ModalLoading from '@/components/ui/Modal/ModalLoading';
 
 export function SaveModal() {
   const cvId = useCvDataStore((s) => s.cvId);

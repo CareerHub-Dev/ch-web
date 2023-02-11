@@ -1,4 +1,4 @@
-import ModalPortal from '../ui/ModalPortal';
+import ModalPortal from '@/components/ui/ModalPortal';
 import { SaveModal } from './SaveModal';
 import { DiscardModal } from './DiscardModal';
 import { PreviewModal } from './PreviewModal';
