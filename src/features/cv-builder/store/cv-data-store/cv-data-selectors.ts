@@ -1,4 +1,4 @@
-import { type StageNumber } from "../cv-ui-store/stages-slice";
+import { type StageNumber } from "../cv-data-store";
 import { type CvDataStore } from "./cv-data-store";
 import { type CvModificationData } from "@/lib/api/cvs";
 import { getFileNameExtension } from "@/lib/images";

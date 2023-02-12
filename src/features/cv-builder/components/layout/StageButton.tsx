@@ -1,9 +1,8 @@
-import { useCvUiStore } from "../../store/cv-ui-store";
 import {
   getStageCompletionStatus,
   useCvDataStore,
+  CV_EDITOR_STAGES,
 } from "../../store/cv-data-store";
-import { CV_EDITOR_STAGES } from "../../store/cv-ui-store/stages-slice";
 import cn from "classnames";
 
 export default function StageButton({
@@ -11,9 +10,9 @@ export default function StageButton({
 }: {
   stage: typeof CV_EDITOR_STAGES[number];
 }) {
-  const currentStageNumber = useCvUiStore((s) => s.currentStage);
+  const currentStageNumber = useCvDataStore((s) => s.currentStage);
   const stageStatus = useCvDataStore(getStageCompletionStatus(stage.id));
-  const goToStage = useCvUiStore((s) => s.goToStage);
+  const goToStage = useCvDataStore((s) => s.goToStage);
 
   const colorStatus = currentStageNumber === stage.id ? "current" : stageStatus;
   const colorClass = getStageColorClass(colorStatus);

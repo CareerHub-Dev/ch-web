@@ -10,7 +10,7 @@ export type AssistanceState = {
 const useCvAssistanceStoreBase = create<AssistanceState>()(
   persist(
     (set) => ({
-      isAssistanceEnabled: false,
+      isAssistanceEnabled: true,
       toggleAssistance: () =>
         set((prev) => ({ isAssistanceEnabled: !prev.isAssistanceEnabled })),
     }),

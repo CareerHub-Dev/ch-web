@@ -1,5 +1,5 @@
-import { CV_EDITOR_STAGES } from '../../store/cv-ui-store/stages-slice';
-import StageButton from './StageButton';
+import { CV_EDITOR_STAGES } from "../../store/cv-data-store";
+import StageButton from "./StageButton";
 
 export default function StageCircleButtons() {
   return (

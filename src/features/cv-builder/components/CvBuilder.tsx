@@ -1,5 +1,4 @@
 import { useCvDataStore } from '../store/cv-data-store';
-import { useCvUiStore } from '../store/cv-ui-store';
 import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import StageView from './layout/StageView';
@@ -19,7 +18,7 @@ export default function CvBuilder({
   const cvId = initialData?.id ?? null;
   const storedCvId = useCvDataStore((s) => s.cvId);
   const reInit = useCvDataStore((s) => s.reInit);
-  const goToStage = useCvUiStore((s) => s.goToStage);
+  const goToStage = useCvDataStore((s) => s.goToStage);
   const restoreData = initialData ?? null;
 
   useEffect(() => {

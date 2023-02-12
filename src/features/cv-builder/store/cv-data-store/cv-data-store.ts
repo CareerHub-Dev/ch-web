@@ -41,6 +41,8 @@ export type CvDataStore = {
     sourceFileType: string;
   }) => void;
   removePhoto: () => void;
+  currentStage: StageNumber;
+  goToStage: (num: StageNumber) => void;
 };
 
 export const useCvDataStore = create<CvDataStore>()(
@@ -48,6 +50,7 @@ export const useCvDataStore = create<CvDataStore>()(
     immer((set) => ({
       cvId: null,
       cvData: getEmptyCvData(),
+      currentStage: 0,
       reInit: (newData) =>
         set((state) => {
           if (newData === null) {
@@ -160,9 +163,23 @@ export const useCvDataStore = create<CvDataStore>()(
         set((state) => {
           state.cvData.photo = null;
         }),
+      goToStage: (num: StageNumber) => set({ currentStage: num }),
     }))
   )
 );
+
+export const CV_EDITOR_STAGES = [
+  { id: 0, name: "Загальне" },
+  { id: 1, name: "Ім'я, приізвище" },
+  { id: 2, name: "Фото" },
+  { id: 3, name: "Цілі" },
+  { id: 4, name: "Навички" },
+  { id: 5, name: "Мови" },
+  { id: 6, name: "Досвід" },
+  { id: 7, name: "Освіта" },
+] as const;
+
+export type StageNumber = typeof CV_EDITOR_STAGES[number]["id"];
 
 const titleReducer = makeStringInputReducer([
   (val) =>
