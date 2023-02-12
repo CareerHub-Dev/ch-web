@@ -1,10 +1,10 @@
 import { useInput } from '@/hooks/useInput';
 import { useState } from 'react';
-import { useCvDataStore } from '../store/cv-data-store';
+import { useCvDataStore } from '../../store/cv-data-store';
 import NativeItemSelection from '@/components/ui/NativeItemSelection';
 import { ValidatedInput } from '@/components/ui/ValidatedInput';
-import AddOrEditItemModal from './item-list/AddOrEditItemModal';
-import { type ForeignLanguage } from '../store/cv-data-store/cv';
+import AddOrEditItemModal from './AddOrEditItemModal';
+import { type ForeignLanguage } from '../../store/cv-data-store/cv';
 
 const LEVEL_OPTIONS = [
   { name: 'A1', id: 'A1' },

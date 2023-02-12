@@ -1,9 +1,9 @@
-import { useCvDataStore } from '../store/cv-data-store';
+import { useCvDataStore } from '../../store/cv-data-store';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 import { Fragment, useState } from 'react';
 import ImageCrop from '@/components/ui/ImageCrop/v2';
-import PhotoDragAndDropInput from './PhotoDragAndDropInput';
+import PhotoDragAndDropInput from '../PhotoDragAndDropInput';
 
 export default function PhotoEditDialog(props: { onClose: () => void }) {
   const changePhoto = useCvDataStore((s) => s.changePhoto);

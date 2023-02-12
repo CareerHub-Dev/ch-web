@@ -1,11 +1,11 @@
 import { useCvAssistanceStore } from '@/features/cv-builder/store/cv-assistance-store';
 import { useCvDataStore } from '../../store/cv-data-store';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
-import AddOrEditLanguageModal from '../AddOrEditLanguageModal';
+import AddOrEditLanguageModal from '../modals/AddOrEditLanguageModal';
 import AssistanceAlert from '../AssistantAlert';
 import { EmptyState } from '@/components/ui/EmptyState';
-import RemoveItemModal from '../item-list/RemoveItemModal';
-import LanguageItem from '../LanguageItem';
+import RemoveItemModal from '../modals/RemoveItemModal';
+import LanguageItem from '../list-items/LanguageItem';
 
 export default function Stage5() {
   const foreignLanguages = useCvDataStore((s) => s.cvData.foreignLanguages);

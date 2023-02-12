@@ -1,10 +1,10 @@
 import { useCvAssistanceStore } from '@/features/cv-builder/store/cv-assistance-store';
 import { useCvDataStore } from '../../store/cv-data-store';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
-import AddOrEditEducationModal from '../AddOrEditEducation';
-import EducationItem from '../EducationItem';
+import AddOrEditEducationModal from '../modals/AddOrEditEducationModal';
+import EducationItem from '../list-items/EducationItem';
 import { EmptyState } from '@/components/ui/EmptyState';
-import RemoveItemModal from '../item-list/RemoveItemModal';
+import RemoveItemModal from '../modals/RemoveItemModal';
 
 export default function Stage7() {
   const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);

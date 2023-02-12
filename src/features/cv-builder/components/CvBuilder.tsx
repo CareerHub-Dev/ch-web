@@ -1,13 +1,13 @@
-import dynamic from 'next/dynamic';
-import StageView from './StageView';
 import { useCvDataStore } from '../store/cv-data-store';
 import { useCvUiStore } from '../store/cv-ui-store';
 import { useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import StageView from './layout/StageView';
 import StageCircleButtons from './StageCircleButtons';
-import { CvBuilderHeading } from './CvBuilderHeading';
+import CvBuilderHeading from './layout/CvBuilderHeading';
 import { type StudentCvDetails } from '@/lib/api/cvs/schemas';
 
-const ModalView = dynamic(() => import('./ModalView'), {
+const ModalView = dynamic(() => import('./layout/ModalView'), {
   ssr: false,
 });
 
@@ -30,7 +30,7 @@ export default function CvBuilder({
   }, [storedCvId, cvId, reInit, restoreData, goToStage]);
 
   return (
-    <div className="mx-auto container lg:mx-auto max-w-full lg:max-w-3xl rounded-2xl bg-white p-4 shadow-md mb-4">
+    <div className="container rounded-2xl bg-white p-4 shadow-md">
       <CvBuilderHeading />
       <StageCircleButtons />
       <StageView />

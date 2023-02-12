@@ -1,5 +1,5 @@
-import { useCvDataStore } from '../store/cv-data-store';
-import { useCvUiStore } from '../store/cv-ui-store';
+import { useCvDataStore } from '../../store/cv-data-store';
+import { useCvUiStore } from '../../store/cv-ui-store';
 import { useCvQueryData } from '@/hooks/useCvQuery';
 import { ConfirmCancelDialog } from '@/components/ui/ConfirmCancelDialog';
 

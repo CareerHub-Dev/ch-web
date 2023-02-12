@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useBoolean } from 'usehooks-ts';
 import AssistanceAlert from '../AssistantAlert';
 import ChangeOrRemovePhotoButton from '../ChangeOrRemovePhotoButton';
-import PhotoEditDialog from '../PhotoEditDialog';
+import PhotoEditDialog from '../modals/PhotoEditDialog';
 
 export default function Stage2() {
   const changePhotoModalIsOpen = useBoolean(false);

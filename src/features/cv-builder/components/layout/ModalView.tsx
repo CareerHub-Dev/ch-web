@@ -1,7 +1,7 @@
 import ModalPortal from '@/components/ui/ModalPortal';
-import { SaveModal } from './SaveModal';
-import { DiscardModal } from './DiscardModal';
-import { PreviewModal } from './PreviewModal';
+import { SaveModal } from '../modals/SaveModal';
+import { DiscardModal } from '../modals/DiscardModal';
+import { PreviewModal } from '../modals/PreviewModal';
 
 export default function ModalView() {
   return (

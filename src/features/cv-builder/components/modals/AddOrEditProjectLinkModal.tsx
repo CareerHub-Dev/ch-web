@@ -1,8 +1,8 @@
-import { useCvDataStore } from '../store/cv-data-store';
-import { type ProjectLink } from '../store/cv-data-store/cv';
+import { useCvDataStore } from '../../store/cv-data-store';
+import { type ProjectLink } from '../../store/cv-data-store/cv';
 import { useInput } from '@/hooks/useInput';
 import { ValidatedInput } from '@/components/ui/ValidatedInput';
-import AddOrEditItemModal from './item-list/AddOrEditItemModal';
+import AddOrEditItemModal from './AddOrEditItemModal';
 
 export function AddOrEditProjectLinkModal({
   onClose,

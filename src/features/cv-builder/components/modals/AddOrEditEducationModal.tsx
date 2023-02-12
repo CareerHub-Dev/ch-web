@@ -1,12 +1,12 @@
-import { useCvDataStore } from '../store/cv-data-store';
-import { type Education } from '../store/cv-data-store/cv';
+import { useCvDataStore } from '../../store/cv-data-store';
+import { type Education } from '../../store/cv-data-store/cv';
 import { useInput } from '@/hooks/useInput';
 import { useObjectInput } from '@/hooks/useObjectInput';
 import { useMemo } from 'react';
 import { useBoolean } from 'usehooks-ts';
 import NativeItemSelection from '@/components/ui/NativeItemSelection';
 import { ValidatedInput } from '@/components/ui/ValidatedInput';
-import AddOrEditItemModal from './item-list/AddOrEditItemModal';
+import AddOrEditItemModal from './AddOrEditItemModal';
 
 export default function AddOrEditEducationModal({
   onClose,

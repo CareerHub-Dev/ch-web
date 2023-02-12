@@ -1,5 +1,5 @@
-import { getCvMutationData, useCvDataStore } from '../store/cv-data-store';
-import { useCvUiStore } from '../store/cv-ui-store';
+import { getCvMutationData, useCvDataStore } from '../../store/cv-data-store';
+import { useCvUiStore } from '../../store/cv-ui-store';
 import { useCvQueryData } from '@/hooks/useCvQuery';
 import { useRouter } from 'next/router';
 import useProtectedMutation from '@/hooks/useProtectedMutation';

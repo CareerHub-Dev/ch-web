@@ -2,10 +2,10 @@ import { useCvAssistanceStore } from '@/features/cv-builder/store/cv-assistance-
 import { useCvDataStore } from '../../store/cv-data-store';
 import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
 import { type ChangeEvent } from 'react';
-import { AddOrEditProjectLinkModal } from '../AddOrEditProjectLinkModal';
+import { AddOrEditProjectLinkModal } from '../modals/AddOrEditProjectLinkModal';
 import AssistanceAlert from '../AssistantAlert';
 import { EmptyState } from '@/components/ui/EmptyState';
-import RemoveItemModal from '../item-list/RemoveItemModal';
+import RemoveItemModal from '../modals/RemoveItemModal';
 import ProjectLinkItem from '../ProjectLinkItem';
 
 export default function Stage6() {

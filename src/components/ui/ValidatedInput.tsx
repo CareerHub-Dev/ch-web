@@ -48,7 +48,7 @@ export function ValidatedInput({
             type="text"
             id={id}
             className={cn(
-              'block w-full rounded-md border-gray-300 shadow-sm disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500',
+              'block w-full rounded-md border-gray-300 shadow-sm disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 sm:text-sm',
               hasErrors
                 ? errorClasses
                 : hasWarnings

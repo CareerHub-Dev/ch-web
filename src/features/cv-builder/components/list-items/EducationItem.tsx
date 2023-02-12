@@ -1,4 +1,4 @@
-import { type Education } from '../store/cv-data-store/cv';
+import { type Education } from '../../store/cv-data-store/cv';
 import { type ItemListAction } from '@/lib/list-reducer/dialog-actions';
 import { CalendarIcon } from '@heroicons/react/20/solid';
 import { type Dispatch } from 'react';
