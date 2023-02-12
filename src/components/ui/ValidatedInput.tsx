@@ -1,30 +1,32 @@
 import {
   ExclamationCircleIcon,
   ExclamationTriangleIcon,
-} from '@heroicons/react/20/solid';
-import { type ChangeEvent } from 'react';
-import cn from 'classnames';
+} from "@heroicons/react/20/solid";
+import { type ChangeEvent } from "react";
+import cn from "classnames";
 
-const defaultClasses = 'focus:border-blue-500 focus:ring-blue-500';
+const defaultClasses = "focus:border-blue-500 focus:ring-blue-500";
 
 const errorClasses =
-  'text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500';
+  "text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500";
 
 const warningClasses =
-  'text-orange-900 placeholder-orange-300 focus:border-orange-500 focus:outline-none focus:ring-orange-500';
+  "text-orange-900 placeholder-orange-300 focus:border-orange-500 focus:outline-none focus:ring-orange-500";
 
-export function ValidatedInput({
+export default function ValidatedInput({
   id,
   label,
   value,
   errors,
   warnings,
   onChange,
+  onBlur,
   wasBlurred,
 }: Inputs.StringInput & {
   id: string;
   label?: string;
   onChange: (value: string) => void;
+  onBlur: () => void;
 }) {
   const hasErrors = wasBlurred && errors.length > 0;
   const hasWarnings = wasBlurred && warnings.length > 0;
@@ -48,7 +50,7 @@ export function ValidatedInput({
             type="text"
             id={id}
             className={cn(
-              'block w-full rounded-md border-gray-300 shadow-sm disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 sm:text-sm',
+              "block w-full rounded-md border-gray-300 shadow-sm disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 sm:text-sm",
               hasErrors
                 ? errorClasses
                 : hasWarnings
@@ -57,7 +59,8 @@ export function ValidatedInput({
             )}
             value={value}
             onChange={handleChange}
-            aria-invalid={hasErrors ? 'true' : 'false'}
+            onBlur={onBlur}
+            aria-invalid={hasErrors ? "true" : "false"}
             aria-describedby={hasErrors ? `${id}-error` : undefined}
           />
           {hasErrors ? (

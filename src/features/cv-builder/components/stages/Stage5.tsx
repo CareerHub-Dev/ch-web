@@ -1,11 +1,11 @@
-import { useCvAssistanceStore } from '@/features/cv-builder/store/cv-assistance-store';
-import { useCvDataStore } from '../../store/cv-data-store';
-import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
-import AddOrEditLanguageModal from '../modals/AddOrEditLanguageModal';
-import AssistanceAlert from '../AssistantAlert';
-import { EmptyState } from '@/components/ui/EmptyState';
-import RemoveItemModal from '../modals/RemoveItemModal';
-import LanguageItem from '../list-items/LanguageItem';
+import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
+import { useCvDataStore } from "../../store/cv-data-store";
+import { useDialogActionsListReducer } from "@/hooks/useDialogActionsListReducer";
+import AddOrEditLanguageModal from "../modals/AddOrEditLanguageModal";
+import AssistanceAlert from "../AssistantAlert";
+import { EmptyState } from "@/components/ui/EmptyState";
+import RemoveItemModal from "../modals/RemoveItemModal";
+import LanguageItem from "../list-items/LanguageItem";
 
 export default function Stage5() {
   const foreignLanguages = useCvDataStore((s) => s.cvData.foreignLanguages);
@@ -18,10 +18,10 @@ export default function Stage5() {
   const [state, dispatchAction] =
     useDialogActionsListReducer<ForeignLanguage>();
 
-  const handleAdd = () => dispatchAction({ type: 'add' });
+  const handleAdd = () => dispatchAction({ type: "add" });
   const handleClose = () =>
     dispatchAction({
-      type: 'close',
+      type: "close",
     });
 
   const {
@@ -34,7 +34,7 @@ export default function Stage5() {
     if (focusedLanguageIndex === null) return;
 
     dispatchForeignLanguages({
-      type: 'remove',
+      type: "remove",
       itemIndex: focusedLanguageIndex,
     });
     handleClose();
@@ -42,14 +42,14 @@ export default function Stage5() {
 
   return (
     <>
-      {dialog === null ? null : dialog === 'remove' ? (
+      {dialog === null ? null : dialog === "remove" ? (
         <RemoveItemModal
           onClose={handleClose}
           onConfirm={handleRemoveItem}
           title="Видалити мову?"
           descriptionText={`Мова ${focusedLanguage.name} буде видалена зі списку`}
         />
-      ) : dialog === 'edit' ? (
+      ) : dialog === "edit" ? (
         <AddOrEditLanguageModal
           onClose={handleClose}
           initialPayload={{

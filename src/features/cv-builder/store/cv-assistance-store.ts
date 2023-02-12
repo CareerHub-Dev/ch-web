@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { useEffect, useState } from "react";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export type AssistanceState = {
   isAssistanceEnabled: boolean;
@@ -14,7 +14,7 @@ const useCvAssistanceStoreBase = create<AssistanceState>()(
       toggleAssistance: () =>
         set((prev) => ({ isAssistanceEnabled: !prev.isAssistanceEnabled })),
     }),
-    { name: 'assistance-store' }
+    { name: "assistance-store" }
   )
 );
 

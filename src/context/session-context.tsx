@@ -1,24 +1,25 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { LocalGateway } from '@/lib/api/account';
-import { type SessionData } from '@/lib/schemas/SessionData';
-import { createContext, ReactNode, useReducer } from 'react';
-import createAxiosInstance from '@/lib/axios/create-instance';
-import axios, { type AxiosInstance } from 'axios';
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { LocalGateway } from "@/lib/api/account";
+import { type SessionData } from "@/lib/schemas/SessionData";
+import { createContext, ReactNode, useReducer } from "react";
+import createAxiosInstance from "@/lib/axios/create-instance";
+import axios, { type AxiosInstance } from "axios";
 
 type SessionContextState =
-  | { status: 'unauthenticated'; data: null }
+  | { status: "unauthenticated"; data: null }
   | {
-      status: 'loading';
+      status: "loading";
       data: null;
     }
   | {
-      status: 'authenticated';
+      status: "authenticated";
       data: SessionData;
     };
 
 type SessionContextAction =
-  | { type: 'UPDATE'; data: SessionData }
-  | { type: 'RESET' };
+  | { type: "UPDATE"; data: SessionData }
+  | { type: "RESET" };
 
 type SessionContextData = SessionContextState & {
   axios: AxiosInstance;
@@ -29,7 +30,7 @@ type SessionContextData = SessionContextState & {
 };
 
 const sessionContextInitialState: SessionContextState = {
-  status: 'loading',
+  status: "loading",
   data: null,
 };
 
@@ -47,14 +48,14 @@ const sessionStateReducer = (
   action: SessionContextAction
 ): SessionContextState => {
   switch (action.type) {
-    case 'UPDATE':
+    case "UPDATE":
       return {
-        status: 'authenticated',
+        status: "authenticated",
         data: action.data,
       };
-    case 'RESET':
+    case "RESET":
       return {
-        status: 'unauthenticated',
+        status: "unauthenticated",
         data: null,
       };
     default:
@@ -67,19 +68,20 @@ export const SessionContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
+  const { replace } = useRouter();
   const [state, dispatch] = useReducer(
     sessionStateReducer,
     sessionContextInitialState
   );
 
   useQuery({
-    queryKey: ['session'],
+    queryKey: ["session"],
     queryFn: LocalGateway.getMe,
     onError() {
-      dispatch({ type: 'RESET' });
+      dispatch({ type: "RESET" });
     },
     onSuccess(data) {
-      dispatch({ type: 'UPDATE', data });
+      dispatch({ type: "UPDATE", data });
     },
     retry: false,
   });
@@ -87,22 +89,24 @@ export const SessionContextProvider = ({
   const logoutMutation = useMutation({
     mutationFn: LocalGateway.logout,
     onSuccess() {
-      dispatch({ type: 'RESET' });
+      dispatch({ type: "RESET" });
     },
   });
 
   const refreshTokenMutation = useMutation({
     mutationFn: LocalGateway.refreshToken,
     onSuccess(data) {
-      dispatch({ type: 'UPDATE', data });
+      dispatch({ type: "UPDATE", data });
     },
     onError() {
-      dispatch({ type: 'RESET' });
+      dispatch({ type: "RESET" });
+      replace("/auth/login");
     },
   });
 
   const logout = () => {
     logoutMutation.mutate();
+    replace("/auth/login");
   };
 
   const refreshToken = () => {
@@ -112,11 +116,11 @@ export const SessionContextProvider = ({
   };
 
   const refreshTokenAsync = () => {
-    return refreshTokenMutation.mutateAsync(state.data?.refreshToken ?? '');
+    return refreshTokenMutation.mutateAsync(state.data?.refreshToken ?? "");
   };
 
   const login = (data: SessionData) => {
-    dispatch({ type: 'UPDATE', data });
+    dispatch({ type: "UPDATE", data });
   };
 
   const instance = createAxiosInstance({

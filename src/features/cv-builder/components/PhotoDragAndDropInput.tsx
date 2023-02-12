@@ -1,9 +1,9 @@
-import useToast from '@/hooks/useToast';
-import { croppedImageFromFileAndCrop, isImageTypeValid } from '@/lib/images';
-import cn from 'classnames';
-import { ChangeEvent, type DragEvent } from 'react';
-import { PercentCrop } from 'react-image-crop';
-import { useBoolean } from 'usehooks-ts';
+import useToast from "@/hooks/useToast";
+import { croppedImageFromFileAndCrop, isImageTypeValid } from "@/lib/images";
+import cn from "classnames";
+import { ChangeEvent, type DragEvent } from "react";
+import { PercentCrop } from "react-image-crop";
+import { useBoolean } from "usehooks-ts";
 
 export default function PhotoDragAndDropInput({
   onPhotoLoaded,
@@ -28,12 +28,12 @@ export default function PhotoDragAndDropInput({
 
   const validateImageFile = async (file: File | undefined) => {
     if (!file) {
-      toast.error('Помилка при обробці файлу');
+      toast.error("Помилка при обробці файлу");
       return;
     }
 
     if (!isImageTypeValid(file)) {
-      toast.error('Формат файлу не підтримується');
+      toast.error("Формат файлу не підтримується");
       return;
     }
 
@@ -72,8 +72,8 @@ export default function PhotoDragAndDropInput({
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           className={cn(
-            'flex max-w-lg justify-center rounded-md border-2 border-dashed px-6 pt-5 pb-6',
-            dragAndDropAreaFocused.value ? 'border-blue-500' : 'border-gray-300'
+            "flex max-w-lg justify-center rounded-md border-2 border-dashed px-6 pt-5 pb-6",
+            dragAndDropAreaFocused.value ? "border-blue-500" : "border-gray-300"
           )}
         >
           <div className="space-y-1 text-center">
@@ -116,7 +116,7 @@ export default function PhotoDragAndDropInput({
 }
 
 const DEFAULT_PHOTO_CROP: PercentCrop = {
-  unit: '%',
+  unit: "%",
   x: 25,
   y: 25,
   width: 50,

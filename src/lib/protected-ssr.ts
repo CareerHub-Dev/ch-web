@@ -1,8 +1,8 @@
-import { PreviewData, GetServerSideProps } from 'next/types';
-import { type UserRole } from './schemas/UserRole';
-import { type SessionData } from './schemas/SessionData';
-import { ParsedUrlQuery } from 'querystring';
-import sessionMiddleware from './middleware/sessionMiddleware';
+import { PreviewData, GetServerSideProps } from "next/types";
+import { type UserRole } from "./schemas/UserRole";
+import { type SessionData } from "./schemas/SessionData";
+import { ParsedUrlQuery } from "querystring";
+import sessionMiddleware from "./middleware/sessionMiddleware";
 
 type BaseProps = { [key: string]: any };
 
@@ -30,7 +30,7 @@ export function protectedSsr<
   Q extends ParsedUrlQuery = ParsedUrlQuery,
   D extends PreviewData = PreviewData
 >(
-  options: Omit<ProtectedSsrOptions<P, Q, D>, 'getProps'>
+  options: Omit<ProtectedSsrOptions<P, Q, D>, "getProps">
 ): GetServerSideProps<BoxedSessionData, Q, D>;
 
 export function protectedSsr<
@@ -40,20 +40,20 @@ export function protectedSsr<
 >(
   options:
     | ProtectedSsrOptions<P, Q, D>
-    | Omit<ProtectedSsrOptions<P, Q, D>, 'getProps'>
+    | Omit<ProtectedSsrOptions<P, Q, D>, "getProps">
 ): GetServerSideProps<(P & BoxedSessionData) | BoxedSessionData, Q, D> {
   return async function _getProtectedServerSideProps(context) {
     const { allowedRoles } = options;
     const session = sessionMiddleware(context.req.cookies, allowedRoles);
 
-    if ('error' in session) {
+    if ("error" in session) {
       return { notFound: true };
     }
 
-    if ('getProps' in options) {
+    if ("getProps" in options) {
       const otherProps = await options.getProps({ ...context, session });
 
-      if ('props' in otherProps) {
+      if ("props" in otherProps) {
         const props = otherProps.props;
 
         if (props instanceof Promise) {

@@ -1,8 +1,17 @@
-import { type StateCreator } from 'zustand';
+import { type StateCreator } from "zustand";
 
-export const CV_EDITOR_STAGES = [0, 1, 2, 3, 4, 5, 6, 7] as const;
+export const CV_EDITOR_STAGES = [
+  { id: 0, name: "Загальне" },
+  { id: 1, name: "Ім'я, приізвище" },
+  { id: 2, name: "Фото" },
+  { id: 3, name: "Цілі" },
+  { id: 4, name: "Навички" },
+  { id: 5, name: "Мови" },
+  { id: 6, name: "Досвід" },
+  { id: 7, name: "Освіта" },
+] as const;
 
-export type StageNumber = typeof CV_EDITOR_STAGES[number];
+export type StageNumber = typeof CV_EDITOR_STAGES[number]["id"];
 
 export type StagesSlice = {
   currentStage: StageNumber;

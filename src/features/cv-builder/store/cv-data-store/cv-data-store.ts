@@ -1,10 +1,13 @@
-import { type CvQueryData } from '@/hooks/useCvQuery';
-import { type StudentCvDetails } from '@/lib/api/cvs/schemas';
-import { arrayInputReducer, type ArrayInputAction } from '@/lib/array-input/v2';
-import { validateStringValue } from '@/lib/string-input/v2';
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
+import { type CvQueryData } from "@/hooks/useCvQuery";
+import { type StudentCvDetails } from "@/lib/api/cvs/schemas";
+import { arrayInputReducer, type ArrayInputAction } from "@/lib/array-input/v2";
+import {
+  makeStringInputReducer,
+  type StringInputAction,
+} from "@/lib/string-input";
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
 import {
   getEmptyCvData,
   restoreToCvQueryData,
@@ -13,21 +16,22 @@ import {
   type ForeignLanguage,
   type ProjectLink,
   type TemplateLanguage,
-} from './cv';
+} from "./cv";
 
 export type CvDataStore = {
   cvId: null | string;
   cvData: CvData;
   reInit: (newData: StudentCvDetails | null) => void;
   discardChanges: (lastSave: CvData | CvQueryData | null) => void;
-  changeTitle: (value: string) => void;
+  dispatchTitle: (value: StringInputAction) => void;
   changeTemplateLanguage: (value: TemplateLanguage) => void;
   changeJobPosition: (value: { id: string; name: string }) => void;
-  changeFirstName: (value: string) => void;
-  changeLastName: (value: string) => void;
-  changeGoals: (value: string) => void;
-  changeSkillsAndTechnologies: (value: string) => void;
-  changeExperienceHighlights: (value: string) => void;
+  clickJobPosition: () => void;
+  dispatchFirstName: (action: StringInputAction) => void;
+  dispatchLastName: (action: StringInputAction) => void;
+  dispatchGoals: (action: StringInputAction) => void;
+  dispatchSkillsAndTechnologies: (action: StringInputAction) => void;
+  dispatchExperienceHighlights: (action: StringInputAction) => void;
   dispatchForeignLanguages: (action: ArrayInputAction<ForeignLanguage>) => void;
   dispatchProjectLinks: (action: ArrayInputAction<ProjectLink>) => void;
   dispatchEducations: (action: ArrayInputAction<Education>) => void;
@@ -60,129 +64,58 @@ export const useCvDataStore = create<CvDataStore>()(
             state.cvData = getEmptyCvData();
             return;
           }
-          if (typeof lastSave.title === 'string') {
+          if (typeof lastSave.title === "string") {
             state.cvData = restoreToCvQueryData(lastSave as CvQueryData);
           }
           state.cvData = lastSave as CvData;
         }),
-      changeTitle: (value) =>
+      dispatchTitle: (action) =>
         set((state) => {
-          state.cvData.title = validateStringValue({
-            value,
-            validators: [
-              (val) =>
-                val.length > 0
-                  ? { type: 'success' }
-                  : {
-                      type: 'error',
-                      message: 'Назва не має бути порожнею',
-                    },
-            ],
-          });
+          state.cvData.title = titleReducer(state.cvData.title, action);
         }),
       changeJobPosition: (value) =>
         set((state) => {
-          state.cvData.jobPosition = value;
+          state.cvData.jobPosition = { value, wasClicked: true };
+        }),
+      clickJobPosition: () =>
+        set((state) => {
+          state.cvData.jobPosition.wasClicked = true;
         }),
       changeTemplateLanguage: (value) =>
         set((state) => {
           state.cvData.templateLanguage = value;
         }),
-      changeFirstName: (value) =>
+      dispatchFirstName: (action) =>
         set((state) => {
-          state.cvData.firstName = validateStringValue({
-            value,
-            validators: [
-              (val) =>
-                val.length > 0
-                  ? { type: 'success' }
-                  : {
-                      type: 'error',
-                      message: "Ім'я не може бути порожнім",
-                    },
-            ],
-          });
+          state.cvData.firstName = firstNameReducer(
+            state.cvData.firstName,
+            action
+          );
         }),
-      changeLastName: (value) =>
+      dispatchLastName: (action) =>
         set((state) => {
-          state.cvData.lastName = validateStringValue({
-            value,
-            validators: [
-              (val) =>
-                val.length > 0
-                  ? { type: 'success' }
-                  : {
-                      type: 'error',
-                      message: 'Прізвище не може бути порожнім',
-                    },
-            ],
-          });
+          state.cvData.lastName = lastNameReducer(
+            state.cvData.lastName,
+            action
+          );
         }),
-      changeGoals: (value) =>
+      dispatchGoals: (action) =>
         set((state) => {
-          state.cvData.goals = validateStringValue({
-            value,
-            validators: [
-              (val) =>
-                val.length > 0
-                  ? { type: 'success' }
-                  : {
-                      type: 'warning',
-                      message: 'Це поле краще заповнити',
-                    },
-              (val) =>
-                val.length <= 200
-                  ? { type: 'success' }
-                  : {
-                      type: 'error',
-                      message: 'Перевищено ліміт у 200 символів',
-                    },
-            ],
-          });
+          state.cvData.goals = goalsReducer(state.cvData.goals, action);
         }),
-      changeSkillsAndTechnologies: (value) =>
+      dispatchSkillsAndTechnologies: (action) =>
         set((state) => {
-          state.cvData.skillsAndTechnologies = validateStringValue({
-            value,
-            validators: [
-              (val) =>
-                val.length > 0
-                  ? { type: 'success' }
-                  : {
-                      type: 'warning',
-                      message: 'Це поле краще заповнити',
-                    },
-              (val) =>
-                val.length <= 200
-                  ? { type: 'success' }
-                  : {
-                      type: 'error',
-                      message: 'Перевищено ліміт у 200 символів',
-                    },
-            ],
-          });
+          state.cvData.skillsAndTechnologies = skillsAndTechnologiesReducer(
+            state.cvData.skillsAndTechnologies,
+            action
+          );
         }),
-      changeExperienceHighlights: (value) =>
+      dispatchExperienceHighlights: (action) =>
         set((state) => {
-          state.cvData.experienceHighlights = validateStringValue({
-            value,
-            validators: [
-              (val) =>
-                val.length > 0
-                  ? { type: 'success' }
-                  : {
-                      type: 'warning',
-                      message: 'Це поле краще заповнити',
-                    },
-              (val) =>
-                val.length <= 200
-                  ? { type: 'success' }
-                  : {
-                      type: 'error',
-                      message: 'Перевищено ліміт у 200 символів',
-                    },
-            ],
-          });
+          state.cvData.experienceHighlights = experienceAndHighlightsReducer(
+            state.cvData.experienceHighlights,
+            action
+          );
         }),
       dispatchForeignLanguages: (action) =>
         set((state) => {
@@ -212,7 +145,7 @@ export const useCvDataStore = create<CvDataStore>()(
         set((state) => {
           if (
             state.cvData.photo !== null &&
-            typeof state.cvData.photo !== 'string'
+            typeof state.cvData.photo !== "string"
           ) {
             URL.revokeObjectURL(state.cvData.photo.croppedPhotoUrl);
           }
@@ -230,3 +163,84 @@ export const useCvDataStore = create<CvDataStore>()(
     }))
   )
 );
+
+const titleReducer = makeStringInputReducer([
+  (val) =>
+    val.length > 0
+      ? { type: "success" }
+      : {
+          type: "error",
+          message: "Назва не має бути порожнею",
+        },
+]);
+
+const firstNameReducer = makeStringInputReducer([
+  (val) =>
+    val.length > 0
+      ? { type: "success" }
+      : {
+          type: "error",
+          message: "Ім'я не може бути порожнім",
+        },
+]);
+
+const lastNameReducer = makeStringInputReducer([
+  (val) =>
+    val.length > 0
+      ? { type: "success" }
+      : {
+          type: "error",
+          message: "Прізвище не може бути порожнім",
+        },
+]);
+
+const goalsReducer = makeStringInputReducer([
+  (val) =>
+    val.length > 0
+      ? { type: "success" }
+      : {
+          type: "warning",
+          message: "Це поле краще заповнити",
+        },
+  (val) =>
+    val.length <= 200
+      ? { type: "success" }
+      : {
+          type: "error",
+          message: "Перевищено ліміт у 200 символів",
+        },
+]);
+
+const skillsAndTechnologiesReducer = makeStringInputReducer([
+  (val) =>
+    val.length > 0
+      ? { type: "success" }
+      : {
+          type: "warning",
+          message: "Це поле краще заповнити",
+        },
+  (val) =>
+    val.length <= 200
+      ? { type: "success" }
+      : {
+          type: "error",
+          message: "Перевищено ліміт у 200 символів",
+        },
+]);
+
+const experienceAndHighlightsReducer = makeStringInputReducer([
+  (val) =>
+    val.length > 0
+      ? { type: "success" }
+      : {
+          type: "warning",
+          message: "Це поле краще заповнити",
+        },
+  (val) =>
+    val.length <= 200
+      ? { type: "success" }
+      : {
+          type: "error",
+          message: "Перевищено ліміт у 200 символів",
+        },
+]);

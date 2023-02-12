@@ -2,21 +2,21 @@ import {
   getStageCompletionStatus,
   StageCompletionStatus,
   useCvDataStore,
-} from '../store/cv-data-store';
-import { useCvUiStore } from '../store/cv-ui-store';
+} from "../store/cv-data-store";
+import { useCvUiStore } from "../store/cv-ui-store";
 import {
   CV_EDITOR_STAGES,
   type StageNumber,
-} from '../store/cv-ui-store/stages-slice';
+} from "../store/cv-ui-store/stages-slice";
 import {
   CheckIcon,
   ExclamationTriangleIcon,
   XMarkIcon,
-} from '@heroicons/react/20/solid';
-import cn from 'classnames';
-import StageCurrentButton from './StageCurrentButton';
-import StageIncompleteButton from './StageIncompleteButton';
-import StageIconButton from './StageIconButton';
+} from "@heroicons/react/20/solid";
+import cn from "classnames";
+import StageCurrentButton from "./StageCurrentButton";
+import StageIncompleteButton from "./StageIncompleteButton";
+import StageIconButton from "./StageIconButton";
 
 export default function StageCircleButton({
   stageNumber,
@@ -25,15 +25,15 @@ export default function StageCircleButton({
   stageNumber: StageNumber;
   stageName: string;
 }) {
-  const lastStageNumber = CV_EDITOR_STAGES.at(-1)!;
+  const lastStageNumber = CV_EDITOR_STAGES.at(-1)!.id;
   const currentStageNumber = useCvUiStore((s) => s.currentStage);
   const stageStatus = useCvDataStore(getStageCompletionStatus(stageNumber));
 
   return (
     <li
       className={cn(
-        stageNumber !== lastStageNumber && 'pr-8 sm:pr-12',
-        'relative cursor-pointer'
+        stageNumber !== lastStageNumber && "pr-8 sm:pr-12",
+        "relative cursor-pointer"
       )}
     >
       {stageNumber === currentStageNumber ? (
@@ -55,18 +55,18 @@ function StageButtonComponentFromStatus(props: {
   stageName: string;
 }) {
   const iconProps = {
-    className: 'h-5 w-5 text-white',
-    'aria-hidden': true,
+    className: "h-5 w-5 text-white",
+    "aria-hidden": true,
   };
 
   switch (props.stageStatus) {
-    case 'complete':
+    case "complete":
       return <StageIconButton {...props} icon={<CheckIcon {...iconProps} />} />;
-    case 'incomplete':
+    case "incomplete":
       return <StageIncompleteButton {...props} />;
-    case 'hasErrors':
+    case "hasErrors":
       return <StageIconButton {...props} icon={<XMarkIcon {...iconProps} />} />;
-    case 'hasWarnings':
+    case "hasWarnings":
       return (
         <StageIconButton
           {...props}

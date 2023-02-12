@@ -1,16 +1,12 @@
-import { useCvAssistanceStore } from '@/features/cv-builder/store/cv-assistance-store';
-import { useCvDataStore } from '../../store/cv-data-store';
-import { type ChangeEvent } from 'react';
-import AssistanceAlert from '../AssistantAlert';
+import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
+import { getGoalsActions, useCvDataStore } from "../../store/cv-data-store";
+import AssistanceAlert from "../AssistantAlert";
+import ValidatedTextArea from "../ValidatedTextArea";
 
 export default function Stage3() {
   const goals = useCvDataStore((s) => s.cvData.goals);
-  const changeGoals = useCvDataStore((s) => s.changeGoals);
+  const goalsActions = useCvDataStore(getGoalsActions);
   const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
-
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    changeGoals(e.target.value);
-  };
 
   return (
     <>
@@ -22,13 +18,15 @@ export default function Stage3() {
           Цілі
         </label>
         <div className="sm:col-span-2">
-          <textarea
+          <ValidatedTextArea
             id="goals"
-            name="goals"
-            rows={3}
-            className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
             value={goals.value}
-            onChange={handleChange}
+            onChange={goalsActions.change}
+            onBlur={goalsActions.blur}
+            errors={goals.errors}
+            warnings={goals.warnings}
+            wasBlurred={goals.wasBlurred}
+            wasChanged={goals.wasChanged}
           />
           <p className="mt-2 text-sm text-gray-500">
             Напишіть не більше 200 символів про свої цілі у праці

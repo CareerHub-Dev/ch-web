@@ -1,12 +1,12 @@
-import { useCvDataStore } from '../../store/cv-data-store';
-import { type Education } from '../../store/cv-data-store/cv';
-import { useInput } from '@/hooks/useInput';
-import { useObjectInput } from '@/hooks/useObjectInput';
-import { useMemo } from 'react';
-import { useBoolean } from 'usehooks-ts';
-import NativeItemSelection from '@/components/ui/NativeItemSelection';
-import { ValidatedInput } from '@/components/ui/ValidatedInput';
-import AddOrEditItemModal from './AddOrEditItemModal';
+import { useCvDataStore } from "../../store/cv-data-store";
+import { type Education } from "../../store/cv-data-store/cv";
+import { useInput } from "@/hooks/useInput";
+import { useObjectInput } from "@/hooks/useObjectInput";
+import { useMemo } from "react";
+import { useBoolean } from "usehooks-ts";
+import NativeItemSelection from "@/components/ui/NativeItemSelection";
+import ValidatedInput from "@/components/ui/ValidatedInput";
+import AddOrEditItemModal from "./AddOrEditItemModal";
 
 export default function AddOrEditEducationModal({
   onClose,
@@ -19,19 +19,19 @@ export default function AddOrEditEducationModal({
   const yearOptions = useMemo(() => getYearOptions(MAX_ALLOWED_YEAR_RANGE), []);
   const educationIsCurrent = useBoolean(true);
   const university = useInput({
-    initialValue: initialPayload?.item.university ?? '',
+    initialValue: initialPayload?.item.university ?? "",
     validators: [fillThisFieldValidator],
   });
   const country = useInput({
-    initialValue: initialPayload?.item.country ?? '',
+    initialValue: initialPayload?.item.country ?? "",
     validators: [fillThisFieldValidator],
   });
   const city = useInput({
-    initialValue: initialPayload?.item.city ?? '',
+    initialValue: initialPayload?.item.city ?? "",
     validators: [fillThisFieldValidator],
   });
   const speciality = useInput({
-    initialValue: initialPayload?.item.speciality ?? '',
+    initialValue: initialPayload?.item.speciality ?? "",
     validators: [fillThisFieldValidator],
   });
   const degree = useObjectInput({
@@ -52,10 +52,10 @@ export default function AddOrEditEducationModal({
       (val) =>
         !educationIsCurrent && Number(val.name) <= Number(startYear.value.name)
           ? {
-              type: 'error',
-              message: 'Перевірте коретність обраних років',
+              type: "error",
+              message: "Перевірте коретність обраних років",
             }
-          : { type: 'success' },
+          : { type: "success" },
     ],
   });
 
@@ -70,7 +70,7 @@ export default function AddOrEditEducationModal({
   ];
   const thereAreSomeErrors = allInputs.some((item) => item.errors.length > 0);
 
-  const formType = !initialPayload ? 'add' : 'edit';
+  const formType = !initialPayload ? "add" : "edit";
 
   const handleConfirm = () => {
     const values = {
@@ -85,12 +85,12 @@ export default function AddOrEditEducationModal({
 
     if (!initialPayload) {
       dispatchEducations({
-        type: 'add',
+        type: "add",
         item: values,
       });
     } else {
       dispatchEducations({
-        type: 'edit',
+        type: "edit",
         itemIndex: initialPayload.itemIndex,
         newValue: values,
       });
@@ -112,6 +112,7 @@ export default function AddOrEditEducationModal({
             id="university"
             value={university.value}
             onChange={university.change}
+            onBlur={university.blur}
             warnings={university.warnings}
             errors={university.errors}
             wasBlurred={university.wasBlurred}
@@ -125,6 +126,7 @@ export default function AddOrEditEducationModal({
             id="country"
             value={country.value}
             onChange={country.change}
+            onBlur={country.blur}
             warnings={country.warnings}
             errors={country.errors}
             wasBlurred={country.wasBlurred}
@@ -138,6 +140,7 @@ export default function AddOrEditEducationModal({
             id="city"
             value={city.value}
             onChange={city.change}
+            onBlur={city.blur}
             warnings={city.warnings}
             errors={city.errors}
             wasBlurred={city.wasBlurred}
@@ -151,6 +154,7 @@ export default function AddOrEditEducationModal({
             id="speciality"
             value={speciality.value}
             onChange={speciality.change}
+            onBlur={speciality.blur}
             warnings={speciality.warnings}
             errors={speciality.errors}
             wasBlurred={speciality.wasBlurred}
@@ -213,9 +217,9 @@ export default function AddOrEditEducationModal({
 }
 
 const DEGREE_OPTIONS = [
-  { id: 'bachelor', name: 'Бакалавр' },
-  { id: 'master', name: 'Магістр ' },
-  { id: 'phd', name: 'Ph.D' },
+  { id: "bachelor", name: "Бакалавр" },
+  { id: "master", name: "Магістр " },
+  { id: "phd", name: "Ph.D" },
 ];
 
 const getYearOptions = (range: number) => {
@@ -232,9 +236,9 @@ const getYearOptions = (range: number) => {
 
 const fillThisFieldValidator: Inputs.Validator<string> = (val: string) =>
   val.length > 0
-    ? { type: 'success' }
+    ? { type: "success" }
     : {
-        type: 'error',
+        type: "error",
         message: "Це обов'язкове поле",
       };
 

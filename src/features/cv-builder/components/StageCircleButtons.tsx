@@ -1,5 +1,5 @@
-import { CV_EDITOR_STAGES } from '../store/cv-ui-store/stages-slice';
-import StageCircleButton from './StageCircleButton';
+import { CV_EDITOR_STAGES } from "../store/cv-ui-store/stages-slice";
+import StageCircleButton from "./StageCircleButton";
 
 export default function StageCircleButtons() {
   return (
@@ -7,9 +7,9 @@ export default function StageCircleButtons() {
       <ol role="list" className="flex items-center justify-center align-middle">
         {CV_EDITOR_STAGES.map((stage) => (
           <StageCircleButton
-            stageNumber={stage}
-            stageName={`Stage ${stage}`}
-            key={stage}
+            stageNumber={stage.id}
+            stageName={stage.name}
+            key={stage.id}
           />
         ))}
       </ol>

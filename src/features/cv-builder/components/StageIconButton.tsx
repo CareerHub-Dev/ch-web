@@ -1,6 +1,6 @@
-import { type ReactNode } from 'react';
-import { useCvUiStore } from '../store/cv-ui-store';
-import { type StageNumber } from '../store/cv-ui-store/stages-slice';
+import { type ReactNode } from "react";
+import { useCvUiStore } from "../store/cv-ui-store";
+import { type StageNumber } from "../store/cv-ui-store/stages-slice";
 
 export default function StageIconButton({
   stageName,

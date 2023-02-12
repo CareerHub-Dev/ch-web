@@ -2,7 +2,7 @@ import { useInput } from '@/hooks/useInput';
 import { useState } from 'react';
 import { useCvDataStore } from '../../store/cv-data-store';
 import NativeItemSelection from '@/components/ui/NativeItemSelection';
-import { ValidatedInput } from '@/components/ui/ValidatedInput';
+import ValidatedInput from '@/components/ui/ValidatedInput';
 import AddOrEditItemModal from './AddOrEditItemModal';
 import { type ForeignLanguage } from '../../store/cv-data-store/cv';
 
@@ -79,6 +79,7 @@ export default function AddOrEditLanguageModal({
             id="name"
             value={nameInput.value}
             onChange={nameInput.change}
+            onBlur={nameInput.blur}
             errors={nameInput.errors}
             warnings={nameInput.warnings}
             wasChanged={nameInput.wasChanged}

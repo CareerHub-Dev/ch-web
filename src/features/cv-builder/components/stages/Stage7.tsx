@@ -1,10 +1,10 @@
-import { useCvAssistanceStore } from '@/features/cv-builder/store/cv-assistance-store';
-import { useCvDataStore } from '../../store/cv-data-store';
-import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
-import AddOrEditEducationModal from '../modals/AddOrEditEducationModal';
-import EducationItem from '../list-items/EducationItem';
-import { EmptyState } from '@/components/ui/EmptyState';
-import RemoveItemModal from '../modals/RemoveItemModal';
+import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
+import { useCvDataStore } from "../../store/cv-data-store";
+import { useDialogActionsListReducer } from "@/hooks/useDialogActionsListReducer";
+import AddOrEditEducationModal from "../modals/AddOrEditEducationModal";
+import EducationItem from "../list-items/EducationItem";
+import { EmptyState } from "@/components/ui/EmptyState";
+import RemoveItemModal from "../modals/RemoveItemModal";
 
 export default function Stage7() {
   const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
@@ -15,19 +15,19 @@ export default function Stage7() {
 
   const handleAddClick = () =>
     dispatch({
-      type: 'add',
+      type: "add",
     });
 
   const handleDialogClose = () =>
     dispatch({
-      type: 'close',
+      type: "close",
     });
 
   return (
     <>
-      {dialogState.dialog === 'add' ? (
+      {dialogState.dialog === "add" ? (
         <AddOrEditEducationModal onClose={handleDialogClose} />
-      ) : dialogState.dialog === 'edit' ? (
+      ) : dialogState.dialog === "edit" ? (
         <AddOrEditEducationModal
           onClose={handleDialogClose}
           initialPayload={{
@@ -35,12 +35,12 @@ export default function Stage7() {
             itemIndex: dialogState.focusedItemIndex,
           }}
         />
-      ) : dialogState.dialog === 'remove' ? (
+      ) : dialogState.dialog === "remove" ? (
         <RemoveItemModal
           onClose={handleDialogClose}
           onConfirm={() => {
             dispatchEducations({
-              type: 'remove',
+              type: "remove",
               itemIndex: dialogState.focusedItemIndex,
             });
             handleDialogClose();
@@ -53,10 +53,10 @@ export default function Stage7() {
         <div className="sm:pt-5 sm:flex sm:items-center">
           <div className="sm:flex-auto">
             <h3 className="text-xl font-medium leading-6 text-gray-900">
-              {'Освіта'}
+              {"Освіта"}
             </h3>
             <p className="mt-1 max-w-2xl text-sm text-gray-500">
-              {'Додайте інформацію про освіту'}
+              {"Додайте інформацію про освіту"}
             </p>
           </div>
           <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">

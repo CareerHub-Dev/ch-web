@@ -3,7 +3,7 @@ import { useCvUiStore } from '../store/cv-ui-store';
 import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import StageView from './layout/StageView';
-import StageCircleButtons from './StageCircleButtons';
+import StageButonsPanel from './layout/StageButtonsPanel';
 import CvBuilderHeading from './layout/CvBuilderHeading';
 import { type StudentCvDetails } from '@/lib/api/cvs/schemas';
 
@@ -32,7 +32,7 @@ export default function CvBuilder({
   return (
     <div className="container rounded-2xl bg-white p-4 shadow-md">
       <CvBuilderHeading />
-      <StageCircleButtons />
+      <StageButonsPanel />
       <StageView />
       <ModalView />
     </div>

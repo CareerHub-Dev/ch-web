@@ -1,20 +1,23 @@
-import { useCvAssistanceStore } from '@/features/cv-builder/store/cv-assistance-store';
-import { useCvDataStore } from '../../store/cv-data-store';
-import { useDialogActionsListReducer } from '@/hooks/useDialogActionsListReducer';
-import { type ChangeEvent } from 'react';
-import { AddOrEditProjectLinkModal } from '../modals/AddOrEditProjectLinkModal';
-import AssistanceAlert from '../AssistantAlert';
-import { EmptyState } from '@/components/ui/EmptyState';
-import RemoveItemModal from '../modals/RemoveItemModal';
-import ProjectLinkItem from '../ProjectLinkItem';
+import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
+import {
+  getExperienceHighlightsActions,
+  useCvDataStore,
+} from "../../store/cv-data-store";
+import { useDialogActionsListReducer } from "@/hooks/useDialogActionsListReducer";
+import { type ChangeEvent } from "react";
+import { AddOrEditProjectLinkModal } from "../modals/AddOrEditProjectLinkModal";
+import AssistanceAlert from "../AssistantAlert";
+import { EmptyState } from "@/components/ui/EmptyState";
+import RemoveItemModal from "../modals/RemoveItemModal";
+import ProjectLinkItem from "../ProjectLinkItem";
 
 export default function Stage6() {
   const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
   const experienceHighlights = useCvDataStore(
     (s) => s.cvData.experienceHighlights
   );
-  const changeExperienceHighlights = useCvDataStore(
-    (s) => s.changeExperienceHighlights
+  const experienceHighlightsActions = useCvDataStore(
+    getExperienceHighlightsActions
   );
   const projectLinks = useCvDataStore((s) => s.cvData.projectLinks);
   type ProjectLink = typeof projectLinks.items[number];
@@ -27,34 +30,34 @@ export default function Stage6() {
   const handleExperienceHighlightsChange = (
     e: ChangeEvent<HTMLTextAreaElement>
   ) => {
-    changeExperienceHighlights(e.target.value);
+    experienceHighlightsActions.change(e.target.value);
   };
 
   const handleAddClick = () =>
     dispatch({
-      type: 'add',
+      type: "add",
     });
 
   const handleDialogClose = () =>
     dispatch({
-      type: 'close',
+      type: "close",
     });
 
   return (
     <>
-      {dialog === null ? null : dialog === 'remove' ? (
+      {dialog === null ? null : dialog === "remove" ? (
         <RemoveItemModal
           onClose={handleDialogClose}
           onConfirm={() =>
             dispatchProjectLinks({
-              type: 'remove',
+              type: "remove",
               itemIndex: focusedItemIndex,
             })
           }
           title="Видалити посилання?"
           descriptionText={`Посилання ${focusedItem.title} буде видалено зі списку`}
         />
-      ) : dialog === 'edit' ? (
+      ) : dialog === "edit" ? (
         <AddOrEditProjectLinkModal
           onClose={handleDialogClose}
           initialPayload={{
@@ -71,7 +74,7 @@ export default function Stage6() {
             htmlFor="experienceHighlights"
             className="text-xl font-medium leading-6 text-gray-900"
           >
-            {'Досвід'}
+            {"Досвід"}
           </label>
           <textarea
             id="experienceHighlights"
@@ -83,7 +86,7 @@ export default function Stage6() {
           />
           <p className="mt-2 text-sm text-gray-500">
             {
-              'Напишіть не більше 200 слів про свій досвід, а саме про моменти, які вважаєте найважливими'
+              "Напишіть не більше 200 слів про свій досвід, а саме про моменти, які вважаєте найважливими"
             }
           </p>
         </div>

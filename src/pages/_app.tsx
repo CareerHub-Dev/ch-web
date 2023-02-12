@@ -1,19 +1,19 @@
-import store from '@/context/index';
-import { Provider } from 'react-redux';
-import { SessionContextProvider } from '@/context/session-context';
-import { useState } from 'react';
+import store from "@/context/index";
+import { Provider } from "react-redux";
+import { SessionContextProvider } from "@/context/session-context";
+import { useState } from "react";
 import {
   Hydrate,
   QueryClient,
   QueryClientProvider,
-} from '@tanstack/react-query';
-import ToastContainer from '@/components/layout/ToastContainer';
-import Head from 'next/head';
+} from "@tanstack/react-query";
+import ToastContainer from "@/components/layout/ToastContainer";
+import Head from "next/head";
 
-import 'react-image-crop/dist/ReactCrop.css';
-import 'react-toastify/dist/ReactToastify.css';
-import '@/styles/MarkdownEditor.scss';
-import '@/styles/globals.scss';
+import "react-image-crop/dist/ReactCrop.css";
+import "react-toastify/dist/ReactToastify.css";
+import "@/styles/MarkdownEditor.scss";
+import "@/styles/globals.scss";
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
   const [queryClient] = useState(

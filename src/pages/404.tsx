@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import classes from '@/styles/404.module.scss';
+import Link from "next/link";
+import classes from "@/styles/404.module.scss";
 
 const NotFound = () => {
   return (

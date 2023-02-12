@@ -1,7 +1,7 @@
-import useSession from '@/hooks/useSession';
-import { useRouter } from 'next/router';
+import useSession from "@/hooks/useSession";
+import { useRouter } from "next/router";
 
-import classes from './AuthButtons.module.scss';
+import classes from "./AuthButtons.module.scss";
 
 const AuthButtons = () => {
   const { status } = useSession();
@@ -12,19 +12,19 @@ const AuthButtons = () => {
     router.push(path);
   };
 
-  return status === 'unauthenticated' ? (
+  return status === "unauthenticated" ? (
     <section className={classes.actions}>
       <button
         className={classes.register}
         type="button"
-        onClick={routingHandler('/auth/register')}
+        onClick={routingHandler("/auth/register")}
       >
         Зареєструватися
       </button>
       <button
         className={classes.register}
         type="button"
-        onClick={routingHandler('/auth/login')}
+        onClick={routingHandler("/auth/login")}
       >
         Увійти
       </button>

@@ -107,9 +107,9 @@ namespace Inputs {
       };
 
   type BaseInput = {
-    errors: string[];
     wasChanged: boolean;
     warnings: string[];
+    errors: string[];
   };
 
   type StringInput = {

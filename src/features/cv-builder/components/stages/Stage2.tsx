@@ -1,12 +1,12 @@
-import { ConfirmCancelDialog } from '@/components/ui/ConfirmCancelDialog';
-import { useCvAssistanceStore } from '@/features/cv-builder/store/cv-assistance-store';
-import { getPhotoDetails, useCvDataStore } from '../../store/cv-data-store';
-import { getImage } from '@/lib/api/image';
-import Image from 'next/image';
-import { useBoolean } from 'usehooks-ts';
-import AssistanceAlert from '../AssistantAlert';
-import ChangeOrRemovePhotoButton from '../ChangeOrRemovePhotoButton';
-import PhotoEditDialog from '../modals/PhotoEditDialog';
+import { ConfirmCancelDialog } from "@/components/ui/ConfirmCancelDialog";
+import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
+import { getPhotoDetails, useCvDataStore } from "../../store/cv-data-store";
+import { getImage } from "@/lib/api/image";
+import Image from "next/image";
+import { useBoolean } from "usehooks-ts";
+import AssistanceAlert from "../AssistantAlert";
+import ChangeOrRemovePhotoButton from "../ChangeOrRemovePhotoButton";
+import PhotoEditDialog from "../modals/PhotoEditDialog";
 
 export default function Stage2() {
   const changePhotoModalIsOpen = useBoolean(false);
@@ -28,16 +28,16 @@ export default function Stage2() {
       <ConfirmCancelDialog
         onConfirm={handlePhotoRemovalConfirmation}
         onClose={removePhotoModalIsOpen.setFalse}
-        title={'Видалити фото?'}
-        cancelText={'Ні'}
-        confirmText={'Так'}
+        title={"Видалити фото?"}
+        cancelText={"Ні"}
+        confirmText={"Так"}
         show={removePhotoModalIsOpen.value}
         confirmClasses="bg-red-600 text-white focus:ring-red-500"
       />
 
       <div className="space-y-6 sm:space-y-5">
         <h3 className="text-xl font-medium leading-6 text-gray-900">
-          {'Фотографія'}
+          {"Фотографія"}
         </h3>
 
         <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
@@ -63,7 +63,7 @@ export default function Stage2() {
                   >
                     <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
-                ) : photoDetails.type === 'imagePath' ? (
+                ) : photoDetails.type === "imagePath" ? (
                   <Image
                     src={getImage(photoDetails.path)}
                     alt="Ваше фото"

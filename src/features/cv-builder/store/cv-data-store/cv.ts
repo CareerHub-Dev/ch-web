@@ -1,6 +1,6 @@
-import { getStringInput } from '@/lib/string-input/v2';
-import { getArrayInput } from '@/lib/array-input/v2';
-import { StudentCvDetails } from '@/lib/api/cvs/schemas';
+import { getStringInput } from "@/lib/string-input";
+import { getArrayInput } from "@/lib/array-input/v2";
+import { StudentCvDetails } from "@/lib/api/cvs/schemas";
 
 type StringInput = Inputs.StringInput;
 type ArrayInput<T> = Inputs.ArrayInput<T>;
@@ -28,9 +28,12 @@ export type Education = {
 export type CvData = {
   title: StringInput;
   templateLanguage: TemplateLanguage;
-  jobPosition: null | {
-    id: string;
-    name: string;
+  jobPosition: {
+    wasClicked: boolean;
+    value: {
+      id: string;
+      name: string;
+    };
   };
   firstName: StringInput;
   lastName: StringInput;
@@ -51,11 +54,11 @@ export type CvData = {
       };
 };
 
-export const getEmptyCvData = (): CvData => {
+export function getEmptyCvData(): CvData {
   return {
     title: getStringInput(),
     templateLanguage: TEMPLATE_LANGUAGES[0]!,
-    jobPosition: null,
+    jobPosition: { value: DEFAULT_JOB_POSITION, wasClicked: false },
     firstName: getStringInput(),
     lastName: getStringInput(),
     goals: getStringInput(),
@@ -66,9 +69,9 @@ export const getEmptyCvData = (): CvData => {
     educations: getArrayInput(),
     photo: null,
   };
-};
+}
 
-export const restoreToCvQueryData = (data: StudentCvDetails): CvData => {
+export function restoreToCvQueryData(data: StudentCvDetails): CvData {
   const mappedEducations = data.educations.map((item) => {
     const { startDate, endDate, ...otherProperties } = item;
     const startYear = new Date(startDate).getFullYear().toString();
@@ -83,13 +86,16 @@ export const restoreToCvQueryData = (data: StudentCvDetails): CvData => {
 
   return {
     ...data,
-    title: getStringInput(data.title),
+    jobPosition: { value: data.jobPosition, wasClicked: true },
+    title: getStringInput({ value: data.title }),
     templateLanguage: matchTemplateLanguage(data.templateLanguage),
-    firstName: getStringInput(''),
-    lastName: getStringInput(''),
-    goals: getStringInput(data.goals),
-    skillsAndTechnologies: getStringInput(data.skillsAndTechnologies),
-    experienceHighlights: getStringInput(data.experienceHighlights),
+    firstName: getStringInput(),
+    lastName: getStringInput(),
+    goals: getStringInput({ value: data.goals }),
+    skillsAndTechnologies: getStringInput({
+      value: data.skillsAndTechnologies,
+    }),
+    experienceHighlights: getStringInput({ value: data.experienceHighlights }),
     foreignLanguages: getArrayInput({ initialItems: data.foreignLanguages }),
     projectLinks: getArrayInput({ initialItems: data.projectLinks }),
     educations: getArrayInput({
@@ -97,13 +103,13 @@ export const restoreToCvQueryData = (data: StudentCvDetails): CvData => {
     }),
     photo: data.photo,
   };
-};
+}
 
 export function matchTemplateLanguage(val: string): TemplateLanguage {
   switch (val.toUpperCase()) {
-    case 'UA':
+    case "UA":
       return TEMPLATE_LANGUAGES[0]!;
-    case 'EN':
+    case "EN":
       return TEMPLATE_LANGUAGES[1]!;
     default:
       return TEMPLATE_LANGUAGES[0]!;
@@ -111,8 +117,10 @@ export function matchTemplateLanguage(val: string): TemplateLanguage {
 }
 
 export const TEMPLATE_LANGUAGES = [
-  { id: 'UA', name: 'Українська' },
-  { id: 'EN', name: 'English' },
+  { id: "UA", name: "Українська" },
+  { id: "EN", name: "English" },
 ];
 
 export type TemplateLanguage = typeof TEMPLATE_LANGUAGES[number];
+
+export const DEFAULT_JOB_POSITION = { id: "0", name: "Оберіть опцію" };

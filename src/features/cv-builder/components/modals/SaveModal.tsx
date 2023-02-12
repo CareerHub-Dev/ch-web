@@ -1,21 +1,21 @@
-import { getCvMutationData, useCvDataStore } from '../../store/cv-data-store';
-import { useCvUiStore } from '../../store/cv-ui-store';
-import { useCvQueryData } from '@/hooks/useCvQuery';
-import { useRouter } from 'next/router';
-import useProtectedMutation from '@/hooks/useProtectedMutation';
-import useToast from '@/hooks/useToast';
-import { useQueryClient } from '@tanstack/react-query';
-import { createCv } from '@/lib/api/cvs';
-import { type ChangeEvent } from 'react';
-import { ConfirmCancelDialog } from '@/components/ui/ConfirmCancelDialog';
-import ModalLoading from '@/components/ui/Modal/ModalLoading';
+import { getCvMutationData, useCvDataStore } from "../../store/cv-data-store";
+import { useCvUiStore } from "../../store/cv-ui-store";
+import { useCvQueryData } from "@/hooks/useCvQuery";
+import { useRouter } from "next/router";
+import useProtectedMutation from "@/hooks/useProtectedMutation";
+import useToast from "@/hooks/useToast";
+import { useQueryClient } from "@tanstack/react-query";
+import { createCv } from "@/lib/api/cvs";
+import { type ChangeEvent } from "react";
+import { ConfirmCancelDialog } from "@/components/ui/ConfirmCancelDialog";
+import ModalLoading from "@/components/ui/Modal/ModalLoading";
 
 export function SaveModal() {
   const cvId = useCvDataStore((s) => s.cvId);
   const closeModal = useCvUiStore((s) => s.closeModal);
-  const isOpen = useCvUiStore((s) => s.currentModal) === 'save';
+  const isOpen = useCvUiStore((s) => s.currentModal) === "save";
   const title = useCvDataStore((state) => state.cvData.title);
-  const changeTitle = useCvDataStore((s) => s.changeTitle);
+  const dispatchTitle = useCvDataStore((s) => s.dispatchTitle);
   const toast = useToast();
   const router = useRouter();
   const cvData = useCvQueryData(cvId);
@@ -23,9 +23,9 @@ export function SaveModal() {
   const cvMutationData = useCvDataStore(getCvMutationData);
 
   const titleWasTouched = title.wasBlurred && title.wasChanged;
-  const titleValue = titleWasTouched ? title.value : cvData?.title || '';
+  const titleValue = titleWasTouched ? title.value : cvData?.title || "";
 
-  const mutationKey = [cvId === null ? 'create-cv' : `modify-cv-${cvId}`];
+  const mutationKey = [cvId === null ? "create-cv" : `modify-cv-${cvId}`];
   // const mutationFn = cvId === null ? createCv : modifyCv(cvId);
 
   const { mutate, isLoading, isSuccess } = useProtectedMutation(
@@ -33,29 +33,29 @@ export function SaveModal() {
     createCv,
     {
       onSuccess: () => {
-        queryClient.refetchQueries(['student-own-cvs']);
-        toast.success('Резюме збережено!');
-        router.push('/my-cvs').then((pushed) => {
+        queryClient.refetchQueries(["student-own-cvs"]);
+        toast.success("Резюме збережено!");
+        router.push("/my-cvs").then((pushed) => {
           if (pushed) {
             closeModal();
           }
         });
       },
       onError: () => {
-        toast.error('Не вдалося зберегти резюме');
+        toast.error("Не вдалося зберегти резюме");
       },
     }
   );
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    changeTitle(e.target.value);
+    dispatchTitle({ type: "CHANGE", value: e.target.value });
   };
 
   const noCvMutationData = cvMutationData === null;
 
   const handleConfirm = () => {
     if (noCvMutationData) {
-      toast.error('Не можна зберегти резюме без обраної позиції');
+      toast.error("Не можна зберегти резюме без обраної позиції");
       return;
     }
     mutate(cvMutationData);

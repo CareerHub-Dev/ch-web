@@ -14,7 +14,7 @@ export default function StageView() {
   const StageToRender =
     [Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Stage6, Stage7].at(
       currentStage
-    ) || Stage0;
+    ) ?? Stage0;
 
   return <StageToRender />;
 }

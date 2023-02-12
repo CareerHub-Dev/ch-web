@@ -1,23 +1,24 @@
-import AssistanceAlert from '../AssistantAlert';
-import { useCvDataStore } from '../../store/cv-data-store';
-import { useJobPositionsQueryData } from '@/hooks/useJobPositionsQuery';
-import { TEMPLATE_LANGUAGES } from '../../store/cv-data-store/cv';
-import { useCvAssistanceStore } from '@/features/cv-builder/store/cv-assistance-store';
-import ItemSelection from '@/components/ui/ItemsSelection';
+import AssistanceAlert from "../AssistantAlert";
+import { useCvDataStore } from "../../store/cv-data-store";
+import { useJobPositionsQueryData } from "@/hooks/useJobPositionsQuery";
+import { DEFAULT_JOB_POSITION, TEMPLATE_LANGUAGES } from "../../store/cv-data-store/cv";
+import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
+import ItemSelection from "@/components/ui/ItemsSelection";
 
 export default function Stage0() {
   const jobPositionsQueryData = useJobPositionsQueryData();
+
+  const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
+  
   const selectedTemplateLanguage = useCvDataStore(
     (store) => store.cvData.templateLanguage
   );
-  const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
   const setTemplateLanguage = useCvDataStore((s) => s.changeTemplateLanguage);
-
-  const selectedJobPosition = useCvDataStore(
+  const jobPosition = useCvDataStore(
     (store) => store.cvData.jobPosition
-  ) ?? { id: '0', name: 'Оберіть опцію' };
-
+  );
   const setJobPosition = useCvDataStore((s) => s.changeJobPosition);
+  const clickJobPosition = useCvDataStore((s) => s.clickJobPosition);
 
   return (
     <>
@@ -44,18 +45,20 @@ export default function Stage0() {
           <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
             <ItemSelection
               items={jobPositionsQueryData}
-              selectedItem={selectedJobPosition}
+              selectedItem={jobPosition.value}
               setSelected={setJobPosition}
+              onBlur={clickJobPosition}
               label="Бажана Посада"
+              hasError={jobPosition.wasClicked && jobPosition.value.id === DEFAULT_JOB_POSITION.id}
             />
           </div>
         </div>
       </div>
-      {isAssistEnabled && ['Dev', 'QA'].includes(selectedJobPosition.name) && (
+      {isAssistEnabled && ["Dev", "QA"].includes(jobPosition.value.name) && (
         <div className="mt-6">
           <AssistanceAlert
             title="Мова шаблону"
-            type={selectedTemplateLanguage.id === 'EN' ? 'positive' : 'info'}
+            type={selectedTemplateLanguage.id === "EN" ? "positive" : "info"}
           >
             <p>
               У сфері IT всюди використовується англійська мова, тому у якості

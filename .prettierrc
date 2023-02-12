@@ -1,6 +1,5 @@
 {
   "semi": true,
   "useTabs": false,
-  "bracketSpacing": true,
-  "singleQuote": true
+  "bracketSpacing": true
 }

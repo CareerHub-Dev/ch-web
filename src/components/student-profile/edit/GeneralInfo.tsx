@@ -1,13 +1,13 @@
-import { useInput } from '@/hooks/useInput';
-import useToast from '@/hooks/useToast';
-import useProtectedMutation from '@/hooks/useProtectedMutation';
-import { useQueryClient } from '@tanstack/react-query';
-import format from 'date-fns/format';
-import { updateStudentGeneralInfo } from '@/lib/api/student';
-import FormInput from '@/components/ui/form/v2/FormInput';
-import { isPhoneNumber } from '@/lib/regex';
-import parseUnknownError from '@/lib/parse-unknown-error';
-import ModalLoading from '@/components/ui/Modal/ModalLoading';
+import { useInput } from "@/hooks/useInput";
+import useToast from "@/hooks/useToast";
+import useProtectedMutation from "@/hooks/useProtectedMutation";
+import { useQueryClient } from "@tanstack/react-query";
+import format from "date-fns/format";
+import { updateStudentGeneralInfo } from "@/lib/api/student";
+import FormInput from "@/components/ui/form/v2/FormInput";
+import { isPhoneNumber } from "@/lib/regex";
+import parseUnknownError from "@/lib/parse-unknown-error";
+import ModalLoading from "@/components/ui/Modal/ModalLoading";
 
 const GeneralInfo = ({ initialData }: { initialData: any }) => {
   const toast = useToast();
@@ -24,30 +24,30 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
     initialValue: initialData?.phone,
     validators: [
       (val) => {
-        const withoutSpaces = val.replace(/\s/g, '');
+        const withoutSpaces = val.replace(/\s/g, "");
         return withoutSpaces.length === 0 || isPhoneNumber(withoutSpaces)
           ? {
-              type: 'error',
+              type: "error",
               message:
-                'Номер телефону має відповідати формату XХХ-ХХХ-ХХХХ (без коду країни) або бути відсутнім',
+                "Номер телефону має відповідати формату XХХ-ХХХ-ХХХХ (без коду країни) або бути відсутнім",
             }
-          : { type: 'success' };
+          : { type: "success" };
       },
     ],
   });
   const initialBirthDate = initialData?.birthDate;
   const birthDateInput = useInput({
     initialValue: initialBirthDate
-      ? format(new Date(initialBirthDate), 'yyyy-MM-dd')
-      : '',
+      ? format(new Date(initialBirthDate), "yyyy-MM-dd")
+      : "",
   });
 
   const mutation = useProtectedMutation(
-    ['updateSelfStudent'],
+    ["updateSelfStudent"],
     updateStudentGeneralInfo,
     {
       onSuccess: () => {
-        const currentData = queryClient.getQueryData(['selfStudent']);
+        const currentData = queryClient.getQueryData(["selfStudent"]);
         const newData = {
           firstName: firstNameInput.value,
           lastName: lastNameInput.value,
@@ -56,19 +56,19 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
             birthDateInput.value &&
             new Date(birthDateInput.value).toISOString(),
         };
-        if (typeof currentData === 'object') {
-          queryClient.setQueryData(['selfStudent'], {
+        if (typeof currentData === "object") {
+          queryClient.setQueryData(["selfStudent"], {
             ...currentData,
             ...newData,
           });
         } else {
-          queryClient.invalidateQueries(['selfStudent']);
+          queryClient.invalidateQueries(["selfStudent"]);
         }
-        firstNameInput.reset(newData.firstName);
-        lastNameInput.reset(newData.lastName);
-        phoneInput.reset(newData.phone);
-        birthDateInput.reset(birthDateInput.value);
-        toast.success('Зміни збережено');
+        firstNameInput.reset({ value: newData.firstName });
+        lastNameInput.reset({ value: newData.lastName });
+        phoneInput.reset({ value: newData.phone });
+        birthDateInput.reset({ value: birthDateInput.value });
+        toast.success("Зміни збережено");
       },
       onError: (error) => {
         toast.error(parseUnknownError(error));
@@ -96,7 +96,7 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
     const data = {
       firstName: firstNameInput.value,
       lastName: lastNameInput.value,
-      phone: phoneInput.value.replace(/\s/g, '') || null,
+      phone: phoneInput.value.replace(/\s/g, "") || null,
       birthDate: birthDate ? new Date(birthDate).toISOString() : null,
       studentGroupId: initialData?.studentGroup?.id,
     };
@@ -152,7 +152,7 @@ const GeneralInfo = ({ initialData }: { initialData: any }) => {
       </form>
       <div className="flex flex-row-reverse mt-4 mb-4">
         <button
-          className={'btn-primary p-2 w-40 ml-2 bg-primaryBlue'}
+          className={"btn-primary p-2 w-40 ml-2 bg-primaryBlue"}
           onClick={save}
           disabled={cannotSubmit}
         >
@@ -169,6 +169,6 @@ export default GeneralInfo;
 
 function valueIsNotEmpty(val: string) {
   return val.trim().length > 0
-    ? ({ type: 'success' } as const)
-    : ({ type: 'error', message: 'Має бути хоча б один символ' } as const);
+    ? ({ type: "success" } as const)
+    : ({ type: "error", message: "Має бути хоча б один символ" } as const);
 }

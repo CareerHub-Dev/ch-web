@@ -3,9 +3,9 @@ import {
   makeAspectCrop,
   PercentCrop,
   PixelCrop,
-} from 'react-image-crop';
+} from "react-image-crop";
 
-const supportedFileTypes = ['image/jpeg', 'image/png'];
+const supportedFileTypes = ["image/jpeg", "image/png"];
 
 export const readUploadedImage = (file: File) => {
   return new Promise<string>((resolve, reject) => {
@@ -13,11 +13,11 @@ export const readUploadedImage = (file: File) => {
     reader.readAsDataURL(file);
 
     reader.onload = () => {
-      if (typeof reader.result !== 'string') {
-        reject('Invalid reader result');
+      if (typeof reader.result !== "string") {
+        reject("Invalid reader result");
         return;
       }
-      const img = reader.result.substring(reader.result.indexOf(',') + 1);
+      const img = reader.result.substring(reader.result.indexOf(",") + 1);
       resolve(img);
     };
 
@@ -28,7 +28,7 @@ export const readUploadedImage = (file: File) => {
 };
 
 export const getFileNameExtension = (fileName: string) =>
-  fileName.split('.').pop() ?? '';
+  fileName.split(".").pop() ?? "";
 
 export const getFileExtension = (file: File) => getFileNameExtension(file.name);
 
@@ -56,7 +56,7 @@ export const centerAspectCrop = (
   centerCrop(
     makeAspectCrop(
       {
-        unit: '%',
+        unit: "%",
         width: 90,
       },
       aspect,
@@ -84,7 +84,7 @@ const getBlobFromCanvas = (canvas: HTMLCanvasElement, fileType: string) =>
 
         resolve({ blob, blobUrl, revokeUrl });
       } else {
-        reject(new Error('Canvas is empty'));
+        reject(new Error("Canvas is empty"));
       }
     }, fileType);
   });
@@ -98,17 +98,17 @@ export const cropImage = async (
   fileType: string,
   crop: PixelCrop
 ) => {
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   const scaleX = imgElement.naturalWidth / imgElement.width;
   const scaleY = imgElement.naturalHeight / imgElement.height;
   const pixelRatio = window.devicePixelRatio;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
 
   canvas.width = crop.width * pixelRatio * scaleX;
   canvas.height = crop.height * pixelRatio * scaleY;
 
   ctx!.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-  ctx!.imageSmoothingQuality = 'high';
+  ctx!.imageSmoothingQuality = "high";
 
   ctx!.drawImage(
     imgElement,
@@ -135,7 +135,7 @@ const percentCropToPixelCrop = ({
   const { width, height } = dimensions;
 
   return {
-    unit: 'px',
+    unit: "px",
     x: (width * crop.x) / 100,
     y: (height * crop.y) / 100,
     width: (width * crop.width) / 100,
@@ -156,7 +156,7 @@ export namespace Crop {
         if (blob) {
           resolve(blob);
         } else {
-          reject(new Error('Canvas is empty'));
+          reject(new Error("Canvas is empty"));
         }
       }, fileType);
     });
@@ -170,17 +170,17 @@ export namespace Crop {
     fileType: string;
     crop: PixelCrop;
   }) => {
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
     const pixelRatio = window.devicePixelRatio;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
     canvas.width = crop.width * pixelRatio * scaleX;
     canvas.height = crop.height * pixelRatio * scaleY;
 
     ctx!.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    ctx!.imageSmoothingQuality = 'high';
+    ctx!.imageSmoothingQuality = "high";
 
     ctx!.drawImage(
       image,
@@ -203,7 +203,7 @@ export const fileUrlToImage = (fileUrl: string) =>
     const image = new Image();
     image.src = fileUrl;
     image.onload = () => resolve(image);
-    image.onerror = () => _reject(new Error('Failed to load image'));
+    image.onerror = () => _reject(new Error("Failed to load image"));
   });
 
 export const croppedImageFromFileAndCrop = async ({
@@ -216,7 +216,7 @@ export const croppedImageFromFileAndCrop = async ({
   const fileUrl = URL.createObjectURL(file);
   const image = await fileUrlToImage(fileUrl);
   const pixelCrop: PixelCrop =
-    crop.unit === '%'
+    crop.unit === "%"
       ? percentCropToPixelCrop({
           crop,
           dimensions: {

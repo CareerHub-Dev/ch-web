@@ -1,7 +1,10 @@
-import { useCvAssistanceStore } from '@/features/cv-builder/store/cv-assistance-store';
-import { useCvDataStore } from '../../store/cv-data-store';
-import { type ChangeEvent } from 'react';
-import AssistanceAlert from '../AssistantAlert';
+import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
+import {
+  getSkillsAndTechnologiesActions,
+  useCvDataStore,
+} from "../../store/cv-data-store";
+import AssistanceAlert from "../AssistantAlert";
+import ValidatedTextArea from "../ValidatedTextArea";
 
 export default function Stage4() {
   const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
@@ -9,13 +12,9 @@ export default function Stage4() {
     (s) => s.cvData.skillsAndTechnologies
   );
 
-  const changeSkillsAndTechnologies = useCvDataStore(
-    (s) => s.changeSkillsAndTechnologies
+  const skillsAndTechnologiesActions = useCvDataStore(
+    getSkillsAndTechnologiesActions
   );
-
-  const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    changeSkillsAndTechnologies(e.target.value);
-  };
 
   return (
     <>
@@ -27,13 +26,15 @@ export default function Stage4() {
           Професійні навички та знання
         </label>
         <div className="sm:col-span-2">
-          <textarea
-            id="skillsAndTechnologies"
-            name="skillsAndTechnologies"
-            rows={3}
-            className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+          <ValidatedTextArea
+            id="skills-and-technologies"
             value={skillsAndTechnologiesInput.value}
-            onChange={handleTextChange}
+            onBlur={skillsAndTechnologiesActions.blur}
+            onChange={skillsAndTechnologiesActions.change}
+            errors={skillsAndTechnologiesInput.errors}
+            warnings={skillsAndTechnologiesInput.warnings}
+            wasBlurred={skillsAndTechnologiesInput.wasBlurred}
+            wasChanged={skillsAndTechnologiesInput.wasChanged}
           />
           <p className="mt-2 text-sm text-gray-500">
             Напишіть не більше 200 слів про свої навички та вивчені технології

@@ -27,7 +27,7 @@ export default function CvAssistanceSwitcher() {
         />
       </Switch>
       <Switch.Label as="span" className="ml-3">
-        <span className="text-sm font-medium text-gray-900">Поради</span>
+        <span className="text-sm font-medium text-gray-900 cursor-pointer">Поради</span>
       </Switch.Label>
     </Switch.Group>
   );

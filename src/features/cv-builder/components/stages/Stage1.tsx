@@ -1,15 +1,20 @@
-import AssistanceAlert from '../AssistantAlert';
-import { ValidatedInput } from '@/components/ui/ValidatedInput';
-import { useCvDataStore } from '../../store/cv-data-store';
-import { useCvAssistanceStore } from '@/features/cv-builder/store/cv-assistance-store';
+import AssistanceAlert from "../AssistantAlert";
+import ValidatedInput from "@/components/ui/ValidatedInput";
+import {
+  getFirstNameActions,
+  getLastNameActions,
+  useCvDataStore,
+} from "../../store/cv-data-store";
+import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
 
 export default function Stage1() {
   const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
-  const jobPosition = useCvDataStore((s) => s.cvData.jobPosition?.name) ?? '';
+  const jobPosition =
+    useCvDataStore((s) => s.cvData.jobPosition.value.name) ?? "";
   const firstName = useCvDataStore((s) => s.cvData.firstName);
   const lastName = useCvDataStore((s) => s.cvData.lastName);
-  const changeFirstName = useCvDataStore((s) => s.changeFirstName);
-  const changeLastName = useCvDataStore((s) => s.changeLastName);
+  const firstNameActions = useCvDataStore(getFirstNameActions);
+  const lastNameActions = useCvDataStore(getLastNameActions);
 
   return (
     <>
@@ -23,25 +28,29 @@ export default function Stage1() {
           </p>
         </div>
 
-        <div className="space-y-6 sm:space-y-5">
+        <div className="space-y-6 sm:space-y-5 divide-y divide-gray-200">
           <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
             <ValidatedInput
               label="Ім'я"
               id="firstName"
               {...firstName}
-              onChange={changeFirstName}
+              onChange={firstNameActions.change}
+              onBlur={firstNameActions.blur}
             />
+          </div>
+          <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
             <ValidatedInput
               label="Прізвище"
               id="lastName"
               {...lastName}
-              onChange={changeLastName}
+              onChange={lastNameActions.change}
+              onBlur={lastNameActions.blur}
             />
           </div>
         </div>
       </div>
 
-      {isAssistEnabled && ['Dev', 'QA'].includes(jobPosition) && (
+      {isAssistEnabled && ["Dev", "QA"].includes(jobPosition) && (
         <div className="mt-6">
           <AssistanceAlert title="Обрано англійську мову">
             <p>

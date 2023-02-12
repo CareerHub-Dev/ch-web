@@ -1,7 +1,7 @@
-import { Menu, Transition } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/24/solid';
-import cn from 'classnames';
-import { Fragment } from 'react';
+import { Menu, Transition } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import cn from "classnames";
+import { Fragment } from "react";
 
 export default function ChangeOrRemovePhotoButton(props: {
   onChangeClick: () => void;
@@ -38,8 +38,8 @@ export default function ChangeOrRemovePhotoButton(props: {
                     type="button"
                     onClick={props.onRemoveClick}
                     className={cn(
-                      active ? 'bg-red-100 text-red-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm w-full'
+                      active ? "bg-red-100 text-red-900" : "text-gray-700",
+                      "block px-4 py-2 text-sm w-full"
                     )}
                   >
                     Видалити
