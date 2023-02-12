@@ -12,6 +12,7 @@ import NavigationLinkMobile from './NavigationLinkMobile';
 import AuthLinks from './AuthLinks';
 import AuthLinksMobile from './AuthLinksMobile';
 import { getNavigationLinks, getUserMenuLinks } from './navigation-items';
+import { Background } from '../Background';
 
 export default function StackedLayout(props: { children: ReactNode }) {
   const { pathname, replace } = useRouter();
@@ -210,6 +211,7 @@ export default function StackedLayout(props: { children: ReactNode }) {
       </Disclosure>
 
       <main className="py-10">
+        <Background />
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           {props.children}
         </div>
