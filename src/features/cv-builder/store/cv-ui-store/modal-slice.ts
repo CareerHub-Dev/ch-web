@@ -8,6 +8,7 @@ export type ModalSlice = {
   openModal: (modal: Modal) => void;
   openSaveModal: () => void;
   openDiscardModal: () => void;
+  openReInitModal: () => void;
   openPreviewModal: () => void;
 };
 

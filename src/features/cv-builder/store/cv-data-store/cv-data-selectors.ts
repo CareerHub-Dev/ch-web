@@ -11,6 +11,24 @@ export type StageCompletionStatus =
   | "hasWarnings"
   | "incomplete";
 
+export function getStageAccessibility(stage: StageNumber) {
+  return (store: CvDataStore) => {
+    const { cvData } = store;
+    switch (stage) {
+      case 0:
+        return { status: "accessible" } as const;
+      default:
+        if (cvData.jobPosition.value.id === DEFAULT_JOB_POSITION.id) {
+          return {
+            status: "inaccessible",
+            reason: "Не обрано напрямок роботи",
+          } as const;
+        }
+        return { status: "accessible" } as const;
+    }
+  };
+}
+
 export function getTitleActions(store: CvDataStore) {
   return createStringInputReducerActions(store.dispatchTitle);
 }
