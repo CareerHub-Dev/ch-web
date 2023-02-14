@@ -38,7 +38,8 @@ export type CvData = {
   firstName: StringInput;
   lastName: StringInput;
   goals: StringInput;
-  skillsAndTechnologies: StringInput;
+  hardSkills: ArrayInput<string>;
+  softSkills: ArrayInput<string>;
   experienceHighlights: StringInput;
   foreignLanguages: ArrayInput<ForeignLanguage>;
   projectLinks: ArrayInput<ProjectLink>;
@@ -62,7 +63,8 @@ export function getEmptyCvData(): CvData {
     firstName: getStringInput(),
     lastName: getStringInput(),
     goals: getStringInput(),
-    skillsAndTechnologies: getStringInput(),
+    hardSkills: getArrayInput(),
+    softSkills: getArrayInput(),
     experienceHighlights: getStringInput(),
     foreignLanguages: getArrayInput(),
     projectLinks: getArrayInput(),
@@ -92,9 +94,6 @@ export function restoreToCvQueryData(data: StudentCvDetails): CvData {
     firstName: getStringInput(),
     lastName: getStringInput(),
     goals: getStringInput({ value: data.goals }),
-    skillsAndTechnologies: getStringInput({
-      value: data.skillsAndTechnologies,
-    }),
     experienceHighlights: getStringInput({ value: data.experienceHighlights }),
     foreignLanguages: getArrayInput({ initialItems: data.foreignLanguages }),
     projectLinks: getArrayInput({ initialItems: data.projectLinks }),
@@ -102,6 +101,8 @@ export function restoreToCvQueryData(data: StudentCvDetails): CvData {
       initialItems: mappedEducations,
     }),
     photo: data.photo,
+    hardSkills: getArrayInput(),
+    softSkills: getArrayInput(),
   };
 }
 

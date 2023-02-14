@@ -1,5 +1,4 @@
-import { useRouter } from 'next/router';
-import { EmptyState } from '../ui/EmptyState';
+import EmptyState from '../ui/EmptyState';
 import { CvItem } from './CvItem';
 
 export const CvItemsGrid = ({
@@ -7,9 +6,6 @@ export const CvItemsGrid = ({
 }: {
   items: { id: string; title: string; created: string; modified: string | null }[];
 }) => {
-  const router = useRouter();
-
-  const handleAddItem = () => router.push('my-cvs/create');
 
   return (
     <div className="mt-3 mb-5">
@@ -25,8 +21,6 @@ export const CvItemsGrid = ({
       ) : (
         <EmptyState
           noItemsText="Ви поки що не створили жодного резюме"
-          addItemText="Створити"
-          addItemHandler={handleAddItem}
         />
       )}
     </div>

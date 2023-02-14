@@ -3,7 +3,7 @@ import {
   ExclamationTriangleIcon,
   InformationCircleIcon,
   XCircleIcon,
-} from "@heroicons/react/24/outline";
+} from "@heroicons/react/24/solid";
 import cn from "classnames";
 import { type ReactNode } from "react";
 

@@ -7,7 +7,7 @@ import { useDialogActionsListReducer } from "@/hooks/useDialogActionsListReducer
 import { type ChangeEvent } from "react";
 import { AddOrEditProjectLinkModal } from "../modals/AddOrEditProjectLinkModal";
 import AssistanceAlert from "../AssistantAlert";
-import { EmptyState } from "@/components/ui/EmptyState";
+import EmptyState from "@/components/ui/EmptyState";
 import RemoveItemModal from "../modals/RemoveItemModal";
 import ProjectLinkItem from "../ProjectLinkItem";
 
@@ -128,10 +128,7 @@ export default function Stage6() {
             </ul>
           </div>
         ) : (
-          <EmptyState
-            noItemsText="Посилань не додано"
-            addItemHandler={handleAddClick}
-          />
+          <EmptyState noItemsText="Посилань не додано" />
         )}
       </div>
       {isAssistEnabled && (

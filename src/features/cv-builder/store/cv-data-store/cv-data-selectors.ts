@@ -3,7 +3,7 @@ import { type CvDataStore } from "./cv-data-store";
 import { type CvModificationData } from "@/lib/api/cvs";
 import { getFileNameExtension } from "@/lib/images";
 import { createStringInputReducerActions } from "@/lib/string-input";
-import { DEFAULT_JOB_POSITION } from "./cv";
+import { DEFAULT_JOB_POSITION, Education } from "./cv";
 
 export type StageCompletionStatus =
   | "complete"
@@ -45,10 +45,6 @@ export function getGoalsActions(store: CvDataStore) {
   return createStringInputReducerActions(store.dispatchGoals);
 }
 
-export function getSkillsAndTechnologiesActions(store: CvDataStore) {
-  return createStringInputReducerActions(store.dispatchSkillsAndTechnologies);
-}
-
 export function getExperienceHighlightsActions(store: CvDataStore) {
   return createStringInputReducerActions(store.dispatchExperienceHighlights);
 }
@@ -75,8 +71,8 @@ export function getStageCompletionStatus(stage: StageNumber) {
         const { goals } = store.cvData;
         return summarizeInputs(goals);
       case 4:
-        const { skillsAndTechnologies } = store.cvData;
-        return summarizeInputs(skillsAndTechnologies);
+        const { hardSkills, softSkills } = store.cvData;
+        return summarizeInputs(hardSkills, softSkills);
       case 5:
         const { foreignLanguages } = store.cvData;
         return summarizeInputs(foreignLanguages);
@@ -136,32 +132,34 @@ export function getCvMutationData(
     lastName: cvData.lastName.value,
     photo,
     goals: cvData.goals.value,
-    skillsAndTechnologies: cvData.skillsAndTechnologies.value,
     experienceHighlights: cvData.experienceHighlights.value,
     foreignLanguages: cvData.foreignLanguages.items,
     projectLinks: cvData.projectLinks.items,
-    educations: cvData.educations.items.map((item) => {
-      const { startYear, endYear, ...otherProperties } = item;
-      return {
-        startDate: yearInputToIsoDate(startYear),
-        endDate: yearInputToIsoDate(endYear),
-        ...otherProperties,
-      };
-    }),
+    educations: cvData.educations.items.map(educationToPlainObject),
+    skillsAndTechnologies: "",
   };
 }
 
-function summarizeInputs(...inputs: Inputs.BaseInput[]): StageCompletionStatus {
+function summarizeInputs(...inputs: Inputs.BaseInput[]) {
   if (inputs.some((item) => item.errors.length > 0)) {
-    return "hasErrors";
+    return "hasErrors" as const;
   }
   if (inputs.some((item) => item.warnings.length > 0)) {
-    return "hasWarnings";
+    return "hasWarnings" as const;
   }
   if (inputs.some((item) => !item.wasChanged)) {
-    return "incomplete";
+    return "incomplete" as const;
   }
-  return "complete";
+  return "complete" as const;
+}
+
+function educationToPlainObject(val: Education) {
+  const { startYear, endYear, ...otherProperties } = val;
+  return {
+    startDate: yearInputToIsoDate(startYear),
+    endDate: yearInputToIsoDate(endYear),
+    ...otherProperties,
+  };
 }
 
 function yearInputToIsoDate(input: string): string {

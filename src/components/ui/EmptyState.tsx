@@ -1,7 +1,5 @@
-export function EmptyState(props: {
+export default function EmptyState(props: {
   noItemsText: string;
-  addItemText?: string;
-  addItemHandler: () => void;
 }) {
   return (
     <div className="text-center">

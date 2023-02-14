@@ -30,8 +30,9 @@ export type CvDataStore = {
   dispatchFirstName: (action: StringInputAction) => void;
   dispatchLastName: (action: StringInputAction) => void;
   dispatchGoals: (action: StringInputAction) => void;
-  dispatchSkillsAndTechnologies: (action: StringInputAction) => void;
   dispatchExperienceHighlights: (action: StringInputAction) => void;
+  dispatchHardSkills: (action: ArrayInputAction<string>) => void;
+  dispatchSoftSkills: (action: ArrayInputAction<string>) => void;
   dispatchForeignLanguages: (action: ArrayInputAction<ForeignLanguage>) => void;
   dispatchProjectLinks: (action: ArrayInputAction<ProjectLink>) => void;
   dispatchEducations: (action: ArrayInputAction<Education>) => void;
@@ -106,12 +107,21 @@ export const useCvDataStore = create<CvDataStore>()(
         set((state) => {
           state.cvData.goals = goalsReducer(state.cvData.goals, action);
         }),
-      dispatchSkillsAndTechnologies: (action) =>
+      dispatchHardSkills: (action) =>
         set((state) => {
-          state.cvData.skillsAndTechnologies = skillsAndTechnologiesReducer(
-            state.cvData.skillsAndTechnologies,
-            action
-          );
+          state.cvData.hardSkills = arrayInputReducer({
+            input: state.cvData.hardSkills,
+            action,
+            validators: [],
+          });
+        }),
+      dispatchSoftSkills: (action) =>
+        set((state) => {
+          state.cvData.softSkills = arrayInputReducer({
+            input: state.cvData.softSkills,
+            action,
+            validators: [],
+          });
         }),
       dispatchExperienceHighlights: (action) =>
         set((state) => {
@@ -212,23 +222,6 @@ const lastNameReducer = makeStringInputReducer([
 ]);
 
 const goalsReducer = makeStringInputReducer([
-  (val) =>
-    val.length > 0
-      ? { type: "success" }
-      : {
-          type: "warning",
-          message: "Це поле краще заповнити",
-        },
-  (val) =>
-    val.length <= 200
-      ? { type: "success" }
-      : {
-          type: "error",
-          message: "Перевищено ліміт у 200 символів",
-        },
-]);
-
-const skillsAndTechnologiesReducer = makeStringInputReducer([
   (val) =>
     val.length > 0
       ? { type: "success" }

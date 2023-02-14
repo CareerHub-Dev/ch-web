@@ -3,7 +3,7 @@ import { useCvDataStore } from "../../store/cv-data-store";
 import { useDialogActionsListReducer } from "@/hooks/useDialogActionsListReducer";
 import AddOrEditEducationModal from "../modals/AddOrEditEducationModal";
 import EducationItem from "../list-items/EducationItem";
-import { EmptyState } from "@/components/ui/EmptyState";
+import EmptyState from "@/components/ui/EmptyState";
 import RemoveItemModal from "../modals/RemoveItemModal";
 
 export default function Stage7() {
@@ -83,10 +83,7 @@ export default function Stage7() {
             </ul>
           </div>
         ) : (
-          <EmptyState
-            noItemsText="Інформації про освіту не додано"
-            addItemHandler={handleAddClick}
-          />
+          <EmptyState noItemsText="Інформації про освіту не додано" />
         )}
       </div>
       {isAssistEnabled && <div className="mt-6"></div>}

@@ -3,7 +3,7 @@ import { useCvDataStore } from "../../store/cv-data-store";
 import { useDialogActionsListReducer } from "@/hooks/useDialogActionsListReducer";
 import AddOrEditLanguageModal from "../modals/AddOrEditLanguageModal";
 import AssistanceAlert from "../AssistantAlert";
-import { EmptyState } from "@/components/ui/EmptyState";
+import EmptyState from "@/components/ui/EmptyState";
 import RemoveItemModal from "../modals/RemoveItemModal";
 import LanguageItem from "../list-items/LanguageItem";
 
@@ -92,10 +92,7 @@ export default function Stage5() {
           </ul>
         </div>
       ) : (
-        <EmptyState
-          noItemsText="Інозмених мов не додано"
-          addItemHandler={handleAdd}
-        />
+        <EmptyState noItemsText="Інозмених мов не додано" />
       )}
 
       {isAssistEnabled && (
