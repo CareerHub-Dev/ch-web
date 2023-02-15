@@ -29,7 +29,7 @@ export default function CvBuilder({
   }, [storedCvId, cvId, reInit, restoreData, goToStage]);
 
   return (
-    <div className="container rounded-2xl bg-white p-4 shadow-md">
+    <div className="container mx-auto rounded-2xl bg-white p-4 shadow-md">
       <CvBuilderHeading />
       <StageButonsPanel />
       <StageView />

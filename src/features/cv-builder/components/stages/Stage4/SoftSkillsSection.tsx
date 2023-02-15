@@ -1,21 +1,21 @@
 import EmptyState from "@/components/ui/EmptyState";
-import { useCvDataStore } from "@/features/cv-builder/store/cv-data-store";
-import AddHardSkill from "./AddHardSkill";
 import LargeBadge from "@/components/ui/LargeBadge";
+import { useCvDataStore } from "@/features/cv-builder/store/cv-data-store";
+import AddSoftSkill from "./AddSoftSkill";
 
-export default function HardSkillsSection() {
-  const items = useCvDataStore((s) => s.cvData.hardSkills.items);
-  const dispatchHardSkills = useCvDataStore((s) => s.dispatchHardSkills);
+export default function SoftSkillsSection() {
+  const items = useCvDataStore((s) => s.cvData.softSkills.items);
+  const dispatchSoftSkills = useCvDataStore((s) => s.dispatchSoftSkills);
 
   const removeItem = (itemIndex: number) => {
-    dispatchHardSkills({ type: "remove", itemIndex });
+    dispatchSoftSkills({ type: "remove", itemIndex });
   };
 
   return (
     <>
-      <AddHardSkill />
+      <AddSoftSkill />
       {items.length === 0 ? (
-        <EmptyState noItemsText={"Не додано хард скілів"} />
+        <EmptyState noItemsText={"Не додано софт скілів"} />
       ) : (
         <ul className="flex gap-4">
           {items.map((item, itemIndex) => (

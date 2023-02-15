@@ -1,7 +1,7 @@
 import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
 import AssistanceAlert from "../../AssistantAlert";
 import HardSkillsSection from "./HardSkillsSection";
-import SoftSkills from "./SoftSkills";
+import SoftSkillsSection from "./SoftSkillsSection";
 
 export default function Stage4() {
   const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
@@ -11,7 +11,7 @@ export default function Stage4() {
     <>
       <div className="space-y-4">
         <HardSkillsSection />
-        <SoftSkills />
+        <SoftSkillsSection />
       </div>
 
       {isAssistEnabled && (
