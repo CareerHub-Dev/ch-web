@@ -17,7 +17,7 @@ export default function HardSkillsSection() {
       {items.length === 0 ? (
         <EmptyState noItemsText={"Не додано хард скілів"} />
       ) : (
-        <ul className="flex gap-4">
+        <ul className="flex gap-4 flex-wrap">
           {items.map((item, itemIndex) => (
             <LargeBadge
               key={item}
