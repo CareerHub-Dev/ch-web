@@ -16,7 +16,7 @@ export default function AssistanceAlert({
 }: {
   type?: AlertType;
   title?: string;
-  children: ReactNode;
+  children?: ReactNode;
 }) {
   const assets = ASSET_MAP[type];
   const {
@@ -42,11 +42,13 @@ export default function AssistanceAlert({
               {title}
             </h3>
           )}
-          <div
-            className={cn("text-sm", contentColorClassName, title && "mt-2")}
-          >
-            {children}
-          </div>
+          {children ? (
+            <div
+              className={cn("text-sm", contentColorClassName, title && "mt-2")}
+            >
+              {children}
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

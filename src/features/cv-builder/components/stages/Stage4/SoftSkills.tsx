@@ -1,9 +1,8 @@
 import EmptyState from "@/components/ui/EmptyState";
 import LargeBadge from "@/components/ui/LargeBadge";
 import { useCvDataStore } from "@/features/cv-builder/store/cv-data-store";
-import AddSoftSkill from "./AddSoftSkill";
 
-export default function SoftSkillsSection() {
+export default function SoftSkills() {
   const items = useCvDataStore((s) => s.cvData.softSkills.items);
   const dispatchSoftSkills = useCvDataStore((s) => s.dispatchSoftSkills);
 
@@ -13,14 +12,13 @@ export default function SoftSkillsSection() {
 
   return (
     <>
-      <AddSoftSkill />
       {items.length === 0 ? (
         <EmptyState noItemsText={"Не додано софт скілів"} />
       ) : (
         <ul className="flex gap-4 flex-wrap">
           {items.map((item, itemIndex) => (
             <LargeBadge
-              key={item}
+              key={itemIndex}
               name={item}
               onRemove={() => removeItem(itemIndex)}
             />

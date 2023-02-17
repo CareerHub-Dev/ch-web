@@ -52,7 +52,8 @@ export default function Stage1() {
 
       {isAssistEnabled && ["Dev", "QA"].includes(jobPosition) && (
         <div className="mt-6">
-          <AssistanceAlert title="Обрано англійську мову">
+          <AssistanceAlert title="Для продовження заповнення резюме необхідно обрати напрямок роботи" />
+          <AssistanceAlert title="Краще обрати англійську мову">
             <p>
               В ІТ-сфері всюди використовується англійська, тому краще
               заповнювати резюме на ньому. Давай почнемо з імені та прізвища

@@ -217,12 +217,13 @@ export default function AddOrEditEducationModal({
 }
 
 const DEGREE_OPTIONS = [
-  { id: "bachelor", name: "Бакалавр" },
-  { id: "master", name: "Магістр " },
-  { id: "phd", name: "Ph.D" },
+  { id: "Bachelor", name: "Бакалавр" },
+  { id: "Specialist", name: "Спеціаліст" },
+  { id: "Master", name: "Магістр " },
+  { id: "Ph.D", name: "Ph.D" },
 ];
 
-const getYearOptions = (range: number) => {
+function getYearOptions(range: number) {
   const currentYear = new Date().getFullYear();
   const yearOptions = Array.from(Array(range).keys()).map((item) => {
     const year = (currentYear - item).toString();
@@ -232,14 +233,14 @@ const getYearOptions = (range: number) => {
     };
   });
   return yearOptions;
-};
+}
 
-const fillThisFieldValidator: Inputs.Validator<string> = (val: string) =>
-  val.length > 0
-    ? { type: "success" }
-    : {
+function fillThisFieldValidator(val: string) {
+  return val.length > 0
+    ? ({ type: "success" } as const)
+    : ({
         type: "error",
         message: "Це обов'язкове поле",
-      };
-
+      } as const);
+}
 const MAX_ALLOWED_YEAR_RANGE = 50;
