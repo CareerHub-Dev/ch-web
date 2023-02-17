@@ -112,7 +112,7 @@ export const useCvDataStore = create<CvDataStore>()(
           state.cvData.hardSkills = arrayInputReducer({
             input: state.cvData.hardSkills,
             action,
-            validators: [],
+            validators: [validateArrayInput],
           });
         }),
       dispatchSoftSkills: (action) =>
@@ -120,7 +120,7 @@ export const useCvDataStore = create<CvDataStore>()(
           state.cvData.softSkills = arrayInputReducer({
             input: state.cvData.softSkills,
             action,
-            validators: [],
+            validators: [validateArrayInput],
           });
         }),
       dispatchExperienceHighlights: (action) =>
@@ -135,7 +135,7 @@ export const useCvDataStore = create<CvDataStore>()(
           state.cvData.foreignLanguages = arrayInputReducer({
             input: state.cvData.foreignLanguages,
             action,
-            validators: [],
+            validators: [validateArrayInput],
           });
         }),
       dispatchProjectLinks: (action) =>
@@ -143,7 +143,7 @@ export const useCvDataStore = create<CvDataStore>()(
           state.cvData.projectLinks = arrayInputReducer({
             input: state.cvData.projectLinks,
             action,
-            validators: [],
+            validators: [validateArrayInput],
           });
         }),
       dispatchEducations: (action) =>
@@ -151,7 +151,7 @@ export const useCvDataStore = create<CvDataStore>()(
           state.cvData.educations = arrayInputReducer({
             input: state.cvData.educations,
             action,
-            validators: [],
+            validators: [validateArrayInput],
           });
         }),
       changePhoto: ({ croppedImage, sourceFileName, sourceFileType }) =>
@@ -189,7 +189,7 @@ export const CV_EDITOR_STAGES = [
   { id: 7, name: "Освіта" },
 ] as const;
 
-export type StageNumber = typeof CV_EDITOR_STAGES[number]["id"];
+export type StageNumber = (typeof CV_EDITOR_STAGES)[number]["id"];
 
 const titleReducer = makeStringInputReducer([
   (val) =>
@@ -222,13 +222,7 @@ const lastNameReducer = makeStringInputReducer([
 ]);
 
 const goalsReducer = makeStringInputReducer([
-  (val) =>
-    val.length > 0
-      ? { type: "success" }
-      : {
-          type: "warning",
-          message: "Це поле краще заповнити",
-        },
+  valueIsNotEmpty,
   (val) =>
     val.length <= 200
       ? { type: "success" }
@@ -239,13 +233,7 @@ const goalsReducer = makeStringInputReducer([
 ]);
 
 const experienceAndHighlightsReducer = makeStringInputReducer([
-  (val) =>
-    val.length > 0
-      ? { type: "success" }
-      : {
-          type: "warning",
-          message: "Це поле краще заповнити",
-        },
+  valueIsNotEmpty,
   (val) =>
     val.length <= 200
       ? { type: "success" }
@@ -254,3 +242,18 @@ const experienceAndHighlightsReducer = makeStringInputReducer([
           message: "Перевищено ліміт у 200 символів",
         },
 ]);
+
+function validateArrayInput<T>(items: Array<T>) {
+  if (items.length === 0)
+    return {
+      type: "warning",
+      message: "Додайте хоча б один елемент",
+    } as const;
+  return { type: "success" } as const;
+}
+
+function valueIsNotEmpty(val: string) {
+  if (val.length === 0)
+    return { type: "warning", message: "Це поле краще заповнити" } as const;
+  return { type: "success" } as const;
+}

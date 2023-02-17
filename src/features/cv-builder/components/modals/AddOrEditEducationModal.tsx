@@ -2,7 +2,7 @@ import { useCvDataStore } from "../../store/cv-data-store";
 import { type Education } from "../../store/cv-data-store/cv";
 import { useInput } from "@/hooks/useInput";
 import { useObjectInput } from "@/hooks/useObjectInput";
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useBoolean } from "usehooks-ts";
 import NativeItemSelection from "@/components/ui/NativeItemSelection";
 import ValidatedInput from "@/components/ui/ValidatedInput";
@@ -34,11 +34,10 @@ export default function AddOrEditEducationModal({
     initialValue: initialPayload?.item.speciality ?? "",
     validators: [fillThisFieldValidator],
   });
-  const degree = useObjectInput({
-    initialValue:
-      DEGREE_OPTIONS.find((item) => item.id === initialPayload?.item.degree) ??
-      DEGREE_OPTIONS.at(0)!,
-  });
+  const [degree, setDegree] = useState(
+    DEGREE_OPTIONS.find((item) => item.id === initialPayload?.item.degree) ||
+      DEGREE_OPTIONS.at(0)!
+  );
   const startYear = useObjectInput({
     initialValue:
       yearOptions.find((item) => item.id === initialPayload?.item.startYear) ??
@@ -59,15 +58,7 @@ export default function AddOrEditEducationModal({
     ],
   });
 
-  const allInputs = [
-    university,
-    country,
-    city,
-    speciality,
-    degree,
-    startYear,
-    endYear,
-  ];
+  const allInputs = [university, country, city, speciality, startYear, endYear];
   const thereAreSomeErrors = allInputs.some((item) => item.errors.length > 0);
 
   const formType = !initialPayload ? "add" : "edit";
@@ -78,7 +69,7 @@ export default function AddOrEditEducationModal({
       country: country.value,
       city: city.value,
       speciality: speciality.value,
-      degree: degree.value.id,
+      degree: degree.id,
       startYear: startYear.value.id,
       endYear: endYear.value.id,
     };
@@ -167,8 +158,8 @@ export default function AddOrEditEducationModal({
             id="degree"
             label="Степінь"
             items={DEGREE_OPTIONS}
-            selectedItem={degree.value}
-            setSelected={degree.change}
+            selectedItem={degree}
+            setSelected={setDegree}
           />
         </div>
 
