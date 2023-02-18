@@ -99,9 +99,12 @@ export default function AddOrEditEducationModal({
       <div className="grid grid-cols-6 gap-6 mt-4">
         <div className="col-span-6 sm:col-span-6">
           <ValidatedInput
-            label="Університет"
+            label="Університет, повна назва"
             id="university"
             value={university.value}
+            placeholder={
+              "Харківський національний університет радіоелектроники"
+            }
             onChange={university.change}
             onBlur={university.blur}
             warnings={university.warnings}

@@ -1,16 +1,14 @@
-import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
-import { useCvDataStore } from "../../store/cv-data-store";
+import { useCvDataStore } from "../../../store/cv-data-store";
 import { useDialogActionsListReducer } from "@/hooks/useDialogActionsListReducer";
-import AddOrEditEducationModal from "../modals/AddOrEditEducationModal";
-import EducationItem from "../list-items/EducationItem";
-import EmptyState from "@/components/ui/EmptyState";
-import RemoveItemModal from "../modals/RemoveItemModal";
+import AddOrEditEducationModal from "../../modals/AddOrEditEducationModal";
+import RemoveItemModal from "../../modals/RemoveItemModal";
+import Educations from "./Educations";
+import Stage7Tips from "./Stage7Tips";
 
 export default function Stage7() {
-  const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
   const educations = useCvDataStore((s) => s.cvData.educations);
   const dispatchEducations = useCvDataStore((s) => s.dispatchEducations);
-  type Education = typeof educations.items[number];
+  type Education = (typeof educations.items)[number];
   const [dialogState, dispatch] = useDialogActionsListReducer<Education>();
 
   const handleAddClick = () =>
@@ -69,24 +67,9 @@ export default function Stage7() {
             </button>
           </div>
         </div>
-        {educations.items.length > 0 ? (
-          <div className="mt-5 flow-root">
-            <ul role="list" className="divide-y divide-gray-200">
-              {educations.items.map((item, itemIndex) => (
-                <EducationItem
-                  key={itemIndex}
-                  item={item}
-                  itemIndex={itemIndex}
-                  dispatchAction={dispatch}
-                />
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <EmptyState noItemsText="Інформації про освіту не додано" />
-        )}
+        <Educations dispatchFn={dispatch} />
       </div>
-      {isAssistEnabled && <div className="mt-6"></div>}
+      <Stage7Tips />
     </>
   );
 }

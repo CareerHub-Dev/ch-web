@@ -14,7 +14,7 @@ export default function NoItems(props: {
   status: keyof typeof TEXT_CLASSES_MAP;
 }) {
   return (
-    <h3 className="mt-2 text-center text-sm font-medium">
+    <div className="flex items-center justify-center space-x-3 py-2 pl-3 pr-2 sm:text-sm">
       {props.status === "hasError" ? (
         <ExclamationCircleIcon
           aria-hidden="true"
@@ -27,6 +27,6 @@ export default function NoItems(props: {
         />
       ) : null}
       <span className={TEXT_CLASSES_MAP[props.status]}>{props.text}</span>
-    </h3>
+    </div>
   );
 }
