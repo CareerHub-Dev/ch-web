@@ -1,18 +1,18 @@
-import { useInput } from '@/hooks/useInput';
-import { useState } from 'react';
-import { useCvDataStore } from '../../store/cv-data-store';
-import NativeItemSelection from '@/components/ui/NativeItemSelection';
-import ValidatedInput from '@/components/ui/ValidatedInput';
-import AddOrEditItemModal from './AddOrEditItemModal';
-import { type ForeignLanguage } from '../../store/cv-data-store/cv';
+import { useInput } from "@/hooks/useInput";
+import { useState } from "react";
+import { useCvDataStore } from "../../store/cv-data-store";
+import NativeItemSelection from "@/components/ui/NativeItemSelection";
+import ValidatedInput from "@/components/ui/ValidatedInput";
+import AddOrEditItemModal from "./AddOrEditItemModal";
+import { type ForeignLanguage } from "../../store/cv-data-store/cv";
 
 const LEVEL_OPTIONS = [
-  { name: 'A1', id: 'A1' },
-  { name: 'A2', id: 'A2' },
-  { name: 'B1', id: 'B1' },
-  { name: 'B2', id: 'B2' },
-  { name: 'C1', id: 'C1' },
-  { name: 'C2', id: 'C2' },
+  { name: "A1 (Базовий) ", id: "A1" },
+  { name: "A2 (Нижче середнього)", id: "A2" },
+  { name: "B1 (Середній)", id: "B1" },
+  { name: "B2 (Вище середнього)", id: "B2" },
+  { name: "C1 (Просунутий)", id: "C1" },
+  { name: "C2 (Вільне володіння)", id: "C2" },
 ];
 
 export default function AddOrEditLanguageModal({
@@ -22,18 +22,18 @@ export default function AddOrEditLanguageModal({
   onClose: () => void;
   initialPayload?: { item: ForeignLanguage; itemIndex: number };
 }) {
-  const formType = !initialPayload ? 'add' : 'edit';
+  const formType = !initialPayload ? "add" : "edit";
   const dispatchLanguages = useCvDataStore((s) => s.dispatchForeignLanguages);
 
   const nameInput = useInput({
-    initialValue: initialPayload?.item.name ?? '',
+    initialValue: initialPayload?.item.name ?? "",
     validators: [
       (val) => {
         return val.length > 0
-          ? { type: 'success' }
+          ? { type: "success" }
           : {
-              type: 'error',
-              message: 'Назва мови має містити хоча б один символ',
+              type: "error",
+              message: "Назва мови має містити хоча б один символ",
             };
       },
     ],
@@ -47,7 +47,7 @@ export default function AddOrEditLanguageModal({
   const handleConfirm = () => {
     if (!initialPayload) {
       dispatchLanguages({
-        type: 'add',
+        type: "add",
         item: {
           name: nameInput.value,
           languageLevel: level.id,
@@ -55,7 +55,7 @@ export default function AddOrEditLanguageModal({
       });
     } else {
       dispatchLanguages({
-        type: 'edit',
+        type: "edit",
         itemIndex: initialPayload.itemIndex,
         newValue: {
           name: nameInput.value,

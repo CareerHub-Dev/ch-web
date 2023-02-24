@@ -13,7 +13,7 @@ export default function Stage5() {
     (s) => s.dispatchForeignLanguages
   );
   const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
-  type ForeignLanguage = typeof foreignLanguages.items[number];
+  type ForeignLanguage = (typeof foreignLanguages.items)[number];
 
   const [state, dispatchAction] =
     useDialogActionsListReducer<ForeignLanguage>();
