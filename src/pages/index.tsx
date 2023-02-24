@@ -1,7 +1,6 @@
 import Head from "next/head";
 import NureIcon from "@/components/icons/NureIcon";
 import CareerCenterIcon from "@/components/icons/CareerCenterIcon";
-import AuthButtons from "@/components/landing/AuthButtons";
 import CommonLayout from "@/components/layout/CommonLayout";
 
 import classes from "@/styles/index.module.scss";
@@ -28,7 +27,6 @@ const LandingPage: NextPageWithLayout = () => {
           CareerHub
         </h1>
       </header>
-      <AuthButtons />
     </>
   );
 };

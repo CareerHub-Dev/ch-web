@@ -1,13 +1,13 @@
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
-import LoadingSpinner from '../LoadingSpinner';
-import ModalPortal from '../ModalPortal';
+import { Transition } from "@headlessui/react";
+import { Fragment } from "react";
+import LoadingSpinner from "../LoadingSpinner";
+import ModalPortal from "../ModalPortal";
 
 const ModalLoading = (props: { show?: boolean }) => {
   return (
     <ModalPortal>
       <Transition.Root show={props.show} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={() => {}}>
+        <div className="relative z-50">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -31,16 +31,14 @@ const ModalLoading = (props: { show?: boolean }) => {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="relative transform transition-all text-center">
-                  <Dialog.Title as="h3" className="sr-only">
-                    {'Завантаження...'}
-                  </Dialog.Title>
+                <div className="relative transform transition-all text-center">
+                  <div className="sr-only">{"Завантаження..."}</div>
                   <LoadingSpinner className="text-blue-800 h-32 w-32 opacity-100" />
-                </Dialog.Panel>
+                </div>
               </Transition.Child>
             </div>
           </div>
-        </Dialog>
+        </div>
       </Transition.Root>
     </ModalPortal>
   );
