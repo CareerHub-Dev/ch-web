@@ -1,16 +1,10 @@
 import AssistanceAlert from "../../AssistantAlert";
 import { useCvDataStore } from "../../../store/cv-data-store";
-import { useJobPositionsQueryData } from "@/hooks/useJobPositionsQuery";
-import {
-  DEFAULT_JOB_POSITION,
-} from "../../../store/cv-data-store/cv";
 import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
-import ItemSelection from "@/components/ui/ItemsSelection";
 import TemplateLanguageSelection from "./TemplateLanguageSelection";
+import JobPositionSelection from "./JobPositionSelection";
 
 export default function Stage0() {
-  const jobPositionsQueryData = useJobPositionsQueryData();
-
   const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
 
   const selectedTemplateLanguage = useCvDataStore(

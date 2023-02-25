@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@headlessui/react': ^1.7.7
+  '@headlessui/react': ^1.7.12
   '@heroicons/react': ^2.0.13
   '@next/bundle-analyzer': ^13.1.2
   '@reduxjs/toolkit': ^1.9.1
@@ -43,7 +43,7 @@ specifiers:
   zustand: ^4.3.2
 
 dependencies:
-  '@headlessui/react': 1.7.7_biqbaboplfbrettd7655fr4n2y
+  '@headlessui/react': 1.7.12_biqbaboplfbrettd7655fr4n2y
   '@heroicons/react': 2.0.13_react@18.2.0
   '@next/bundle-analyzer': 13.1.2
   '@reduxjs/toolkit': 1.9.1_k4ae6lp43ej6mezo3ztvx6pykq
@@ -111,8 +111,8 @@ packages:
       - supports-color
     dev: true
 
-  /@headlessui/react/1.7.7_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-BqDOd/tB9u2tA0T3Z0fn18ktw+KbVwMnkxxsGPIH2hzssrQhKB5n/6StZOyvLYP/FsYtvuXfi9I0YowKPv2c1w==}
+  /@headlessui/react/1.7.12_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-FhSx5V+Qp0GvbTpaxyS+ymGDDNntCacClWsk/d8Upbr19g3AsPbjfPk4+m2CgJGcuCB5Dz7LpUIOAbvQTyjL2g==}
     engines: {node: '>=10'}
     peerDependencies:
       react: ^16 || ^17 || ^18
