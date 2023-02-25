@@ -25,8 +25,8 @@ export type CvDataStore = {
   discardChanges: (lastSave: CvData | CvQueryData | null) => void;
   dispatchTitle: (value: StringInputAction) => void;
   changeTemplateLanguage: (value: TemplateLanguage) => void;
-  changeJobPosition: (value: { id: string; name: string }) => void;
-  clickJobPosition: () => void;
+  changeJobPosition: (value: { id: string; name: string } | null) => void;
+  changeWorkDirection: (value: { id: string; name: string } | null) => void;
   dispatchFirstName: (action: StringInputAction) => void;
   dispatchLastName: (action: StringInputAction) => void;
   dispatchGoals: (action: StringInputAction) => void;
@@ -79,11 +79,19 @@ export const useCvDataStore = create<CvDataStore>()(
         }),
       changeJobPosition: (value) =>
         set((state) => {
-          state.cvData.jobPosition = { value, wasClicked: true };
+          state.cvData.jobPosition = {
+            value,
+            wasChanged: true,
+            wasBlurred: state.cvData.jobPosition.wasBlurred,
+          };
         }),
-      clickJobPosition: () =>
+      changeWorkDirection: (value) =>
         set((state) => {
-          state.cvData.jobPosition.wasClicked = true;
+          state.cvData.workDirection = {
+            value,
+            wasChanged: true,
+            wasBlurred: state.cvData.workDirection.wasBlurred,
+          };
         }),
       changeTemplateLanguage: (value) =>
         set((state) => {

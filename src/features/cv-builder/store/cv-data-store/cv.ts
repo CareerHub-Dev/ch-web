@@ -28,12 +28,21 @@ export type Education = {
 export type CvData = {
   title: StringInput;
   templateLanguage: TemplateLanguage;
-  jobPosition: {
-    wasClicked: boolean;
+  workDirection: {
+    wasChanged: boolean;
+    wasBlurred: boolean;
     value: {
       id: string;
       name: string;
-    };
+    } | null;
+  };
+  jobPosition: {
+    wasChanged: boolean;
+    wasBlurred: boolean;
+    value: {
+      id: string;
+      name: string;
+    } | null;
   };
   firstName: StringInput;
   lastName: StringInput;
@@ -59,7 +68,8 @@ export function getEmptyCvData(): CvData {
   return {
     title: getStringInput(),
     templateLanguage: TEMPLATE_LANGUAGES[0]!,
-    jobPosition: { value: DEFAULT_JOB_POSITION, wasClicked: false },
+    workDirection: { value: null, wasChanged: false, wasBlurred: false },
+    jobPosition: { value: null, wasChanged: false, wasBlurred: false },
     firstName: getStringInput(),
     lastName: getStringInput(),
     goals: getStringInput(),
@@ -88,7 +98,8 @@ export function restoreToCvQueryData(data: StudentCvDetails): CvData {
 
   return {
     ...data,
-    jobPosition: { value: data.jobPosition, wasClicked: true },
+    workDirection: { value: null, wasChanged: false, wasBlurred: false },
+    jobPosition: { value: null, wasChanged: false, wasBlurred: false },
     title: getStringInput({ value: data.title }),
     templateLanguage: matchTemplateLanguage(data.templateLanguage),
     firstName: getStringInput(),
@@ -122,6 +133,4 @@ export const TEMPLATE_LANGUAGES = [
   { id: "EN", name: "English" },
 ];
 
-export type TemplateLanguage = typeof TEMPLATE_LANGUAGES[number];
-
-export const DEFAULT_JOB_POSITION = { id: "0", name: "Оберіть опцію" };
+export type TemplateLanguage = (typeof TEMPLATE_LANGUAGES)[number];
