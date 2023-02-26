@@ -1,15 +1,10 @@
 import AssistanceAlert from "../../AssistantAlert";
-import { useCvDataStore } from "../../../store/cv-data-store";
 import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
 import TemplateLanguageSelection from "./TemplateLanguageSelection";
 import JobPositionSelection from "./JobPositionSelection";
 
 export default function Stage0() {
   const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
-
-  const selectedTemplateLanguage = useCvDataStore(
-    (store) => store.cvData.templateLanguage
-  );
 
   return (
     <>
@@ -31,12 +26,11 @@ export default function Stage0() {
       </div>
       {isAssistEnabled ? (
         <div className="mt-6 space-y-6">
-          <AssistanceAlert title="Оберіть напрямок роботи"></AssistanceAlert>
+          <AssistanceAlert title="Оберіть напрямок та посаду">
+            <p>Для продовження необхідно обрати напрямок та посаду</p>
+          </AssistanceAlert>
 
-          <AssistanceAlert
-            title="Мова шаблону"
-            type={selectedTemplateLanguage.id === "EN" ? "positive" : "info"}
-          >
+          <AssistanceAlert title="Мова шаблону" type={"info"}>
             <p>
               У сфері IT всюди використовується англійська мова, тому у якості
               мови шаблону краще обрати саме її.

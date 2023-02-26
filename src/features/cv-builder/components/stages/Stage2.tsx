@@ -2,8 +2,8 @@ import { ConfirmCancelDialog } from "@/components/ui/ConfirmCancelDialog";
 import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
 import { getPhotoDetails, useCvDataStore } from "../../store/cv-data-store";
 import { getImage } from "@/lib/api/image";
-import Image from "next/image";
 import { useBoolean } from "usehooks-ts";
+import Image from "next/image";
 import AssistanceAlert from "../AssistantAlert";
 import ChangeOrRemovePhotoButton from "../ChangeOrRemovePhotoButton";
 import PhotoEditDialog from "../modals/PhotoEditDialog";
@@ -36,10 +36,16 @@ export default function Stage2() {
       />
 
       <div className="space-y-6 sm:space-y-5">
-        <h3 className="text-xl font-medium leading-6 text-gray-900">
-          {"Фотографія"}
-        </h3>
-
+        <div>
+          <h3 className="text-xl font-medium leading-6 text-gray-900">
+            {"Фотографія"}
+          </h3>
+          <p className="mt-1 max-w-2xl text-sm text-gray-500">
+            {
+              "Наявність фотографії у резюме зазвичай необов'язкова, тому можна пропустити цей крок"
+            }
+          </p>
+        </div>
         <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
           <label
             htmlFor="photo"
@@ -89,7 +95,7 @@ export default function Stage2() {
       {isAssistEnabled && (
         <div className="mt-6">
           <AssistanceAlert title="Чим може стати у нагоді фотографія в резюме?">
-            <ul>
+            <ul className="list-disc">
               <li>Деякі вакансії вимагають фотографію у резюме;</li>
               <li>
                 Для деяких компаній важливо, щоб працівник виглядав

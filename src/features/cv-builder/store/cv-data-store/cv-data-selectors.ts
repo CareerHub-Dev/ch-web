@@ -3,7 +3,7 @@ import { type CvDataStore } from "./cv-data-store";
 import { type CvModificationData } from "@/lib/api/cvs";
 import { getFileNameExtension } from "@/lib/images";
 import { createStringInputReducerActions } from "@/lib/string-input";
-import { DEFAULT_JOB_POSITION, Education } from "./cv";
+import { Education } from "./cv";
 
 export type StageCompletionStatus =
   | "complete"
@@ -18,10 +18,13 @@ export function getStageAccessibility(stage: StageNumber) {
       case 0:
         return { status: "accessible" } as const;
       default:
-        if (cvData.jobPosition.value.id === DEFAULT_JOB_POSITION.id) {
+        if (
+          cvData.workDirection.value === null ||
+          cvData.jobPosition.value === null
+        ) {
           return {
             status: "inaccessible",
-            reason: "Не обрано напрямок роботи",
+            reason: "Не обрано напрямок та посаду",
           } as const;
         }
         return { status: "accessible" } as const;
@@ -53,8 +56,7 @@ export function getStageCompletionStatus(stage: StageNumber) {
   return (store: CvDataStore): StageCompletionStatus => {
     switch (stage) {
       case 0: {
-        const jobPositionNotSpecified =
-          store.cvData.jobPosition.value.id === DEFAULT_JOB_POSITION.id;
+        const jobPositionNotSpecified = store.cvData.jobPosition.value === null;
         if (jobPositionNotSpecified) {
           return "hasErrors";
         }
@@ -111,7 +113,7 @@ export function getCvMutationData(
   store: CvDataStore
 ): CvModificationData | null {
   const { cvData } = store;
-  const jobPositionId = cvData.jobPosition.value.id;
+  const jobPositionId = "Dummy-value";
 
   let photo: File | undefined;
   if (

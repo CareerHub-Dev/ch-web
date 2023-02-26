@@ -13,37 +13,41 @@ export default function ItemSelection({
   items,
   selectedItem,
   setSelected,
-  hasError,
+  errors,
   onBlur,
 }: {
   label?: string;
   items: Array<Item>;
   selectedItem: Item;
   setSelected: (item: Item) => void;
+  errors?: string[];
   onBlur?: () => void;
-  hasError?: boolean;
 }) {
+  const hasErrors = errors && errors.length > 0;
   return (
     <Listbox value={selectedItem} onChange={setSelected}>
       {({ open }) => (
         <>
           {label && (
-            <Listbox.Label className="block text-sm font-medium text-gray-700">
+            <Listbox.Label className="block text-sm font-medium text-gray-700 mb-1">
               {label}
             </Listbox.Label>
           )}
-          <div className="relative mt-1">
+          <div className="relative">
             <Listbox.Button
               onBlur={onBlur}
               className={cn(
                 "relative w-full cursor-pointer rounded-md border bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus:ring-1 sm:text-sm",
-                hasError
+                hasErrors
                   ? "focus:border-red-500 focus:ring-red-500 border-red-300"
                   : "focus:border-blue-500 focus:ring-blue-500 border-gray-300"
               )}
             >
               <span
-                className={cn("block truncate", hasError ? "text-red-900" : "")}
+                className={cn(
+                  "block truncate",
+                  hasErrors ? "text-red-900" : ""
+                )}
               >
                 {selectedItem.name}
               </span>
@@ -51,7 +55,7 @@ export default function ItemSelection({
                 <ChevronUpDownIcon
                   className={cn(
                     "h-5 w-5",
-                    hasError ? "text-red-400" : "text-gray-400"
+                    hasErrors ? "text-red-400" : "text-gray-400"
                   )}
                   aria-hidden="true"
                 />
@@ -104,6 +108,10 @@ export default function ItemSelection({
                 ))}
               </Listbox.Options>
             </Transition>
+
+            {hasErrors ? (
+              <p className="mt-2 text-sm text-red-600">{errors.at(0)}</p>
+            ) : null}
           </div>
         </>
       )}

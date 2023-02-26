@@ -97,15 +97,17 @@ export default function Stage5() {
 
       {isAssistEnabled && (
         <div className="mt-6 flex flex-col gap-4">
-          <AssistanceAlert>
-            <p>Перелічи, які мови ти знаєш і на якому рівні</p>
-            <br />
+          <AssistanceAlert title="Що варто вказати?">
             <p>
               Важливо вказати іноземні мови, які будуть корисні в роботі.
-              Наприклад, англійська
+              Скоріше за все, работодавці будуть цікавитися вашим рівнем
+              англійської
             </p>
           </AssistanceAlert>
-          <AssistanceAlert type="positive">
+          <AssistanceAlert type="warning" title="Лише іноземні мови!">
+            <p>Не треба вказувати рідну мову - це зайве</p>
+          </AssistanceAlert>
+          <AssistanceAlert type="positive" title="Гарний приклад:">
             <p>English - C1</p>
             <p>German - B2</p>
           </AssistanceAlert>

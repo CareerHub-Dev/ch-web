@@ -6,7 +6,8 @@ export default function AddHardSkill() {
   return (
     <AddItemForm
       id="hard-skill"
-      label="Додати хард скіл"
+      skillType="hard"
+      label="Техничні навички (Hard Skills)"
       dispatchFn={dispatchHardSkills}
     />
   );

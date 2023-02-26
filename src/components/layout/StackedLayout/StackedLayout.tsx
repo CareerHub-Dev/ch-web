@@ -1,18 +1,18 @@
-import useSession from '@/hooks/useSession';
-import Image from 'next/image';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { useRouter } from 'next/router';
-import { Fragment, type ReactNode } from 'react';
-import cn from 'classnames';
-import Link from 'next/link';
-import NavigationLink from './NavigationLink';
-import UserAvatar from './UserAvatar';
-import NavigationLinkMobile from './NavigationLinkMobile';
-import AuthLinks from './AuthLinks';
-import AuthLinksMobile from './AuthLinksMobile';
-import { getNavigationLinks, getUserMenuLinks } from './navigation-items';
-import { Background } from '../Background';
+import useSession from "@/hooks/useSession";
+import Image from "next/image";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/router";
+import { Fragment, type ReactNode } from "react";
+import cn from "classnames";
+import Link from "next/link";
+import NavigationLink from "./NavigationLink";
+import UserAvatar from "./UserAvatar";
+import NavigationLinkMobile from "./NavigationLinkMobile";
+import AuthLinks from "./AuthLinks";
+import AuthLinksMobile from "./AuthLinksMobile";
+import { getNavigationLinks, getUserMenuLinks } from "./navigation-items";
+import { Background } from "../Background";
 
 export default function StackedLayout(props: { children: ReactNode }) {
   const { pathname, replace } = useRouter();
@@ -22,7 +22,7 @@ export default function StackedLayout(props: { children: ReactNode }) {
 
   const handleLogoutClick = () => {
     logout();
-    replace('/auth/login');
+    replace("/auth/login");
   };
 
   return (
@@ -65,7 +65,7 @@ export default function StackedLayout(props: { children: ReactNode }) {
                   </div>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                  {status === 'authenticated' ? (
+                  {status === "authenticated" ? (
                     <>
                       <button
                         type="button"
@@ -99,8 +99,8 @@ export default function StackedLayout(props: { children: ReactNode }) {
                                   <Link
                                     href={link.href}
                                     className={cn(
-                                      active ? 'bg-gray-100' : '',
-                                      'block px-4 py-2 text-sm text-gray-700'
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-gray-700"
                                     )}
                                   >
                                     {link.text}
@@ -113,11 +113,11 @@ export default function StackedLayout(props: { children: ReactNode }) {
                                 <button
                                   onClick={handleLogoutClick}
                                   className={cn(
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700 w-full text-left'
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700 w-full text-left"
                                   )}
                                 >
-                                  {'Вийти'}
+                                  {"Вийти"}
                                 </button>
                               )}
                             </Menu.Item>
@@ -125,7 +125,7 @@ export default function StackedLayout(props: { children: ReactNode }) {
                         </Transition>
                       </Menu>
                     </>
-                  ) : status === 'unauthenticated' ? (
+                  ) : status === "unauthenticated" ? (
                     <AuthLinks />
                   ) : null}
                 </div>
@@ -159,7 +159,7 @@ export default function StackedLayout(props: { children: ReactNode }) {
                 ))}
               </div>
               <div className="border-t border-gray-200 pt-4 pb-3">
-                {status === 'authenticated' ? (
+                {status === "authenticated" ? (
                   <>
                     <div className="flex items-center px-4">
                       <div className="flex-shrink-0">
@@ -167,10 +167,10 @@ export default function StackedLayout(props: { children: ReactNode }) {
                       </div>
                       <div className="ml-3">
                         <div className="text-base font-medium text-gray-800">
-                          {'Username'}
+                          {"Username"}
                         </div>
                         <div className="text-sm font-medium text-gray-500">
-                          {'User email'}
+                          {"User email"}
                         </div>
                       </div>
                       <button
@@ -183,25 +183,23 @@ export default function StackedLayout(props: { children: ReactNode }) {
                     </div>
                     <div className="mt-3 space-y-1">
                       {menuLinks.map((link, linkIndex) => (
-                        <Disclosure.Button
+                        <Link
                           key={linkIndex}
-                          as={Link}
                           href={link.href}
                           className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                         >
                           {link.text}
-                        </Disclosure.Button>
+                        </Link>
                       ))}
-                      <Disclosure.Button
-                        as="button"
+                      <button
                         onClick={handleLogoutClick}
                         className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 w-full text-left"
                       >
-                        {'Вийти'}
-                      </Disclosure.Button>
+                        {"Вийти"}
+                      </button>
                     </div>
                   </>
-                ) : status === 'unauthenticated' ? (
+                ) : status === "unauthenticated" ? (
                   <AuthLinksMobile />
                 ) : null}
               </div>

@@ -2,26 +2,36 @@ import ItemSelection from "@/components/ui/ItemsSelection";
 import AutocompleteCombobox from "@/components/ui/AutocompleteCombobox";
 import { SELECTION_ITEMS, JOB_DIRECTIONS } from "../../mocks/job-directions";
 import { useState } from "react";
+import { useCvDataStore } from "@/features/cv-builder/store/cv-data-store";
 
 export default function JobPositionSelection() {
   const items = SELECTION_ITEMS satisfies { id: string; name: string }[];
-  const [selectedItem, setSelectedItem] = useState<{
-    id: string;
-    name: string;
-  } | null>(null);
 
+  const selectedDirection = useCvDataStore((s) => s.cvData.workDirection);
+  const setSelectedDirection = useCvDataStore((s) => s.changeWorkDirection);
+  const handleDirectionBlur = useCvDataStore((s) => s.blurWorkDirection);
+  const directionHasError =
+    selectedDirection.value === null && selectedDirection.wasBlurred;
+
+  const selectedJobPosition = useCvDataStore((s) => s.cvData.jobPosition);
+  const setSelectedJobPosition = useCvDataStore((s) => s.changeJobPosition);
+  const handleJobPositionBlur = useCvDataStore((s) => s.blurJobPosition);
   const [jobPositionInput, setJobPositionInput] = useState("");
-  const [selectedJobPosition, setSelectedJobPosition] =
-    useState(DEFAULT_JOB_POSITION);
+  const jobPositionHasError =
+    selectedJobPosition.value === null && selectedJobPosition.wasBlurred;
 
   const handleItemSelected = (val: { id: string; name: string }) => {
-    setSelectedItem(val);
-    setSelectedJobPosition(DEFAULT_JOB_POSITION);
+    if (val.id === selectedDirection.value?.id) {
+      return;
+    }
+
+    setSelectedDirection(val);
+    setSelectedJobPosition(null);
     setJobPositionInput("");
   };
 
   const handleJobPositionInputChange = (val: string) => {
-    if (selectedItem === null) {
+    if (selectedDirection === null) {
       return;
     }
 
@@ -30,10 +40,10 @@ export default function JobPositionSelection() {
   const normalizedJobPositionInput = jobPositionInput.trim().toLowerCase();
 
   const shownSuggestions =
-    selectedItem === null
+    selectedDirection.value === null
       ? []
       : JOB_DIRECTIONS.find(
-          (item) => item.id === selectedItem?.id
+          (item) => item.id === selectedDirection.value?.id
         )!.positionSuggestions.filter((item) => {
           return item.name
             .trim()
@@ -46,11 +56,13 @@ export default function JobPositionSelection() {
       <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
         <ItemSelection
           items={items}
-          selectedItem={selectedItem ?? { id: "-1", name: "Оберіть напрямок" }}
+          selectedItem={
+            selectedDirection.value ?? { id: "-1", name: "Оберіть напрямок" }
+          }
           setSelected={handleItemSelected}
-          onBlur={() => {}}
+          onBlur={handleDirectionBlur}
           label="Напрямок роботи"
-          hasError={false}
+          errors={directionHasError ? ["Оберіть напрямок"] : []}
         />
       </div>
 
@@ -58,11 +70,13 @@ export default function JobPositionSelection() {
         <AutocompleteCombobox
           label="Посада"
           placeholder="Почніть вводити посаду"
-          disabled={selectedItem === null}
+          disabled={selectedDirection.value === null}
+          onBlur={handleJobPositionBlur}
           items={shownSuggestions}
-          selectedItem={selectedJobPosition}
+          selectedItem={selectedJobPosition.value ?? DEFAULT_JOB_POSITION}
           setSelectedItem={setSelectedJobPosition}
           setQuery={handleJobPositionInputChange}
+          errors={jobPositionHasError ? ["Оберіть посаду"] : []}
         />
       </div>
     </>

@@ -34,7 +34,7 @@ export default function NativeItemSelection({
         id={id}
         name={id}
         className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500"
-        value={selectedItem.name}
+        value={selectedItem.id}
         onChange={handleChange}
         disabled={disabled}
       >

@@ -13,7 +13,7 @@ export default function HardSkills() {
 
   if (items.length === 0) {
     const status = wasChanged ? "hasWarning" : "default";
-    return <NoItems text={"Не додано хард скілів"} status={status} />;
+    return <NoItems text={"Нічого не додано"} status={status} />;
   }
 
   return (

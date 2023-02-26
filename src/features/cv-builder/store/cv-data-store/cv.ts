@@ -129,8 +129,8 @@ export function matchTemplateLanguage(val: string): TemplateLanguage {
 }
 
 export const TEMPLATE_LANGUAGES = [
-  { id: "UA", name: "Українська" },
   { id: "EN", name: "English" },
+  { id: "UA", name: "Українська" },
 ];
 
 export type TemplateLanguage = (typeof TEMPLATE_LANGUAGES)[number];

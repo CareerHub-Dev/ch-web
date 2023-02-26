@@ -19,7 +19,7 @@ export default function Stage4Tips() {
             <br />
             <p>Також може бути корисно вказати:</p>
 
-            <ul>
+            <ul className='list-disc'>
               <li>Системи контролю версій</li>
               <li>Методології</li>
               <li>Сервіси</li>

@@ -6,8 +6,9 @@ export default function AddSoftSkill() {
   return (
     <AddItemForm
       dispatchFn={dispatchSoftSkills}
-      label="Софт скіли"
+      label="Персональні навички (Soft Skills)"
       id="soft-skill"
+      skillType="soft"
     />
   );
 }

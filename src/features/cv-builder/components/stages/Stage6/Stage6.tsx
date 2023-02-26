@@ -2,14 +2,14 @@ import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-
 import {
   getExperienceHighlightsActions,
   useCvDataStore,
-} from "../../store/cv-data-store";
+} from "../../../store/cv-data-store";
 import { useDialogActionsListReducer } from "@/hooks/useDialogActionsListReducer";
 import { type ChangeEvent } from "react";
-import { AddOrEditProjectLinkModal } from "../modals/AddOrEditProjectLinkModal";
-import AssistanceAlert from "../AssistantAlert";
+import { AddOrEditProjectLinkModal } from "../../modals/AddOrEditProjectLinkModal";
+import AssistanceAlert from "../../AssistantAlert";
 import EmptyState from "@/components/ui/EmptyState";
-import RemoveItemModal from "../modals/RemoveItemModal";
-import ProjectLinkItem from "../ProjectLinkItem";
+import RemoveItemModal from "../../modals/RemoveItemModal";
+import ProjectLinkItem from "../../ProjectLinkItem";
 
 export default function Stage6() {
   const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
@@ -20,7 +20,7 @@ export default function Stage6() {
     getExperienceHighlightsActions
   );
   const projectLinks = useCvDataStore((s) => s.cvData.projectLinks);
-  type ProjectLink = typeof projectLinks.items[number];
+  type ProjectLink = (typeof projectLinks.items)[number];
 
   const dispatchProjectLinks = useCvDataStore((s) => s.dispatchProjectLinks);
 
@@ -131,12 +131,12 @@ export default function Stage6() {
           <EmptyState noItemsText="Посилань не додано" />
         )}
       </div>
-      {isAssistEnabled && (
+      {isAssistEnabled ? (
         <div className="mt-6 flex flex-col gap-4">
           <AssistanceAlert>
             <p>
               Ще можна залишити корисні посилання на власні проекти для
-              дмеонстрації портфоліо.
+              демонстрації портфоліо.
             </p>
           </AssistanceAlert>
           <AssistanceAlert type="warning">
@@ -147,7 +147,7 @@ export default function Stage6() {
             <p>Не потрібно залишати посилання на непрофесійні соцмережи</p>
           </AssistanceAlert>
         </div>
-      )}
+      ) : null}
     </>
   );
 }

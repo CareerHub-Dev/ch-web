@@ -29,28 +29,28 @@ export default function Stage3() {
             wasChanged={goals.wasChanged}
           />
           <p className="mt-2 text-sm text-gray-500">
-            Напишіть не більше 200 символів про свої цілі у праці
+            Напишіть не більше 200 символів про свої цілі
           </p>
         </div>
       </div>
       {isAssistEnabled && (
         <div className="mt-6 flex flex-col gap-4">
-          <AssistanceAlert>
+          <AssistanceAlert title="Що саме варто описати?">
             <p>
               Цілі - це те, чим саме ти хочеш займатися на роботі, чого ти хочеш
               досягти, з якими людьми працювати і в якій компанії
             </p>
           </AssistanceAlert>
-          <AssistanceAlert type="positive">
+          <AssistanceAlert type="negative" title="Поганий приклад:">
+            <p>
+              Хочу бути розробником, знайомий з безліччю технологій у сфері IT.
+            </p>
+          </AssistanceAlert>
+          <AssistanceAlert type="positive" title="Непоганий прикад:">
             <p>
               Seeking a position as a Javascript trainee, to leverage my skills
               and passion for learning to make interesting and useful projects
               in a team of professionals.
-            </p>
-          </AssistanceAlert>
-          <AssistanceAlert type="negative">
-            <p>
-              Хочу бути розробником, знайомий з безліччю технологій у сфері IT.
             </p>
           </AssistanceAlert>
         </div>
