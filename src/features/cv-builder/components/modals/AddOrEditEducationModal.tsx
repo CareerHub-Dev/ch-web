@@ -16,6 +16,7 @@ export default function AddOrEditEducationModal({
   initialPayload?: { item: Education; itemIndex: number };
 }) {
   const dispatchEducations = useCvDataStore((s) => s.dispatchEducations);
+  const cvTemplateLanguage = useCvDataStore((s) => s.cvData.templateLanguage);
   const yearOptions = useMemo(() => getYearOptions(MAX_ALLOWED_YEAR_RANGE), []);
   const educationIsCurrent = useBoolean(true);
   const university = useInput({
@@ -47,21 +48,19 @@ export default function AddOrEditEducationModal({
     initialValue:
       yearOptions.find((item) => item.id === initialPayload?.item.endYear) ??
       yearOptions.at(0)!,
-    validators: [
-      (val) =>
-        !educationIsCurrent && Number(val.name) <= Number(startYear.value.name)
-          ? {
-              type: "error",
-              message: "Перевірте коретність обраних років",
-            }
-          : { type: "success" },
-    ],
   });
-
+  const startYearInt = Number(startYear.value.name);
+  const endYearInt = Number(endYear.value.name);
+  const currentYear = new Date().getFullYear();
+  const timePeriodIsInvalid =
+    !educationIsCurrent.value &&
+    (startYearInt > endYearInt || startYearInt > currentYear);
   const allInputs = [university, country, city, speciality, startYear, endYear];
-  const thereAreSomeErrors = allInputs.some((item) => item.errors.length > 0);
+  const thereAreSomeErrors =
+    allInputs.some((item) => item.errors.length > 0) || timePeriodIsInvalid;
 
   const formType = !initialPayload ? "add" : "edit";
+  const placeholders = mapPlaceholders(cvTemplateLanguage.id);
 
   const handleConfirm = () => {
     const values = {
@@ -72,6 +71,7 @@ export default function AddOrEditEducationModal({
       degree: degree.id,
       startYear: startYear.value.id,
       endYear: endYear.value.id,
+      isCurrent: educationIsCurrent.value,
     };
 
     if (!initialPayload) {
@@ -102,9 +102,7 @@ export default function AddOrEditEducationModal({
             label="Університет, повна назва"
             id="university"
             value={university.value}
-            placeholder={
-              "Харківський національний університет радіоелектроники"
-            }
+            placeholder={placeholders.university}
             onChange={university.change}
             onBlur={university.blur}
             warnings={university.warnings}
@@ -121,6 +119,7 @@ export default function AddOrEditEducationModal({
             value={country.value}
             onChange={country.change}
             onBlur={country.blur}
+            placeholder={placeholders.country}
             warnings={country.warnings}
             errors={country.errors}
             wasBlurred={country.wasBlurred}
@@ -134,6 +133,7 @@ export default function AddOrEditEducationModal({
             id="city"
             value={city.value}
             onChange={city.change}
+            placeholder={placeholders.city}
             onBlur={city.blur}
             warnings={city.warnings}
             errors={city.errors}
@@ -144,10 +144,11 @@ export default function AddOrEditEducationModal({
 
         <div className="col-span-6 sm:col-span-3">
           <ValidatedInput
-            label="Спеціальність"
+            label="Спеціальність, повна назва"
             id="speciality"
             value={speciality.value}
             onChange={speciality.change}
+            placeholder={placeholders.speciality}
             onBlur={speciality.blur}
             warnings={speciality.warnings}
             errors={speciality.errors}
@@ -159,7 +160,7 @@ export default function AddOrEditEducationModal({
         <div className="col-span-6 sm:col-span-3">
           <NativeItemSelection
             id="degree"
-            label="Степінь"
+            label="Ступінь"
             items={DEGREE_OPTIONS}
             selectedItem={degree}
             setSelected={setDegree}
@@ -205,6 +206,11 @@ export default function AddOrEditEducationModal({
             disabled={educationIsCurrent.value}
           />
         </div>
+        {timePeriodIsInvalid ? (
+          <p className="col-span-6 text-sm text-red-600">
+            {"Невалідний проміжок часу"}
+          </p>
+        ) : null}
       </div>
     </AddOrEditItemModal>
   );
@@ -236,5 +242,30 @@ function fillThisFieldValidator(val: string) {
         type: "error",
         message: "Це обов'язкове поле",
       } as const);
+}
+function mapPlaceholders(localeId: string) {
+  switch (localeId.toLowerCase()) {
+    case "ua":
+      return {
+        university: "Харківський національний університет радіоелектроніки",
+        country: "Україна",
+        city: "Харків",
+        speciality: "Інформаційні системи та технології",
+      };
+    case "en":
+      return {
+        university: "Kharkiv National University of Radioelectronics",
+        country: "Ukraine",
+        city: "Kharkiv",
+        speciality: "Information Systems and Technologies",
+      };
+    default:
+      return {
+        university: "Kharkiv National University of Radioelectronics",
+        country: "Ukraine",
+        city: "Kharkiv",
+        speciality: "Information Systems and Technologies",
+      };
+  }
 }
 const MAX_ALLOWED_YEAR_RANGE = 50;

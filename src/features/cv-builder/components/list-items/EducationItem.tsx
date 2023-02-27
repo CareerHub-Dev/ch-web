@@ -23,6 +23,7 @@ export default function EducationItem({
   const handleEditClick = createActionHandler('edit');
   const handleRemoveClick = createActionHandler('remove');
 
+  const displayedEndYear = item.isCurrent ? 'досі' : item.endYear;
   return (
     <li>
       <a className="block hover:bg-gray-50">
@@ -41,7 +42,7 @@ export default function EducationItem({
                     className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                     aria-hidden="true"
                   />
-                  <p>{`${item.startYear} - ${item.endYear || 'Досі'}`}</p>
+                  <p>{`${item.startYear} - ${displayedEndYear}`}</p>
                 </div>
               </div>
             </div>

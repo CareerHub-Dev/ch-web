@@ -1,4 +1,5 @@
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
+import { useOnClickOutside } from "usehooks-ts";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import cn from "classnames";
@@ -23,6 +24,12 @@ export default function ItemSelection({
   errors?: string[];
   onBlur?: () => void;
 }) {
+  const listboxRef = useRef(null);
+  useOnClickOutside(listboxRef, () => {
+    if (onBlur) {
+      onBlur();
+    }
+  });
   const hasErrors = errors && errors.length > 0;
   return (
     <Listbox value={selectedItem} onChange={setSelected}>
@@ -33,9 +40,8 @@ export default function ItemSelection({
               {label}
             </Listbox.Label>
           )}
-          <div className="relative">
+          <div className="relative" ref={listboxRef}>
             <Listbox.Button
-              onBlur={onBlur}
               className={cn(
                 "relative w-full cursor-pointer rounded-md border bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus:ring-1 sm:text-sm",
                 hasErrors

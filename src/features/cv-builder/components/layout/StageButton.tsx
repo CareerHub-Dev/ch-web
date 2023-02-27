@@ -36,7 +36,7 @@ export default function StageButton({
         disabled={stageAccessibility.status === "inaccessible"}
         title={stageAccessibility.reason}
         className={cn(
-          "text-left group flex flex-col border-l-4 py-2 pl-4 lg:border-l-0 lg:border-t-4 lg:pl-0 lg:pt-4 lg:pb-0 w-full transition-all ease-in-out duration-200 focus:outline-none focus:ring-blue-500 focus:ring-2 focus:ring-offset-2",
+          "text-left group flex flex-col border-l-4 py-2 pl-4 lg:border-l-0 lg:border-t-4 lg:pl-0 lg:pt-4 lg:pb-0 w-full transition-all ease-in-out duration-200 focus:outline-none focus-visible:ring-blue-500 focus-visible:ring-2 focus-visible:ring-offset-2",
           colorClasses.button
         )}
       >

@@ -48,10 +48,6 @@ export function getGoalsActions(store: CvDataStore) {
   return createStringInputReducerActions(store.dispatchGoals);
 }
 
-export function getExperienceHighlightsActions(store: CvDataStore) {
-  return createStringInputReducerActions(store.dispatchExperienceHighlights);
-}
-
 export function getStageCompletionStatus(stage: StageNumber) {
   return (store: CvDataStore): StageCompletionStatus => {
     switch (stage) {
@@ -79,8 +75,8 @@ export function getStageCompletionStatus(stage: StageNumber) {
         const { foreignLanguages } = store.cvData;
         return summarizeInputs(foreignLanguages);
       case 6:
-        const { experienceHighlights, projectLinks } = store.cvData;
-        return summarizeInputs(experienceHighlights, projectLinks);
+        const { projectLinks } = store.cvData;
+        return summarizeInputs(projectLinks);
       case 7:
         const { educations } = store.cvData;
         return summarizeInputs(educations);
@@ -134,7 +130,7 @@ export function getCvMutationData(
     lastName: cvData.lastName.value,
     photo,
     goals: cvData.goals.value,
-    experienceHighlights: cvData.experienceHighlights.value,
+    workExperiences: cvData.workExperiences.items,
     foreignLanguages: cvData.foreignLanguages.items,
     projectLinks: cvData.projectLinks.items,
     educations: cvData.educations.items.map(educationToPlainObject),

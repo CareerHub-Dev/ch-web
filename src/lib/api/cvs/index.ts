@@ -3,6 +3,7 @@ import { request } from '../../axios';
 import { parsePaginatedResponseAsync } from '../pagination';
 import { CvDetailsSchema, CvsArraySchema } from './schemas';
 import { objectToFormData } from '@/lib/forms';
+import { WorkExperience } from '@/features/cv-builder/store/cv-data-store/cv';
 
 type CvsRequestParams = Pick<PaginatedRequestParams, 'pageSize'> & {
   order?: string;
@@ -17,7 +18,7 @@ export type CvModificationData = {
   photo?: File;
   goals: string;
   skillsAndTechnologies: string;
-  experienceHighlights: string;
+  workExperiences: Array<WorkExperience>;
   foreignLanguages: Array<{ name: string; languageLevel: string }>;
   projectLinks: Array<{ title: string; url: string }>;
   educations: Array<{

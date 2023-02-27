@@ -15,6 +15,17 @@ export type ProjectLink = {
   url: string;
 };
 
+export type WorkExperience = {
+  company: string;
+  title: string;
+  startYear: string;
+  startMonth: string;
+  endYear: string;
+  endMonth: string;
+  description: string;
+  isCurrent: boolean;
+};
+
 export type Education = {
   university: string;
   city: string;
@@ -23,6 +34,7 @@ export type Education = {
   degree: string;
   startYear: string;
   endYear: string;
+  isCurrent: boolean;
 };
 
 export type CvData = {
@@ -44,12 +56,20 @@ export type CvData = {
       name: string;
     } | null;
   };
+  experienceLevel: {
+    wasChanged: boolean;
+    wasBlurred: boolean;
+    value: {
+      id: string;
+      name: string;
+    } | null;
+  };
   firstName: StringInput;
   lastName: StringInput;
   goals: StringInput;
   hardSkills: ArrayInput<string>;
   softSkills: ArrayInput<string>;
-  experienceHighlights: StringInput;
+  workExperiences: ArrayInput<WorkExperience>;
   foreignLanguages: ArrayInput<ForeignLanguage>;
   projectLinks: ArrayInput<ProjectLink>;
   educations: ArrayInput<Education>;
@@ -69,13 +89,14 @@ export function getEmptyCvData(): CvData {
     title: getStringInput(),
     templateLanguage: TEMPLATE_LANGUAGES[0]!,
     workDirection: { value: null, wasChanged: false, wasBlurred: false },
+    experienceLevel: { value: null, wasChanged: false, wasBlurred: false },
     jobPosition: { value: null, wasChanged: false, wasBlurred: false },
     firstName: getStringInput(),
     lastName: getStringInput(),
     goals: getStringInput(),
     hardSkills: getArrayInput(),
     softSkills: getArrayInput(),
-    experienceHighlights: getStringInput(),
+    workExperiences: getArrayInput(),
     foreignLanguages: getArrayInput(),
     projectLinks: getArrayInput(),
     educations: getArrayInput(),
@@ -105,7 +126,7 @@ export function restoreToCvQueryData(data: StudentCvDetails): CvData {
     firstName: getStringInput(),
     lastName: getStringInput(),
     goals: getStringInput({ value: data.goals }),
-    experienceHighlights: getStringInput({ value: data.experienceHighlights }),
+    workExperiences: getArrayInput({ initialItems: [] }),
     foreignLanguages: getArrayInput({ initialItems: data.foreignLanguages }),
     projectLinks: getArrayInput({ initialItems: data.projectLinks }),
     educations: getArrayInput({

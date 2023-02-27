@@ -1,6 +1,6 @@
 import ItemSelection from "@/components/ui/ItemsSelection";
 import AutocompleteCombobox from "@/components/ui/AutocompleteCombobox";
-import { SELECTION_ITEMS, JOB_DIRECTIONS } from "../../mocks/job-directions";
+import { SELECTION_ITEMS, JOB_DIRECTIONS, EXPERIENCE_LEVELS } from "../../mocks/job-directions";
 import { useState } from "react";
 import { useCvDataStore } from "@/features/cv-builder/store/cv-data-store";
 
@@ -13,6 +13,12 @@ export default function JobPositionSelection() {
   const directionHasError =
     selectedDirection.value === null && selectedDirection.wasBlurred;
 
+  const experienceLevel = useCvDataStore((s) => s.cvData.experienceLevel);
+  const setExperienceLevel = useCvDataStore((s) => s.changeExperienceLevel);
+  const handleExperienceLevelBlur = useCvDataStore(s => s.blurExperienceLevel);
+  const experienceLevelHasError =
+    experienceLevel.value === null && experienceLevel.wasBlurred;
+
   const selectedJobPosition = useCvDataStore((s) => s.cvData.jobPosition);
   const setSelectedJobPosition = useCvDataStore((s) => s.changeJobPosition);
   const handleJobPositionBlur = useCvDataStore((s) => s.blurJobPosition);
@@ -24,17 +30,23 @@ export default function JobPositionSelection() {
     if (val.id === selectedDirection.value?.id) {
       return;
     }
-
     setSelectedDirection(val);
     setSelectedJobPosition(null);
     setJobPositionInput("");
+  };
+
+  
+  const handleExperienceLevelChange = (val: { id: string; name: string }) => {
+    if (val.id === experienceLevel.value?.id) {
+      return;
+    }
+    setExperienceLevel(val);
   };
 
   const handleJobPositionInputChange = (val: string) => {
     if (selectedDirection === null) {
       return;
     }
-
     setJobPositionInput(val);
   };
   const normalizedJobPositionInput = jobPositionInput.trim().toLowerCase();
@@ -53,6 +65,19 @@ export default function JobPositionSelection() {
 
   return (
     <>
+      {/* <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5"> */}
+      {/*   <ItemSelection */}
+      {/*     items={EXPERIENCE_LEVELS} */}
+      {/*     selectedItem={ */}
+      {/*       experienceLevel.value ?? { id: "-1", name: "Оберіть рівень досвіду" } */}
+      {/*     } */}
+      {/*     setSelected={handleExperienceLevelChange} */}
+      {/*     onBlur={handleExperienceLevelBlur} */}
+      {/*     label="Рівень досвіду" */}
+      {/*     errors={experienceLevelHasError ? ["Оберіть рівень досвіду"] : []} */}
+      {/*   /> */}
+      {/* </div> */}
+
       <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
         <ItemSelection
           items={items}

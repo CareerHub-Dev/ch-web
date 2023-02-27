@@ -15,7 +15,7 @@ export default function Stage0() {
           </h3>
           <p className="mt-1 max-w-2xl text-sm text-gray-500">
             Загальна інформація про тип роботи та вибір мови, на якій
-            створюватиметься резюме
+ public public public public public public public public public public public public public public public public            створюватиметься резюме
           </p>
         </div>
 

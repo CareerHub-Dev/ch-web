@@ -40,7 +40,7 @@ export default function Stage4() {
         <div className="mt-6">
           <AssistanceAlert title="Приклади персональних навичків:">
             <ul className="list-disc">
-              <li>Комунікаьельність</li>
+              <li>Комунікабельність</li>
               <li>Критичне мислення</li>
               <li>Робота в команді</li>
               <li>Креативність</li>

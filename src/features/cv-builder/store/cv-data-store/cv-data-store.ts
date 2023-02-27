@@ -11,6 +11,7 @@ import { immer } from "zustand/middleware/immer";
 import {
   getEmptyCvData,
   restoreToCvQueryData,
+  WorkExperience,
   type CvData,
   type Education,
   type ForeignLanguage,
@@ -29,10 +30,12 @@ export type CvDataStore = {
   blurJobPosition: () => void;
   changeWorkDirection: (value: { id: string; name: string } | null) => void;
   blurWorkDirection: () => void;
+  changeExperienceLevel: (value: { id: string; name: string } | null) => void;
+  blurExperienceLevel: () => void;
   dispatchFirstName: (action: StringInputAction) => void;
   dispatchLastName: (action: StringInputAction) => void;
   dispatchGoals: (action: StringInputAction) => void;
-  dispatchExperienceHighlights: (action: StringInputAction) => void;
+  dispatchWorkExperiences: (action: ArrayInputAction<WorkExperience>) => void;
   dispatchHardSkills: (action: ArrayInputAction<string>) => void;
   dispatchSoftSkills: (action: ArrayInputAction<string>) => void;
   dispatchForeignLanguages: (action: ArrayInputAction<ForeignLanguage>) => void;
@@ -44,6 +47,8 @@ export type CvDataStore = {
     sourceFileType: string;
   }) => void;
   removePhoto: () => void;
+  noWorkExperience: boolean;
+  toggleNoWorkExperience: () => void;
   currentStage: StageNumber;
   goToStage: (num: StageNumber) => void;
 };
@@ -104,6 +109,19 @@ export const useCvDataStore = create<CvDataStore>()(
           state.cvData.workDirection.wasBlurred = true;
         });
       },
+      changeExperienceLevel: (value) =>
+        set((state) => {
+          state.cvData.experienceLevel = {
+            value,
+            wasChanged: true,
+            wasBlurred: state.cvData.experienceLevel.wasBlurred,
+          };
+        }),
+      blurExperienceLevel: () => {
+        set((state) => {
+          state.cvData.experienceLevel.wasBlurred = true;
+        });
+      },
       changeTemplateLanguage: (value) =>
         set((state) => {
           state.cvData.templateLanguage = value;
@@ -134,6 +152,14 @@ export const useCvDataStore = create<CvDataStore>()(
             validators: [validateArrayInput],
           });
         }),
+      dispatchWorkExperiences: (action) =>
+        set((state) => {
+          state.cvData.workExperiences = arrayInputReducer({
+            input: state.cvData.workExperiences,
+            action,
+            validators: [validateArrayInput],
+          });
+        }),
       dispatchSoftSkills: (action) =>
         set((state) => {
           state.cvData.softSkills = arrayInputReducer({
@@ -141,13 +167,6 @@ export const useCvDataStore = create<CvDataStore>()(
             action,
             validators: [validateArrayInput],
           });
-        }),
-      dispatchExperienceHighlights: (action) =>
-        set((state) => {
-          state.cvData.experienceHighlights = experienceAndHighlightsReducer(
-            state.cvData.experienceHighlights,
-            action
-          );
         }),
       dispatchForeignLanguages: (action) =>
         set((state) => {
@@ -191,6 +210,11 @@ export const useCvDataStore = create<CvDataStore>()(
       removePhoto: () =>
         set((state) => {
           state.cvData.photo = null;
+        }),
+      noWorkExperience: false,
+      toggleNoWorkExperience: () =>
+        set((state) => {
+          state.noWorkExperience = !state.noWorkExperience;
         }),
       goToStage: (num: StageNumber) => set({ currentStage: num }),
     }))
@@ -241,17 +265,6 @@ const lastNameReducer = makeStringInputReducer([
 ]);
 
 const goalsReducer = makeStringInputReducer([
-  valueIsNotEmpty,
-  (val) =>
-    val.length <= 200
-      ? { type: "success" }
-      : {
-          type: "error",
-          message: "Перевищено ліміт у 200 символів",
-        },
-]);
-
-const experienceAndHighlightsReducer = makeStringInputReducer([
   valueIsNotEmpty,
   (val) =>
     val.length <= 200

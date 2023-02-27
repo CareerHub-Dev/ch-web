@@ -1,3 +1,10 @@
+export const EXPERIENCE_LEVELS = [
+  { id: "1", name: "Junior" },
+  { id: "2", name: "Middle" },
+  { id: "3", name: "Senior" },
+  { id: "4", name: "Principal" },
+]
+
 export const JOB_DIRECTIONS = [
   {
     id: "1",
