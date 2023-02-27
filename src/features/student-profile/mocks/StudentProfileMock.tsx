@@ -1,11 +1,9 @@
 import {
-  PaperClipIcon,
-  QuestionMarkCircleIcon,
-} from "@heroicons/react/20/solid";
-import {
   ChatBubbleLeftEllipsisIcon,
-  PlusIcon,
 } from "@heroicons/react/20/solid";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import StudentStatsMock from "./StudentStatsMock";
+
 const whoToFollow = [
   {
     name: "Микола Берковський",
@@ -28,7 +26,6 @@ const whoToFollow = [
     imageUrl:
       "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
-
 ];
 const trendingPosts = [
   {
@@ -63,41 +60,6 @@ const trendingPosts = [
   },
 ];
 
-const user = {
-  name: "Whitney Francis",
-  email: "whitney@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
-};
-const attachments = [
-  { name: "resume_front_end_developer.pdf", href: "#" },
-  { name: "coverletter_front_end_developer.pdf", href: "#" },
-];
-
-const comments = [
-  {
-    id: 1,
-    name: "Leslie Alexander",
-    date: "4d ago",
-    imageId: "1494790108377-be9c29b29330",
-    body: "Ducimus quas delectus ad maxime totam doloribus reiciendis ex. Tempore dolorem maiores. Similique voluptatibus tempore non ut.",
-  },
-  {
-    id: 2,
-    name: "Michael Foster",
-    date: "4d ago",
-    imageId: "1519244703995-f4e0f30006d5",
-    body: "Et ut autem. Voluptatem eum dolores sint necessitatibus quos. Quis eum qui dolorem accusantium voluptas voluptatem ipsum. Quo facere iusto quia accusamus veniam id explicabo et aut.",
-  },
-  {
-    id: 3,
-    name: "Dries Vincent",
-    date: "4d ago",
-    imageId: "1506794778202-cad84cf45f1d",
-    body: "Expedita consequatur sit ea voluptas quo ipsam recusandae. Ab sint et voluptatem repudiandae voluptatem et eveniet. Nihil quas consequatur autem. Perferendis rerum et.",
-  },
-];
-
 export default function StudentProfileSkeleton() {
   return (
     <>
@@ -118,7 +80,6 @@ export default function StudentProfileSkeleton() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Бурцев Сергій</h1>
-            <p className="text-sm font-medium text-gray-500">ПЗПІи-19-1</p>
           </div>
         </div>
         <div className="justify-stretch mt-6 flex flex-col-reverse space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-y-0 sm:space-x-3 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3">
@@ -133,214 +94,63 @@ export default function StudentProfileSkeleton() {
 
       <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2 lg:col-start-1">
-          {/* Description list*/}
-          <section aria-labelledby="applicant-information-title">
+          <section aria-labelledby="student-information-title">
             <div className="bg-white shadow sm:rounded-lg">
               <div className="px-4 py-5 sm:px-6">
                 <h2
-                  id="applicant-information-title"
+                  id="student-information-title"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Applicant Information
+                  Загальна інформація
                 </h2>
                 <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                  Personal details and application.
+                  Персональний профіль студента
                 </p>
               </div>
               <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
                 <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                   <div className="sm:col-span-1">
                     <dt className="text-sm font-medium text-gray-500">
-                      Application for
+                      {"Група"}
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900">
-                      Backend Developer
+                      {"ПЗПІи-19-1"}
                     </dd>
                   </div>
                   <div className="sm:col-span-1">
                     <dt className="text-sm font-medium text-gray-500">
-                      Email address
+                      {"Пошта"}
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900">
-                      ricardocooper@example.com
+                      {"serhii.burtsev@nure.ua"}
                     </dd>
                   </div>
                   <div className="sm:col-span-1">
                     <dt className="text-sm font-medium text-gray-500">
-                      Salary expectation
+                      {"Телефон"}
                     </dt>
-                    <dd className="mt-1 text-sm text-gray-900">$120,000</dd>
+                    <dd className="mt-1 text-sm text-gray-900">
+                      {"+1 555-555-5555"}
+                    </dd>
                   </div>
                   <div className="sm:col-span-1">
-                    <dt className="text-sm font-medium text-gray-500">Phone</dt>
-                    <dd className="mt-1 text-sm text-gray-900">
-                      +1 555-555-5555
-                    </dd>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <dt className="text-sm font-medium text-gray-500">About</dt>
-                    <dd className="mt-1 text-sm text-gray-900">
-                      Fugiat ipsum ipsum deserunt culpa aute sint do nostrud
-                      anim incididunt cillum culpa consequat. Excepteur qui
-                      ipsum aliquip consequat sint. Sit id mollit nulla mollit
-                      nostrud in ea officia proident. Irure nostrud pariatur
-                      mollit ad adipisicing reprehenderit deserunt qui eu.
-                    </dd>
-                  </div>
-                  <div className="sm:col-span-2">
                     <dt className="text-sm font-medium text-gray-500">
-                      Attachments
+                      {"День народження"}
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900">
-                      <ul
-                        role="list"
-                        className="divide-y divide-gray-200 rounded-md border border-gray-200"
-                      >
-                        {attachments.map((attachment) => (
-                          <li
-                            key={attachment.name}
-                            className="flex items-center justify-between py-3 pl-3 pr-4 text-sm"
-                          >
-                            <div className="flex w-0 flex-1 items-center">
-                              <PaperClipIcon
-                                className="h-5 w-5 flex-shrink-0 text-gray-400"
-                                aria-hidden="true"
-                              />
-                              <span className="ml-2 w-0 flex-1 truncate">
-                                {attachment.name}
-                              </span>
-                            </div>
-                            <div className="ml-4 flex-shrink-0">
-                              <a
-                                href={attachment.href}
-                                className="font-medium text-blue-600 hover:text-blue-500"
-                              >
-                                Download
-                              </a>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
+                      {"1999-01-01"}
                     </dd>
                   </div>
                 </dl>
               </div>
-              <div>
-                <a
-                  href="#"
-                  className="block bg-gray-50 px-4 py-4 text-center text-sm font-medium text-gray-500 hover:text-gray-700 sm:rounded-b-lg"
-                >
-                  Read full application
-                </a>
-              </div>
             </div>
           </section>
 
-          {/* Comments*/}
-          <section aria-labelledby="notes-title">
-            <div className="bg-white shadow sm:overflow-hidden sm:rounded-lg">
-              <div className="divide-y divide-gray-200">
-                <div className="px-4 py-5 sm:px-6">
-                  <h2
-                    id="notes-title"
-                    className="text-lg font-medium text-gray-900"
-                  >
-                    Notes
-                  </h2>
-                </div>
-                <div className="px-4 py-6 sm:px-6">
-                  <ul role="list" className="space-y-8">
-                    {comments.map((comment) => (
-                      <li key={comment.id}>
-                        <div className="flex space-x-3">
-                          <div className="flex-shrink-0">
-                            <img
-                              className="h-10 w-10 rounded-full"
-                              src={`https://images.unsplash.com/photo-${comment.imageId}?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80`}
-                              alt=""
-                            />
-                          </div>
-                          <div>
-                            <div className="text-sm">
-                              <a href="#" className="font-medium text-gray-900">
-                                {comment.name}
-                              </a>
-                            </div>
-                            <div className="mt-1 text-sm text-gray-700">
-                              <p>{comment.body}</p>
-                            </div>
-                            <div className="mt-2 space-x-2 text-sm">
-                              <span className="font-medium text-gray-500">
-                                {comment.date}
-                              </span>{" "}
-                              <span className="font-medium text-gray-500">
-                                &middot;
-                              </span>{" "}
-                              <button
-                                type="button"
-                                className="font-medium text-gray-900"
-                              >
-                                Reply
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              <div className="bg-gray-50 px-4 py-6 sm:px-6">
-                <div className="flex space-x-3">
-                  <div className="flex-shrink-0">
-                    <img
-                      className="h-10 w-10 rounded-full"
-                      src={user.imageUrl}
-                      alt=""
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <form action="#">
-                      <div>
-                        <label htmlFor="comment" className="sr-only">
-                          About
-                        </label>
-                        <textarea
-                          id="comment"
-                          name="comment"
-                          rows={3}
-                          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                          placeholder="Add a note"
-                          defaultValue={""}
-                        />
-                      </div>
-                      <div className="mt-3 flex items-center justify-between">
-                        <a
-                          href="#"
-                          className="group inline-flex items-start space-x-2 text-sm text-gray-500 hover:text-gray-900"
-                        >
-                          <QuestionMarkCircleIcon
-                            className="h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                            aria-hidden="true"
-                          />
-                          <span>Some HTML is okay.</span>
-                        </a>
-                        <button
-                          type="submit"
-                          className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                        >
-                          Comment
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          <StudentStatsMock />
+          {/* Description list*/}
         </div>
-        <aside className="hidden xl:col-span-4 xl:block">
-          <div className="sticky top-4 space-y-4">
+        <aside className="lg:col-span-1 lg:col-start-3">
+          <div className="space-y-4">
             <section aria-labelledby="who-to-follow-heading">
               <div className="rounded-lg bg-white shadow">
                 <div className="p-6">
@@ -375,13 +185,12 @@ export default function StudentProfileSkeleton() {
                           <div className="flex-shrink-0">
                             <button
                               type="button"
-                              className="inline-flex items-center rounded-full bg-rose-50 px-3 py-0.5 text-sm font-medium text-rose-700 hover:bg-rose-100"
+                              className="inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium text-indigo-700 hover:text-indigo-800"
                             >
-                              <PlusIcon
-                                className="-ml-1 mr-0.5 h-5 w-5 text-rose-400"
+                              <ArrowRightIcon
+                                className="-ml-1 mr-0.5 h-5 w-5"
                                 aria-hidden="true"
                               />
-                              <span>Follow</span>
                             </button>
                           </div>
                         </li>

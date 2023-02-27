@@ -5,11 +5,11 @@ import { getStudent } from "@/lib/api/student";
 import { useRouter } from "next/router";
 import { protectedSsr } from "@/lib/protected-ssr";
 import Head from "next/head";
-import StudentProfileSkeleton from "@/features/student-profile/StudentProfileSkeleton";
+import StudentProfile from "@/features/student-profile/StudentProfile";
 
 const StudentProfilePage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = () => {
+> = (props) => {
   // const router = useRouter();
   // const { data, isLoading } = useProtectedQuery(
   //   ["student", studentId],
@@ -29,7 +29,7 @@ const StudentProfilePage: NextPageWithLayout<
   //       <CenteredLoadingSpinner />
   //     </>
   //   );
-  return <StudentProfileSkeleton />;
+  return <StudentProfile {...props} />;
 };
 
 StudentProfilePage.getLayout = CommonLayout;
@@ -48,6 +48,7 @@ export const getServerSideProps = protectedSsr<{
     return {
       props: {
         isSelf,
+        studentId: accountId,
       },
     };
   },

@@ -1,6 +1,12 @@
-import { type Student } from "@/lib/schemas/Student";
+import ProfileHeader from "./components/ProfileHeader";
 
 export default function StudentProfile(props: {
   isSelf: boolean;
-  student: Student;
-}) {}
+  studentId: string;
+}) {
+  return (
+    <>
+      <ProfileHeader {...props} />
+    </>
+  );
+}
