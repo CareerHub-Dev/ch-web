@@ -1,12 +1,12 @@
-import { useCvDataStore } from '../store/cv-data-store';
+import { useCvDataStore } from './store/cv-data-store';
 import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import StageView from './layout/StageView';
-import StageButonsPanel from './layout/StageButtonsPanel';
-import CvBuilderHeading from './layout/CvBuilderHeading';
+import StageView from './components//layout/StageView';
+import StageButonsPanel from './components//layout/StageButtonsPanel';
+import CvBuilderHeading from './components/layout/CvBuilderHeading';
 import { type StudentCvDetails } from '@/lib/api/cvs/schemas';
 
-const ModalView = dynamic(() => import('./layout/ModalView'), {
+const ModalView = dynamic(() => import('./components/layout/ModalView'), {
   ssr: false,
 });
 
