@@ -35,7 +35,7 @@ export default function ProfileHeader(props: {
         </div>
         <div>
           {isLoading ? (
-            <div className="grid grid-cols-3 gap-4 animate-pulse w-32">
+            <div className="grid grid-cols-3 gap-4 animate-pulse w-64">
               <div className="h-6 bg-slate-500 rounded col-span-2" />
               <div className="h-6 bg-slate-500 rounded col-span-1" />
             </div>
