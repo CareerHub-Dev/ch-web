@@ -113,6 +113,7 @@ export function restoreToCvQueryData(data: StudentCvDetails): CvData {
     return {
       startYear,
       endYear,
+      isCurrent: item.endDate === null,
       ...otherProperties,
     };
   });
@@ -135,6 +136,7 @@ export function restoreToCvQueryData(data: StudentCvDetails): CvData {
     photo: data.photo,
     hardSkills: getArrayInput(),
     softSkills: getArrayInput(),
+    experienceLevel: { value: null, wasChanged: false, wasBlurred: false },
   };
 }
 

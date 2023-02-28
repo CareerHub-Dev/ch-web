@@ -1,6 +1,6 @@
 import ItemSelection from "@/components/ui/ItemsSelection";
 import AutocompleteCombobox from "@/components/ui/AutocompleteCombobox";
-import { SELECTION_ITEMS, JOB_DIRECTIONS, EXPERIENCE_LEVELS } from "../../mocks/job-directions";
+import { SELECTION_ITEMS, JOB_DIRECTIONS } from "../../mocks/job-directions";
 import { useState } from "react";
 import { useCvDataStore } from "@/features/cv-builder/store/cv-data-store";
 
@@ -12,12 +12,6 @@ export default function JobPositionSelection() {
   const handleDirectionBlur = useCvDataStore((s) => s.blurWorkDirection);
   const directionHasError =
     selectedDirection.value === null && selectedDirection.wasBlurred;
-
-  const experienceLevel = useCvDataStore((s) => s.cvData.experienceLevel);
-  const setExperienceLevel = useCvDataStore((s) => s.changeExperienceLevel);
-  const handleExperienceLevelBlur = useCvDataStore(s => s.blurExperienceLevel);
-  const experienceLevelHasError =
-    experienceLevel.value === null && experienceLevel.wasBlurred;
 
   const selectedJobPosition = useCvDataStore((s) => s.cvData.jobPosition);
   const setSelectedJobPosition = useCvDataStore((s) => s.changeJobPosition);
@@ -33,14 +27,6 @@ export default function JobPositionSelection() {
     setSelectedDirection(val);
     setSelectedJobPosition(null);
     setJobPositionInput("");
-  };
-
-  
-  const handleExperienceLevelChange = (val: { id: string; name: string }) => {
-    if (val.id === experienceLevel.value?.id) {
-      return;
-    }
-    setExperienceLevel(val);
   };
 
   const handleJobPositionInputChange = (val: string) => {

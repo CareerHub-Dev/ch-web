@@ -1,15 +1,10 @@
 import CommonLayout from "@/components/layout/CommonLayout";
-import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
-import { useProtectedQuery } from "@/hooks/useProtectedQuery";
-import { getStudent } from "@/lib/api/student";
-import { useRouter } from "next/router";
 import { protectedSsr } from "@/lib/protected-ssr";
-import Head from "next/head";
-import StudentProfile from "@/features/student-profile/StudentProfile";
+import { type InferGetServerSidePropsType } from "next";
 
 const StudentProfilePage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = (props) => {
+> = () => {
   // const router = useRouter();
   // const { data, isLoading } = useProtectedQuery(
   //   ["student", studentId],
@@ -29,7 +24,8 @@ const StudentProfilePage: NextPageWithLayout<
   //       <CenteredLoadingSpinner />
   //     </>
   //   );
-  return <StudentProfile {...props} />;
+  //   TODO: Add student profile page
+  return null;
 };
 
 StudentProfilePage.getLayout = CommonLayout;

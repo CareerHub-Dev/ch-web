@@ -20,7 +20,6 @@ const CVPreview: React.FC = () => {
     goals,
     skillsAndTechnologies,
     foreignLanguages,
-    experienceHighlights,
     projectLinks,
     educations,
     templateLanguage,
@@ -52,12 +51,6 @@ const CVPreview: React.FC = () => {
           </ul>
           <hr />
         </>
-      )}
-      {notEmpty(experienceHighlights) && (
-        <PlainParagraph
-          title={cvTemplateLocalization.workingExperience}
-          text={experienceHighlights}
-        />
       )}
       {notEmpty(projectLinks) && (
         <>
