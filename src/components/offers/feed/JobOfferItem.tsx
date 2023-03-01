@@ -3,8 +3,8 @@ import { addTag } from '@/context/job-offers-feed';
 import { getReadableDateFromString } from '@/lib/util';
 import Image from 'next/image';
 import LinkButton from '@/components/ui/LinkButton';
-import DateIcon from '@/components/ui/icons/DateIcon';
-import ArrowRightIcon from '@/components/ui/icons/ArrowRightIcon';
+import { CalendarIcon } from '@heroicons/react/24/outline';
+import { ArrowRightIcon } from '@heroicons/react/24/solid';
 import CompanyLink from './CompanyLink';
 import JobOfferTags from '../common/JobOfferTags';
 import defaultJobOfferImage from '@/resources/images/general.jpg';
@@ -32,7 +32,7 @@ const JobOfferItem = ({ item }: { item: JobOfferInFeed }) => {
           <h2>{title}</h2>
           <CompanyLink companyId={company.id} companyName={company.name} />
           <div className={classes.date}>
-            <DateIcon />
+            <CalendarIcon />
             <p>{`Закінчується: ${humanReadableExpirationDate}`}</p>
           </div>
           {tags.length !== 0 && (

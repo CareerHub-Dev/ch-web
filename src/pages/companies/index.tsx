@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDebounce } from 'usehooks-ts';
 import { getCompanies } from '@/lib/api/company';
-import useProtectedPaginatedQuery from '@/hooks/useProtectedPaginatedQuery';
+import { useProtectedPaginatedQuery } from '@/hooks/useProtectedPaginatedQuery';
 import SearchPanel from '@/components/companies/feed/SearchPanel';
 import LoadMore from '@/components/ui/LoadMore';
 import { protectedSsr } from '@/lib/protected-ssr';
@@ -9,7 +9,7 @@ import CommonLayout from '@/components/layout/CommonLayout';
 import parseUnknownError from '@/lib/parse-unknown-error';
 import axiosMiddleware from '@/lib/middleware/axiosMiddleware';
 import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
-import WrappedSpinner from '@/components/companies/feed/WrappedSpinner';
+import CenteredLoadingSpinner from '@/components/ui/CenteredLoadingSpinner';
 
 import { type CompanyInFeedArray } from '@/lib/api/company/schemas';
 import { type PaginatedResponse } from '@/lib/api/pagination';
@@ -48,7 +48,7 @@ const CompaniesFeedPage: NextPageWithLayout<
       <SearchPanel value={searchTerm} onChange={setSearchTerm} />
       <div className="mt-8 px-2 md:px-8">
         {isLoading ? (
-          <WrappedSpinner />
+          <CenteredLoadingSpinner />
         ) : isError ? (
           <p>{parseUnknownError(error)}</p>
         ) : (
@@ -57,7 +57,7 @@ const CompaniesFeedPage: NextPageWithLayout<
       </div>
 
       {isFetchingNextPage ? (
-        <WrappedSpinner />
+        <CenteredLoadingSpinner />
       ) : hasNextPage ? (
         <LoadMore onClick={loadMore} />
       ) : null}

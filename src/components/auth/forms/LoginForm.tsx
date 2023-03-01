@@ -1,29 +1,46 @@
-import { FormEventHandler, useRef } from 'react';
-import { useRouter } from 'next/router';
+import { useInput } from '@/hooks/useInput';
 import useSession from '@/hooks/useSession';
 import useToast from '@/hooks/useToast';
-import useInput from '@/hooks/useInput';
-import { useMutation } from '@tanstack/react-query';
-import { getEmailValidity, getPasswordValidity } from '@/lib/util';
 import { LocalGateway } from '@/lib/api/account';
-import AuthField from '../AuthField';
-import KeyIcon from '@/components/ui/icons/KeyIcon';
-import EnvelopeIcon from '@/components/ui/icons/EnvelopeIcon';
-import ModalLoading from '@/components/ui/Modal/ModalLoading';
-import classes from './forms.module.scss';
-import type { SessionData } from '@/lib/schemas/SessionData';
+import { emailPattern, passwordPattern } from '@/lib/util';
+import { useMutation } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import { useRef, type FormEventHandler } from 'react';
+import { AuthField } from './AuthField';
 
-const LoginForm = () => {
+const ModalLoading = dynamic(
+  () => import('@/components/ui/Modal/ModalLoading'),
+  {
+    ssr: false,
+  }
+);
+
+export const LoginForm = () => {
   const router = useRouter();
   const session = useSession();
   const toast = useToast();
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
-  const emailInput = useInput(getEmailValidity);
-  const passwordInput = useInput(getPasswordValidity);
-  const formIsValid = emailInput.isValid && passwordInput.isValid;
+  const emailInput = useInput({
+    validators: [
+      (val) =>
+        val.match(emailPattern)
+          ? { type: 'success' }
+          : { type: 'error', message: 'Невалідна адреса' },
+    ],
+  });
+  const passwordInput = useInput({
+    validators: [
+      (val) =>
+        val.match(passwordPattern)
+          ? { type: 'success' }
+          : { type: 'error', message: 'Невалідний пароль' },
+    ],
+  });
+  const formInputsHaveErrors = emailInput.hasErrors || passwordInput.hasErrors;
   const authMutation = useMutation(['auth'], LocalGateway.authenticate, {
-    onSuccess: (data: SessionData) => {
+    onSuccess: (data) => {
       session.login(data);
       router.push('/my-profile');
     },
@@ -32,12 +49,12 @@ const LoginForm = () => {
     },
   });
 
-  const formSubmissionHandler: FormEventHandler<HTMLFormElement> = (event) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    emailInput.inputBlurHandler();
-    passwordInput.inputBlurHandler();
-    if (!formIsValid) {
-      if (!emailInput.isValid) {
+    emailInput.blur();
+    passwordInput.blur();
+    if (formInputsHaveErrors) {
+      if (emailInput.hasErrors) {
         emailInputRef.current!.focus();
       } else {
         passwordInputRef.current!.focus();
@@ -51,43 +68,38 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={formSubmissionHandler} id="loginForm">
-      {authMutation.isLoading && <ModalLoading />}
-      <div className={classes.fields} id="authFieldsDiv">
-        <AuthField
-          ref={emailInputRef}
-          id="email"
-          placeholder="Уведіть email"
-          type="email"
-          isInputInvalid={emailInput.hasError}
-          onChange={emailInput.valueChangeHandler}
-          onBlur={emailInput.inputBlurHandler}
-          validationMessage="Перевірте коректність поштової адреси"
-        >
-          <EnvelopeIcon />
-        </AuthField>
-        <AuthField
-          ref={passwordInputRef}
-          id="password"
-          placeholder="Уведіть пароль"
-          type="password"
-          isInputInvalid={passwordInput.hasError}
-          onChange={passwordInput.valueChangeHandler}
-          onBlur={passwordInput.inputBlurHandler}
-          validationMessage="Пароль повинен бути від 8 до 33 символів серед яких: літери верхнього й нижнього регістру, хоча б одна цифра або спеціальний символ"
-        >
-          <KeyIcon />
-        </AuthField>
+    <form id="login-form" className="space-y-6" onSubmit={handleSubmit}>
+      <ModalLoading show={authMutation.isLoading} />
+      <AuthField
+        label="Пошта"
+        id="email"
+        type="email"
+        ref={emailInputRef}
+        onChange={emailInput.change}
+        onBlur={emailInput.blur}
+        showError={emailInput.hasErrors}
+        errorMessage={emailInput.errors.at(0)}
+      />
 
-        <input
-          id="submitButton"
+      <AuthField
+        label="Пароль"
+        id="password"
+        type="password"
+        ref={passwordInputRef}
+        onChange={passwordInput.change}
+        onBlur={passwordInput.blur}
+        showError={passwordInput.hasErrors}
+        errorMessage={passwordInput.errors.at(0)}
+      />
+
+      <div>
+        <button
           type="submit"
-          className={classes['auth-button']}
-          value="Увійти"
-        />
+          className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all ease-in-out duration-200"
+        >
+          Увійти
+        </button>
       </div>
     </form>
   );
 };
-
-export default LoginForm;

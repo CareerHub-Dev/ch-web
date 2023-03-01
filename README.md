@@ -5,6 +5,7 @@ Before you run the project you may define these Environment Variables:
 * BACKEND_SERVER_URL,
 * BACKEND_IMAGE_DOMAIN,
 * NODE_ENV
+* REACT_EDITOR
 
 ##### Note: NextJS has a built-in support for this, you just need to create a file named `.env.local` in project's root directory
 ---

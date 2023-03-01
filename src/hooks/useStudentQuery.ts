@@ -1,5 +1,5 @@
 import { type UseQueryOptions } from '@tanstack/react-query';
-import useProtectedQuery from './useProtectedQuery';
+import { useProtectedQuery } from './useProtectedQuery';
 import { getStudent } from '@/lib/api/student';
 import { type Student } from '@/lib/schemas/Student';
 

@@ -1,43 +1,43 @@
-import { getSelfStudent } from '@/lib/api/student';
-import { protectedSsr } from '@/lib/protected-ssr';
-import useSelfStudentQuery from '@/hooks/useStudentSelfQuery';
-import useShallowRoutes from '@/hooks/useShallowRoutes';
-import CommonLayout from '@/components/layout/CommonLayout';
-import NavigationItems from '@/components/student-profile/edit/NavigationItems';
-import GeneralInfo from '@/components/student-profile/edit/GeneralInfo';
-import AvatarEdit from '@/components/student-profile/edit/AvatarEdit';
-import EditPageHeader from '@/components/student-profile/edit/EditPageHeader';
-import ChangePassword from '@/components/student-profile/edit/ChangePassword';
-import { getImage } from '@/lib/api/image';
-import axiosMiddleware from '@/lib/middleware/axiosMiddleware';
-import defaultAvatar from '@/resources/images/default-avatar.png';
+import { getSelfStudent } from "@/lib/api/student";
+import { protectedSsr } from "@/lib/protected-ssr";
+import useSelfStudentQuery from "@/hooks/useStudentSelfQuery";
+import useShallowRoutes from "@/hooks/useShallowRoutes";
+import CommonLayout from "@/components/layout/CommonLayout";
+import NavigationItems from "@/components/student-profile/edit/NavigationItems";
+import GeneralInfo from "@/components/student-profile/edit/GeneralInfo";
+import AvatarEdit from "@/components/student-profile/edit/AvatarEdit";
+import EditPageHeader from "@/components/student-profile/edit/EditPageHeader";
+import ChangePassword from "@/components/student-profile/edit/ChangePassword";
+import { getImage } from "@/lib/api/image";
+import axiosMiddleware from "@/lib/middleware/axiosMiddleware";
+import defaultAvatar from "@/resources/images/default-avatar.png";
 
-import { type InferGetServerSidePropsType } from 'next';
-import { type Student } from '@/lib/schemas/Student';
+import { type InferGetServerSidePropsType } from "next";
+import { type Student } from "@/lib/schemas/Student";
 
 const navigationItems = [
   {
-    title: 'Загальне',
-    section: 'general',
+    title: "Загальне",
+    section: "general",
   },
   {
-    title: 'Аватар',
-    section: 'avatar',
+    title: "Аватар",
+    section: "avatar",
   },
   {
-    title: 'Пароль',
-    section: 'password',
+    title: "Пароль",
+    section: "password",
   },
 ];
 
-const sections = ['general', 'avatar', 'password'];
+const sections = ["general", "avatar", "password"];
 
 const EditStudentPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ student }) => {
   const { changeSection, currentSection } = useShallowRoutes({
     sections,
-    defaultSection: 'general',
+    defaultSection: "general",
   });
   const { data: syncData } = useSelfStudentQuery({
     initialData: student,
@@ -47,10 +47,7 @@ const EditStudentPage: NextPageWithLayout<
     : defaultAvatar;
 
   return (
-    <div
-      className="md:mx-8 mb-2  lg:mx-auto max-w-full lg:max-w-[978px] bg-white px-4 rounded-md shadow-md
-      transition-all ease-in-out duration-200"
-    >
+    <div className="mx-auto max-w-full lg:max-w-[978px] bg-white px-4 rounded-md shadow-md transition-all ease-in-out duration-200">
       <div className="grid grid-cols-[auto_1fr] gap-8">
         <EditPageHeader
           avatarData={currentAvatar}
@@ -63,9 +60,9 @@ const EditStudentPage: NextPageWithLayout<
           onChangeRoute={changeSection}
         />
         <section className="px-4 py-2 col-span-2 md:col-auto">
-          {currentSection === 'general' ? (
+          {currentSection === "general" ? (
             <GeneralInfo initialData={syncData} />
-          ) : currentSection === 'avatar' ? (
+          ) : currentSection === "avatar" ? (
             <AvatarEdit initialData={currentAvatar} />
           ) : (
             <ChangePassword />
@@ -81,7 +78,7 @@ EditStudentPage.getLayout = CommonLayout;
 export default EditStudentPage;
 
 export const getServerSideProps = protectedSsr<{ student: Student }>({
-  allowedRoles: ['Student'],
+  allowedRoles: ["Student"],
   getProps: async (context) => {
     const studentId = context.query.studentId as string;
     const { accountId } = context.session;

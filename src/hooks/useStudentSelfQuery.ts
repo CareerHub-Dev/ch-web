@@ -1,7 +1,8 @@
-import useProtectedQuery from './useProtectedQuery';
+import { useProtectedQuery } from './useProtectedQuery';
 import { type UseQueryOptions } from '@tanstack/react-query';
 import { getSelfStudent } from '@/lib/api/student';
-import { type Student } from '@/lib/schemas/Student';
+
+type Student = Awaited<ReturnType<typeof getSelfStudent>>;
 
 export default function useSelfStudentQuery(
   options?: Omit<UseQueryOptions<Student>, 'queryFn' | 'queryKey'>

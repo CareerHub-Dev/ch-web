@@ -1,4 +1,4 @@
-import useInput from '@/hooks/useInput/v3';
+import { useInput } from '@/hooks/useInput';
 import useToast from '@/hooks/useToast';
 import useProtectedMutation from '@/hooks/useProtectedMutation';
 import { useBoolean } from 'usehooks-ts';
@@ -14,13 +14,18 @@ const ChangePassword = () => {
   const oldPasswordIsVisible = useBoolean(false);
   const newPasswordInput = useInput({
     validators: [
-      {
-        validate: (value) => value !== oldPasswordInput.value,
-        message: 'Новий пароль не повинен співпадати зі старим',
-      },
+      (val) =>
+        val === oldPasswordInput.value
+          ? { type: 'success' }
+          : {
+              type: 'error',
+              message: 'Новий пароль не повинен співпадати зі старим',
+            },
     ],
   });
+  const repeatedNewPasswordInput = useInput();
   const newPasswordIsVisible = useBoolean(false);
+
   const mutation = useProtectedMutation(['changePassword'], changePassword, {
     onSuccess: () => {
       toast.success('Пароль успішно змінено');
@@ -30,9 +35,9 @@ const ChangePassword = () => {
     },
   });
 
-  const cannotSubmit = oldPasswordInput.hasError || newPasswordInput.hasError;
+  const cannotSubmit = oldPasswordInput.hasErrors || newPasswordInput.hasErrors;
 
-  const save = async () => {
+  const save = () => {
     oldPasswordInput.blur();
     newPasswordInput.blur();
     if ([oldPasswordInput, newPasswordInput].some((input) => !input.isValid)) {
@@ -40,7 +45,7 @@ const ChangePassword = () => {
     }
     const oldPassword = oldPasswordInput.value;
     const newPassword = newPasswordInput.value;
-    await mutation.mutateAsync({ oldPassword, newPassword });
+    mutation.mutate({ oldPassword, newPassword });
   };
 
   return (
@@ -61,6 +66,7 @@ const ChangePassword = () => {
             {...oldPasswordInput}
             type={oldPasswordIsVisible.value ? 'text' : 'password'}
             className="w-full p-2"
+            autoComplete="off"
             id="oldPassword"
           />
         </div>
@@ -74,6 +80,20 @@ const ChangePassword = () => {
             type={newPasswordIsVisible.value ? 'text' : 'password'}
             className="w-full p-2"
             id="newPassword"
+            autoComplete="off"
+          />
+        </div>
+        <div className="mb-8">
+          <label
+            htmlFor="repeatedNewPassword"
+            className="font-bold"
+          >{`Повторіть Новий пароль`}</label>
+          <FormInput
+            {...repeatedNewPasswordInput}
+            type={newPasswordIsVisible.value ? 'text' : 'password'}
+            className="w-full p-2"
+            id="repeatedNewPassword"
+            autoComplete="off"
           />
         </div>
       </form>

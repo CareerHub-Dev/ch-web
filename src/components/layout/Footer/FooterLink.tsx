@@ -1,8 +1,9 @@
 import Link from 'next/link';
 
-const linkClasses = 'text-gray-500 hover:text-darkerBlue hover:underline';
+const linkClasses =
+  'text-base font-medium text-gray-500 hover:text-gray-900 transition-all ease-in-out duration-200';
 
-const FooterLink = ({
+export function FooterLink({
   item,
 }: {
   item: {
@@ -10,7 +11,7 @@ const FooterLink = ({
     text: string;
     newTab?: boolean;
   };
-}) => {
+}) {
   if (item.newTab) {
     return (
       <a
@@ -29,5 +30,4 @@ const FooterLink = ({
       {item.text}
     </Link>
   );
-};
-export default FooterLink;
+}

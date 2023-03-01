@@ -2,7 +2,7 @@ import useSession from '@/hooks/useSession';
 import useToast from '@/hooks/useToast';
 import { useMutation } from '@tanstack/react-query';
 import useEditor from '@/hooks/useEditor';
-import useInput from '@/hooks/useInput/v2';
+import { useInput } from '@/hooks/useInput';
 import useImageUpload from '@/hooks/useImageUpload';
 import useDatepicker from '@/hooks/useDatepicker';
 import { createJobOffer } from '@/lib/api/remote/jobOffers';
@@ -28,7 +28,15 @@ const defaultMessage = "Це обов'язкове поле";
 const JobOfferForm = () => {
   const toast = useToast();
   const titleInput = useInput({
-    validator: (value) => value.trim().length !== 0,
+    validators: [
+      (value) =>
+        value.trim().length > 0
+          ? { type: 'success' }
+          : {
+              type: 'error',
+              message: 'Заповніть це поле',
+            },
+    ],
   });
   const jobTypeInput = useInput({ initialValue: JobType.FullTime });
   const workFormatInput = useInput({ initialValue: WorkFormat.OnSite });
@@ -141,13 +149,16 @@ const JobOfferForm = () => {
         <label htmlFor="titleInput">{'Назва'}</label>
         <input
           id="titleInput"
-          className={cn(classes.field, titleInput.hasError && classes.invalid)}
+          className={cn(
+            classes.field,
+            titleInput.wasBlurred && titleInput.hasErrors && classes.invalid
+          )}
           type="text"
           placeholder="Введіть назву позиції"
-          onChange={titleInput.change}
+          onChange={(e) => titleInput.change(e.target.value)}
           onBlur={titleInput.blur}
         ></input>
-        {titleInput.hasError && (
+        {titleInput.wasBlurred && titleInput.hasErrors && (
           <p
             id="titleInputValidationMessage"
             className={cn(classes.validation, 'mb-4')}
@@ -159,7 +170,7 @@ const JobOfferForm = () => {
         <label htmlFor="jobTypeSelect">{'Тип вакансії'}</label>
         <select
           id="jobTypeSelect"
-          onChange={jobTypeInput.change}
+          onChange={(e) => jobTypeInput.change(e.target.value)}
           value={jobTypeInput.value || ''}
           className={classes.field}
         >
@@ -173,7 +184,7 @@ const JobOfferForm = () => {
         <label htmlFor="workFormatSelect">{'Формат роботи'}</label>
         <select
           id="workFormatSelect"
-          onChange={workFormatInput.change}
+          onChange={(e) => workFormatInput.change(e.target.value)}
           value={workFormatInput.value || ''}
           className={classes.field}
         >
@@ -186,7 +197,7 @@ const JobOfferForm = () => {
         <label htmlFor="experienceLevelSelect">{'Рівень досвіду'}</label>
         <select
           id="experienceLevelSelect"
-          onChange={experienceLevelInput.change}
+          onChange={(e) => experienceLevelInput.change(e.target.value)}
           value={experienceLevelInput.value || ''}
           className={classes.field}
         >

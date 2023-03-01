@@ -14,7 +14,7 @@ export const getTimeSincePublishingCaption = (date: number) => {
     return `${result} годин тому`;
   }
 
-  return 'тільки що';
+  return "тільки що";
 };
 
 export const getDateFrameValidity = (startDate: Date, endDate: Date) =>
@@ -36,15 +36,15 @@ export const isToday = (date: Date) => {
 };
 
 export const getFormattedDate = (month: string, year: string) => {
-  return month.padStart(2, '0') + '.' + year;
+  return month.padStart(2, "0") + "." + year;
 };
 
 export const getReadableDateFromString = (
   date: string,
-  locale: string = 'uk-UA'
+  locale: string = "uk-UA"
 ) =>
   new Date(date).toLocaleDateString(locale, {
-    day: 'numeric',
-    month: 'numeric',
-    year: 'numeric',
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
   });

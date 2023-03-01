@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useBoolean } from 'usehooks-ts';
-import { isImageTypeValid } from '@/lib/images';
+import { isImageTypeValid, getFileExtension } from '@/lib/images';
 import { type StaticImageData } from 'next/image';
 
 export default function useImageUpload({
@@ -28,7 +28,7 @@ export default function useImageUpload({
       return;
     }
     setSource(image);
-    setFileExtension(image.name.split('.').pop() || '');
+    setFileExtension(getFileExtension(image));
     setUrl(URL.createObjectURL(image));
     isTouched.setTrue();
   };

@@ -4,9 +4,9 @@ import classes from './FormWrapper.module.scss';
 
 const FormWrapper = ({ children }: { children: ReactNode }) => (
   <div className={classes.wrapper}>
-    <h1 className={classes.title} id="authFormTitle">
+    <h3 className={classes.title} id="authFormTitle">
       CareerHub
-    </h1>
+    </h3>
     {children}
     <AuthRouting />
   </div>

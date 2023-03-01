@@ -1,10 +1,10 @@
-import { GetStaticPropsContext } from 'next';
-import ForgotPasswordForm from '@/components/auth/forms/ForgotPasswordForm';
-import RegisterForm from '@/components/auth/forms/RegisterForm';
-import LoginForm from '@/components/auth/forms/LoginForm';
+import { ForgotPasswordForm } from '@/components/auth/forms/ForgotPasswordForm';
+import { LoginForm } from '@/components/auth/forms/LoginForm';
+import { RegisterForm } from '@/components/auth/forms/RegisterForm';
 import FormWrapper from '@/components/auth/FormWrapper';
-import Background from '@/components/layout/Background';
-import Footer from '@/components/layout/Footer';
+import { Background } from '@/components/layout/Background';
+import { Footer } from '@/components/layout/Footer';
+import { GetStaticPropsContext } from 'next';
 
 import classes from '@/styles/auth.module.scss';
 
@@ -38,15 +38,15 @@ AuthPage.getLayout = (page) => {
 
 export default AuthPage;
 
-export const getStaticProps = async (context: GetStaticPropsContext) => {
+export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       form: context.params?.form,
     },
   };
-};
+}
 
-export const getStaticPaths = async () => {
+export async function getStaticPaths() {
   return {
     paths: [
       {
@@ -67,4 +67,4 @@ export const getStaticPaths = async () => {
     ],
     fallback: false,
   };
-};
+}

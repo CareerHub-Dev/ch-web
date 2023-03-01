@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-query';
 import { PaginatedResponse } from '@/lib/api/pagination';
 
-export default function useProtectedPaginatedQuery<
+export function useProtectedPaginatedQuery<
   TParams extends Omit<PaginatedRequestParams, 'pageNumber'>,
   TItem
 >({
@@ -33,7 +33,7 @@ export default function useProtectedPaginatedQuery<
     PaginatedResponse<Array<TItem>>,
     QueryKey
   >(
-    [...queryKey, params],
+    queryKey,
     async ({ pageParam = 1 }) =>
       getItems({
         ...params,

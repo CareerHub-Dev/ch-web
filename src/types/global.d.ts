@@ -6,13 +6,6 @@ type PaginatedRequestParams = {
 };
 
 type PaginatedQueryParams = Omit<PaginatedQueryParams, 'pageNumber'>;
-
-interface AppNavigationLink {
-  href: string;
-  text: string;
-  exact?: boolean;
-}
-
 interface JobOfferFilter {
   searchTerm?: string;
   jobType?: string;
@@ -78,15 +71,21 @@ namespace JobOfferForm {
 }
 
 type ValueOf<T> = T[keyof T];
+
 type AnyFn = (...args: any[]) => any;
+
 type Nullable<T> = T | null;
+
 type AuthDataConsistency = 'ok' | 'error';
+
 type IndexedObject<T extends Object> = T & { id: string };
+
 type ArrayInput<T> = {
   value: Array<T>;
   isValid: boolean;
   isTouched: boolean;
 };
+
 type StringInput = {
   value: string;
   isValid: boolean;
@@ -95,4 +94,30 @@ type StringInput = {
 interface WithVerificationComponentProps<Props> {
   authDataConsistency: AuthDataConsistency;
   props: Props;
+}
+
+namespace Inputs {
+  type Validator<T> = (val: T) =>
+    | {
+        message: string;
+        type: 'error' | 'warning';
+      }
+    | {
+        type: 'success';
+      };
+
+  type BaseInput = {
+    wasChanged: boolean;
+    warnings: string[];
+    errors: string[];
+  };
+
+  type StringInput = {
+    value: string;
+    wasBlurred: boolean;
+  } & BaseInput;
+
+  type ArrayInput<T> = {
+    items: Array<T>;
+  } & BaseInput;
 }

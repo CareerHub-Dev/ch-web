@@ -1,8 +1,8 @@
 import { getReadableDateFromString } from '@/lib/util';
-import DateIcon from '@/components/ui/icons/DateIcon';
-import MailAtIcon from '@/components/ui/icons/MailAtIcon';
-import BriefCaseIcon from '@/components/ui/icons/BriefCaseIcon';
-import EducationIcon from '@/components/ui/icons/EducationIcon';
+import { CalendarIcon } from '@heroicons/react/24/outline';
+import { AtSymbolIcon } from '@heroicons/react/20/solid';
+import { AcademicCapIcon } from '@heroicons/react/24/solid';
+import { BriefcaseIcon } from '@heroicons/react/24/outline';
 import InfoItem from './InfoItem';
 import LinkButton from '@/components/ui/LinkButton';
 import SubscriptionButton from './SubscriptionButton';
@@ -38,22 +38,20 @@ const GeneralInfo: React.FC<{
   return (
     <section className={classes.info}>
       <div className={classes.list}>
-        <InfoItem icon={MailAtIcon}>
-          <Link href={`/companies/${companyId}`}>
-            {companyName}
-          </Link>
+        <InfoItem icon={<AtSymbolIcon />}>
+          <Link href={`/companies/${companyId}`}>{companyName}</Link>
         </InfoItem>
-        <InfoItem icon={DateIcon}>
+        <InfoItem icon={<CalendarIcon />}>
           <span>
             <time>{`${readableStartDate} - ${readableEndDate}`}</time>
           </span>
         </InfoItem>
         <SubscribersInfo jobOfferId={jobOfferId} />
         <AppliedCVsInfo jobOfferId={jobOfferId} />
-        <InfoItem icon={EducationIcon}>
+        <InfoItem icon={<AcademicCapIcon />}>
           <span>{`Рівень: ${experienceLevel}`}</span>
         </InfoItem>
-        <InfoItem icon={BriefCaseIcon}>
+        <InfoItem icon={<BriefcaseIcon />}>
           <span>{`Формат роботи: ${workFormat}`}</span>
         </InfoItem>
         <JobOfferTags tags={tags} />

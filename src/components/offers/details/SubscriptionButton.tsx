@@ -4,7 +4,7 @@ import {
   fetchJobOfferSubscriptionStatus,
   changeSubscriptionStatus,
 } from '@/lib/api/remote/jobOffers';
-import CheckIcon from '@/components/ui/icons/CheckIcon';
+import { CheckIcon } from '@heroicons/react/24/outline';
 import LinkButton from '@/components/ui/LinkButton';
 
 import classes from './GeneralInfo.module.scss';

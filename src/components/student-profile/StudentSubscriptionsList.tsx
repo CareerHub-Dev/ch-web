@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import { type AxiosInstance } from 'axios';
 import useToast from '@/hooks/useToast';
 import { useQueryClient } from '@tanstack/react-query';
-import useProtectedPaginatedQuery from '@/hooks/useProtectedPaginatedQuery';
+import { useProtectedPaginatedQuery } from '@/hooks/useProtectedPaginatedQuery';
 import useProtectedMutation from '@/hooks/useProtectedMutation';
 import parseUnknownError from '@/lib/parse-unknown-error';
 import ErrorWhileLoading from './ErrorWhileLoading';
@@ -85,8 +85,7 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
         toast.error(parseUnknownError(error), true);
       },
       onSuccess: (_responseData, mutatedItemId) => {
-        const cachedDataKey = [...paginatedQueryKey, paginatedQueryParams];
-        const data = queryClient.getQueryData(cachedDataKey) as {
+        const data = queryClient.getQueryData(paginatedQueryKey) as {
           pages: PaginatedResponse<Array<TItem>>[];
         };
         try {
@@ -94,12 +93,12 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
             pagination: page.pagination,
             data: page.data.filter((element) => element.id !== mutatedItemId),
           }));
-          queryClient.setQueryData(cachedDataKey, (data: any) => ({
+          queryClient.setQueryData(paginatedQueryKey, (data: any) => ({
             pages: newPagesArray,
             pageParams: data.pageParams,
           }));
         } catch {
-          queryClient.invalidateQueries(cachedDataKey);
+          queryClient.invalidateQueries(paginatedQueryKey);
         }
         try {
           const cachedAmount = queryClient.getQueryData(

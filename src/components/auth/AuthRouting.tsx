@@ -15,6 +15,7 @@ const AuthRouting = () => {
         <button
           id="formSwitchButton-Register"
           onClick={authFormChangeHandler.bind(null, 'register')}
+          className="text-sm"
         >
           Зареєструватися
         </button>
@@ -23,6 +24,7 @@ const AuthRouting = () => {
         <button
           id="formSwitchButton-Login"
           onClick={authFormChangeHandler.bind(null, 'login')}
+          className="text-sm"
         >
           Увійти
         </button>
@@ -31,6 +33,7 @@ const AuthRouting = () => {
         <button
           id="formSwitchButton-forget"
           onClick={authFormChangeHandler.bind(null, 'forgot-password')}
+          className="text-sm"
         >
           Забув пароль?
         </button>

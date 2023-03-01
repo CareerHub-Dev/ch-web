@@ -1,12 +1,26 @@
-import WorkingExperience from '@/lib/cv/WorkingExperience';
-import { getFormattedDate } from '@/lib/date';
+import { getFormattedDate } from "@/lib/date";
 
-const grayText = 'text-md text-darkGray';
+const grayText = "text-md text-darkGray";
 
-const WorkExperienceItem = ({ item }: { item: WorkingExperience }) => {
+export default function WorkExperienceItem({
+  item,
+}: {
+  item: {
+    company: string;
+    jobTitle: string;
+    employmentType: string;
+    jobLocation: string;
+    isRemote: boolean;
+    startMonth: string;
+    startYear: string;
+    jobIsCurrent: boolean;
+    endMonth: string;
+    endYear: string;
+  };
+}) {
   const startDate = getFormattedDate(item.startMonth, item.startYear);
   const endDate = item.jobIsCurrent
-    ? 'Досі'
+    ? "Досі"
     : getFormattedDate(item.endMonth, item.endYear);
 
   return (
@@ -17,5 +31,4 @@ const WorkExperienceItem = ({ item }: { item: WorkingExperience }) => {
       <p className={grayText}>Дата закінчення: {endDate}</p>
     </li>
   );
-};
-export default WorkExperienceItem;
+}

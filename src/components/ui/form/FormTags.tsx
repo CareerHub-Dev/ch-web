@@ -1,18 +1,21 @@
 import { useState, useRef } from 'react';
-import ChervonDownIcon from '../icons/ChevronDownIcon';
-import RemoveIcon from '../icons/RemoveIcon';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon } from '@heroicons/react/24/solid';
+import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import cn from 'classnames';
 import classes from './Form.module.scss';
-import ArrowRightIcon from '../icons/ArrowRightIcon';
 
-type Props = {
+const FormTags = ({
+  tags,
+  onAdd,
+  onRemove,
+  onReset,
+}: {
   tags: Array<string>;
   onRemove: AnyFn;
   onAdd: AnyFn;
   onReset: AnyFn;
-};
-
-const FormTags = ({ tags, onAdd, onRemove, onReset }: Props) => {
+}) => {
   const [insertionIsOpen, setInsertionIsOpen] = useState(false);
   const tagInsertionInputRef = useRef<HTMLInputElement>(null);
 
@@ -37,21 +40,21 @@ const FormTags = ({ tags, onAdd, onRemove, onReset }: Props) => {
                 className={classes['remove-tag']}
                 onClick={onRemove.bind(null, tag)}
               >
-                <RemoveIcon />
+                <XMarkIcon />
               </div>
             </div>
           ))}
         </div>
         <div className={classes['tags-actions']}>
           <div className={classes['tags-action']} onClick={onReset}>
-            <RemoveIcon />
+            <XMarkIcon />
           </div>
           <span className={classes['tags-actions-separator']} />
           <div
             className={classes['tags-action']}
             onClick={insertionToggleHandler}
           >
-            <ChervonDownIcon />
+            <ChevronDownIcon />
           </div>
         </div>
       </div>

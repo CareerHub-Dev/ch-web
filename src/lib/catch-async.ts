@@ -1,4 +1,4 @@
-import { NextApiResponse } from 'next';
+import { NextApiResponse } from "next";
 
 export default function catchAsync<T>(fn: ExtendedApiHandler<T>) {
   return async function (
@@ -12,11 +12,11 @@ export default function catchAsync<T>(fn: ExtendedApiHandler<T>) {
       }
       return handlerResult;
     } catch (e: unknown) {
-      let message = 'Something went wrong! Error: ';
+      let message = "Something went wrong! Error: ";
       if (e instanceof Error) {
         message += e.message;
       } else {
-        message += 'unknown. Caught object: ' + e;
+        message += "unknown. Caught object: " + e;
       }
       return res.status(500).json({ message });
     }
