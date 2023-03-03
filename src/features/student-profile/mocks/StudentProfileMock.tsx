@@ -1,8 +1,7 @@
-import {
-  ChatBubbleLeftEllipsisIcon,
-} from "@heroicons/react/20/solid";
+import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/20/solid";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import StudentStatsMock from "./StudentStatsMock";
+import Image from "next/image";
 
 const whoToFollow = [
   {
@@ -67,7 +66,9 @@ export default function StudentProfileSkeleton() {
         <div className="flex items-center space-x-5">
           <div className="flex-shrink-0">
             <div className="relative">
-              <img
+              <Image
+                height={128}
+                width={128}
                 className="h-16 w-16 rounded-full"
                 src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
                 alt=""
@@ -168,7 +169,9 @@ export default function StudentProfileSkeleton() {
                           className="flex items-center space-x-3 py-4"
                         >
                           <div className="flex-shrink-0">
-                            <img
+                            <Image
+                              width={32}
+                              height={32}
                               className="h-8 w-8 rounded-full"
                               src={user.imageUrl}
                               alt=""
@@ -222,7 +225,7 @@ export default function StudentProfileSkeleton() {
                       {trendingPosts.map((post) => (
                         <li key={post.id} className="flex space-x-3 py-4">
                           <div className="flex-shrink-0">
-                            <img
+                            <Image
                               className="h-8 w-8 rounded-full"
                               src={post.user.imageUrl}
                               alt={post.user.name}
