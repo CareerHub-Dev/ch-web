@@ -1,4 +1,4 @@
-import { Fragment, useRef } from "react";
+import { Fragment, useRef, useState } from "react";
 import { useOnClickOutside } from "usehooks-ts";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
@@ -25,8 +25,9 @@ export default function ItemSelection({
   onBlur?: () => void;
 }) {
   const listboxRef = useRef(null);
+  const [wasFocused, setWasFocused] = useState(false);
   useOnClickOutside(listboxRef, () => {
-    if (onBlur) {
+    if (wasFocused && !!onBlur) {
       onBlur();
     }
   });
@@ -48,6 +49,7 @@ export default function ItemSelection({
                   ? "focus:border-red-500 focus:ring-red-500 border-red-300"
                   : "focus:border-blue-500 focus:ring-blue-500 border-gray-300"
               )}
+              onClickCapture={() => setWasFocused(true)}
             >
               <span
                 className={cn(
