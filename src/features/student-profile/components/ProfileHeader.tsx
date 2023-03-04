@@ -3,12 +3,15 @@ import Image from "next/image";
 import { getImage } from "@/lib/api/image";
 import useStudentQuery from "@/hooks/useStudentQuery";
 
-export default function ProfileHeader(props: {
+export default function ProfileHeader({
+  isSelf,
+  studentId,
+}: {
   isSelf: boolean;
   studentId: string;
 }) {
   const { data, isLoading } = useStudentQuery({
-    accountId: props.studentId,
+    accountId: studentId,
   });
 
   return (
@@ -44,7 +47,7 @@ export default function ProfileHeader(props: {
           )}
         </div>
       </div>
-      {props.isSelf && (
+      {isSelf && (
         <div className="justify-stretch mt-6 flex flex-col-reverse space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-y-0 sm:space-x-3 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3">
           <Link
             href={"/my-profile/edit"}
