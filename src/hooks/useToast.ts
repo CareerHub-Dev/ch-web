@@ -1,13 +1,13 @@
-import { useRef } from 'react';
-import { toast, ToastOptions } from 'react-toastify';
+import { useRef } from "react";
+import { toast, ToastOptions } from "react-toastify";
 
-import ToastContext from '@/lib/toasts/ToastContext';
-import ErrorToastStrategy from '@/lib/toasts/strategies/ErrorToastStrategy';
-import SuccessToastStrategy from '@/lib/toasts/strategies/SuccessToastStrategy';
-import WarningToastStrategy from '@/lib/toasts/strategies/WarningToastStrategy';
-import IToastStrategy from '@/lib/toasts/strategies/IToastStrategy';
+import ToastContext from "@/lib/toasts/ToastContext";
+import ErrorToastStrategy from "@/lib/toasts/strategies/ErrorToastStrategy";
+import SuccessToastStrategy from "@/lib/toasts/strategies/SuccessToastStrategy";
+import WarningToastStrategy from "@/lib/toasts/strategies/WarningToastStrategy";
+import IToastStrategy from "@/lib/toasts/strategies/IToastStrategy";
 
-const useToast = () => {
+export default function useToast() {
   const toastRef = useRef<any>(null);
 
   const notify = (
@@ -31,7 +31,7 @@ const useToast = () => {
 
   const setCurrent = (
     text: string,
-    options?: Omit<ToastOptions, 'isLoading' | 'type'>
+    options?: Omit<ToastOptions, "isLoading" | "type">
   ) => {
     toastRef.current = toast(text, { ...options, isLoading: true });
   };
@@ -42,6 +42,4 @@ const useToast = () => {
     warning,
     setCurrent,
   };
-};
-
-export default useToast;
+}

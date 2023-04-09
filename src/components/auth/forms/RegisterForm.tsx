@@ -1,18 +1,23 @@
-import { FormEventHandler, useRef } from 'react';
-import { useInput } from '@/hooks/useInput';
-import { getStudentEmailValidity, getPasswordValidity } from '@/lib/util';
-import { AuthField } from './AuthField';
+import { FormEventHandler, useRef } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useInput } from "@/hooks/useInput";
+import useToast from "@/hooks/useToast";
+import { registerStudent } from "@/lib/api/account";
+import { getStudentEmailValidity, getPasswordValidity } from "@/lib/util";
+import { AuthField } from "./AuthField";
+import parseUnknownError from "@/lib/parse-unknown-error";
 
-export const RegisterForm = () => {
+export function RegisterForm() {
+  const toast = useToast();
   const emailInput = useInput({
     validators: [
       (val) =>
         getStudentEmailValidity(val)
-          ? { type: 'success' }
+          ? { type: "success" }
           : {
-              type: 'error',
+              type: "error",
               message:
-                'Перевірте чи ваша пошта є у домені nure.ua та не містить невалідних символів',
+                "Перевірте чи ваша пошта є у домені nure.ua та не містить невалідних символів",
             },
     ],
   });
@@ -21,16 +26,28 @@ export const RegisterForm = () => {
     validators: [
       (val) =>
         getPasswordValidity(val)
-          ? { type: 'success' }
+          ? { type: "success" }
           : {
-              type: 'error',
+              type: "error",
               message:
-                'Пароль повинен бути від 8 до 33 символів серед яких: літери верхнього й нижнього регістру, хоча б одна цифра або спеціальний символ',
+                "Пароль повинен бути від 8 до 33 символів серед яких: літери верхнього й нижнього регістру, хоча б одна цифра або спеціальний символ",
             },
     ],
   });
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const formIsValid = emailInput.isValid && passwordInput.isValid;
+
+  const registerMutation = useMutation(["register-student"], registerStudent, {
+    onMutate: () => {
+      toast.setCurrent("Перевіряємо дані...");
+    },
+    onSuccess: (_data) => {
+      toast.success("Успіх! Перевірте вашу електронну пошту", true);
+    },
+    onError: (error: unknown) => {
+      toast.error(parseUnknownError(error), true);
+    },
+  });
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
@@ -44,6 +61,10 @@ export const RegisterForm = () => {
       }
       return;
     }
+    registerMutation.mutate({
+      email: emailInput.value,
+      password: passwordInput.value,
+    });
   };
 
   return (
@@ -57,7 +78,7 @@ export const RegisterForm = () => {
         onChange={emailInput.change}
         onBlur={emailInput.blur}
         errorMessage="Перевірте чи ваша пошта є у домені nure.ua та не містить невалідних символів"
-        label={'Пошта'}
+        label={"Пошта"}
       />
       <AuthField
         ref={passwordInputRef}
@@ -72,10 +93,11 @@ export const RegisterForm = () => {
       />
       <button
         type="submit"
-        className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all ease-in-out duration-200"
+        disabled={!formIsValid || registerMutation.isLoading}
+        className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all ease-in-out duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Зареєструватися
       </button>
     </form>
   );
-};
+}
