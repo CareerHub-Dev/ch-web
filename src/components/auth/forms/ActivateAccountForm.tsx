@@ -53,6 +53,7 @@ export function ActivateAccountForm() {
       <input
         type="text"
         ref={tokenInputRef}
+        placeholder="Введіть токен"
         className="px-3 py-2 block w-full appearance-none shadow-sm rounded-md border focus:outline-none sm:text-sm transition-all ease-in-out duration-200 border-gray-300 placeholder-gray-400  focus:border-blue-500 focus:ring-blue-500"
       />
       <button
