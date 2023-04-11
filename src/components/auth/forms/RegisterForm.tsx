@@ -1,6 +1,7 @@
 import { FormEventHandler, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useInput } from "@/hooks/useInput";
+import { useRouter } from "next/router";
 import useToast from "@/hooks/useToast";
 import { registerStudent } from "@/lib/api/account";
 import { getStudentEmailValidity, getPasswordValidity } from "@/lib/util";
@@ -9,6 +10,7 @@ import parseUnknownError from "@/lib/parse-unknown-error";
 
 export function RegisterForm() {
   const toast = useToast();
+  const router = useRouter();
   const emailInput = useInput({
     validators: [
       (val) =>
@@ -43,6 +45,7 @@ export function RegisterForm() {
     },
     onSuccess: (_data) => {
       toast.success("Успіх! Перевірте вашу електронну пошту", true);
+      router.push("/auth/activate-account");
     },
     onError: (error: unknown) => {
       toast.error(parseUnknownError(error), true);
@@ -94,7 +97,7 @@ export function RegisterForm() {
       <button
         type="submit"
         disabled={!formIsValid || registerMutation.isLoading}
-        className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all ease-in-out duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all ease-in-out duration-200 disabled:opacity-50 disabled:cursor-wait"
       >
         Зареєструватися
       </button>

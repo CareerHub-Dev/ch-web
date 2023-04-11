@@ -1,12 +1,12 @@
 import { ForgotPasswordForm } from "@/components/auth/forms/ForgotPasswordForm";
 import { LoginForm } from "@/components/auth/forms/LoginForm";
 import { RegisterForm } from "@/components/auth/forms/RegisterForm";
+import { ActivateAccountForm } from "@/components/auth/forms/ActivateAccountForm";
 import FormWrapper from "@/components/auth/FormWrapper";
 import { Background } from "@/components/layout/Background";
 import { Footer } from "@/components/layout/Footer";
 import { GetStaticPropsContext } from "next";
 import classes from "@/styles/auth.module.scss";
-
 
 const AuthPage: NextPageWithLayout<{ form: string }> = ({ form }) => {
   return (
@@ -16,6 +16,8 @@ const AuthPage: NextPageWithLayout<{ form: string }> = ({ form }) => {
           <LoginForm />
         ) : form === "register" ? (
           <RegisterForm />
+        ) : form === "activate-account" ? (
+          <ActivateAccountForm />
         ) : (
           <ForgotPasswordForm />
         )}
@@ -62,6 +64,11 @@ export async function getStaticPaths() {
       {
         params: {
           form: "login",
+        },
+      },
+      {
+        params: {
+          form: "activate-account",
         },
       },
     ],

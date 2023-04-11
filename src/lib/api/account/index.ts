@@ -96,3 +96,12 @@ export function changePassword(instance: AxiosInstance) {
       data,
     });
 }
+
+export function activateAccount(data: { token: string; role: string }) {
+  return request({
+    url: `verify-${data.role}-email`,
+    prefix: "Account",
+    method: "POST",
+    data: { token: data.token },
+  });
+}
