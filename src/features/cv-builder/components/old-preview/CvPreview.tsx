@@ -1,11 +1,11 @@
-import { cvTemplateLocalization } from '@/resources/cv-localization';
-import { PlainParagraph } from './PlainParagraph';
-import { getCvMutationData, useCvDataStore } from '../../store/cv-data-store';
-import { notEmpty } from '@/lib/util';
-import cn from 'classnames';
-import classes from './CvPreview.module.scss';
+import { cvTemplateLocalization } from "@/resources/cv-localization";
+import { PlainParagraph } from "./PlainParagraph";
+import { getCvMutationData, useCvDataStore } from "../../store/cv-data-store";
+import { notEmpty } from "@/lib/util";
+import cn from "classnames";
+import classes from "./CvPreview.module.scss";
 
-const CVPreview: React.FC = () => {
+export default function CVPreview() {
   const cvData = useCvDataStore(getCvMutationData);
 
   if (cvData === null) {
@@ -28,20 +28,20 @@ const CVPreview: React.FC = () => {
   cvTemplateLocalization.setLanguage(templateLanguage.toLowerCase());
 
   return (
-    <div className={cn(classes['doc-preview'], 'w-full')}>
-      {notEmpty(firstName) && notEmpty(lastName) && (
+    <div className={cn(classes["doc-preview"], "w-full")}>
+      {notEmpty(firstName) && notEmpty(lastName) ? (
         <>
           <h1>{`${cvTemplateLocalization.name}, ${cvTemplateLocalization.surname}:`}</h1>
           <p>{`${firstName} ${lastName}`}</p>
           <hr />
         </>
-      )}
+      ) : null}
       <PlainParagraph title={cvTemplateLocalization.goals} text={goals} />
       <PlainParagraph
         title={cvTemplateLocalization.skillsAndTechnologies}
         text={skillsAndTechnologies}
       />
-      {notEmpty(foreignLanguages) && (
+      {notEmpty(foreignLanguages) ? (
         <>
           <h1>{`${cvTemplateLocalization.foreignLanguages}:`}</h1>
           <ul>
@@ -51,8 +51,8 @@ const CVPreview: React.FC = () => {
           </ul>
           <hr />
         </>
-      )}
-      {notEmpty(projectLinks) && (
+      ) : null}
+      {notEmpty(projectLinks) ? (
         <>
           <h2>{`${cvTemplateLocalization.links}:`}</h2>
           <ul>
@@ -66,8 +66,8 @@ const CVPreview: React.FC = () => {
           </ul>
           <hr />
         </>
-      )}
-      {notEmpty(educations) && (
+      ) : null}
+      {notEmpty(educations) ? (
         <>
           <h1>{`${cvTemplateLocalization.education}:`}</h1>
           <ul>
@@ -88,9 +88,7 @@ const CVPreview: React.FC = () => {
             })}
           </ul>
         </>
-      )}
+      ) : null}
     </div>
   );
-};
-
-export default CVPreview;
+}

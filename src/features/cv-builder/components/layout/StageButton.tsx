@@ -9,7 +9,7 @@ import cn from "classnames";
 export default function StageButton({
   stage,
 }: {
-  stage: typeof CV_EDITOR_STAGES[number];
+  stage: (typeof CV_EDITOR_STAGES)[number];
 }) {
   const currentStageNumber = useCvDataStore((s) => s.currentStage);
   const stageStatus = useCvDataStore(getStageCompletionStatus(stage.id));

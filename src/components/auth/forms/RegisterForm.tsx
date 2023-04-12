@@ -75,7 +75,6 @@ export function RegisterForm() {
       <AuthField
         ref={emailInputRef}
         id="email"
-        placeholder="Уведіть пошту"
         type="email"
         showError={emailInput.wasBlurred && emailInput.hasErrors}
         onChange={emailInput.change}
@@ -86,7 +85,6 @@ export function RegisterForm() {
       <AuthField
         ref={passwordInputRef}
         id="password"
-        placeholder="Уведіть пароль"
         type="password"
         showError={passwordInput.wasBlurred && passwordInput.hasErrors}
         onChange={passwordInput.change}

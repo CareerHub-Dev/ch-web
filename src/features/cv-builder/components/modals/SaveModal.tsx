@@ -1,6 +1,5 @@
 import { getCvMutationData, useCvDataStore } from "../../store/cv-data-store";
 import { useCvUiStore } from "../../store/cv-ui-store";
-import { useCvQueryData } from "@/hooks/useCvQuery";
 import { useRouter } from "next/router";
 import useProtectedMutation from "@/hooks/useProtectedMutation";
 import useToast from "@/hooks/useToast";
@@ -18,12 +17,10 @@ export function SaveModal() {
   const dispatchTitle = useCvDataStore((s) => s.dispatchTitle);
   const toast = useToast();
   const router = useRouter();
-  const cvData = useCvQueryData(cvId);
   const queryClient = useQueryClient();
   const cvMutationData = useCvDataStore(getCvMutationData);
 
-  const titleWasTouched = title.wasBlurred && title.wasChanged;
-  const titleValue = titleWasTouched ? title.value : cvData?.title || "";
+  const titleValue = title.value;
 
   const mutationKey = [cvId === null ? "create-cv" : `modify-cv-${cvId}`];
   // const mutationFn = cvId === null ? createCv : modifyCv(cvId);

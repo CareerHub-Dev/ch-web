@@ -232,7 +232,7 @@ export const CV_EDITOR_STAGES = [
   { id: 7, name: "Освіта" },
 ] as const;
 
-export type StageNumber = (typeof CV_EDITOR_STAGES)[number]["id"];
+export type StageNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 const titleReducer = makeStringInputReducer([
   (val) =>
