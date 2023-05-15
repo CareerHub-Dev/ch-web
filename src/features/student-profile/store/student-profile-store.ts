@@ -1,30 +1,28 @@
-import { createStore } from "zustand";
-import { immer } from "zustand/middleware/immer";
-import { devtools } from "zustand/middleware/devtools";
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
-type StudentProfileModal =
-  | "followedStudents"
-  | "studentFollowers"
-  | "followedCompanies"
-  | "trackedJobOffers";
+export type StudentProfileModal =
+    | "followedStudents"
+    | "studentFollowers"
+    | "followedCompanies"
+    | "trackedJobOffers";
 
 export type StudentProfileUiState = {
-  currentModal: null | StudentProfileModal;
+    currentModal: null | StudentProfileModal;
 };
 
 export type StudentProfileUiActions = {
-  closeModal: () => void;
-  openModal: (modal: StudentProfileModal) => void;
+    closeModal: () => void;
+    openModal: (modal: StudentProfileModal) => void;
 };
 
-export const useStudentProfileStore = createStore<
-  StudentProfileUiState & StudentProfileUiActions
+export const useStudentProfileStore = create<
+    StudentProfileUiState & StudentProfileUiActions
 >()(
-  devtools(
-    immer((set) => ({
-      currentModal: null,
-      closeModal: () => set({ currentModal: null }),
-      openModal: (modal: StudentProfileModal) => set({ currentModal: modal }),
+    devtools((set) => ({
+        currentModal: null,
+        closeModal: () => set((_state) => ({ currentModal: null })),
+        openModal: (modal: StudentProfileModal) =>
+            set((_state) => ({ currentModal: modal })),
     }))
-  )
 );

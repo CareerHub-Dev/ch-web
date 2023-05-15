@@ -42,7 +42,7 @@ export const LoginForm = () => {
   const authMutation = useMutation(['auth'], LocalGateway.authenticate, {
     onSuccess: (data) => {
       session.login(data);
-      router.push('/my-profile');
+      router.push('/me');
     },
     onError: (error: string) => {
       toast.error(error);

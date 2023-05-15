@@ -1,19 +1,30 @@
-import CvBuilder from '@/features/cv-builder/CvBuilder';
-import CommonLayout from '@/components/layout/CommonLayout';
-import useJobPositionsQuery from '@/hooks/useJobPositionsQuery';
-import CenteredLoadingSpinner from '@/components/ui/CenteredLoadingSpinner';
-import parseUnknownError from '@/lib/parse-unknown-error';
+import CvBuilder from "@/features/cv-builder/CvBuilder";
+import CommonLayout from "@/components/layout/CommonLayout";
+import { protectedSsr } from "@/lib/protected-ssr";
+import { useJobDirectionsQuery } from "@/hooks/requests/job-directions";
+import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
+// import CenteredLoadingSpinner from '@/components/ui/CenteredLoadingSpinner';
+// import parseUnknownError from '@/lib/parse-unknown-error';
 
-const CreateCvPage = () => {
-  const { isLoading, isError, error } = useJobPositionsQuery();
+function CreateCvPage() {
+    const { isLoading: isLoadingJobDirections, isError: isErrorJobDirections } =
+        useJobDirectionsQuery();
 
-  if (isLoading) return <CenteredLoadingSpinner />;
+    if (isLoadingJobDirections) {
+        return <CenteredLoadingSpinner />;
+    }
 
-  if (isError) return <div>{parseUnknownError(error)}</div>;
+    if (isErrorJobDirections) {
+        return <div>Помилка завантаження</div>;
+    }
 
-  return <CvBuilder />;
-};
+    return <CvBuilder />;
+}
 
 CreateCvPage.getLayout = CommonLayout;
+
+export const getServerSideProps = protectedSsr({
+    allowedRoles: ["Student"],
+});
 
 export default CreateCvPage;

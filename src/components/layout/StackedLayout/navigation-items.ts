@@ -14,7 +14,7 @@ export function getUserMenuLinks(role?: UserRole) {
         {
           text: 'Мій профіль',
           Icon: UserCircleIcon,
-          href: '/my-profile',
+          href: '/me',
         },
         {
           text: 'Мої резюме',
@@ -24,7 +24,7 @@ export function getUserMenuLinks(role?: UserRole) {
         {
           text: 'Налаштування',
           Icon: Cog6ToothIcon,
-          href: '/my-profile/edit',
+          href: '/me/edit',
         },
       ];
     case 'Company':

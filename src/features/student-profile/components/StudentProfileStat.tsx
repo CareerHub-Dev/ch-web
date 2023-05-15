@@ -1,6 +1,6 @@
-import { type SVGProps } from "react";
 import { useProtectedQuery } from "@/hooks/useProtectedQuery";
 import { type AxiosInstance } from "axios";
+import { UsersIcon } from "@heroicons/react/24/outline";
 
 export default function StudentProfileStat({
   studentId,
@@ -11,12 +11,7 @@ export default function StudentProfileStat({
 }: {
   studentId: string;
   queryFn: (instance: AxiosInstance) => Promise<number>;
-  icon: (
-    props: SVGProps<SVGSVGElement> & {
-      title?: string | undefined;
-      titleId?: string | undefined;
-    }
-  ) => JSX.Element;
+  icon: typeof UsersIcon;
   name: string;
   onClick?: () => void;
 }) {
@@ -38,14 +33,14 @@ export default function StudentProfileStat({
       </dt>
       <dd className="ml-16 flex items-baseline pb-6 sm:pb-7">
         {isLoading ? (
-          <div className="h-6 bg-slate-500 rounded w-32" />
+          <div className="h-6 bg-gray-300 rounded w-32" />
         ) : (
           <p className="text-2xl font-semibold text-gray-900">{data}</p>
         )}
         <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6">
           <div className="text-sm">
             {isLoading ? (
-              <div className="h-4 bg-slate-500 rounded w-32 animate-pulse" />
+              <div className="h-4 bg-gray-300 rounded w-32 animate-pulse" />
             ) : (
               <button
                 className="font-medium text-indigo-600 hover:text-indigo-500"

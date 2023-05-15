@@ -1,11 +1,11 @@
-import { type AxiosInstance } from 'axios';
-import { request } from '../../axios';
-import { parsePaginatedResponseAsync } from '../pagination';
-import { CvDetailsSchema, CvsArraySchema } from './schemas';
-import { objectToFormData } from '@/lib/forms';
-import { WorkExperience } from '@/features/cv-builder/store/cv-data-store/cv';
+import { type AxiosInstance } from "axios";
+import { request } from "../../axios";
+import { parsePaginatedResponseAsync } from "../pagination";
+import { CvDetailsSchema, CvsArraySchema } from "./schemas";
+import { objectToFormData } from "@/lib/forms";
+import { WorkExperience } from "@/features/cv-builder/store/cv-data-store/cv";
 
-type CvsRequestParams = Pick<PaginatedRequestParams, 'pageSize'> & {
+type CvsRequestParams = Pick<PaginatedRequestParams, "pageSize"> & {
   order?: string;
 };
 
@@ -32,72 +32,80 @@ export type CvModificationData = {
   }>;
 };
 
-export const getStudentOwnCvs =
-  (params: CvsRequestParams) => (instance: AxiosInstance) => {
-    return request({
-      instance,
-      url: `/Student/self/CVs`,
-      params,
-      select: parsePaginatedResponseAsync(CvsArraySchema),
-    });
-  };
-
-export const getStudentOwnCv = (cvId: string) => (instance: AxiosInstance) => {
+export function getStudentOwnCvs(
+  instance: AxiosInstance,
+  params: CvsRequestParams
+) {
   return request({
     instance,
-    url: `/Student/self/CVs/${cvId}`,
-    select: (response) => CvDetailsSchema.parseAsync(response.data),
+    url: `/Student/self/CVs`,
+    params,
+    select: parsePaginatedResponseAsync(CvsArraySchema),
   });
-};
+}
 
-export const createCv =
-  (instance: AxiosInstance) => (body: CvModificationData) => {
+export function getStudentOwnCv(cvId: string) {
+  return (instance: AxiosInstance) =>
+    request({
+      instance,
+      url: `/Student/self/CVs/${cvId}`,
+      select: (response) => CvDetailsSchema.parseAsync(response.data),
+    });
+}
+
+export function createCv(instance: AxiosInstance) {
+  return (body: CvModificationData) => {
     const formData = objectToFormData(body);
 
     return request({
-      method: 'POST',
-      prefix: 'Student',
-      url: 'self/Cvs',
+      method: "POST",
+      prefix: "Student",
+      url: "self/Cvs",
       data: formData,
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
       instance,
     });
   };
+}
 
-export const modifyCv =
-  (instance: AxiosInstance) =>
-  ({ id, ...data }: Omit<CvModificationData, 'photo'> & { id: string }) => {
+export function modifyCv(instance: AxiosInstance) {
+  return ({
+    id,
+    ...data
+  }: Omit<CvModificationData, "photo"> & { id: string }) => {
     return request({
-      method: 'PUT',
-      prefix: 'Student',
+      method: "PUT",
+      prefix: "Student",
       url: `self/Cvs/${id}`,
       data,
       instance,
     });
   };
+}
 
-export const modifyCvPhoto =
-  (instance: AxiosInstance) =>
-  ({ id, photo }: { id: string; photo?: File }) => {
+export function modifyCvPhoto(instance: AxiosInstance) {
+  return ({ id, photo }: { id: string; photo?: File }) => {
     const data = new FormData();
-    data.append('file', photo ?? '');
+    data.append("file", photo ?? "");
 
     return request({
-      method: 'POST',
-      prefix: 'Student',
+      method: "POST",
+      prefix: "Student",
       url: `self/Cvs/${id}/photo`,
       data,
       instance,
     });
   };
+}
 
-export const deleteCv = (instance: AxiosInstance) => (id: string) => {
-  return request({
-    method: 'DELETE',
-    prefix: 'Student',
-    url: `self/Cvs/${id}`,
-    instance,
-  });
-};
+export function deleteCv(instance: AxiosInstance) {
+  return (id: string) =>
+    request({
+      method: "DELETE",
+      prefix: "Student",
+      url: `self/Cvs/${id}`,
+      instance,
+    });
+}

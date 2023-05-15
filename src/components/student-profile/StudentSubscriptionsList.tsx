@@ -1,18 +1,18 @@
-import { Fragment, useState } from 'react';
-import { type AxiosInstance } from 'axios';
-import useToast from '@/hooks/useToast';
-import { useQueryClient } from '@tanstack/react-query';
-import { useProtectedPaginatedQuery } from '@/hooks/useProtectedPaginatedQuery';
-import useProtectedMutation from '@/hooks/useProtectedMutation';
-import parseUnknownError from '@/lib/parse-unknown-error';
-import ErrorWhileLoading from './ErrorWhileLoading';
-import LoadingPage from './LoadingPage';
-import LoadMore from '../ui/LoadMore';
-import OrderByOptions from './OrderByOptions';
-import { type PaginatedResponse } from '@/lib/api/pagination';
-import dynamic from 'next/dynamic';
+import { Fragment, useState } from "react";
+import { type AxiosInstance } from "axios";
+import useToast from "@/hooks/useToast";
+import { useQueryClient } from "@tanstack/react-query";
+import { useProtectedPaginatedQuery } from "@/hooks/useProtectedPaginatedQuery";
+import useProtectedMutation from "@/hooks/useProtectedMutation";
+import parseUnknownError from "@/lib/parse-unknown-error";
+import ErrorWhileLoading from "./ErrorWhileLoading";
+import LoadingPage from "./LoadingPage";
+import LoadMore from "../ui/LoadMore";
+import OrderByOptions from "./OrderByOptions";
+import { type PaginatedResponse } from "@/lib/api/pagination";
+import dynamic from "next/dynamic";
 
-const UnsubscribeModal = dynamic(() => import('./UnsubscribeModal'), {
+const UnsubscribeModal = dynamic(() => import("./UnsubscribeModal"), {
   ssr: false,
 });
 
@@ -43,8 +43,9 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
   item: (props: { item: TItem; onSelect?: () => void }) => JSX.Element;
   noItems: (props: { isSelf: boolean }) => JSX.Element;
   getItems: (
+    instance: AxiosInstance,
     params: PaginatedQueryParams & { accountId: string }
-  ) => (instance: AxiosInstance) => Promise<PaginatedResponse<TItem[]>>;
+  ) => Promise<PaginatedResponse<TItem[]>>;
   extractItemName: (item: TItem) => string;
   mutateItem: (instance: AxiosInstance) => (itemId: string) => any;
   orderByOptions: Array<{
@@ -75,11 +76,11 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
     params: paginatedQueryParams,
   });
   const unsubscribeMutation = useProtectedMutation(
-    ['unsubscribeFromItem'],
+    ["unsubscribeFromItem"],
     mutateItem,
     {
       onMutate: (_mutatedItemId) => {
-        toast.setCurrent('Відписка...');
+        toast.setCurrent("Відписка...");
       },
       onError: (error) => {
         toast.error(parseUnknownError(error), true);
@@ -108,7 +109,7 @@ export default function StudentSubscriptionsList<TItem extends { id: string }>({
         } catch {
           queryClient.invalidateQueries(cachedAmountQueryKey);
         }
-        toast.success('Ви успішно відписались', true);
+        toast.success("Ви успішно відписались", true);
         setSelectedItem(null);
       },
     }

@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import { useDebounce } from 'usehooks-ts';
-import { getCompanies } from '@/lib/api/company';
-import { useProtectedPaginatedQuery } from '@/hooks/useProtectedPaginatedQuery';
-import SearchPanel from '@/components/companies/feed/SearchPanel';
-import LoadMore from '@/components/ui/LoadMore';
-import { protectedSsr } from '@/lib/protected-ssr';
-import CommonLayout from '@/components/layout/CommonLayout';
-import parseUnknownError from '@/lib/parse-unknown-error';
-import axiosMiddleware from '@/lib/middleware/axiosMiddleware';
-import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
-import CenteredLoadingSpinner from '@/components/ui/CenteredLoadingSpinner';
+import { useState } from "react";
+import { useDebounce } from "usehooks-ts";
+import { getCompanies } from "@/lib/api/company";
+import { useProtectedPaginatedQuery } from "@/hooks/useProtectedPaginatedQuery";
+import SearchPanel from "@/components/companies/feed/SearchPanel";
+import LoadMore from "@/components/ui/LoadMore";
+import { protectedSsr } from "@/lib/protected-ssr";
+import CommonLayout from "@/components/layout/CommonLayout";
+import parseUnknownError from "@/lib/parse-unknown-error";
+import axiosMiddleware from "@/lib/middleware/axiosMiddleware";
+import CompaniesGrid from "@/components/companies/feed/CompaniesGrid";
+import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 
-import { type CompanyInFeedArray } from '@/lib/api/company/schemas';
-import { type PaginatedResponse } from '@/lib/api/pagination';
-import { type InferGetServerSidePropsType } from 'next';
+import { type CompanyInFeedArray } from "@/lib/api/company/schemas";
+import { type PaginatedResponse } from "@/lib/api/pagination";
+import { type InferGetServerSidePropsType } from "next";
 
 const CompaniesFeedPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ initialData }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const {
@@ -30,7 +30,7 @@ const CompaniesFeedPage: NextPageWithLayout<
     error,
     isFetchingNextPage,
   } = useProtectedPaginatedQuery({
-    queryKey: ['companies'],
+    queryKey: ["companies"],
     getItems: getCompanies,
     params: {
       pageSize: 25,
@@ -75,11 +75,13 @@ export const getServerSideProps = protectedSsr<{
     pageParams: { pageSize: number; searchTerm: string }[];
   } | null;
 }>({
-  allowedRoles: ['Student', 'Company'],
+  allowedRoles: ["Student", "Company"],
+
+  // TODO: REMOVE THIS AND GO CLIENT SIDE FETCHING
   getProps: async (context) => {
-    const params = { pageSize: 25, searchTerm: '' };
+    const params = { pageSize: 25, searchTerm: "" };
     try {
-      const data = await getCompanies(params)(axiosMiddleware(context));
+      const data = await getCompanies(axiosMiddleware(context), params);
 
       return {
         props: {

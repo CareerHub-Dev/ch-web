@@ -27,7 +27,7 @@ const EditPageHeader = ({
 
         <div className="flex-auto">
           <Link
-            href="/my-profile"
+            href="/me"
             className="text-xl font-bold hover:underline cursor-pointer"
           >
             {`${firstName} ${lastName}`}
