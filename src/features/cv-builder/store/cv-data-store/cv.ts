@@ -16,14 +16,14 @@ export type ProjectLink = {
 };
 
 export type WorkExperience = {
-    company: string;
     title: string;
-    startYear: string;
-    startMonth: string;
-    endYear: string;
-    endMonth: string;
-    description: string;
-    isCurrent: boolean;
+    companyName: string;
+    jobType: string;
+    workFormat: string;
+    experienceLevel: string;
+    jobLocation: string;
+    startDate: string;
+    endDate: string;
 };
 
 export type Education = {
