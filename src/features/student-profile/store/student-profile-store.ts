@@ -16,13 +16,14 @@ export type StudentProfileUiActions = {
     openModal: (modal: StudentProfileModal) => void;
 };
 
-export const useStudentProfileStore = create<
-    StudentProfileUiState & StudentProfileUiActions
->()(
+export type StudentProfileStore = StudentProfileUiState &
+    StudentProfileUiActions;
+
+export const useStudentProfileStore = create<StudentProfileStore>()(
     devtools((set) => ({
         currentModal: null,
-        closeModal: () => set((_state) => ({ currentModal: null })),
+        closeModal: () => set(() => ({ currentModal: null })),
         openModal: (modal: StudentProfileModal) =>
-            set((_state) => ({ currentModal: modal })),
+            set(() => ({ currentModal: modal })),
     }))
 );

@@ -2,7 +2,7 @@ import { useProtectedQuery } from "@/hooks/useProtectedQuery";
 import {
     getStudentCompanySubscriptionsAmount,
     getStudentJobOfferSubscriptionsAmount,
-    getStudentStudentSubscriptionsAmount,
+    getStudentStudentSubscribersAmount,
 } from "@/lib/api/student";
 import StudentStat from "./StudentStat";
 import StudentStatSkeleton from "./StudentStatSkeleton";
@@ -15,7 +15,7 @@ import {
 export default function StudentStats({ accountId }: { accountId: string }) {
     const students = useProtectedQuery(
         ["student-student-subscriptions-amount", accountId],
-        getStudentStudentSubscriptionsAmount(accountId),
+        getStudentStudentSubscribersAmount(accountId),
         {}
     );
     const companies = useProtectedQuery(

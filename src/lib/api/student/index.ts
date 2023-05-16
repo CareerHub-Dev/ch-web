@@ -1,8 +1,9 @@
 import { request } from "../../axios";
 import { z } from "zod";
-import StudentSchema from "../../schemas/Student";
+import StudentSchema, { StudentArraySchema } from "../../schemas/Student";
 import {
     CompanySubscriptionsArraySchema,
+    StudentSubscribersArraySchema,
     StudentSubscriptionsArraySchema,
 } from "./schemas";
 import { JobOfferArraySchema } from "../../schemas/JobOffer";
@@ -20,6 +21,18 @@ export function getStudent(accountId: string) {
             url: `Student/Students/${accountId}`,
             select: parseStudentAsync,
         });
+}
+
+export function getStudents(
+    instance: AxiosInstance,
+    params: Omit<PaginatedRequestParams, "pageNumber">
+) {
+    return request({
+        instance,
+        url: "Student/Students",
+        select: parsePaginatedResponseAsync(StudentArraySchema),
+        params,
+    });
 }
 
 export function getSelfStudent(instance: AxiosInstance) {
@@ -47,6 +60,16 @@ export const getStudentCompanySubscriptionsAmount =
     getStudentSubscriptionsAmount("company");
 export const getStudentJobOfferSubscriptionsAmount =
     getStudentSubscriptionsAmount("jobOffer");
+
+export function getStudentStudentSubscribersAmount(accountId: string) {
+    return (instance: AxiosInstance) =>
+        request({
+            instance,
+            url: `/Student/Students/${accountId}/amount-student-subscribers`,
+            select: (response: AxiosResponse) =>
+                z.number().parse(response.data),
+        });
+}
 
 export function updateStudentGeneralInfo(instance: AxiosInstance) {
     return (data: {
@@ -89,7 +112,7 @@ export function getStudentCvs(accountId: string) {
         });
 }
 
-type StudentSubscriptionsParams = Omit<PaginatedRequestParams, "pageNumber"> & {
+export type StudentSubscriptionsParams = Omit<PaginatedRequestParams, "pageNumber"> & {
     accountId: string;
 };
 
@@ -103,6 +126,19 @@ export function getStudentStudentSubscriptions(
         url: `/Student/Students/${accountId}/student-subscriptions`,
         params: rest,
         select: parsePaginatedResponseAsync(StudentSubscriptionsArraySchema),
+    });
+}
+
+export function getStudentStudentSubscribers(
+    instance: AxiosInstance,
+    params: StudentSubscriptionsParams
+) {
+    const { accountId, ...rest } = params;
+    return request({
+        instance,
+        url: `/Student/Students/${accountId}/student-subscribers`,
+        params: rest,
+        select: parsePaginatedResponseAsync(StudentSubscribersArraySchema),
     });
 }
 
@@ -132,12 +168,34 @@ export function getStudentJobOfferSubscriptions(
     });
 }
 
+export function getStudentStudentSubscriptionState(studentId: string) {
+    return (instance: AxiosInstance) => {
+        return request({
+            instance,
+            url: `/Student/Students/${studentId}/subscribe`,
+            method: "GET",
+            select: (response: AxiosResponse) =>
+                z.boolean().parse(response.data),
+        });
+    };
+}
+
 export function unsubscribeStudentFromStudent(instance: AxiosInstance) {
     return (studentId: string) => {
         return request({
             instance,
             url: `/Student/Students/${studentId}/subscribe`,
             method: "DELETE",
+        });
+    };
+}
+
+export function subscribeToStudent(instance: AxiosInstance) {
+    return (studentId: string) => {
+        return request({
+            instance,
+            url: `/Student/Students/${studentId}/subscribe`,
+            method: "POST",
         });
     };
 }

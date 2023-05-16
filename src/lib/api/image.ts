@@ -1,3 +1,5 @@
-import { backendServerUrl } from '.';
+import { backendServerUrl } from ".";
 
-export const getImage = (imageId: string) => `${backendServerUrl}/${imageId}`;
+export function getImage(imageId: string) {
+    return `${backendServerUrl}/${imageId}`;
+}

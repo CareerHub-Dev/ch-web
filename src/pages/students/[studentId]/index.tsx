@@ -18,7 +18,7 @@ export default function StudentProfilePage({
             <Head>
                 <meta name="description" content="Student profile" />
             </Head>
-            <StudentProfileModals />
+            <StudentProfileModals accountId={studentId} />
             <ProfileHeader isSelf={isSelf} studentId={studentId} />
 
             <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getImage } from "@/lib/api/image";
 import useStudentQuery from "@/hooks/useStudentQuery";
+import StudentSubscribeButton from "./StudentSubscribeButton";
 
 export default function ProfileHeader({
     isSelf,
@@ -13,6 +14,10 @@ export default function ProfileHeader({
     const { data, isLoading } = useStudentQuery({
         accountId: studentId,
     });
+
+    const imageSource = data?.photo
+        ? getImage(data.photo)
+        : "/default-avatar.png";
 
     return (
         <div className="mx-auto max-w-3xl px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
@@ -26,11 +31,7 @@ export default function ProfileHeader({
                                 className="h-16 w-16 rounded-full"
                                 width={64}
                                 height={64}
-                                src={
-                                    data?.photo
-                                        ? getImage(data.photo)
-                                        : "/default-avatar.png"
-                                }
+                                src={imageSource}
                                 alt={"Student photo"}
                             />
                         )}
@@ -53,16 +54,18 @@ export default function ProfileHeader({
                     )}
                 </div>
             </div>
-            {isSelf && (
-                <div className="justify-stretch mt-6 flex flex-col-reverse space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-y-0 sm:space-x-3 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3">
+            <div className="justify-stretch mt-6 flex flex-col-reverse space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-y-0 sm:space-x-3 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3">
+                {isSelf ? (
                     <Link
                         href={"/me/edit"}
-                        className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                        className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-gray-100 transition-all duration-200"
                     >
                         Редагувати
                     </Link>
-                </div>
-            )}
+                ) : (
+                    <StudentSubscribeButton studentId={studentId} />
+                )}
+            </div>
         </div>
     );
 }

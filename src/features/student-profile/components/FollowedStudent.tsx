@@ -1,8 +1,15 @@
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { getImage } from "@/lib/api/image";
 import Image from "next/image";
 import Link from "next/link";
+import { ChevronRightIcon } from "@heroicons/react/24/solid";
 
-export default function FollowedStudent(props: {
+export default function FollowedStudent({
+    id,
+    firstName,
+    lastName,
+    studentGroup,
+    photo,
+}: {
     id: string;
     firstName: string;
     lastName: string;
@@ -13,39 +20,41 @@ export default function FollowedStudent(props: {
     isFollowed: boolean;
     photo?: string | null | undefined;
 }) {
-    const imageSource = props.photo || "/default-avatar.png";
-    const studentProfileHref = `/student-profile/${props.id}`;
-    const studentFullName = `${props.firstName} ${props.lastName}`;
+    const imageSource = photo ? getImage(photo) : "/default-avatar.png";
+    const studentProfileHref = `/students/${id}`;
+    const studentFullName = `${firstName} ${lastName}`;
 
     return (
-        <li className="flex space-x-3 py-4">
-            <Link href={studentProfileHref}>
-                <div className="flex-shrink-0">
-                    <Image
-                        width={32}
-                        height={32}
-                        className="h-8 w-8 rounded-full"
-                        src={imageSource}
-                        alt={`Avatar: ${studentFullName}`}
-                    />
-                </div>
-                <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900">
-                        {studentFullName}
+        <li className="relative flex justify-between gap-x-6 p-2 hover:bg-indigo-50 rounded-md transition-all duration-200">
+            <div className="flex gap-x-4">
+                <Image
+                    width={32}
+                    height={32}
+                    className="h-8 w-8 rounded-full"
+                    src={imageSource}
+                    alt={studentFullName}
+                />
+                <div className="min-w-0 flex-auto">
+                    <p className="text-sm font-semibold leading-6 text-gray-900">
+                        <Link
+                            href={studentProfileHref}
+                            className="focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-gray-100 transition-all duration-200 rounded-md"
+                        >
+                            <span className="absolute inset-x-0 -top-px bottom-0" />
+                            {studentFullName}
+                        </Link>
                     </p>
-                    <p className="text-sm text-gray-500">
-                        {props.studentGroup.name}
+                    <p className="mt-1 flex text-xs leading-5 text-gray-500">
+                        {studentGroup.name}
                     </p>
                 </div>
-                <div className="flex-shrink-0">
-                    <div className="inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium text-indigo-700 hover:text-indigo-800">
-                        <ArrowRightIcon
-                            className="-ml-1 mr-0.5 h-5 w-5"
-                            aria-hidden="true"
-                        />
-                    </div>
-                </div>
-            </Link>
+            </div>
+            <div className="flex items-center gap-x-4">
+                <ChevronRightIcon
+                    className="h-5 w-5 flex-none text-indigo-600"
+                    aria-hidden="true"
+                />
+            </div>
         </li>
     );
 }

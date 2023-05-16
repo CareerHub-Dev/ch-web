@@ -10,7 +10,6 @@ import EditPageHeader from "@/components/student-profile/edit/EditPageHeader";
 import ChangePassword from "@/components/student-profile/edit/ChangePassword";
 import { getImage } from "@/lib/api/image";
 import defaultAvatar from "@/resources/images/default-avatar.png";
-import { type InferGetServerSidePropsType } from "next";
 
 const navigationItems = [
     {
@@ -27,9 +26,7 @@ const navigationItems = [
     },
 ];
 
-const EditStudentPage: NextPageWithLayout<
-    InferGetServerSidePropsType<typeof getServerSideProps>
-> = function () {
+function EditStudentPage() {
     const { changeSection, currentSection } = useShallowRoutes({
         defaultSection: "general",
     });
@@ -71,7 +68,7 @@ const EditStudentPage: NextPageWithLayout<
             </div>
         </div>
     );
-};
+}
 
 EditStudentPage.getLayout = CommonLayout;
 
@@ -80,8 +77,6 @@ export default EditStudentPage;
 export const getServerSideProps = protectedSsr({
     allowedRoles: ["Student"],
     getProps: async (context) => {
-        console.log("context.query", context.query);
-
         const studentId = context.query.studentId as string;
         const { accountId } = context.session;
         if (studentId !== accountId) {
