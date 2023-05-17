@@ -48,3 +48,20 @@ export type StudentSubscriptionsArray = z.infer<
     typeof StudentSubscriptionsArraySchema
 >;
 export type StudentSubscriber = z.infer<typeof StudentSubscriberSchema>;
+
+export const ExperienceSchema = z.object({
+    id: z.string(),
+    title: z.string(),
+    companyName: z.string(),
+    jobType: z.string().nullable(),
+    workFormat: z.string().nullable(),
+    experienceLevel: z.string().nullable(),
+    jobLocation: z.string().nullable(),
+    startDate: z.string(),
+    endDate: z.string().nullable(),
+});
+
+export const ExperiencesArraySchema = z.array(ExperienceSchema);
+
+export type Experience = z.infer<typeof ExperienceSchema>;
+export type ExperiencesArray = z.infer<typeof ExperiencesArraySchema>;

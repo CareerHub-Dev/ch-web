@@ -1,5 +1,5 @@
 import useAppDispatch from '@/hooks/useAppDispatch';
-import { jobTypeOptions } from '@/lib/enums/_JobType';
+import { jobTypeOptions } from '@/lib/enums/JobType';
 import { selectJobType, setJobType } from '@/context/job-offers-feed';
 import { useSelector } from 'react-redux';
 

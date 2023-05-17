@@ -3,18 +3,22 @@ import { useStudentProfileStore } from "../store/student-profile-store";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { Fragment } from "react";
 import StudentStatsPaginatedList from "./StudentStatsPaginatedList";
+import AddExperienceForm from "./AddExperienceForm";
 
 const modalAssets = {
     followedStudents: "Підписки",
     studentFollowers: "Підписники",
     followedCompanies: "Відстежувані компанії",
     trackedJobOffers: "Відстежувані вакансії",
+    addExperience: "Додати досвід",
 };
 
 export default function StudentProfileModals({
     accountId,
+    isSelf,
 }: {
     accountId: string;
+    isSelf: boolean;
 }) {
     const currentModal = useStudentProfileStore((s) => s.currentModal);
     const closeModal = useStudentProfileStore((s) => s.closeModal);
@@ -73,10 +77,14 @@ export default function StudentProfileModals({
 
                                     <div className="mt-4">
                                         {modalIsOpen ? (
-                                            <StudentStatsPaginatedList
-                                                accountId={accountId}
-                                                currentModal={currentModal}
-                                            />
+                                            currentModal ===
+                                            "addExperience" ? <AddExperienceForm /> : (
+                                                <StudentStatsPaginatedList
+                                                    accountId={accountId}
+                                                    isSelf={isSelf}
+                                                    currentModal={currentModal}
+                                                />
+                                            )
                                         ) : null}
                                     </div>
                                 </div>

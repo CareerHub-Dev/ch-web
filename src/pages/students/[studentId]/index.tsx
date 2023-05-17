@@ -8,6 +8,7 @@ import FollowedStudents from "@/features/student-profile/components/FollowedStud
 import RecentPosts from "@/features/student-profile/components/RecentPosts";
 import StudentStats from "@/features/student-profile/components/StudentStats";
 import StudentProfileModals from "@/features/student-profile/components/StudentProfileModals";
+import StudentExperiences from "@/features/student-profile/components/StudentExperiences";
 
 export default function StudentProfilePage({
     isSelf,
@@ -18,13 +19,14 @@ export default function StudentProfilePage({
             <Head>
                 <meta name="description" content="Student profile" />
             </Head>
-            <StudentProfileModals accountId={studentId} />
-            <ProfileHeader isSelf={isSelf} studentId={studentId} />
+            <StudentProfileModals isSelf={isSelf} accountId={studentId} />
+            <ProfileHeader isSelf={isSelf} accountId={studentId} />
 
             <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
                 <div className="space-y-6 lg:col-span-2 lg:col-start-1">
                     <StudentProfileInfo accountId={studentId} />
-                    <StudentStats accountId={studentId} />
+                    <StudentStats isSelf={isSelf} accountId={studentId} />
+                    <StudentExperiences isSelf={isSelf} accountId={studentId} />
                 </div>
                 <aside className="lg:col-span-1 lg:col-start-3">
                     <div className="space-y-4">
@@ -37,7 +39,10 @@ export default function StudentProfilePage({
                                     >
                                         {"Підписки"}
                                     </h2>
-                                    <FollowedStudents accountId={studentId} />
+                                    <FollowedStudents
+                                        isSelf={isSelf}
+                                        accountId={studentId}
+                                    />
                                 </div>
                             </div>
                         </section>

@@ -6,10 +6,16 @@ import FollowedStudent from "./FollowedStudent";
 import FollowedStudentSkeleton from "./FollowedStudentSkeleton";
 import { useStudentProfileStore } from "../store/student-profile-store";
 
-export default function FollowedStudents({ accountId }: { accountId: string }) {
+export default function FollowedStudents({
+    accountId,
+    isSelf,
+}: {
+    accountId: string;
+    isSelf: boolean;
+}) {
     const openModal = useStudentProfileStore((s) => s.openModal);
     const { data, isLoading, isError, error } = useProtectedPaginatedQuery({
-        queryKey: ["recent-subscriptions", accountId],
+        queryKey: ["recent-subscriptions", isSelf ? "self" : accountId],
         getItems: getStudentStudentSubscriptions,
         params: { accountId: accountId, page: 1, pageSize: 3 },
     });

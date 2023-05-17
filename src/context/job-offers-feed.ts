@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '.';
-import JobType from '@/lib/enums/_JobType';
+import JobType from '@/lib/enums/JobType';
 import WorkFormat from '@/lib/enums/WorkFormat';
 import ExperienceLevel from '@/lib/enums/ExperienceLevel';
 

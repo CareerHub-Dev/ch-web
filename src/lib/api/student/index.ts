@@ -5,6 +5,7 @@ import {
     CompanySubscriptionsArraySchema,
     StudentSubscribersArraySchema,
     StudentSubscriptionsArraySchema,
+    ExperiencesArraySchema,
 } from "./schemas";
 import { JobOfferArraySchema } from "../../schemas/JobOffer";
 import { parsePaginatedResponseAsync } from "../pagination";
@@ -112,9 +113,25 @@ export function getStudentCvs(accountId: string) {
         });
 }
 
-export type StudentSubscriptionsParams = Omit<PaginatedRequestParams, "pageNumber"> & {
+export type StudentSubscriptionsParams = Omit<
+    PaginatedRequestParams,
+    "pageNumber"
+> & {
     accountId: string;
 };
+
+export function getStudentExperiences(
+    instance: AxiosInstance,
+    params: StudentSubscriptionsParams
+) {
+    const { accountId, ...rest } = params;
+    return request({
+        instance,
+        url: `/Student/Students/${accountId}/Experiences`,
+        params: rest,
+        select: parsePaginatedResponseAsync(ExperiencesArraySchema),
+    });
+}
 
 export function getStudentStudentSubscriptions(
     instance: AxiosInstance,

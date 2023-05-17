@@ -38,7 +38,6 @@ export default function StudentSubscribeButton({
         data: isSubscribed,
         isLoading,
         isError,
-        error,
     } = useProtectedQuery(
         subscriptionStateQueryKey,
         getStudentStudentSubscriptionState(studentId)
@@ -76,6 +75,10 @@ export default function StudentSubscribeButton({
             },
             onSettled: () => {
                 queryClient.invalidateQueries(subscriptionStateQueryKey);
+                queryClient.invalidateQueries([
+                    "student-student-subscriptions-amount",
+                    "self",
+                ]);
             },
         }
     );

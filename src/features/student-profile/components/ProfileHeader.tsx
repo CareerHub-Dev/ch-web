@@ -6,13 +6,13 @@ import StudentSubscribeButton from "./StudentSubscribeButton";
 
 export default function ProfileHeader({
     isSelf,
-    studentId,
+    accountId,
 }: {
     isSelf: boolean;
-    studentId: string;
+    accountId: string;
 }) {
     const { data, isLoading } = useStudentQuery({
-        accountId: studentId,
+        accountId: accountId,
     });
 
     const imageSource = data?.photo
@@ -63,7 +63,7 @@ export default function ProfileHeader({
                         Редагувати
                     </Link>
                 ) : (
-                    <StudentSubscribeButton studentId={studentId} />
+                    <StudentSubscribeButton studentId={accountId} />
                 )}
             </div>
         </div>

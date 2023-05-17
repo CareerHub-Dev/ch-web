@@ -11,6 +11,7 @@ export default function ModalList<TItem extends { id: string }>({
     Item,
     queryKeyPrefix,
     accountId,
+    isSelf,
     search,
 }: {
     getItems: (
@@ -20,6 +21,7 @@ export default function ModalList<TItem extends { id: string }>({
     Item: (props: TItem) => JSX.Element;
     queryKeyPrefix: string;
     accountId: string;
+    isSelf: boolean;
     search: string;
 }) {
     const params = {
@@ -28,7 +30,7 @@ export default function ModalList<TItem extends { id: string }>({
         searchTerm: search,
     };
     const { data, isLoading, isError, error } = useProtectedPaginatedQuery({
-        queryKey: [queryKeyPrefix, accountId],
+        queryKey: [queryKeyPrefix, isSelf ? "self" : accountId],
         getItems,
         params,
     });

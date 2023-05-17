@@ -40,9 +40,11 @@ const inferredProps = {
 export default function StudentStatsPaginatedList({
     currentModal,
     accountId,
+    isSelf,
 }: {
     currentModal: StudentProfileModal;
     accountId: string;
+    isSelf: boolean;
 }) {
     const [search, setSearch] = useState("");
     const debouncedSearch = useDebounce(search, 200);
@@ -53,24 +55,28 @@ export default function StudentStatsPaginatedList({
                 <ModalList
                     {...inferredProps.followedStudents}
                     accountId={accountId}
+                    isSelf={isSelf}
                     search={debouncedSearch}
                 />
             ) : currentModal === "studentFollowers" ? (
                 <ModalList
                     {...inferredProps.studentFollowers}
                     accountId={accountId}
+                    isSelf={isSelf}
                     search={debouncedSearch}
                 />
             ) : currentModal === "followedCompanies" ? (
                 <ModalList
                     {...inferredProps.followedCompanies}
                     accountId={accountId}
+                    isSelf={isSelf}
                     search={debouncedSearch}
                 />
             ) : currentModal === "trackedJobOffers" ? (
                 <ModalList
                     {...inferredProps.trackedJobOffers}
                     accountId={accountId}
+                    isSelf={isSelf}
                     search={debouncedSearch}
                 />
             ) : null}

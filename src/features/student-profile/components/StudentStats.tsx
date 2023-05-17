@@ -12,19 +12,26 @@ import {
     UsersIcon,
 } from "@heroicons/react/24/outline";
 
-export default function StudentStats({ accountId }: { accountId: string }) {
+export default function StudentStats({
+    accountId,
+    isSelf,
+}: {
+    accountId: string;
+    isSelf: boolean;
+}) {
+    const queryKeyIdPart = isSelf ? "self" : accountId;
     const students = useProtectedQuery(
-        ["student-student-subscriptions-amount", accountId],
+        ["student-student-subscriptions-amount", queryKeyIdPart],
         getStudentStudentSubscribersAmount(accountId),
         {}
     );
     const companies = useProtectedQuery(
-        ["student-company-subscriptions-amount", accountId],
+        ["student-company-subscriptions-amount", queryKeyIdPart],
         getStudentCompanySubscriptionsAmount(accountId),
         {}
     );
     const jobOffers = useProtectedQuery(
-        ["student-job-offer-subscriptions-amount", accountId],
+        ["student-job-offer-subscriptions-amount", queryKeyIdPart],
         getStudentJobOfferSubscriptionsAmount(accountId),
         {}
     );
