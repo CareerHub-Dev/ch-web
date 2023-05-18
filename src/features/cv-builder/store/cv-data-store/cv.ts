@@ -1,6 +1,7 @@
 import { getStringInput } from "@/lib/string-input";
 import { getArrayInput } from "@/lib/array-input/v2";
 import { StudentCvDetails } from "@/lib/api/cvs/schemas";
+import { ExperienceLevel, JobType, WorkFormat } from "@/lib/enums";
 
 type StringInput = Inputs.StringInput;
 type ArrayInput<T> = Inputs.ArrayInput<T>;
@@ -21,9 +22,24 @@ export type WorkExperience = {
     jobType: string;
     workFormat: string;
     experienceLevel: string;
-    jobLocation: string;
+    jobLocation: string | null;
     startDate: string;
     endDate: string | null;
+};
+
+export type WorkExperienceInputValues = {
+    title: string;
+    companyName: string;
+    jobType: { name: string; id: JobType };
+    workFormat: { name: string; id: WorkFormat };
+    experienceLevel: { name: string; id: ExperienceLevel };
+    jobLocation: string;
+    startYear: { name: string; id: string };
+    startMonth: { name: string; id: string };
+    endYear: { name: string; id: string };
+    endMonth: { name: string; id: string };
+    isCurrent: boolean;
+    isRemote: boolean;
 };
 
 export type Education = {
@@ -160,13 +176,3 @@ export const TEMPLATE_LANGUAGES = [
 ];
 
 export type TemplateLanguage = (typeof TEMPLATE_LANGUAGES)[number];
-
-export const EXPERIENCE_LEVELS = [
-    { id: "INTERN", name: "Intern" },
-    { id: "TRAINEE", name: "Trainee" },
-    { id: "JUNIOR", name: "Junior" },
-    { id: "MIDDLE", name: "Middle" },
-    { id: "SENIOR", name: "Senior" },
-];
-
-export type ExperienceLevel = (typeof EXPERIENCE_LEVELS)[number];
