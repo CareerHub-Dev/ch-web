@@ -1,5 +1,3 @@
-import { StudentSubscriber } from "@/lib/api/student/schemas";
-
 const person = {
     name: "Leslie Alexander",
     email: "leslie.alexander@example.com",

@@ -4,8 +4,6 @@ import { Fragment } from "react";
 
 export default function StudentStatListModal({
     statName,
-    statId,
-    accountId,
     onClose,
     isOpen,
 }: {
@@ -46,7 +44,7 @@ export default function StudentStatListModal({
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="relative   transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                                 <div>
                                     <Dialog.Title
                                         as="h3"

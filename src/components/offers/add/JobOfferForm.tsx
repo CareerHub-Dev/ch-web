@@ -179,9 +179,9 @@ const JobOfferForm = () => {
                     value={jobTypeInput.value || ""}
                     className={classes.field}
                 >
-                    {jobTypeOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
+                    {jobTypeOptions.map((option, optionIndex) => (
+                        <option key={optionIndex} value={option.id}>
+                            {option.name}
                         </option>
                     ))}
                 </select>
@@ -193,8 +193,8 @@ const JobOfferForm = () => {
                     value={workFormatInput.value || ""}
                     className={classes.field}
                 >
-                    {workFormatOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
+                    {workFormatOptions.map((option, optionIndex) => (
+                        <option key={optionIndex} value={option.id}>
                             {option.name}
                         </option>
                     ))}
@@ -210,9 +210,9 @@ const JobOfferForm = () => {
                     value={experienceLevelInput.value || ""}
                     className={classes.field}
                 >
-                    {experienceLevelOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
+                    {experienceLevelOptions.map((option, optionIndex) => (
+                        <option key={optionIndex} value={option.id}>
+                            {option.name}
                         </option>
                     ))}
                 </select>

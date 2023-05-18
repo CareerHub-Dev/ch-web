@@ -6,7 +6,7 @@ const person = {
     imageUrl: "/default-avatar.png",
     href: "#",
 };
-export default function FollowedCompanyWithAction(props: CompanySubscription) {
+export default function FollowedCompanyWithAction(_props: CompanySubscription) {
     return (
         <li
             key={person.email}

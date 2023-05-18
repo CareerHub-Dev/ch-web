@@ -7,7 +7,7 @@ const person = {
     href: "#",
 };
 
-export default function FollowedStudentWithAction(props: StudentSubscription) {
+export default function FollowedStudentWithAction(_props: StudentSubscription) {
     return (
         <li
             key={person.email}

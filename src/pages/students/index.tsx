@@ -10,15 +10,14 @@ import StudentCard from "@/features/students-feed/components/StudentCard";
 export default function StudentsPage() {
     const [search, setSearch] = useState("");
     const debouncedSearch = useDebounce(search, 200);
-    const { data, isLoading, isError, error, hasNextPage, isFetchingNextPage } =
-        useProtectedPaginatedQuery({
-            queryKey: ["students", debouncedSearch],
-            getItems: getStudents,
-            params: {
-                pageSize: 36,
-                search: debouncedSearch,
-            },
-        });
+    const { data, isLoading, isError, error } = useProtectedPaginatedQuery({
+        queryKey: ["students", debouncedSearch],
+        getItems: getStudents,
+        params: {
+            pageSize: 36,
+            search: debouncedSearch,
+        },
+    });
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);

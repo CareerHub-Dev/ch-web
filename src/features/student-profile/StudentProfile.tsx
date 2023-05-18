@@ -1,12 +1,15 @@
 import ProfileHeader from "./components/ProfileHeader";
 
-export default function StudentProfile(props: {
+export default function StudentProfile({
+    isSelf,
+    studentId,
+}: {
     isSelf: boolean;
     studentId: string;
 }) {
     return (
         <>
-            <ProfileHeader {...props} />
+            <ProfileHeader isSelf={isSelf} accountId={studentId} />
         </>
     );
 }

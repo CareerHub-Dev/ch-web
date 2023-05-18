@@ -6,7 +6,7 @@ const person = {
     imageUrl: "/default-avatar.png",
     href: "#",
 };
-export default function TrackedJobOfferWithAction(props: JobOffer) {
+export default function TrackedJobOfferWithAction(_props: JobOffer) {
     return (
         <li
             key={person.email}

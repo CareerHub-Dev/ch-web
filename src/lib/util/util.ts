@@ -1,4 +1,4 @@
-export const studentEmailRegex = /^[\w]+\.{1}[\w]+@nure.ua$/;
+export const studentEmailPattern = /^[\w]+\.{1}[\w]+@nure.ua$/;
 
 export const emailPattern = /^[\w-.]+@[\w-]+\.{1}[\w-]{2,}$/;
 
@@ -10,16 +10,13 @@ export function getEmailValidity(email: string) {
 }
 
 export function getStudentEmailValidity(email: string) {
-    return email.match(studentEmailRegex) !== null;
+    return email.match(studentEmailPattern) !== null;
 }
 
 export function getPasswordValidity(password: string) {
     return password.match(passwordPattern) !== null;
 }
 
-export function getFormattedDate(month: string, year: string) {
-    return month.padStart(2, "0") + "." + year;
-}
 
 export function getReadableDateFromString(
     date: string,
@@ -36,7 +33,7 @@ export function notEmpty(value: string | Array<any> | null) {
     if (value === null) {
         return false;
     }
-    return value?.length > 0;
+    return value.length > 0;
 }
 
 export function isFileValid(file: File, types: Array<string>) {
@@ -77,7 +74,7 @@ export function getYearOptions(range: number, from?: number) {
     if (from === undefined) {
         from = new Date().getFullYear();
     }
-    const options: Array<{id: string, name: string}> = [];
+    const options: Array<{ id: string; name: string }> = [];
     for (let i = from; i > from - range; i--) {
         options.push({
             id: i.toString(),
