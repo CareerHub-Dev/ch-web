@@ -1,7 +1,7 @@
 {
-  "extends": ["next"],
-  "rules": {
-    "react-hooks/exhaustive-deps": "warn",
-    "react/display-name": "warn"
-  }
+    "extends": ["next"],
+    "rules": {
+        "react-hooks/exhaustive-deps": "warn",
+        "react/display-name": "warn"
+    }
 }
