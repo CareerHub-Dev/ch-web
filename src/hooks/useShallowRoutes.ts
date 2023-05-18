@@ -9,7 +9,6 @@ export default function useShallowRoutes({
 
     const changeSection = (newSection: string) => {
         let newPath = router.asPath;
-        console.log(router);
         if (router.query.section === undefined) {
             newPath = `${router.asPath}?section=${newSection}`;
         } else {

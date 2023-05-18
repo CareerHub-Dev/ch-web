@@ -8,7 +8,7 @@ import getMonth from "date-fns/getMonth";
 import { useObjectInput } from "@/hooks/useObjectInput";
 
 export function useWorkExperienceInputs(
-    initialPayload: WorkExperience | undefined,
+    initialPayload?: WorkExperience | undefined,
     maxYearRange: number = MAX_ALLOWED_YEAR_RANGE
 ) {
     const yearOptions = useMemo(

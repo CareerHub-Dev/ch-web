@@ -3,8 +3,8 @@ import { StudentSubscriptionsParams } from "@/lib/api/student";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import { AxiosInstance } from "axios";
 import { Fragment } from "react";
-import FollowedStudentSkeleton from "../FollowedStudentSkeleton";
 import { useProtectedPaginatedQuery } from "@/hooks/useProtectedPaginatedQuery";
+import FollowedStudentSkeleton from "../aside-sections/followed-students/FollowedStudentSkeleton";
 
 export default function ModalList<TItem extends { id: string }>({
     getItems,
@@ -35,7 +35,7 @@ export default function ModalList<TItem extends { id: string }>({
         params,
     });
     return (
-        <div className="my-4 overflow-y-auto max-h-[45vw]">
+        <div className="my-4 overflow-y-auto sm:max-h-[45vh]">
             {isLoading ? (
                 <ul className="flex flex-col divide-y divide-gray-200">
                     <FollowedStudentSkeleton />

@@ -1,19 +1,24 @@
 import CommonLayout from "@/components/layout/CommonLayout";
 import { protectedSsr } from "@/lib/protected-ssr";
 import { type InferGetServerSidePropsType } from "next";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import ProfileHeader from "@/features/student-profile/components/ProfileHeader";
 import StudentProfileInfo from "@/features/student-profile/components/StudentProfileInfo";
-import FollowedStudents from "@/features/student-profile/components/FollowedStudents";
-import RecentPosts from "@/features/student-profile/components/RecentPosts";
 import StudentStats from "@/features/student-profile/components/StudentStats";
 import StudentProfileModals from "@/features/student-profile/components/StudentProfileModals";
 import StudentExperiences from "@/features/student-profile/components/StudentExperiences";
+import FollowedStudentsSection from "@/features/student-profile/components/aside-sections/followed-students/FollowedStudentsSection";
+import RecentPostsSection from "@/features/student-profile/components/aside-sections/recent-posts/RecentPostsSection";
+import TabMenu from "@/features/student-profile/components/tab-menu/TabMenu";
 
 export default function StudentProfilePage({
     isSelf,
     studentId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+    const { query } = useRouter();
+    const currentTab = query.tab;
+
     return (
         <>
             <Head>
@@ -21,44 +26,33 @@ export default function StudentProfilePage({
             </Head>
             <StudentProfileModals isSelf={isSelf} accountId={studentId} />
             <ProfileHeader isSelf={isSelf} accountId={studentId} />
-
             <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
                 <div className="space-y-6 lg:col-span-2 lg:col-start-1">
-                    <StudentProfileInfo accountId={studentId} />
-                    <StudentStats isSelf={isSelf} accountId={studentId} />
-                    <StudentExperiences isSelf={isSelf} accountId={studentId} />
+                    <TabMenu />
+                    {currentTab === "posts" ? null : (
+                        <>
+                            <StudentProfileInfo accountId={studentId} />
+                            <StudentStats
+                                isSelf={isSelf}
+                                accountId={studentId}
+                            />
+                            <StudentExperiences
+                                isSelf={isSelf}
+                                accountId={studentId}
+                            />
+                        </>
+                    )}
                 </div>
                 <aside className="lg:col-span-1 lg:col-start-3">
                     <div className="space-y-4">
-                        <section aria-labelledby="recently-followed-students">
-                            <div className="bg-white rounded-lg shadow">
-                                <div className="p-6">
-                                    <h2
-                                        id="recently-followed-students-heading"
-                                        className="text-base font-medium text-gray-900"
-                                    >
-                                        {"Підписки"}
-                                    </h2>
-                                    <FollowedStudents
-                                        isSelf={isSelf}
-                                        accountId={studentId}
-                                    />
-                                </div>
-                            </div>
-                        </section>
-                        <section aria-labelledby="recent-posts">
-                            <div className="rounded-lg bg-white shadow">
-                                <div className="p-6">
-                                    <h2
-                                        id="recent-posts-heading"
-                                        className="text-base font-medium text-gray-900"
-                                    >
-                                        {"Останні публікації"}
-                                    </h2>
-                                    <RecentPosts />
-                                </div>
-                            </div>
-                        </section>
+                        <FollowedStudentsSection
+                            isSelf={isSelf}
+                            accountId={studentId}
+                        />
+                        <RecentPostsSection
+                            isSelf={isSelf}
+                            accountId={studentId}
+                        />
                     </div>
                 </aside>
             </div>

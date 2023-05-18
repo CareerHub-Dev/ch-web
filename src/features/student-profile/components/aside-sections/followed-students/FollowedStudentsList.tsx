@@ -4,7 +4,7 @@ import parseUnknownError from "@/lib/parse-unknown-error";
 import { Fragment } from "react";
 import FollowedStudent from "./FollowedStudent";
 import FollowedStudentSkeleton from "./FollowedStudentSkeleton";
-import { useStudentProfileStore } from "../store/student-profile-store";
+import { useStudentProfileStore } from "@/features/student-profile/store/student-profile-store";
 
 export default function FollowedStudents({
     accountId,
