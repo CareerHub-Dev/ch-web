@@ -6,11 +6,11 @@ import {
     experienceLevelOptions,
 } from "../enums";
 import getMonth from "date-fns/getMonth";
-import { MONTH_OPTIONS } from "../util";
 import {
     WorkExperience,
     WorkExperienceInputValues,
 } from "@/features/cv-builder/store/cv-data-store/cv";
+import { getMonthOption } from "../date";
 
 describe("workExperienceToInputs", () => {
     it("should return default values if no payload is provided", () => {
@@ -19,7 +19,7 @@ describe("workExperienceToInputs", () => {
         const currentYear = today.getFullYear().toString();
         const currentYearOption = { name: currentYear, id: currentYear };
         const currentMonth = getMonth(today);
-        const currentMonthOption = MONTH_OPTIONS.at(currentMonth - 1)!;
+        const currentMonthOption = getMonthOption(currentMonth);
 
         const expected: WorkExperienceInputValues = {
             title: "",
@@ -40,6 +40,13 @@ describe("workExperienceToInputs", () => {
     });
 
     it("should return correct values if payload is provided", () => {
+        const startYear = 2020;
+        const startYearStr = startYear.toString();
+        const endYear = 2021;
+        const endYearStr = endYear.toString();
+        const startMonth = 11;
+        const endMonth = 12;
+
         const payload: WorkExperience = {
             title: "title",
             companyName: "companyName",
@@ -47,8 +54,8 @@ describe("workExperienceToInputs", () => {
             jobType: jobTypeOptions.at(0)!.id,
             workFormat: workFormatOptions.at(0)!.id,
             experienceLevel: experienceLevelOptions.at(0)!.id,
-            startDate: new Date(2020, 11, 1).toISOString(),
-            endDate: new Date(2021, 12, 1).toISOString(),
+            startDate: new Date(`${startYear}-${startMonth}`).toISOString(),
+            endDate: new Date(`${endYear}-${endMonth}`).toISOString(),
         };
         const expected: WorkExperienceInputValues = {
             title: "title",
@@ -57,16 +64,16 @@ describe("workExperienceToInputs", () => {
             jobType: jobTypeOptions.at(0)!,
             workFormat: workFormatOptions.at(0)!,
             experienceLevel: experienceLevelOptions.at(0)!,
-            startYear: { name: "2020", id: "2020" },
-            startMonth: MONTH_OPTIONS.at(10)!,
-            endYear: { name: "2021", id: "2021" },
-            endMonth: MONTH_OPTIONS.at(11)!,
+            startYear: { name: startYearStr, id: startYearStr },
+            startMonth: getMonthOption(startMonth - 1),
+            endYear: { name: endYearStr, id: endYearStr },
+            endMonth: getMonthOption(endMonth - 1),
             isCurrent: false,
             isRemote: false,
         };
-        const result1 = workExperienceToInputs(payload);
+        const result = workExperienceToInputs(payload);
 
-        expect(result1).toEqual(expected);
+        expect(result).toEqual(expected);
     });
 
     it("should correctly handle null values in payload", () => {
@@ -77,7 +84,7 @@ describe("workExperienceToInputs", () => {
             jobType: jobTypeOptions.at(0)!.id,
             workFormat: workFormatOptions.at(0)!.id,
             experienceLevel: experienceLevelOptions.at(0)!.id,
-            startDate: new Date(2020, 11, 1).toISOString(),
+            startDate: new Date("2020-11-01").toISOString(),
             endDate: null,
         };
         const result = workExperienceToInputs(payload);

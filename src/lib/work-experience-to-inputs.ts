@@ -2,8 +2,10 @@ import {
     WorkExperience,
     WorkExperienceInputValues,
 } from "@/features/cv-builder/store/cv-data-store/cv";
-import { MONTH_OPTIONS } from "./util";
+import { getMonthOption } from "./date";
 import getMonth from "date-fns/getMonth";
+import getYear from "date-fns/getYear";
+import parseISO from "date-fns/parseISO";
 import {
     jobTypeOptions,
     workFormatOptions,
@@ -37,10 +39,10 @@ export function workExperienceToInputs(
             experienceLevelOptions.find(
                 (item) => item.id === payload.experienceLevel
             ) ?? experienceLevel;
-        startDate = new Date(payload.startDate);
+        startDate = parseISO(payload.startDate);
 
         if (payload.endDate !== null) {
-            endDate = new Date(payload.endDate);
+            endDate = parseISO(payload.endDate);
         } else {
             isCurrent = true;
         }
@@ -51,20 +53,19 @@ export function workExperienceToInputs(
             isRemote = true;
         }
     }
-
-    let startYearStr = startDate.getUTCFullYear().toString();
+    let startYearStr = getYear(startDate).toString();
     let startYear = {
         name: startYearStr,
         id: startYearStr,
     };
-    let startMonth = MONTH_OPTIONS.at(getMonth(startDate) - 1)!;
+    let startMonth = getMonthOption(getMonth(startDate))!;
 
-    let endYearStr = endDate.getUTCFullYear().toString();
+    let endYearStr = getYear(endDate).toString();
     let endYear = {
         name: endYearStr,
         id: endYearStr,
     };
-    let endMonth = MONTH_OPTIONS.at(getMonth(endDate) - 1)!;
+    let endMonth = getMonthOption(getMonth(endDate));
 
     return {
         title,

@@ -13,7 +13,7 @@ export default function CvActionButtons() {
                 type="button"
                 onClick={openSaveModal}
                 disabled={!cvCanBeSaved}
-                className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 enabled:hover:bg-gray-50 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-200 disabled:cursor-not-allowed"
+                className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 disabled:text-gray-500 enabled:hover:bg-gray-50 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-200 disabled:cursor-not-allowed"
             >
                 {"Зберегти"}
             </button>

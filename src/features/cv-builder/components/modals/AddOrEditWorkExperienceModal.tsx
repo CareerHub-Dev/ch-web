@@ -7,13 +7,27 @@ import { useBoolean } from "usehooks-ts";
 import NativeItemSelection from "@/components/ui/NativeItemSelection";
 import ValidatedInput from "@/components/ui/ValidatedInput";
 import AddOrEditItemModal from "./AddOrEditItemModal";
-import { MONTH_OPTIONS, getYearOptions } from "@/lib/util";
+import { MONTH_OPTIONS, getYearOptions } from "@/lib/date";
 import getMonth from "date-fns/getMonth";
 import {
     jobTypeOptions,
     workFormatOptions,
     experienceLevelOptions,
 } from "@/lib/enums";
+import { workExperienceToInputs } from "@/lib/work-experience-to-inputs";
+
+const JOB_TYPE_OPTIONS = jobTypeOptions satisfies {
+    id: string;
+    name: string;
+}[];
+const WORK_FORMAT_OPTIONS = workFormatOptions satisfies {
+    id: string;
+    name: string;
+}[];
+const EXPERIENCE_LEVEL_OPTIONS = experienceLevelOptions satisfies {
+    id: string;
+    name: string;
+}[];
 
 export default function AddOrEditWorkExperienceModal({
     onClose,
@@ -29,74 +43,57 @@ export default function AddOrEditWorkExperienceModal({
         () => getYearOptions(MAX_ALLOWED_YEAR_RANGE),
         []
     );
-
-    let initialJobType = jobTypeOptions[0]!;
-    let initialWorkFormat = workFormatOptions[0]!;
-    let initialExperienceLevel = experienceLevelOptions[0]!;
-    let initialStartDate = new Date();
-    let initialEndDate = new Date();
-
-    if (initialPayload !== undefined) {
-        initialJobType =
-            jobTypeOptions.find(
-                (item) => item.id === initialPayload.item.jobType
-            ) ?? initialJobType;
-        initialWorkFormat =
-            workFormatOptions.find(
-                (item) => item.id === initialPayload.item.workFormat
-            ) ?? initialWorkFormat;
-        initialExperienceLevel =
-            experienceLevelOptions.find(
-                (item) => item.id === initialPayload.item.experienceLevel
-            ) ?? initialExperienceLevel;
-        initialStartDate = new Date(initialPayload.item.startDate);
-        if (initialPayload.item.endDate !== null) {
-            initialEndDate = new Date(initialPayload.item.endDate);
-        }
-    }
+    const initialInputs = useMemo(
+        () => workExperienceToInputs(initialPayload?.item),
+        [initialPayload]
+    );
 
     const initialStartYear =
-        yearOptions.find(
-            (item) => item.id === initialStartDate.getUTCFullYear().toString()
-        ) ?? yearOptions.at(0)!;
+        yearOptions.find((item) => item.id === initialInputs.startYear.id) ??
+        yearOptions.at(0)!;
 
     const initialStartMonth =
-        MONTH_OPTIONS.find(
-            (item) => item.id === getMonth(initialStartDate).toString()
-        ) ?? MONTH_OPTIONS.at(0)!;
+        MONTH_OPTIONS.find((item) => item.id === initialInputs.startMonth.id) ??
+        MONTH_OPTIONS.at(0)!;
 
     const initialEndYear =
-        yearOptions.find(
-            (item) => item.id === initialEndDate.getUTCFullYear().toString()
-        ) ?? yearOptions.at(0)!;
+        yearOptions.find((item) => item.id === initialInputs.endYear.id) ??
+        yearOptions.at(0)!;
 
     const initialEndMonth =
-        MONTH_OPTIONS.find(
-            (item) => item.id === getMonth(initialEndDate).toString()
-        ) ?? MONTH_OPTIONS.at(0)!;
+        MONTH_OPTIONS.find((item) => item.id === initialInputs.endMonth.id) ??
+        MONTH_OPTIONS.at(0)!;
 
-    const jobIsCurrent = useBoolean(true);
+    const jobIsCurrent = useBoolean(initialInputs.isCurrent);
 
     const title = useInput({
-        initialValue: initialPayload?.item.title ?? "",
+        initialValue: initialInputs.title,
         validators: [fillThisFieldValidator],
     });
     const company = useInput({
-        initialValue: initialPayload?.item.companyName ?? "",
+        initialValue: initialInputs.companyName,
         validators: [fillThisFieldValidator],
     });
+    const isRemote = useBoolean(initialInputs.isRemote);
     const location = useInput({
-        initialValue: initialPayload?.item.jobLocation ?? "",
-        validators: [fillThisFieldValidator],
+        initialValue: initialInputs.jobLocation,
+        validators: [
+            (val) => {
+                if (isRemote.value) {
+                    return { type: "success" } as const;
+                }
+                return fillThisFieldValidator(val);
+            },
+        ],
     });
-    const jobType = useObjectInput({
-        initialValue: initialJobType,
+    const jobType = useObjectInput<{ id: string; name: string }>({
+        initialValue: initialInputs.jobType,
     });
-    const workFormat = useObjectInput({
-        initialValue: initialWorkFormat,
+    const workFormat = useObjectInput<{ id: string; name: string }>({
+        initialValue: initialInputs.workFormat,
     });
-    const experienceLevel = useObjectInput({
-        initialValue: initialExperienceLevel,
+    const experienceLevel = useObjectInput<{ id: string; name: string }>({
+        initialValue: initialInputs.experienceLevel,
     });
     const startYear = useObjectInput({
         initialValue: initialStartYear,
@@ -110,12 +107,12 @@ export default function AddOrEditWorkExperienceModal({
     const endMonth = useObjectInput({
         initialValue: initialEndMonth,
     });
-    const startYearInt = Number(startYear.value.name);
-    const endYearInt = Number(endYear.value.name);
-    const startMonthInt = Number(startMonth.value.id);
-    const endMonthInt = Number(endMonth.value.id);
+    const startYearInt = Number(startYear.value.id);
+    const endYearInt = Number(endYear.value.id);
+    const startMonthInt = Number(startMonth.value.id) - 1;
+    const endMonthInt = Number(endMonth.value.id) - 1;
     const today = new Date();
-    const currentYear = today.getUTCFullYear();
+    const currentYear = today.getFullYear();
     const currentMonth = getMonth(today);
 
     const timePeriodIsInvalid =
@@ -142,6 +139,11 @@ export default function AddOrEditWorkExperienceModal({
         allInputs.some((item) => item.errors.length > 0) || timePeriodIsInvalid;
 
     const formType = !initialPayload ? "add" : "edit";
+
+    const handleIsRemoteChange = () => {
+        isRemote.toggle();
+        location.blur();
+    };
 
     const handleConfirm = () => {
         if (thereAreSomeErrors) return;
@@ -184,7 +186,7 @@ export default function AddOrEditWorkExperienceModal({
             confirmationDisabled={thereAreSomeErrors}
         >
             <div className="grid grid-cols-6 gap-6 mt-4">
-                <div className="col-span-6 sm:col-span-3">
+                <div className="col-span-6 sm:col-span-6">
                     <ValidatedInput
                         label="Посада"
                         id="title"
@@ -212,26 +214,66 @@ export default function AddOrEditWorkExperienceModal({
                     />
                 </div>
 
+                <div className="col-span-6 sm:col-span-3">
+                    <ValidatedInput
+                        label="Локація"
+                        id="location"
+                        value={location.value}
+                        onChange={location.change}
+                        onBlur={location.blur}
+                        warnings={location.warnings}
+                        errors={location.errors}
+                        wasBlurred={location.wasBlurred}
+                        wasChanged={location.wasChanged}
+                        disabled={isRemote.value}
+                    />
+                </div>
                 <div className="col-span-6 sm:col-span-6">
                     <div className="flex h-5 items-center">
                         <input
-                            id="isCurrent"
-                            aria-describedby="isCurrentEducation"
-                            name="isCurrent"
+                            id="isRemote"
+                            aria-describedby="isRemote"
+                            name="isRemote"
                             type="checkbox"
-                            checked={jobIsCurrent.value}
-                            onChange={jobIsCurrent.toggle}
+                            checked={isRemote.value}
+                            onChange={handleIsRemoteChange}
                             className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                         />
                         <label
-                            htmlFor="isCurrent"
+                            htmlFor="isRemote"
                             className="ml-3 text-sm font-medium text-gray-700"
                         >
-                            Це моя поточна посада
+                            {"Віддалена робота"}
                         </label>
                     </div>
                 </div>
-
+                <div className="col-span-6 sm:col-span-2">
+                    <NativeItemSelection
+                        id="job-type"
+                        label="Тип роботи"
+                        items={JOB_TYPE_OPTIONS}
+                        selectedItem={jobType.value}
+                        setSelected={jobType.change}
+                    />
+                </div>
+                <div className="col-span-6 sm:col-span-2">
+                    <NativeItemSelection
+                        id="work-format"
+                        label="Формат"
+                        items={WORK_FORMAT_OPTIONS}
+                        selectedItem={workFormat.value}
+                        setSelected={workFormat.change}
+                    />
+                </div>
+                <div className="col-span-6 sm:col-span-2">
+                    <NativeItemSelection
+                        id="experience-level"
+                        label="Рівень досвіду"
+                        items={EXPERIENCE_LEVEL_OPTIONS}
+                        selectedItem={experienceLevel.value}
+                        setSelected={experienceLevel.change}
+                    />
+                </div>
                 <div className="col-span-6 sm:col-span-3">
                     <NativeItemSelection
                         id="start-year"
@@ -250,7 +292,6 @@ export default function AddOrEditWorkExperienceModal({
                         setSelected={startMonth.change}
                     />
                 </div>
-
                 <div className="col-span-6 sm:col-span-3">
                     <NativeItemSelection
                         id="end-year"
@@ -276,6 +317,25 @@ export default function AddOrEditWorkExperienceModal({
                         {"Невалідний проміжок часу"}
                     </p>
                 ) : null}
+                <div className="col-span-6 sm:col-span-6">
+                    <div className="flex h-5 items-center">
+                        <input
+                            id="isCurrent"
+                            aria-describedby="isCurrentEducation"
+                            name="isCurrent"
+                            type="checkbox"
+                            checked={jobIsCurrent.value}
+                            onChange={jobIsCurrent.toggle}
+                            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <label
+                            htmlFor="isCurrent"
+                            className="ml-3 text-sm font-medium text-gray-700"
+                        >
+                            Це моя поточна посада
+                        </label>
+                    </div>
+                </div>
             </div>
         </AddOrEditItemModal>
     );

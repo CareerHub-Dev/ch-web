@@ -8,7 +8,7 @@ import {
 } from "@/hooks/requests/job-directions";
 import LoadingInput from "../../LoadingInput";
 import LockedJobPositions from "../../LockedJobPositions";
-import { EXPERIENCE_LEVELS } from "@/features/cv-builder/store/cv-data-store/cv";
+import { experienceLevelOptions } from "@/lib/enums";
 
 export default function JobPositionSelection() {
     const items = useJobDirectionsQueryData();
@@ -81,7 +81,7 @@ export default function JobPositionSelection() {
         <>
             <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
                 <ItemSelection
-                    items={EXPERIENCE_LEVELS}
+                    items={experienceLevelOptions}
                     selectedItem={
                         selectedExperienceLevel.value ?? {
                             id: "-1",

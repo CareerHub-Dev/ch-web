@@ -59,3 +59,42 @@ export function getReadableDateFromString(
         year: "numeric",
     });
 }
+
+export const MONTH_OPTIONS = [
+    { id: "01", name: "Січень (01)" },
+    { id: "02", name: "Лютий (02)" },
+    { id: "03", name: "Березень (03)" },
+    { id: "04", name: "Квітень (04)" },
+    { id: "05", name: "Травень (05)" },
+    { id: "06", name: "Червень (06)" },
+    { id: "07", name: "Липень (07)" },
+    { id: "08", name: "Серпень (08)" },
+    { id: "09", name: "Вересень (09)" },
+    { id: "10", name: "Жовтень (10)" },
+    { id: "11", name: "Листопад (11)" },
+    { id: "12", name: "Грудень (12)" },
+];
+
+export function getMonthOption(monthIndex: number): {
+    id: string;
+    name: string;
+} {
+    return MONTH_OPTIONS[monthIndex] || MONTH_OPTIONS[0]!;
+}
+
+/**
+ * Returns an array of years options
+ */
+export function getYearOptions(range: number, from?: number) {
+    if (from === undefined) {
+        from = new Date().getFullYear();
+    }
+    const options: Array<{ id: string; name: string }> = [];
+    for (let i = from; i > from - range; i--) {
+        options.push({
+            id: i.toString(),
+            name: i.toString(),
+        });
+    }
+    return options;
+}
