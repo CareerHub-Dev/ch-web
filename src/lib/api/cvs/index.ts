@@ -3,7 +3,7 @@ import { request } from "../../axios";
 import { parsePaginatedResponseAsync } from "../pagination";
 import { CvDetailsSchema, CvsArraySchema } from "./schemas";
 import { objectToFormData } from "@/lib/forms";
-import { WorkExperience } from "@/features/cv-builder/store/cv-data-store/cv";
+import { WorkExperience } from "@/features/work-experience/types";
 
 type CvsRequestParams = Pick<PaginatedRequestParams, "pageSize"> & {
     order?: string;

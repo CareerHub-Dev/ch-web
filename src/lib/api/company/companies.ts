@@ -57,6 +57,18 @@ export function getCompanySelfSubscribersAmount(instance: AxiosInstance) {
     });
 }
 
+export function getCompanySelfJobOffers(
+    instance: AxiosInstance,
+    params: Omit<PaginatedRequestParams, "pageNumber">
+) {
+    return request({
+        instance,
+        url: "Company/self/JobOffers",
+        params,
+        select: parsePaginatedResponseAsync(CompanyJobOffersArraySchema),
+    });
+}
+
 export function getCompanyJobOffers(
     instance: AxiosInstance,
     {

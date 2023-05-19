@@ -1,11 +1,10 @@
-import useSession from "@/hooks/useSession";
 import useToast from "@/hooks/useToast";
-import { useMutation } from "@tanstack/react-query";
 import useEditor from "@/hooks/useEditor";
 import { useInput } from "@/hooks/useInput";
 import useImageUpload from "@/hooks/useImageUpload";
 import useDatepicker from "@/hooks/useDatepicker";
-import { createJobOffer } from "@/lib/api/remote/jobOffers";
+import useProtectedMutation from "@/hooks/useProtectedMutation";
+import { createJobOffer } from "@/lib/api/job-offer";
 import {
     JobType,
     WorkFormat,
@@ -23,11 +22,12 @@ import Hr from "@/components/ui/Hr";
 import cn from "classnames";
 
 import classes from "./JobOfferForm.module.scss";
+import parseUnknownError from "@/lib/parse-unknown-error";
 
 const maxDaysFrame = 60;
 const defaultMessage = "Це обов'язкове поле";
 
-const JobOfferForm = () => {
+export default function JobOfferForm() {
     const toast = useToast();
     const titleInput = useInput({
         validators: [
@@ -53,28 +53,31 @@ const JobOfferForm = () => {
     const { startDate, endDate, dateFrameIsValid } =
         useDatepicker(maxDaysFrame);
 
-    const { data: session } = useSession();
-    const submitMutation = useMutation(["job-offer-form"], createJobOffer, {
-        onError: (error) => {
-            let msg;
-            if (error instanceof Error) {
-                msg = error.message;
-            } else {
-                msg = "Не вдалося створити вакансію";
-            }
-            toast.error(msg, true);
-        },
-        onSuccess: () => {
-            toast.success(`\u2713 Вакансію ${titleInput.value} створено`, true);
-            titleInput.reset();
-            uploadedImage.reset();
-            overviewEditor.reset();
-            requirementsEditor.reset();
-            responsibilitiesEditor.reset();
-            startDate.reset();
-            endDate.reset();
-        },
-    });
+    const submitMutation = useProtectedMutation(
+        ["job-offer-form"],
+        createJobOffer,
+        {
+            onMutate: () => {
+                toast.setCurrent("Створення вакансії...");
+            },
+            onError: (err) => {
+                toast.error(parseUnknownError(err), true);
+            },
+            onSuccess: () => {
+                toast.success(
+                    `\u2713 Вакансію ${titleInput.value} створено`,
+                    true
+                );
+                titleInput.reset();
+                uploadedImage.reset();
+                overviewEditor.reset();
+                requirementsEditor.reset();
+                responsibilitiesEditor.reset();
+                startDate.reset();
+                endDate.reset();
+            },
+        }
+    );
 
     const editors = [
         {
@@ -118,7 +121,6 @@ const JobOfferForm = () => {
         if (!formIsValid) {
             return;
         }
-        toast.setCurrent("Створення вакансії...");
 
         const requestBody: JobOfferForm.JobOffer = {
             title: titleInput.value,
@@ -136,14 +138,11 @@ const JobOfferForm = () => {
             preferences: "none", // TODO: add preferences input and conversion
         };
 
-        submitMutation.mutate({
-            data: requestBody,
-            accessToken: session?.jwtToken as string,
-        });
+        submitMutation.mutate(requestBody);
     };
 
     return (
-        <form className="mx-32">
+        <form className="p-8">
             <h1 className={classes["description-section-title"]}>
                 {"Нова вакансія"}
             </h1>
@@ -269,6 +268,4 @@ const JobOfferForm = () => {
             </LinkButton>
         </form>
     );
-};
-
-export default JobOfferForm;
+}
