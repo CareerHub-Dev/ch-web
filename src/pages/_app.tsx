@@ -12,7 +12,6 @@ import Head from "next/head";
 
 import "react-image-crop/dist/ReactCrop.css";
 import "react-toastify/dist/ReactToastify.css";
-import "@/styles/MarkdownEditor.scss";
 import "@/styles/globals.scss";
 
 function getDefaultQueryClient() {

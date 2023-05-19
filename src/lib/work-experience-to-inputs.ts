@@ -1,7 +1,3 @@
-import {
-    WorkExperience,
-    WorkExperienceInputValues,
-} from "@/features/cv-builder/store/cv-data-store/cv";
 import { getMonthOption } from "./date";
 import getMonth from "date-fns/getMonth";
 import getYear from "date-fns/getYear";
@@ -11,6 +7,10 @@ import {
     workFormatOptions,
     experienceLevelOptions,
 } from "./enums";
+import {
+    WorkExperience,
+    WorkExperienceInputValues,
+} from "@/features/work-experience/types";
 
 export function workExperienceToInputs(
     payload?: WorkExperience

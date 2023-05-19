@@ -1,23 +1,20 @@
-import { type CvQueryData } from "@/hooks/useCvQuery";
-import { type StudentCvDetails } from "@/lib/api/cvs/schemas";
-import { arrayInputReducer, type ArrayInputAction } from "@/lib/array-input/v2";
-import {
-    makeStringInputReducer,
-    type StringInputAction,
-} from "@/lib/string-input";
+import { CvQueryData } from "@/hooks/useCvQuery";
+import { StudentCvDetails } from "@/lib/api/cvs/schemas";
+import { arrayInputReducer, ArrayInputAction } from "@/lib/array-input/v2";
+import { makeStringInputReducer, StringInputAction } from "@/lib/string-input";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import {
     getEmptyCvData,
     restoreToCvQueryData,
-    WorkExperience,
-    type CvData,
-    type Education,
-    type ForeignLanguage,
-    type ProjectLink,
-    type TemplateLanguage,
+    CvData,
+    Education,
+    ForeignLanguage,
+    ProjectLink,
+    TemplateLanguage,
 } from "./cv";
+import { WorkExperience } from "@/features/work-experience/types";
 
 export type CvDataStore = {
     cvId: null | string;

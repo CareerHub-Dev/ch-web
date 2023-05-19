@@ -1,8 +1,8 @@
-import { type ItemListAction } from "@/lib/list-reducer/dialog-actions";
+import { ItemListAction } from "@/lib/list-reducer/dialog-actions";
 import { CalendarIcon } from "@heroicons/react/20/solid";
-import { type Dispatch } from "react";
+import { Dispatch } from "react";
 import ListItemEditMenu from "@/components/ui/ListItemEditMenu";
-import { type WorkExperience } from "../../store/cv-data-store/cv";
+import { WorkExperience } from "@/features/work-experience/types";
 
 export default function WorkExperienceItem({
     item,

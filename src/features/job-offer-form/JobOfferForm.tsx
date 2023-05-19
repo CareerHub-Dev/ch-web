@@ -1,12 +1,9 @@
 import useToast from "@/hooks/useToast";
-import useEditor from "@/hooks/useEditor";
 import { useInput } from "@/hooks/useInput";
 import useProtectedMutation from "@/hooks/useProtectedMutation";
 import { createJobOffer } from "@/lib/api/job-offer";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import { FormEventHandler } from "react";
-
-const defaultMessage = "Це обов'язкове поле";
 
 export default function JobOfferForm() {
     const toast = useToast();
@@ -21,9 +18,6 @@ export default function JobOfferForm() {
                       },
         ],
     });
-    const overviewEditor = useEditor();
-    const requirementsEditor = useEditor();
-    const responsibilitiesEditor = useEditor();
 
     const submitMutation = useProtectedMutation(
         ["job-offer-form"],
@@ -44,39 +38,12 @@ export default function JobOfferForm() {
         }
     );
 
-    const editors = [
-        {
-            id: "overview",
-            label: "Огляд",
-            validationMessage: defaultMessage,
-            ...overviewEditor,
-        },
-        {
-            id: "requirements",
-            label: "Вимоги",
-            validationMessage: defaultMessage,
-            ...requirementsEditor,
-        },
-        {
-            id: "responsibilities",
-            label: "Обов'язки",
-            validationMessage: defaultMessage,
-            ...responsibilitiesEditor,
-        },
-    ];
-
     const formIsValid =
-        titleInput.isValid &&
-        overviewEditor.isValid &&
-        requirementsEditor.isValid &&
-        responsibilitiesEditor.isValid;
+        titleInput.isValid;
 
     const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
         titleInput.blur();
-        overviewEditor.blur();
-        requirementsEditor.blur();
-        responsibilitiesEditor.blur();
 
         if (!formIsValid) {
             return;

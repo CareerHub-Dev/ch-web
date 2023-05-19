@@ -1,12 +1,12 @@
 import CommonLayout from "@/components/layout/CommonLayout";
 import Link from "next/link";
 import { useProtectedQuery } from "@/hooks/useProtectedQuery";
-import { useProtectedPaginatedQuery } from "@/hooks/useProtectedPaginatedQuery";
+// import { useProtectedPaginatedQuery } from "@/hooks/useProtectedPaginatedQuery";
 import {
     getCompanySelf,
     getCompanySelfJobOffersAmount,
     getCompanySelfSubscribersAmount,
-    getCompanySelfJobOffers,
+    // getCompanySelfJobOffers,
 } from "@/lib/api/company";
 import { protectedSsr } from "@/lib/protected-ssr";
 import parseUnknownError from "@/lib/parse-unknown-error";
@@ -96,14 +96,14 @@ export default function CompanyDashboardPage() {
         ["company-self-job-offers-amount"],
         getCompanySelfJobOffersAmount
     );
-    const jobOffers = useProtectedPaginatedQuery({
-        queryKey: ["company-self-job-offers"],
-        getItems: getCompanySelfJobOffers,
-        params: {
-            pageSize: 36,
-            active: true,
-        }
-    });
+    // const jobOffers = useProtectedPaginatedQuery({
+    //     queryKey: ["company-self-job-offers"],
+    //     getItems: getCompanySelfJobOffers,
+    //     params: {
+    //         pageSize: 36,
+    //         active: true,
+    //     }
+    // });
 
     const stats = [
         {
