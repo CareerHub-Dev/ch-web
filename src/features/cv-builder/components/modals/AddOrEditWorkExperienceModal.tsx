@@ -15,11 +15,15 @@ export default function AddOrEditWorkExperienceModal({
         (s) => s.dispatchWorkExperiences
     );
     const workExperienceInputs = useWorkExperienceInputs(initialPayload?.item);
-    const { thereAreSomeErrors, values } = workExperienceInputs;
+    const { blurAll, thereAreSomeInvalidInputs, thereAreSomeBlurredErrors, values } = workExperienceInputs;
     const formType = !initialPayload ? "add" : "edit";
 
     const handleConfirm = () => {
-        if (thereAreSomeErrors) return;
+        if (thereAreSomeBlurredErrors) return;
+        if (thereAreSomeInvalidInputs) {
+            blurAll();
+            return;
+        }
 
         if (!initialPayload) {
             dispatchWorkExperiences({
@@ -41,7 +45,7 @@ export default function AddOrEditWorkExperienceModal({
             onClose={onClose}
             onConfirm={handleConfirm}
             type={formType}
-            confirmationDisabled={thereAreSomeErrors}
+            confirmationDisabled={thereAreSomeBlurredErrors}
         >
             <WorkExperienceForm {...workExperienceInputs} />
         </AddOrEditItemModal>

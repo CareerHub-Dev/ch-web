@@ -107,8 +107,22 @@ export function useWorkExperienceInputs(
         endYear,
         endMonth,
     ];
-    const thereAreSomeErrors =
-        allInputs.some((item) => item.errors.length > 0) || timePeriodIsInvalid;
+
+    const someTimePeriodInputWasBlurred =
+        startYear.wasBlurred ||
+        startMonth.wasBlurred ||
+        endYear.wasBlurred ||
+        endMonth.wasBlurred;
+
+    const thereAreSomeBlurredErrors =
+        allInputs.some((item) => item.hasErrors && item.wasBlurred) ||
+        (someTimePeriodInputWasBlurred && timePeriodIsInvalid);
+
+    const thereAreSomeInvalidInputs = allInputs.some((item) => !item.isValid);
+
+    const blurAll = () => {
+        allInputs.forEach((item) => item.blur());
+    };
 
     const startDate = new Date(startYearInt, startMonthInt).toISOString();
     const endDate = isCurrent.value
@@ -126,7 +140,8 @@ export function useWorkExperienceInputs(
     };
 
     return {
-        thereAreSomeErrors,
+        thereAreSomeBlurredErrors,
+        thereAreSomeInvalidInputs,
         title,
         companyName,
         location,
@@ -142,6 +157,7 @@ export function useWorkExperienceInputs(
         timePeriodIsInvalid,
         yearOptions,
         values,
+        blurAll,
     };
 }
 

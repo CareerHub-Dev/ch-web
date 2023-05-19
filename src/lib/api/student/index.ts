@@ -10,6 +10,7 @@ import {
 import { JobOfferArraySchema } from "../../schemas/JobOffer";
 import { parsePaginatedResponseAsync } from "../pagination";
 import { type AxiosInstance, type AxiosResponse } from "axios";
+import { WorkExperience } from "@/features/work-experience/types";
 
 async function parseStudentAsync(response: AxiosResponse) {
     return StudentSchema.parseAsync(response.data);
@@ -101,6 +102,38 @@ export function updateStudentPhoto(instance: AxiosInstance) {
                 "Content-Type": "multipart/form-data",
             },
             data,
+        });
+    };
+}
+
+export function addStudentWorkExperience(instance: AxiosInstance) {
+    return (data: WorkExperience) => {
+        return request({
+            instance,
+            url: `/Student/self/Experiences`,
+            method: "POST",
+            data,
+        });
+    };
+}
+
+export function updateStudentWorkExperience(instance: AxiosInstance) {
+    return ({ id, ...data }: WorkExperience & { id: string }) => {
+        return request({
+            instance,
+            url: `/Student/self/Experiences/${id}`,
+            method: "PUT",
+            data: { ...data, experienceId: id },
+        });
+    };
+}
+
+export function deleteStudentWorkExperience(instance: AxiosInstance) {
+    return (id: string) => {
+        return request({
+            instance,
+            url: `/Student/self/Experiences/${id}`,
+            method: "DELETE",
         });
     };
 }

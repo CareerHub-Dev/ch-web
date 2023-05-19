@@ -2,26 +2,29 @@ import { useWorkExperienceInputs } from "@/features/work-experience/hooks/use-wo
 import WorkExperienceForm from "@/features/work-experience/components/WorkExperienceForm";
 import DialogActionButtons from "@/components/ui/dialog/DialogActionButtons";
 import useProtectedMutation from "@/hooks/useProtectedMutation";
-import { addStudentWorkExperience } from "@/lib/api/student";
+import { updateStudentWorkExperience } from "@/lib/api/student";
 import useToast from "@/hooks/useToast";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import { useQueryClient } from "@tanstack/react-query";
+import { WorkExperience } from "@/features/work-experience/types";
 
-export default function AddExperienceForm({
+export default function EditExperienceForm({
+    updatedItem,
     onCancel,
     onSuccess,
 }: {
+    updatedItem: (WorkExperience & { id: string }) | undefined;
     onSuccess: () => void;
     onCancel: () => void;
 }) {
     const toast = useToast();
     const queryClient = useQueryClient();
     const { mutate, isLoading } = useProtectedMutation(
-        ["add-experience"],
-        addStudentWorkExperience,
+        ["update-experience", updatedItem?.id],
+        updateStudentWorkExperience,
         {
             onSuccess() {
-                toast.success("Досвід успішно додано");
+                toast.success("Досвід успішно оновлено");
                 queryClient.invalidateQueries(["student-experiences", "self"]);
                 onSuccess();
             },
@@ -30,7 +33,7 @@ export default function AddExperienceForm({
             },
         }
     );
-    const workExperienceInputs = useWorkExperienceInputs();
+    const workExperienceInputs = useWorkExperienceInputs(updatedItem);
     const {
         thereAreSomeBlurredErrors,
         thereAreSomeInvalidInputs,
@@ -39,11 +42,12 @@ export default function AddExperienceForm({
     } = workExperienceInputs;
 
     const handleConfirm = () => {
+        if (updatedItem === undefined) return;
         if (thereAreSomeInvalidInputs) {
             blurAll();
             return;
         }
-        mutate(values);
+        mutate({ ...values, id: updatedItem.id });
     };
 
     return (
@@ -54,7 +58,7 @@ export default function AddExperienceForm({
                 onCancel={onCancel}
                 confirmationDisabled={thereAreSomeBlurredErrors || isLoading}
                 cancelText={"Відміна"}
-                confirmText={"Додати"}
+                confirmText={"Зберегти"}
                 isLoading={isLoading}
             />
         </>

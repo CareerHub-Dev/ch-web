@@ -4,6 +4,7 @@ import TabButton from "./TabButton";
 const tabs = [
     { name: "Загальне", query: "general-info" },
     { name: "Публікації", query: "posts" },
+    { name: "Досвід роботи", query: "experience"},
 ];
 
 export default function TabMenu() {

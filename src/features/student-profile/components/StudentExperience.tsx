@@ -1,4 +1,5 @@
 import { Experience } from "@/lib/api/student/schemas";
+import StudentExperienceActionsButton from "./StudentExperienceActionsButton";
 import format from "date-fns/format";
 
 export default function StudentExperience({
@@ -6,10 +7,17 @@ export default function StudentExperience({
     companyName,
     startDate,
     endDate,
-}: Experience) {
+    isSelf,
+    onEditClick,
+    onRemoveClick,
+}: Experience & {
+    isSelf: boolean;
+    onEditClick: () => void;
+    onRemoveClick: () => void;
+}) {
     const formattedStartDate = format(new Date(startDate), "LLLL yyyy");
     const formattedEndDate =
-        endDate === null ? "досі" : format(new Date(endDate), "LLLL yyyy");
+        endDate === null ? "дотепер" : format(new Date(endDate), "LLLL yyyy");
 
     return (
         <li className="flex items-center justify-between gap-x-6 py-5">
@@ -38,6 +46,12 @@ export default function StudentExperience({
                     </p>
                 </div>
             </div>
+            {isSelf ? (
+                <StudentExperienceActionsButton
+                    onEditClick={onEditClick}
+                    onRemoveClick={onRemoveClick}
+                />
+            ) : null}
         </li>
     );
 }

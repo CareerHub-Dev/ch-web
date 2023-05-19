@@ -78,7 +78,7 @@ export default function StudentProfileModals({
                                     <div className="mt-4">
                                         {modalIsOpen ? (
                                             currentModal ===
-                                            "addExperience" ? <AddExperienceForm /> : (
+                                            "addExperience" ? null : (
                                                 <StudentStatsPaginatedList
                                                     accountId={accountId}
                                                     isSelf={isSelf}

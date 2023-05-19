@@ -29,14 +29,16 @@ export default function StudentProfilePage({
             <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
                 <div className="space-y-6 lg:col-span-2 lg:col-start-1">
                     <TabMenu />
-                    {currentTab === "posts" ? null : (
+                    {currentTab === "posts" ? null : currentTab ===
+                      "experience" ? (
+                        <StudentExperiences
+                            isSelf={isSelf}
+                            accountId={studentId}
+                        />
+                    ) : (
                         <>
                             <StudentProfileInfo accountId={studentId} />
                             <StudentStats
-                                isSelf={isSelf}
-                                accountId={studentId}
-                            />
-                            <StudentExperiences
                                 isSelf={isSelf}
                                 accountId={studentId}
                             />

@@ -1,27 +1,29 @@
-import { useWorkExperienceInputs } from "@/features/work-experience/hooks/use-work-experience-inputs";
-import WorkExperienceForm from "@/features/work-experience/components/WorkExperienceForm";
 import DialogActionButtons from "@/components/ui/dialog/DialogActionButtons";
 import useProtectedMutation from "@/hooks/useProtectedMutation";
-import { addStudentWorkExperience } from "@/lib/api/student";
 import useToast from "@/hooks/useToast";
+import { deleteStudentWorkExperience } from "@/lib/api/student";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import { useQueryClient } from "@tanstack/react-query";
 
-export default function AddExperienceForm({
+export default function DeleteExperienceForm({
+    id,
+    title,
     onCancel,
     onSuccess,
 }: {
-    onSuccess: () => void;
+    id: string;
+    title: string;
     onCancel: () => void;
+    onSuccess: () => void;
 }) {
     const toast = useToast();
     const queryClient = useQueryClient();
     const { mutate, isLoading } = useProtectedMutation(
-        ["add-experience"],
-        addStudentWorkExperience,
+        ["delete-experience", id],
+        deleteStudentWorkExperience,
         {
             onSuccess() {
-                toast.success("Досвід успішно додано");
+                toast.success("Досвід успішно видалено");
                 queryClient.invalidateQueries(["student-experiences", "self"]);
                 onSuccess();
             },
@@ -30,31 +32,26 @@ export default function AddExperienceForm({
             },
         }
     );
-    const workExperienceInputs = useWorkExperienceInputs();
-    const {
-        thereAreSomeBlurredErrors,
-        thereAreSomeInvalidInputs,
-        blurAll,
-        values,
-    } = workExperienceInputs;
 
     const handleConfirm = () => {
-        if (thereAreSomeInvalidInputs) {
-            blurAll();
-            return;
-        }
-        mutate(values);
+        mutate(id);
     };
 
     return (
         <>
-            <WorkExperienceForm {...workExperienceInputs} />
+            <p>
+                {"Ви впевнені, що хочете видалити досвід роботи "}
+                <b>{title}</b>
+                {"?"}
+            </p>
+
             <DialogActionButtons
                 onConfirm={handleConfirm}
                 onCancel={onCancel}
-                confirmationDisabled={thereAreSomeBlurredErrors || isLoading}
+                confirmationDisabled={isLoading}
                 cancelText={"Відміна"}
-                confirmText={"Додати"}
+                confirmText={"Видалити"}
+                confirmClasses="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 text-base"
                 isLoading={isLoading}
             />
         </>
