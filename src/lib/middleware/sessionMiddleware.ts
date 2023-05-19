@@ -1,3 +1,4 @@
+import { NextCookies } from "next/dist/server/web/spec-extension/cookies";
 import parseJson from "../json-safe-parse";
 import SessionDataSchema from "../schemas/SessionData";
 import { type UserRole } from "../schemas/UserRole";
@@ -38,3 +39,15 @@ function sessionMiddleware(
     return session;
 }
 export default sessionMiddleware;
+
+export function parseSessionFromNextCookies(cookies: NextCookies) {
+    const storedHttpCookie = cookies.get("ch-http");
+    if (!storedHttpCookie) {
+        throw new Error("No cookie found");
+    }
+
+    const parsedHttpCookie = JSON.parse(storedHttpCookie);
+    const sessionData = SessionDataSchema.parse(parsedHttpCookie);
+
+    return sessionData;
+}

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import type { NextRequest, NextFetchEvent } from "next/server";
+import { NextRequest, NextFetchEvent } from "next/server";
+import { parseSessionFromNextCookies } from "./lib/middleware/sessionMiddleware";
 
 export async function middleware(req: NextRequest, _event: NextFetchEvent) {
     const { pathname } = req.nextUrl;
@@ -8,16 +9,24 @@ export async function middleware(req: NextRequest, _event: NextFetchEvent) {
         const newUrl = req.nextUrl.clone();
 
         try {
-            const httpOnlyAuthCookie = req.cookies.get("ch-http");
-            const parsedAuthCookie = JSON.parse(httpOnlyAuthCookie as string);
-            const newUrl = new URL(
-                req.url.replace(
-                    "me",
-                    `students/${parsedAuthCookie["accountId"]}`
-                )
-            );
+            const session = parseSessionFromNextCookies(req.cookies);
+            let newUrl = new URL(req.url);
+
+            if (session.role === "Student") {
+                newUrl = new URL(
+                    req.url.replace("me", `students/${session.accountId}`)
+                );
+            } else {
+                newUrl = new URL(req.url.replace("me", "company-dashboard"));
+            }
             return NextResponse.rewrite(newUrl);
         } catch (err) {
+            req.cookies.set("ch-http", "", {
+                httpOnly: true,
+                path: "/",
+                sameSite: "lax",
+                secure: true,
+            });
             newUrl.pathname = "/auth/login";
             newUrl.search = "";
             return NextResponse.redirect(newUrl);

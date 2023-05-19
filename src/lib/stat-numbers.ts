@@ -11,8 +11,8 @@ export const statNumbersLocaleProviders = {
         delimiter: ".",
     } satisfies StatNumbersLocaleProvider,
     UA: {
-        thousand: "тис.",
-        million: "млн.",
+        thousand: " тис.",
+        million: " млн.",
         delimiter: ",",
     } satisfies StatNumbersLocaleProvider,
 };

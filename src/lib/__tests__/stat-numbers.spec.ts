@@ -18,13 +18,13 @@ describe("stat numbers", () => {
 
     it("should format numbers between 1000 and 1_000_000 correctly", () => {
         const testCases = [
-            { value: 1000, EN: "1K", UA: "1тис." },
-            { value: 1001, EN: "1K", UA: "1тис." },
-            { value: 1100, EN: "1.1K", UA: "1,1тис." },
-            { value: 1110, EN: "1.1K", UA: "1,1тис." },
-            { value: 1111, EN: "1.1K", UA: "1,1тис." },
-            { value: 9000, EN: "9K", UA: "9тис." },
-            { value: 9999, EN: "9.9K", UA: "9,9тис." },
+            { value: 1000, EN: "1K", UA: "1 тис." },
+            { value: 1001, EN: "1K", UA: "1 тис." },
+            { value: 1100, EN: "1.1K", UA: "1,1 тис." },
+            { value: 1110, EN: "1.1K", UA: "1,1 тис." },
+            { value: 1111, EN: "1.1K", UA: "1,1 тис." },
+            { value: 9000, EN: "9K", UA: "9 тис." },
+            { value: 9999, EN: "9.9K", UA: "9,9 тис." },
         ];
 
         testCases.forEach((testCase) => {
@@ -43,10 +43,10 @@ describe("stat numbers", () => {
 
     it("should format numbers above 1_000_000 correctly", () => {
         const testCases = [
-            { value: 1_000_000, EN: "1M", UA: "1млн." },
-            { value: 1_000_001, EN: "1M", UA: "1млн." },
-            { value: 1_100_000, EN: "1.1M", UA: "1,1млн." },
-            { value: 1_100_001, EN: "1.1M", UA: "1,1млн." },
+            { value: 1_000_000, EN: "1M", UA: "1 млн." },
+            { value: 1_000_001, EN: "1M", UA: "1 млн." },
+            { value: 1_100_000, EN: "1.1M", UA: "1,1 млн." },
+            { value: 1_100_001, EN: "1.1M", UA: "1,1 млн." },
         ];
 
         testCases.forEach((testCase) => {

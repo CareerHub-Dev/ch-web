@@ -2,104 +2,128 @@ import { z } from "zod";
 import { request } from "@/lib/axios";
 import { parsePaginatedResponseAsync } from "../pagination";
 import {
-  CompanyInFeedArraySchema,
-  CompanyDetailsSchema,
-  CompanyJobOffersArraySchema,
-  CompanyBriefSchema,
+    CompanyInFeedArraySchema,
+    CompanyDetailsSchema,
+    CompanyJobOffersArraySchema,
+    CompanyBriefSchema,
 } from "./schemas";
 
 import { type AxiosInstance } from "axios";
 
 export function getCompanies(
-  instance: AxiosInstance,
-  params: Omit<PaginatedRequestParams, "pageNumber">
+    instance: AxiosInstance,
+    params: Omit<PaginatedRequestParams, "pageNumber">
 ) {
-  return request({
-    instance,
-    prefix: "Student",
-    url: "Companies",
-    params,
-    select: parsePaginatedResponseAsync(CompanyInFeedArraySchema),
-  });
+    return request({
+        instance,
+        prefix: "Student",
+        url: "Companies",
+        params,
+        select: parsePaginatedResponseAsync(CompanyInFeedArraySchema),
+    });
 }
 
 export function getCompany(companyId: string) {
-  return (instance: AxiosInstance) =>
-    request({
-      instance,
-      prefix: "Student",
-      url: `Companies/${companyId}`,
-      select: (res) => CompanyDetailsSchema.parseAsync(res.data),
+    return (instance: AxiosInstance) =>
+        request({
+            instance,
+            prefix: "Student",
+            url: `Companies/${companyId}`,
+            select: (res) => CompanyDetailsSchema.parseAsync(res.data),
+        });
+}
+
+export function getCompanySelf(instance: AxiosInstance) {
+    return request({
+        instance,
+        url: "Company/Companies/self",
+        select: (res) => CompanyDetailsSchema.parseAsync(res.data),
+    });
+}
+
+export function getCompanySelfJobOffersAmount(instance: AxiosInstance) {
+    return request({
+        instance,
+        url: "Company/Companies/self/amount-jobOffers",
+        select: (res) => z.number().parseAsync(res.data),
+    });
+}
+
+export function getCompanySelfSubscribersAmount(instance: AxiosInstance) {
+    return request({
+        instance,
+        url: "Company/Companies/self/amount-subscribers",
+        select: (res) => z.number().parseAsync(res.data),
     });
 }
 
 export function getCompanyJobOffers(
-  instance: AxiosInstance,
-  {
-    companyId,
-    ...params
-  }: Omit<PaginatedRequestParams, "pageNumber"> & {
-    companyId: string;
-  }
+    instance: AxiosInstance,
+    {
+        companyId,
+        ...params
+    }: Omit<PaginatedRequestParams, "pageNumber"> & {
+        companyId: string;
+    }
 ) {
-  return request({
-    instance,
-    prefix: "Student",
-    url: `Companies/${companyId}/JobOffers`,
-    params,
-    select: parsePaginatedResponseAsync(CompanyJobOffersArraySchema),
-  });
+    return request({
+        instance,
+        prefix: "Student",
+        url: `Companies/${companyId}/JobOffers`,
+        params,
+        select: parsePaginatedResponseAsync(CompanyJobOffersArraySchema),
+    });
 }
 
 function doOnCompanySubscription(method: "POST" | "DELETE") {
-  return (companyId: string) => (instance: AxiosInstance) => () => {
-    return request({
-      method,
-      prefix: "Student",
-      url: `Companies/${companyId}/subscribe`,
-      instance,
-    });
-  };
+    return (companyId: string) => (instance: AxiosInstance) => () => {
+        return request({
+            method,
+            prefix: "Student",
+            url: `Companies/${companyId}/subscribe`,
+            instance,
+        });
+    };
 }
 
 export const changeCompanySubscriptionStatus = (currentlySubscribed: boolean) =>
-  currentlySubscribed
-    ? doOnCompanySubscription("DELETE")
-    : doOnCompanySubscription("POST");
+    currentlySubscribed
+        ? doOnCompanySubscription("DELETE")
+        : doOnCompanySubscription("POST");
 
 export const unsubscribeStudentFromCompanyById =
-  (instance: AxiosInstance) => (companyId: string) =>
-    doOnCompanySubscription("DELETE")(companyId)(instance)();
+    (instance: AxiosInstance) => (companyId: string) =>
+        doOnCompanySubscription("DELETE")(companyId)(instance)();
 export const unsubscribeStudentFromCompany = doOnCompanySubscription("DELETE");
 export const subscribeStudentToCompany = doOnCompanySubscription("POST");
 export const getSubscriptionOnCompany =
-  (companyId: string) => (instance: AxiosInstance) => {
-    return request({
-      method: "GET",
-      prefix: "Student",
-      url: `Companies/${companyId}/subscribe`,
-      instance,
-    });
-  };
+    (companyId: string) => (instance: AxiosInstance) => {
+        return request({
+            method: "GET",
+            prefix: "Student",
+            url: `Companies/${companyId}/subscribe`,
+            instance,
+        });
+    };
 
 function getCompanyStat(stat: "subscribers" | "jobOffers") {
-  return (companyId: string) => (instance: AxiosInstance) =>
-    request({
-      instance,
-      prefix: "Student",
-      url: `Companies/${companyId}/amount-${stat}`,
-      select: (res) => z.number().parseAsync(res.data),
-    });
+    return (companyId: string) => (instance: AxiosInstance) =>
+        request({
+            instance,
+            prefix: "Student",
+            url: `Companies/${companyId}/amount-${stat}`,
+            select: (res) => z.number().parseAsync(res.data),
+        });
 }
 
 export const getCompanySubscribersAmount = getCompanyStat("subscribers");
 export const getCompanyJobOffersAmount = getCompanyStat("jobOffers");
 
 export function getSelfCompany(instance: AxiosInstance) {
-  return request({
-    instance,
-    prefix: "Company",
-    url: "Companies/self",
-    select: (res) => CompanyBriefSchema.parseAsync(res.data),
-  });
+    return request({
+        instance,
+        prefix: "Company",
+        url: "Companies/self",
+        select: (res) => CompanyBriefSchema.parseAsync(res.data),
+    });
 }
