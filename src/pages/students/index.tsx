@@ -50,7 +50,7 @@ export default function StudentsPage() {
                             <Fragment key={pageIndex}>
                                 {page.data.map((student) => (
                                     <StudentCard
-                                        student={student}
+                                        {...student}
                                         key={student.id}
                                     />
                                 ))}

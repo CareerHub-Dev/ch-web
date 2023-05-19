@@ -6,11 +6,11 @@ import Head from "next/head";
 import ProfileHeader from "@/features/student-profile/components/ProfileHeader";
 import StudentProfileInfo from "@/features/student-profile/components/StudentProfileInfo";
 import StudentStats from "@/features/student-profile/components/StudentStats";
-import StudentProfileModals from "@/features/student-profile/components/StudentProfileModals";
 import StudentExperiences from "@/features/student-profile/components/StudentExperiences";
 import FollowedStudentsSection from "@/features/student-profile/components/aside-sections/followed-students/FollowedStudentsSection";
 import RecentPostsSection from "@/features/student-profile/components/aside-sections/recent-posts/RecentPostsSection";
 import TabMenu from "@/features/student-profile/components/tab-menu/TabMenu";
+import StudentPosts from "@/features/student-profile/components/StudentPosts";
 
 export default function StudentProfilePage({
     isSelf,
@@ -24,14 +24,15 @@ export default function StudentProfilePage({
             <Head>
                 <meta name="description" content="Student profile" />
             </Head>
-            <StudentProfileModals isSelf={isSelf} accountId={studentId} />
             <ProfileHeader isSelf={isSelf} accountId={studentId} />
             <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
                 <div className="space-y-6 lg:col-span-2 lg:col-start-1">
                     <TabMenu />
-                    {currentTab === "posts" ? null : currentTab ===
-                      "experience" ? (
+                    {currentTab === "posts" ? (
+                        <StudentPosts isSelf={isSelf} accountId={studentId} />
+                    ) : currentTab === "experience" ? (
                         <StudentExperiences
+                            key={studentId}
                             isSelf={isSelf}
                             accountId={studentId}
                         />
@@ -39,6 +40,7 @@ export default function StudentProfilePage({
                         <>
                             <StudentProfileInfo accountId={studentId} />
                             <StudentStats
+                                key={studentId}
                                 isSelf={isSelf}
                                 accountId={studentId}
                             />
@@ -48,6 +50,7 @@ export default function StudentProfilePage({
                 <aside className="lg:col-span-1 lg:col-start-3">
                     <div className="space-y-4">
                         <FollowedStudentsSection
+                            key={studentId}
                             isSelf={isSelf}
                             accountId={studentId}
                         />

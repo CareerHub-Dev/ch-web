@@ -1,4 +1,4 @@
-import { getImage } from "@/lib/api/image";
+import { getImageWithDefault } from "@/lib/api/image";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
@@ -20,9 +20,9 @@ export default function FollowedStudent({
     isFollowed: boolean;
     photo?: string | null | undefined;
 }) {
-    const imageSource = photo ? getImage(photo) : "/default-avatar.png";
-    const studentProfileHref = `/students/${id}`;
-    const studentFullName = `${firstName} ${lastName}`;
+    const fullName = `${firstName} ${lastName}`;
+    const studentProfileLink = `/students/${id}`;
+    const imageSource = getImageWithDefault(photo, "Student");
 
     return (
         <li className="relative flex justify-between gap-x-6 p-2 hover:bg-indigo-50 rounded-md transition-all duration-200">
@@ -32,16 +32,16 @@ export default function FollowedStudent({
                     height={32}
                     className="h-8 w-8 rounded-full"
                     src={imageSource}
-                    alt={studentFullName}
+                    alt={fullName}
                 />
                 <div className="min-w-0 flex-auto">
                     <p className="text-sm font-semibold leading-6 text-gray-900">
                         <Link
-                            href={studentProfileHref}
+                            href={studentProfileLink}
                             className="focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-gray-100 transition-all duration-200 rounded-md"
                         >
                             <span className="absolute inset-x-0 -top-px bottom-0" />
-                            {studentFullName}
+                            {fullName}
                         </Link>
                     </p>
                     <p className="mt-1 flex text-xs leading-5 text-gray-500">

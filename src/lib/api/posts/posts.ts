@@ -14,3 +14,16 @@ export function getPostsFromFollowedAccounts(
         select: parsePaginatedResponseAsync(PostArraySchema),
     });
 }
+
+export function getPostsFromAccount(
+    instance: AxiosInstance,
+    params: Omit<PaginatedRequestParams, "pageNumber"> & { accountId: string }
+) {
+    const { accountId, ...rest } = params;
+    return request({
+        instance,
+        url: `/Student/Posts/of-account/${accountId}`,
+        params: rest,
+        select: parsePaginatedResponseAsync(PostArraySchema),
+    });
+}

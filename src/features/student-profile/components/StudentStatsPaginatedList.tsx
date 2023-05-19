@@ -8,11 +8,11 @@ import {
     getStudentStudentSubscriptions,
 } from "@/lib/api/student";
 import ModalList from "./modal-list/ModalList";
-import FollowedStudentWithAction from "./modal-list/FollowedStudentWithAction";
 import FollowerStudentWithAction from "./modal-list/FollowerStudentWithAction";
 import FollowedCompanyWithAction from "./modal-list/FollowedCompanyWithAction";
 import TrackedJobOfferWithAction from "./modal-list/TrackedJobOfferWithAction";
 import { useState } from "react";
+import FollowedStudentWithAction from "./modal-list/FollowedStudentWithAction";
 
 const inferredProps = {
     followedStudents: {

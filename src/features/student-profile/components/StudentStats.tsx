@@ -21,7 +21,7 @@ export default function StudentStats({
 }) {
     const queryKeyIdPart = isSelf ? "self" : accountId;
     const students = useProtectedQuery(
-        ["student-student-subscriptions-amount", queryKeyIdPart],
+        ["student-student-subscribers-amount", queryKeyIdPart],
         getStudentStudentSubscribersAmount(accountId),
         {}
     );
@@ -67,7 +67,12 @@ export default function StudentStats({
                       <StudentStatSkeleton key={index} />
                   ))
                 : queries.map((query, index) => (
-                      <StudentStat key={index} {...query} />
+                      <StudentStat
+                          key={index}
+                          {...query}
+                          isSelf={isSelf}
+                          accountId={accountId}
+                      />
                   ))}
         </dl>
     );

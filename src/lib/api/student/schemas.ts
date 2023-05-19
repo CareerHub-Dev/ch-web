@@ -3,9 +3,9 @@ import { z } from "zod";
 export const CompanySubscriptionSchema = z.object({
     id: z.string(),
     name: z.string(),
-    photo: z.string().nullish(),
+    email: z.string(),
+    logo: z.string().nullish(),
     motto: z.string(),
-    description: z.string(),
     isFollowed: z.boolean(),
 });
 
@@ -22,6 +22,7 @@ export const StudentSubscriptionSchema = z.object({
     id: z.string(),
     firstName: z.string(),
     lastName: z.string(),
+    email: z.string(),
     isFollowed: z.boolean(),
     photo: z.string().nullish(),
     studentGroup: z.object({

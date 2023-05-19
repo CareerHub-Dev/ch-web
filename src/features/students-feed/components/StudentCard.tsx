@@ -1,23 +1,25 @@
-import { type Student } from "@/lib/schemas/Student";
+import { StudentBrief } from "@/lib/schemas/Student";
 import Image from "next/image";
 import Link from "next/link";
-import { getImage } from "@/lib/api/image";
+import { getImageWithDefault } from "@/lib/api/image";
 
-export default function StudentCard({ student }: { student: Student }) {
-    const fullName = `${student.firstName} ${student.lastName}`;
-    const studentProfileLink = `/students/${student.id}`;
+export default function StudentCard({
+    id,
+    firstName,
+    lastName,
+    photo,
+    studentGroup,
+}: StudentBrief) {
+    const fullName = `${firstName} ${lastName}`;
+    const studentProfileLink = `/students/${id}`;
     return (
-        <div className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400">
+        <div className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-inset hover:border-gray-400">
             <div className="flex-shrink-0">
                 <Image
                     className="h-10 w-10 rounded-full"
                     height={40}
                     width={40}
-                    src={
-                        student.photo
-                            ? getImage(student.photo)
-                            : "/default-avatar.png"
-                    }
+                    src={getImageWithDefault(photo, "Student")}
                     alt={fullName}
                 />
             </div>
@@ -28,7 +30,7 @@ export default function StudentCard({ student }: { student: Student }) {
                         {fullName}
                     </p>
                     <p className="truncate text-sm text-gray-500">
-                        {student.studentGroup.name}
+                        {studentGroup.name}
                     </p>
                 </Link>
             </div>

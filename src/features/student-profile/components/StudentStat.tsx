@@ -1,26 +1,45 @@
-import {
-    type StudentProfileModal,
-    useStudentProfileStore,
-} from "../store/student-profile-store";
+import DialogWithBackdrop from "@/components/ui/dialog/DialogWithBackdrop";
+import { useBoolean } from "usehooks-ts";
+import StudentStatsPaginatedList from "./StudentStatsPaginatedList";
 import { BeakerIcon } from "@heroicons/react/24/solid"; // Importing this for type iference
 type Icon = typeof BeakerIcon;
 
+const modalTitles = {
+    studentFollowers: "Підписники",
+    followedCompanies: "Відстежувані компанії",
+    trackedJobOffers: "Відстежувані вакансії",
+};
+
 export default function StudentStat({
+    accountId,
+    isSelf,
     amount,
     icon,
     name,
     id,
 }: {
     amount?: number;
+    accountId: string;
+    isSelf: boolean;
     icon: Icon;
     name: string;
-    id: StudentProfileModal;
+    id: "studentFollowers" | "followedCompanies" | "trackedJobOffers";
 }) {
     const Icon = icon;
-    const openModal = useStudentProfileStore((s) => s.openModal);
-    const handleOpenModalClick = () => openModal(id);
+    const modalIsOpen = useBoolean(false);
     return (
         <>
+            <DialogWithBackdrop
+                title={modalTitles[id]}
+                onClose={modalIsOpen.setFalse}
+                show={modalIsOpen.value}
+            >
+                <StudentStatsPaginatedList
+                    accountId={accountId}
+                    isSelf={isSelf}
+                    currentModal={id}
+                />
+            </DialogWithBackdrop>
             <div className="relative overflow-hidden rounded-lg bg-white px-4 pt-5 pb-12 shadow sm:px-6 sm:pt-6">
                 <dt>
                     <div className="absolute rounded-md bg-indigo-500 p-3">
@@ -42,7 +61,7 @@ export default function StudentStat({
                             <button
                                 type="button"
                                 className="font-medium text-indigo-600 hover:text-indigo-500"
-                                onClick={handleOpenModalClick}
+                                onClick={modalIsOpen.setTrue}
                             >
                                 {" Більше"}
                                 <span className="sr-only">{name}</span>

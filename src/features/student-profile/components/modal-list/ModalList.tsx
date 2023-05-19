@@ -27,10 +27,10 @@ export default function ModalList<TItem extends { id: string }>({
     const params = {
         accountId,
         pageSize: 36,
-        searchTerm: search,
+        search,
     };
     const { data, isLoading, isError, error } = useProtectedPaginatedQuery({
-        queryKey: [queryKeyPrefix, isSelf ? "self" : accountId],
+        queryKey: [queryKeyPrefix, isSelf ? "self" : accountId, search],
         getItems,
         params,
     });
