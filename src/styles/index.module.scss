@@ -1,25 +1,25 @@
 @import '@/styles/variables.scss';
 
 .title {
-  font-family: 'Rancho';
-  font-size: 150px;
-  color: $darkerBlue;
+    font-family: 'Rancho';
+    font-size: 150px;
+    color: $darkerBlue;
 }
 
 .logos {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  &>svg {
-    height: min-content;
+    &>svg {
+        height: min-content;
 
-    &:nth-child(1) {
-      width: clamp(75px, 20%, 125px);
+        &:nth-child(1) {
+            width: clamp(75px, 20%, 125px);
+        }
+
+        &:nth-child(2) {
+            width: clamp(125px, 30%, 225px);
+        }
     }
-
-    &:nth-child(2) {
-      width: clamp(125px, 30%, 225px);
-    }
-  }
 }

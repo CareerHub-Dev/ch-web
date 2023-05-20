@@ -1,97 +1,79 @@
-import { useState } from 'react';
-import { useDebounce } from 'usehooks-ts';
-import { getCompanies } from '@/lib/api/company';
-import { useProtectedPaginatedQuery } from '@/hooks/useProtectedPaginatedQuery';
-import SearchPanel from '@/components/companies/feed/SearchPanel';
-import LoadMore from '@/components/ui/LoadMore';
-import { protectedSsr } from '@/lib/protected-ssr';
-import CommonLayout from '@/components/layout/CommonLayout';
-import parseUnknownError from '@/lib/parse-unknown-error';
-import axiosMiddleware from '@/lib/middleware/axiosMiddleware';
-import CompaniesGrid from '@/components/companies/feed/CompaniesGrid';
-import CenteredLoadingSpinner from '@/components/ui/CenteredLoadingSpinner';
+import { useState } from "react";
+import { useDebounce } from "usehooks-ts";
+import { getCompanies } from "@/lib/api/company";
+import { useProtectedPaginatedQuery } from "@/hooks/useProtectedPaginatedQuery";
+import LoadMore from "@/components/ui/LoadMore";
+import { protectedSsr } from "@/lib/protected-ssr";
+import CommonLayout from "@/components/layout/CommonLayout";
+import parseUnknownError from "@/lib/parse-unknown-error";
+import CompaniesGrid from "@/components/companies/feed/CompaniesGrid";
+import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 
-import { type CompanyInFeedArray } from '@/lib/api/company/schemas';
-import { type PaginatedResponse } from '@/lib/api/pagination';
-import { type InferGetServerSidePropsType } from 'next';
+function CompaniesFeedPage() {
+    const [search, setSearch] = useState("");
+    const debouncedSearch = useDebounce(search, 200);
 
-const CompaniesFeedPage: NextPageWithLayout<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ initialData }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    const {
+        data,
+        isLoading,
+        fetchNextPage,
+        hasNextPage,
+        isError,
+        error,
+        isFetchingNextPage,
+    } = useProtectedPaginatedQuery({
+        queryKey: ["companies", debouncedSearch],
+        getItems: getCompanies,
+        params: {
+            pageSize: 36,
+            search: debouncedSearch,
+        },
+    });
 
-  const {
-    data,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isError,
-    error,
-    isFetchingNextPage,
-  } = useProtectedPaginatedQuery({
-    queryKey: ['companies'],
-    getItems: getCompanies,
-    params: {
-      pageSize: 25,
-      searchTerm: debouncedSearchTerm,
-    },
-    initialData: initialData ?? undefined,
-  });
+    const loadMore = () => {
+        hasNextPage && fetchNextPage();
+    };
 
-  const loadMore = () => {
-    hasNextPage && fetchNextPage();
-  };
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value);
+    };
 
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white py-4 shadow-md rounded-b-md mb-4">
-      <SearchPanel value={searchTerm} onChange={setSearchTerm} />
-      <div className="mt-8 px-2 md:px-8">
-        {isLoading ? (
-          <CenteredLoadingSpinner />
-        ) : isError ? (
-          <p>{parseUnknownError(error)}</p>
-        ) : (
-          <CompaniesGrid data={data} />
-        )}
-      </div>
+    return (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white py-4 shadow-md rounded-md mb-4">
+            <div className="relative my-4 flex items-center">
+                <input
+                    type="text"
+                    name="search"
+                    id="search"
+                    value={search}
+                    onChange={handleSearchChange}
+                    placeholder={"Пошук"}
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                />
+            </div>
+            <div className="mt-8">
+                {isLoading ? (
+                    <CenteredLoadingSpinner />
+                ) : isError ? (
+                    <p>{parseUnknownError(error)}</p>
+                ) : (
+                    <CompaniesGrid data={data} />
+                )}
+            </div>
 
-      {isFetchingNextPage ? (
-        <CenteredLoadingSpinner />
-      ) : hasNextPage ? (
-        <LoadMore onClick={loadMore} />
-      ) : null}
-    </div>
-  );
-};
+            {isFetchingNextPage ? (
+                <CenteredLoadingSpinner />
+            ) : hasNextPage ? (
+                <LoadMore onClick={loadMore} />
+            ) : null}
+        </div>
+    );
+}
 
 CompaniesFeedPage.getLayout = CommonLayout;
 
 export default CompaniesFeedPage;
 
-export const getServerSideProps = protectedSsr<{
-  initialData: {
-    pages: PaginatedResponse<CompanyInFeedArray>[];
-    pageParams: { pageSize: number; searchTerm: string }[];
-  } | null;
-}>({
-  allowedRoles: ['Student', 'Company'],
-  getProps: async (context) => {
-    const params = { pageSize: 25, searchTerm: '' };
-    try {
-      const data = await getCompanies(params)(axiosMiddleware(context));
-
-      return {
-        props: {
-          initialData: { pages: [data], pageParams: [params] },
-        },
-      };
-    } catch (error) {
-      return {
-        props: {
-          initialData: null,
-        },
-      };
-    }
-  },
+export const getServerSideProps = protectedSsr({
+    allowedRoles: ["Student", "Company"],
 });

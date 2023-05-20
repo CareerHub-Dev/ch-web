@@ -9,6 +9,7 @@ export const JOB_DIRECTIONS = [
   {
     id: "1",
     name: "Software Development",
+    recommendedTemplateLanguage: "EN",
     positionSuggestions: [
       { id: "1", name: "Dotnet Developer" },
       { id: "2", name: "Java Developer" },
@@ -23,6 +24,7 @@ export const JOB_DIRECTIONS = [
   {
     id: "2",
     name: "Data Science",
+    recommendedTemplateLanguage: "EN",
     positionSuggestions: [
       { id: "1", name: "Data Scientist" },
       { id: "2", name: "Data Analyst" },
@@ -36,6 +38,7 @@ export const JOB_DIRECTIONS = [
   {
     id: "3",
     name: "DevOps",
+    recommendedTemplateLanguage: "EN",
     positionSuggestions: [
       { id: "1", name: "DevOps Engineer" },
       { id: "2", name: "DevOps Architect" },
@@ -45,6 +48,7 @@ export const JOB_DIRECTIONS = [
   {
     id: "4",
     name: "Customer Support",
+    recommendedTemplateLanguage: "EN",
     positionSuggestions: [
       { id: "1", name: "Customer Support Manager" },
       { id: "2", name: "Customer Support Engineer" },

@@ -1,35 +1,40 @@
 {
-  "compilerOptions": {
-    "target": "ES6",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
+    "compilerOptions": {
+        "target": "ES6",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "strict": true,
 
-    "alwaysStrict": true,
-    "allowUnreachableCode": false,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
+        "alwaysStrict": true,
+        "allowUnreachableCode": false,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
 
-    "noImplicitReturns": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noUncheckedIndexedAccess": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
 
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"]
-    }
-  },
-  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules"]
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "incremental": true,
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ],
+        "baseUrl": "./",
+        "paths": {
+            "@/*": ["src/*"]
+        }
+    },
+    "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"],
+    "exclude": ["node_modules"]
 }

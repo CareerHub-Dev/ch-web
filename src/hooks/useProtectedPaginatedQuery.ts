@@ -1,14 +1,14 @@
-import useSession from './useSession';
-import { type AxiosInstance } from 'axios';
+import useSession from "./useSession";
+import { type AxiosInstance } from "axios";
 import {
   type QueryKey,
   type UseInfiniteQueryOptions,
   useInfiniteQuery,
-} from '@tanstack/react-query';
-import { PaginatedResponse } from '@/lib/api/pagination';
+} from "@tanstack/react-query";
+import { PaginatedResponse } from "@/lib/api/pagination";
 
 export function useProtectedPaginatedQuery<
-  TParams extends Omit<PaginatedRequestParams, 'pageNumber'>,
+  TParams extends Omit<PaginatedRequestParams, "pageNumber">,
   TItem
 >({
   queryKey,
@@ -19,11 +19,12 @@ export function useProtectedPaginatedQuery<
   queryKey: QueryKey;
   params: TParams;
   getItems: (
+    instance: AxiosInstance,
     params: TParams & { pageNumber: number }
-  ) => (instance: AxiosInstance) => Promise<PaginatedResponse<Array<TItem>>>;
+  ) => Promise<PaginatedResponse<Array<TItem>>>;
 } & Omit<
   UseInfiniteQueryOptions<PaginatedResponse<Array<TItem>>>,
-  'queryKey' | 'queryFn' | 'getNextPageParam' | 'enabled'
+  "queryKey" | "queryFn" | "getNextPageParam" | "enabled"
 >) {
   const { axios, status } = useSession();
 
@@ -35,12 +36,12 @@ export function useProtectedPaginatedQuery<
   >(
     queryKey,
     async ({ pageParam = 1 }) =>
-      getItems({
+      getItems(axios, {
         ...params,
         pageNumber: pageParam,
-      })(axios),
+      }),
     {
-      enabled: status === 'authenticated',
+      enabled: status === "authenticated",
       getNextPageParam: (lastPage) => {
         const { HasNext, CurrentPage } = lastPage.pagination;
         return HasNext && CurrentPage + 1;

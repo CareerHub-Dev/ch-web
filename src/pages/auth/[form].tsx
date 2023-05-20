@@ -1,21 +1,23 @@
-import { ForgotPasswordForm } from '@/components/auth/forms/ForgotPasswordForm';
-import { LoginForm } from '@/components/auth/forms/LoginForm';
-import { RegisterForm } from '@/components/auth/forms/RegisterForm';
-import FormWrapper from '@/components/auth/FormWrapper';
-import { Background } from '@/components/layout/Background';
-import { Footer } from '@/components/layout/Footer';
-import { GetStaticPropsContext } from 'next';
-
-import classes from '@/styles/auth.module.scss';
+import { ForgotPasswordForm } from "@/components/auth/forms/ForgotPasswordForm";
+import { LoginForm } from "@/components/auth/forms/LoginForm";
+import { RegisterForm } from "@/components/auth/forms/RegisterForm";
+import { ActivateAccountForm } from "@/components/auth/forms/ActivateAccountForm";
+import FormWrapper from "@/components/auth/FormWrapper";
+import { Background } from "@/components/layout/Background";
+import { Footer } from "@/components/layout/Footer";
+import { GetStaticPropsContext } from "next";
+import classes from "@/styles/auth.module.scss";
 
 const AuthPage: NextPageWithLayout<{ form: string }> = ({ form }) => {
   return (
     <div className={classes.form}>
       <FormWrapper>
-        {form === 'login' ? (
+        {form === "login" ? (
           <LoginForm />
-        ) : form === 'register' ? (
+        ) : form === "register" ? (
           <RegisterForm />
+        ) : form === "activate-account" ? (
+          <ActivateAccountForm />
         ) : (
           <ForgotPasswordForm />
         )}
@@ -51,17 +53,22 @@ export async function getStaticPaths() {
     paths: [
       {
         params: {
-          form: 'forgot-password',
+          form: "forgot-password",
         },
       },
       {
         params: {
-          form: 'register',
+          form: "register",
         },
       },
       {
         params: {
-          form: 'login',
+          form: "login",
+        },
+      },
+      {
+        params: {
+          form: "activate-account",
         },
       },
     ],

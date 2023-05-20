@@ -1,24 +1,40 @@
 import { NextResponse } from "next/server";
-import type { NextRequest, NextFetchEvent } from "next/server";
+import { NextRequest, NextFetchEvent } from "next/server";
+import { parseSessionFromNextCookies } from "./lib/middleware/sessionMiddleware";
 
 export async function middleware(req: NextRequest, _event: NextFetchEvent) {
-  const { pathname } = req.nextUrl;
+    const { pathname } = req.nextUrl;
 
-  if (pathname.startsWith("/my-profile")) {
-    const newUrl = req.nextUrl.clone();
-    try {
-      const httpOnlyAuthCookie = req.cookies.get("ch-http");
-      const parsedAuthCookie = JSON.parse(httpOnlyAuthCookie as string);
-      newUrl.pathname = pathname.replace(
-        "my-profile",
-        `student-profile/${parsedAuthCookie["accountId"]}`
-      );
-      return NextResponse.rewrite(newUrl);
-    } catch (err) {
-      newUrl.pathname = "/auth/login";
-      newUrl.search = "";
-      return NextResponse.redirect(newUrl);
+    if (pathname.startsWith("/me")) {
+        const newUrl = req.nextUrl.clone();
+
+        try {
+            const session = parseSessionFromNextCookies(req.cookies);
+            let newUrl = new URL(req.url);
+
+            if (session.role === "Student") {
+                newUrl = new URL(
+                    req.url.replace("me", `students/${session.accountId}`)
+                );
+            } else {
+                newUrl = new URL(req.url.replace("me", "company-dashboard"));
+            }
+            return NextResponse.rewrite(newUrl);
+        } catch (err) {
+            req.cookies.set("ch-http", "", {
+                httpOnly: true,
+                path: "/",
+                sameSite: "lax",
+                secure: true,
+            });
+            newUrl.pathname = "/auth/login";
+            newUrl.search = "";
+            return NextResponse.redirect(newUrl);
+        }
     }
-  }
-  return NextResponse.next();
+    return NextResponse.next();
 }
+
+export const config = {
+    matcher: ["/me", "/me/edit"],
+};

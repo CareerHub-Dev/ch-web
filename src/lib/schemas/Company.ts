@@ -1,16 +1,16 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 const CompanySchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  email: z.string(),
-  logoId: z.string().nullable(),
-  bannerId: z.string().nullable(),
-  motto: z.string(),
-  description: z.string(),
-  amountSubscribers: z.number(),
-  amountJobOffers: z.number(),
-  isFollowed: z.boolean(),
+    id: z.string(),
+    name: z.string(),
+    email: z.string(),
+    logoId: z.string().nullable(),
+    bannerId: z.string().nullable(),
+    motto: z.string(),
+    description: z.string(),
+    amountSubscribers: z.number(),
+    amountJobOffers: z.number(),
+    isFollowed: z.boolean(),
 });
 
 export default CompanySchema;

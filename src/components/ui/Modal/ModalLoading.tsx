@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import LoadingSpinner from "../LoadingSpinner";
 import ModalPortal from "../ModalPortal";
 
-const ModalLoading = (props: { show?: boolean }) => {
+export default function ModalLoading(props: { show?: boolean }) {
   return (
     <ModalPortal>
       <Transition.Root show={props.show} as={Fragment}>
@@ -42,5 +42,4 @@ const ModalLoading = (props: { show?: boolean }) => {
       </Transition.Root>
     </ModalPortal>
   );
-};
-export default ModalLoading;
+}

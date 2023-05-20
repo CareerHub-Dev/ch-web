@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router';
-import classes from './AuthRouting.module.scss';
+import { useRouter } from "next/router";
+import classes from "./AuthRouting.module.scss";
 
 const AuthRouting = () => {
   const router = useRouter();
@@ -11,33 +11,42 @@ const AuthRouting = () => {
 
   return (
     <div className={classes.controls}>
-      {currentForm !== 'register' && (
+      {currentForm !== "register" && (
         <button
           id="formSwitchButton-Register"
-          onClick={authFormChangeHandler.bind(null, 'register')}
+          onClick={authFormChangeHandler.bind(null, "register")}
           className="text-sm"
         >
           Зареєструватися
         </button>
       )}
-      {currentForm !== 'login' && (
+      {currentForm !== "login" && (
         <button
           id="formSwitchButton-Login"
-          onClick={authFormChangeHandler.bind(null, 'login')}
+          onClick={authFormChangeHandler.bind(null, "login")}
           className="text-sm"
         >
           Увійти
         </button>
       )}
-      {currentForm !== 'forgot-password' && (
+      {currentForm !== "forgot-password" && (
         <button
           id="formSwitchButton-forget"
-          onClick={authFormChangeHandler.bind(null, 'forgot-password')}
+          onClick={authFormChangeHandler.bind(null, "forgot-password")}
           className="text-sm"
         >
           Забув пароль?
         </button>
       )}
+      {currentForm !== "activate-account" ? (
+        <button
+          id="formSwitchButton-activate"
+          onClick={authFormChangeHandler.bind(null, "activate-account")}
+          className="text-sm"
+        >
+          {"Активувати акаунт"}
+        </button>
+      ) : null}
     </div>
   );
 };

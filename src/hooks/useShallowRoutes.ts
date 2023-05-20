@@ -1,42 +1,29 @@
-import { useRouter } from 'next/router';
-import { useIsomorphicLayoutEffect } from 'usehooks-ts';
+import { useRouter } from "next/router";
 
 export default function useShallowRoutes({
-  defaultSection,
-  sections,
+    defaultSection,
 }: {
-  sections: string[];
-  defaultSection: string;
+    defaultSection: string;
 }) {
-  const router = useRouter();
-  const currentSection = router.query.section;
-  const currentPath = router.asPath;
+    const router = useRouter();
 
-  useIsomorphicLayoutEffect(() => {
-    const sectionAllowed = sections.some((item) => item === currentSection);
-    if (!sectionAllowed) {
-      let newPath = currentPath;
-      if (typeof currentSection === 'string') {
-        const encodedCurrentSection = encodeURIComponent(currentSection);
-        newPath = currentPath.replace(encodedCurrentSection, defaultSection);
-      } else {
-        newPath = `${currentPath}?section=${defaultSection}`;
-      }
-      router.replace(newPath, undefined, {
-        shallow: true,
-      });
-    }
-  }, [router, currentSection, defaultSection, sections, currentPath]);
+    const changeSection = (newSection: string) => {
+        let newPath = router.asPath;
+        if (router.query.section === undefined) {
+            newPath = `${router.asPath}?section=${newSection}`;
+        } else {
+            newPath = router.asPath.replace(
+                router.query.section as string,
+                newSection
+            );
+        }
+        router.push(newPath, undefined, {
+            shallow: true,
+        });
+    };
 
-  const changeSection = (newSection: string) => {
-    const newPath = currentPath.replace(currentSection as string, newSection);
-    router.push(newPath, undefined, {
-      shallow: true,
-    });
-  };
-
-  return {
-    currentSection,
-    changeSection,
-  };
+    return {
+        currentSection: router.query.section || defaultSection,
+        changeSection,
+    };
 }
