@@ -3,13 +3,12 @@ import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 import useSelfStudentQuery from "@/hooks/useStudentSelfQuery";
 import useShallowRoutes from "@/hooks/useShallowRoutes";
 import CommonLayout from "@/components/layout/CommonLayout";
-import NavigationItems from "@/components/student-profile/edit/NavigationItems";
-import GeneralInfo from "@/components/student-profile/edit/GeneralInfo";
-import AvatarEdit from "@/components/student-profile/edit/AvatarEdit";
-import EditPageHeader from "@/components/student-profile/edit/EditPageHeader";
-import ChangePassword from "@/components/student-profile/edit/ChangePassword";
-import { getImage } from "@/lib/api/image";
-import defaultAvatar from "@/resources/images/default-avatar.png";
+import AvatarEdit from "@/features/student-profile-edit/AvatarEdit";
+import { getImageWithDefault } from "@/lib/api/image";
+import EditPageHeader from "@/features/student-profile-edit/EditPageHeader";
+import NavigationItems from "@/features/student-profile-edit/NavigationItems";
+import GeneralInfo from "@/features/student-profile-edit/GeneralInfo";
+import ChangePassword from "@/features/student-profile-edit/ChangePassword";
 
 const navigationItems = [
     {
@@ -31,10 +30,7 @@ function EditStudentPage() {
         defaultSection: "general",
     });
     const { data: studentData, isLoading, isError } = useSelfStudentQuery();
-    const currentAvatar = studentData?.photo
-        ? getImage(studentData.photo)
-        : defaultAvatar;
-
+    const currentAvatar = getImageWithDefault(studentData?.photo, "Student");
     if (isLoading) {
         return <CenteredLoadingSpinner />;
     }
