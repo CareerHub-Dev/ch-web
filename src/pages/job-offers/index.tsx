@@ -1,8 +1,5 @@
 import { useProtectedPaginatedQuery } from "@/hooks/useProtectedPaginatedQuery";
-import { useSelector } from "react-redux";
-import { selectFilterOptions } from "@/context/job-offers-feed";
 import LoadMore from "@/components/ui/LoadMore";
-import JobOffersFilters from "@/components/offers/feed/JobOfferFilters";
 import JobOffersList from "@/components/offers/feed/JobOffersList";
 import Head from "next/head";
 import CommonLayout from "@/components/layout/CommonLayout";
@@ -10,7 +7,8 @@ import { protectedSsr } from "@/lib/protected-ssr";
 import { getJobOffers } from "@/lib/api/job-offer";
 
 const JobOffersFeedPage: NextPageWithLayout = () => {
-    const { filter, isApplied } = useSelector(selectFilterOptions);
+    const isApplied = false;
+    const filter = null;
     const queryKey: Array<string | object> = ["jobOffers"];
     if (isApplied && !!filter) {
         queryKey.push(filter);
@@ -41,7 +39,6 @@ const JobOffersFeedPage: NextPageWithLayout = () => {
                 />
             </Head>
             <div>
-                <JobOffersFilters />
                 <JobOffersList query={jobOffersQuery} />
             </div>
             {jobOffersQuery.hasNextPage && <LoadMore onClick={loadMore} />}

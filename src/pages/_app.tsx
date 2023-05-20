@@ -1,5 +1,3 @@
-import store from "@/context/index";
-import { Provider } from "react-redux";
 import { SessionContextProvider } from "@/context/session-context";
 import { useState } from "react";
 import {
@@ -48,12 +46,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
             </Head>
             <QueryClientProvider client={queryClient}>
                 <SessionContextProvider>
-                    <Provider store={store}>
-                        <Hydrate state={pageProps.dehydratedState}>
-                            {getLayout(<Component {...pageProps} />)}
-                            <ToastContainer />
-                        </Hydrate>
-                    </Provider>
+                    <Hydrate state={pageProps.dehydratedState}>
+                        {getLayout(<Component {...pageProps} />)}
+                        <ToastContainer />
+                    </Hydrate>
                 </SessionContextProvider>
             </QueryClientProvider>
         </>
