@@ -47,13 +47,18 @@ export function getNavigationLinks(role?: UserRole) {
         case "Student":
             return [
                 {
-                    text: "Компанії",
-                    href: "/companies",
+                    text: "Стрічка",
+                    href: "/posts",
                     exact: true,
                 },
                 {
                     text: "Вакансії",
                     href: "/job-offers",
+                    exact: true,
+                },
+                {
+                    text: "Компанії",
+                    href: "/companies",
                     exact: true,
                 },
                 {
