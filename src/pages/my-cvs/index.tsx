@@ -1,20 +1,25 @@
 import CommonLayout from "@/components/layout/CommonLayout";
-import { AddCvButton } from "@/components/student-cvs/AddCvButton";
-import { CvItemsGrid } from "@/components/student-cvs/CvItemsGrid";
-import { CvItemsSearch } from "@/components/student-cvs/CvItemsSearch";
+import { AddCvButton } from "@/features/student-cvs/components/AddCvButton";
+import { CvItemsGrid } from "@/features/student-cvs/components/CvItemsGrid";
+import { CvItemsSearch } from "@/features/student-cvs/components/CvItemsSearch";
 import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 import LoadMore from "@/components/ui/LoadMore";
 import { useProtectedPaginatedQuery } from "@/hooks/useProtectedPaginatedQuery";
+import { useState } from "react";
+import { useDebounce } from "usehooks-ts";
 import { getStudentOwnCvs } from "@/lib/api/cvs";
 import { protectedSsr } from "@/lib/protected-ssr";
 
 function StudentCVsPage() {
+    const [search, setSearch] = useState("");
+    const debouncedSearch = useDebounce(search, 200);
     const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
         useProtectedPaginatedQuery({
-            queryKey: ["student-own-cvs"],
+            queryKey: ["student-own-cvs", debouncedSearch],
             getItems: getStudentOwnCvs,
             params: {
-                pageSize: 25,
+                pageSize: 36,
+                search: debouncedSearch,
             },
         });
 
@@ -31,7 +36,7 @@ function StudentCVsPage() {
                     <AddCvButton />
                 </div>
             </div>
-            <CvItemsSearch />
+            <CvItemsSearch search={search} setSearch={setSearch} />
             {isLoading ? (
                 <CenteredLoadingSpinner />
             ) : (
