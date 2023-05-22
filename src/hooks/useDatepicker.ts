@@ -1,68 +1,49 @@
-import { useState, useEffect } from 'react';
-import { isToday, getDifferenceInDays, getDateFrameValidity } from '@/lib/date';
+import isToday from "date-fns/isToday";
+import isFuture from "date-fns/isFuture";
+import differenceInCalendarDays from "date-fns/differenceInCalendarDays";
+import compareAsc from "date-fns/compareAsc";
+import addDays from "date-fns/addDays";
+import useDateInput from "./useDateInput";
 
-const useDatepicker = (daysBarrier: number) => {
-  const defaultStartDate = new Date();
-  const defaultEndDate = new Date();
-  defaultEndDate.setDate(defaultStartDate.getDate() + daysBarrier);
-  const [startDate, setStartDate] = useState(defaultStartDate);
-  const [startDateIsTouched, setStartDateIsTouched] = useState(false);
-  const startDateIsValid = isToday(startDate) || startDate >= defaultStartDate;
-  const startDateHasError = !startDateIsValid && startDateIsTouched;
+export function useDatepicker(daysBarrier: number) {
+    const today = new Date();
+    const defaultStartDate = today;
+    const defaultEndDate = addDays(today, daysBarrier);
 
-  const startDateChangeHandler = (event: any) => {
-    setStartDate(new Date(event.target.value));
-  };
-  const startDateBlurHandler = () => {
-    setStartDateIsTouched(true);
-  };
-  const startDateResetHandler = () => {
-    setStartDate(defaultStartDate);
-    setStartDateIsTouched(false);
-  };
+    const startDate = useDateInput(defaultStartDate, [
+        (val) => {
+            if (isToday(val) || isFuture(val)) {
+                return { type: "success" };
+            }
+            return {
+                type: "error",
+                message: "Дата початку не може бути раніше поточної доби",
+            };
+        },
+    ]);
 
-  const [endDate, setEndDate] = useState(defaultEndDate);
-  const [endDateIsTouched, setEndDateIsTouched] = useState(false);
-  const endDateIsValid = getDifferenceInDays(startDate, endDate) <= daysBarrier;
-  const endDateHasError = !endDateIsValid && endDateIsTouched;
+    const endDate = useDateInput(defaultEndDate, [
+        (val) => {
+            if (differenceInCalendarDays(startDate.value, val) > daysBarrier) {
+                return {
+                    type: "error",
+                    message: `Дата кінця не може бути пізніше ніж ${daysBarrier} днів від дати початку`,
+                };
+            }
+            if (compareAsc(startDate.value, val) === 1) {
+                return {
+                    type: "error",
+                    message: "Дата кінця не може бути раніше дати початку",
+                };
+            }
+            return { type: "success" };
+        },
+    ]);
 
-  const [dateFrameIsValid, setDateFrameIsValid] = useState(true);
-
-  const endDateChangeHandler = (event: any) => {
-    setEndDate(new Date(event.target.value));
-  };
-  const endDateBlurHandler = () => {
-    setEndDateIsTouched(true);
-  };
-  const endDateResetHandler = () => {
-    setEndDate(defaultEndDate);
-    setEndDateIsTouched(false);
-  };
-
-  useEffect(() => {
-    setDateFrameIsValid(getDateFrameValidity(startDate, endDate));
-  }, [startDate, endDate]);
-
-  return {
-    startDate: {
-      value: startDate,
-      isValid: startDateIsValid,
-      hasError: startDateHasError,
-      change: startDateChangeHandler,
-      blur: startDateBlurHandler,
-      reset: startDateResetHandler,
-    },
-    endDate: {
-      value: endDate,
-      isValid: endDateIsValid,
-      hasError: endDateHasError,
-      change: endDateChangeHandler,
-      blur: endDateBlurHandler,
-      reset: endDateResetHandler,
-    },
-    dateFrameIsValid,
-  };
-};
-export default useDatepicker;
+    return {
+        startDate,
+        endDate,
+    };
+}
 
 export type UseDatepickerResult = ReturnType<typeof useDatepicker>;

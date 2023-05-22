@@ -153,7 +153,10 @@ export default function ToolbarDropdown({
     return (
         <Menu as="div" className="relative inline-block text-left">
             <div>
-                <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 text-sm font-semibold text-gray-900 hover:text-gray-800">
+                <Menu.Button
+                    type="button"
+                    className="inline-flex w-full justify-center gap-x-1.5 text-sm font-semibold text-gray-900 hover:text-gray-800"
+                >
                     {currentBlockType}
                     <ChevronDownIcon
                         className="-mr-1 h-5 w-5 text-gray-400"
@@ -176,6 +179,7 @@ export default function ToolbarDropdown({
                         <Menu.Item key={optionIdx}>
                             {({ active }) => (
                                 <button
+                                    type="button"
                                     className={`${
                                         active ? "bg-gray-100" : ""
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm text-gray-900`}

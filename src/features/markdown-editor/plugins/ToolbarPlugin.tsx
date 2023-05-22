@@ -162,6 +162,7 @@ export default function ToolbarPlugin() {
                     {typeButtons.map((btn, btnIdx) => (
                         <div key={btnIdx} className="flow-root">
                             <button
+                                type="button"
                                 onClick={() =>
                                     editor.dispatchCommand(
                                         FORMAT_TEXT_COMMAND,

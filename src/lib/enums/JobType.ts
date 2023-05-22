@@ -8,4 +8,4 @@ export const jobTypeOptions = [
     { id: JobType.FullTime, name: "Full time" },
     { id: JobType.PartTime, name: "Part time" },
     { id: JobType.Contract, name: "Контракт" },
-];
+] as { id: string; name: string }[];

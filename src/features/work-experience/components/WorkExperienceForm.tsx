@@ -8,19 +8,6 @@ import {
 } from "@/lib/enums";
 import { MONTH_OPTIONS } from "@/lib/date";
 
-const JOB_TYPE_OPTIONS = jobTypeOptions satisfies {
-    id: string;
-    name: string;
-}[];
-const WORK_FORMAT_OPTIONS = workFormatOptions satisfies {
-    id: string;
-    name: string;
-}[];
-const EXPERIENCE_LEVEL_OPTIONS = experienceLevelOptions satisfies {
-    id: string;
-    name: string;
-}[];
-
 export default function WorkExperienceForm({
     title,
     companyName,
@@ -110,7 +97,7 @@ export default function WorkExperienceForm({
                     <NativeItemSelection
                         id="job-type"
                         label="Тип роботи"
-                        items={JOB_TYPE_OPTIONS}
+                        items={jobTypeOptions}
                         selectedItem={jobType.value}
                         setSelected={jobType.change}
                     />
@@ -119,7 +106,7 @@ export default function WorkExperienceForm({
                     <NativeItemSelection
                         id="work-format"
                         label="Формат"
-                        items={WORK_FORMAT_OPTIONS}
+                        items={workFormatOptions}
                         selectedItem={workFormat.value}
                         setSelected={workFormat.change}
                     />
@@ -128,7 +115,7 @@ export default function WorkExperienceForm({
                     <NativeItemSelection
                         id="experience-level"
                         label="Рівень досвіду"
-                        items={EXPERIENCE_LEVEL_OPTIONS}
+                        items={experienceLevelOptions}
                         selectedItem={experienceLevel.value}
                         setSelected={experienceLevel.change}
                     />

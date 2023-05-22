@@ -12,4 +12,4 @@ export const experienceLevelOptions = [
     { name: "Junior", id: ExperienceLevel.Junior },
     { name: "Middle", id: ExperienceLevel.Middle },
     { name: "Senior", id: ExperienceLevel.Senior },
-];
+] as { id: string; name: string }[];
