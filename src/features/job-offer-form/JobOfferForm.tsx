@@ -25,11 +25,39 @@ import {
 import { useObjectInput } from "@/hooks/useObjectInput";
 import { useDatepicker } from "@/hooks/useDatepicker";
 import DateInput from "@/components/ui/DateInput";
+import { useJobDirectionsQuery } from "@/hooks/requests/job-directions";
+import { useJobPositionsByJobDirectionQuery } from "@/hooks/requests/job-directions";
+import ItemSelectionLoadingSkeleton from "@/components/ui/ItemsSelectionLoadingSkeleton";
+import DisabledItemsSelection from "@/components/ui/DisabledItemsSelection";
+import LargeBadge from "@/components/ui/LargeBadge";
+import useTagIds from "./use-tag-ids";
+import QueryAutoCompleteCombobox from "@/components/ui/QueryAutocompleteCombobox";
+import { getTags } from "@/lib/api/tags";
 
 const editorConfig = deriveConfig("overview");
 
 export default function JobOfferForm() {
     const toast = useToast();
+    const {
+        data: jobDirections,
+        isLoading: isLoadingJobDirections,
+        isError: isErrorJobDirections,
+        error: errorJobDirections,
+    } = useJobDirectionsQuery();
+    const selectedJobDirection = useObjectInput({
+        initialValue: jobDirections?.at(0) ?? { id: "0", name: "Не обрано" },
+    });
+    const {
+        data: jobPositions,
+        isLoading: isLoadingJobPositions,
+        isError: isErrorJobPositions,
+        error: errorJobPositions,
+    } = useJobPositionsByJobDirectionQuery(selectedJobDirection.value.id, {
+        enabled: selectedJobDirection.value.id !== "0",
+    });
+    const selectedJobPosition = useObjectInput({
+        initialValue: jobPositions?.at(0) ?? { id: "0", name: "Не обрано" },
+    });
     const changePhotoModalIsOpen = useBoolean(false);
     const removePhotoModalIsOpen = useBoolean(false);
 
@@ -57,6 +85,7 @@ export default function JobOfferForm() {
         initialValue: experienceLevelOptions.at(0)!,
     });
     const { startDate, endDate } = useDatepicker(30);
+    const tags = useTagIds();
 
     const submitMutation = useProtectedMutation(
         ["job-offer-form"],
@@ -102,7 +131,7 @@ export default function JobOfferForm() {
                 onClose={removePhotoModalIsOpen.setFalse}
             />
 
-            <form className="p-8" onSubmit={handleSubmit}>
+            <form className="p-8 mb-12" onSubmit={handleSubmit}>
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
                         <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -325,8 +354,122 @@ export default function JobOfferForm() {
                                     <DateInput id="endDate" {...endDate} />
                                 </div>
                             </div>
+
+                            <div className="sm:col-span-3">
+                                <label
+                                    htmlFor="jobDirection"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
+                                    {"Напрямок"}
+                                </label>
+                                <div className="mt-2">
+                                    {isLoadingJobDirections ? (
+                                        <ItemSelectionLoadingSkeleton />
+                                    ) : isErrorJobDirections ? (
+                                        <p>
+                                            {parseUnknownError(
+                                                errorJobDirections
+                                            )}
+                                        </p>
+                                    ) : (
+                                        <ItemSelection
+                                            items={jobDirections}
+                                            selectedItem={
+                                                selectedJobDirection.value
+                                            }
+                                            setSelected={
+                                                selectedJobDirection.change
+                                            }
+                                            errors={selectedJobDirection.errors}
+                                            warnings={
+                                                selectedJobDirection.warnings
+                                            }
+                                        />
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="sm:col-span-3">
+                                <label
+                                    htmlFor="jobPosition"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
+                                    {"Посада"}
+                                </label>
+                                <div className="mt-2">
+                                    {selectedJobDirection.value.id === "0" ? (
+                                        <DisabledItemsSelection text="Оберіть напрямок" />
+                                    ) : isLoadingJobPositions ? (
+                                        <ItemSelectionLoadingSkeleton />
+                                    ) : isErrorJobPositions ? (
+                                        <p>
+                                            {parseUnknownError(
+                                                errorJobPositions
+                                            )}
+                                        </p>
+                                    ) : (
+                                        <ItemSelection
+                                            items={jobPositions}
+                                            selectedItem={
+                                                selectedJobPosition.value
+                                            }
+                                            setSelected={
+                                                selectedJobPosition.change
+                                            }
+                                            errors={selectedJobPosition.errors}
+                                            warnings={
+                                                selectedJobPosition.warnings
+                                            }
+                                        />
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="col-span-full">
+                                <QueryAutoCompleteCombobox
+                                    onSubmit={tags.add}
+                                    getItemName={(item) => item.name}
+                                    queryKey={"tags"}
+                                    queryFn={getTags}
+                                    label="Теги"
+                                />
+                                <div className="mt-2">
+                                    <ul className="flex gap-4 flex-wrap">
+                                        {tags.tags.length === 0 ? (
+                                            <p className="text-gray-700 text-center">
+                                                {"Немає тегів"}
+                                            </p>
+                                        ) : (
+                                            tags.tags.map((item, itemIdx) => (
+                                                <LargeBadge
+                                                    key={itemIdx}
+                                                    name={item.name}
+                                                    onRemove={() =>
+                                                        tags.remove(item)
+                                                    }
+                                                />
+                                            ))
+                                        )}
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+
+                <div className="mt-6 flex items-center justify-end gap-x-6">
+                    <button
+                        type="button"
+                        className="text-sm font-semibold leading-6 text-gray-900"
+                    >
+                        {"Відмінити"}
+                    </button>
+                    <button
+                        type="submit"
+                        className="inline-flex justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    >
+                        {"Додати"}
+                    </button>
                 </div>
             </form>
         </>
