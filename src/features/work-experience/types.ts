@@ -1,5 +1,3 @@
-import { JobType, WorkFormat, ExperienceLevel } from "@/lib/enums";
-
 export type WorkExperience = {
     title: string;
     companyName: string;
@@ -14,9 +12,9 @@ export type WorkExperience = {
 export type WorkExperienceInputValues = {
     title: string;
     companyName: string;
-    jobType: { name: string; id: JobType };
-    workFormat: { name: string; id: WorkFormat };
-    experienceLevel: { name: string; id: ExperienceLevel };
+    jobType: { name: string; id: string };
+    workFormat: { name: string; id: string };
+    experienceLevel: { name: string; id: string };
     jobLocation: string;
     startYear: { name: string; id: string };
     startMonth: { name: string; id: string };
