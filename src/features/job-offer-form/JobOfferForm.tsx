@@ -3,7 +3,7 @@ import { useInput } from "@/hooks/useInput";
 import useProtectedMutation from "@/hooks/useProtectedMutation";
 import { createJobOffer } from "@/lib/api/job-offer";
 import parseUnknownError from "@/lib/parse-unknown-error";
-import { FormEventHandler, useRef } from "react";
+import { FormEventHandler } from "react";
 import MarkdownEditor from "../markdown-editor/MarkdownEditor";
 import { deriveConfig } from "../markdown-editor/config";
 import { PhotoIcon } from "@heroicons/react/24/solid";
@@ -32,6 +32,7 @@ import DisabledItemsSelection from "@/components/ui/DisabledItemsSelection";
 import LargeBadge from "@/components/ui/LargeBadge";
 import useTagIds from "./use-tag-ids";
 import QueryAutoCompleteCombobox from "@/components/ui/QueryAutocompleteCombobox";
+import useEditor from "@/hooks/useEditor";
 import { getTags } from "@/lib/api/tags";
 
 const editorConfig = deriveConfig("overview");
@@ -43,7 +44,18 @@ export default function JobOfferForm() {
         isLoading: isLoadingJobDirections,
         isError: isErrorJobDirections,
         error: errorJobDirections,
-    } = useJobDirectionsQuery();
+    } = useJobDirectionsQuery({
+        onSuccess: (data) => {
+            if (selectedJobDirection.value.id !== "0") {
+                return;
+            }
+
+            const first = data.at(0);
+            if (first !== undefined) {
+                selectedJobDirection.change(first);
+            }
+        },
+    });
     const selectedJobDirection = useObjectInput({
         initialValue: jobDirections?.at(0) ?? { id: "0", name: "Не обрано" },
     });
@@ -54,17 +66,28 @@ export default function JobOfferForm() {
         error: errorJobPositions,
     } = useJobPositionsByJobDirectionQuery(selectedJobDirection.value.id, {
         enabled: selectedJobDirection.value.id !== "0",
+        onSuccess: (data) => {
+            if (selectedJobDirection.value.id !== "0") {
+                return;
+            }
+
+            const first = data.at(0);
+            if (first !== undefined) {
+                selectedJobPosition.change(first);
+            }
+        },
     });
     const selectedJobPosition = useObjectInput({
         initialValue: jobPositions?.at(0) ?? { id: "0", name: "Не обрано" },
     });
     const changePhotoModalIsOpen = useBoolean(false);
     const removePhotoModalIsOpen = useBoolean(false);
+    const resetValuesModalIsOpen = useBoolean(false);
 
     const titleInput = useInput({
         validators: [fillThisFieldValidator("Заповніть це поле")],
     });
-    const overviewTextRef = useRef<string>("");
+    const overviewEditor = useEditor([]);
     const photo = useImageUpload();
     const requirementsInput = useInput({
         validators: [fillThisFieldValidator("Заповніть це поле")],
@@ -87,6 +110,19 @@ export default function JobOfferForm() {
     const { startDate, endDate } = useDatepicker(30);
     const tags = useTagIds();
 
+    const allInputs = [
+        titleInput,
+        requirementsInput,
+        responsibilitiesInput,
+        additionalInfoInput,
+        startDate,
+        endDate,
+    ];
+
+    const someInputIsInvalid = allInputs.some(
+        (input) => input.errors.length > 0
+    );
+
     const submitMutation = useProtectedMutation(
         ["job-offer-form"],
         createJobOffer,
@@ -98,23 +134,35 @@ export default function JobOfferForm() {
                 toast.error(parseUnknownError(err), true);
             },
             onSuccess: () => {
-                toast.success(
-                    `\u2713 Вакансію ${titleInput.value} створено`,
-                    true
-                );
+                toast.success(`Вакансію ${titleInput.value} створено`, true);
             },
         }
     );
 
-    const formIsValid = titleInput.isValid;
-
     const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
-        titleInput.blur();
-        if (!formIsValid) {
+        allInputs.forEach((input) => input.blur());
+        overviewEditor.blur();
+        const { hasErrors: overviewEditorHasErrors } =
+            overviewEditor.validate();
+        if (someInputIsInvalid || overviewEditorHasErrors) {
             return;
         }
-        const requestBody = {} as JobOfferForm.JobOffer;
+        const requestBody = {
+            title: titleInput.value,
+            overview: overviewEditor.textRef.current,
+            requirements: requirementsInput.value,
+            responsibilities: responsibilitiesInput.value,
+            preferences: additionalInfoInput.value,
+            image: photo.data?.croppedPhotoUrl,
+            jobType: jobType.value.id,
+            workFormat: workFormat.value.id,
+            experienceLevel: experienceLevel.value.id,
+            startDate: startDate.value.toISOString(),
+            endDate: endDate.value.toISOString(),
+            jobPositionId: selectedJobPosition.value.id,
+            tagIds: tags.tagIds,
+        } satisfies JobOfferForm.JobOffer;
         submitMutation.mutate(requestBody);
     };
 
@@ -174,7 +222,8 @@ export default function JobOfferForm() {
                                     <MarkdownEditor
                                         id="overview"
                                         config={editorConfig}
-                                        textRef={overviewTextRef}
+                                        textRef={overviewEditor.textRef}
+                                        onBlur={overviewEditor.blur}
                                     />
                                 </div>
                                 <p className="mt-3 text-sm leading-6 text-gray-600">
@@ -460,6 +509,7 @@ export default function JobOfferForm() {
                 <div className="mt-6 flex items-center justify-end gap-x-6">
                     <button
                         type="button"
+                        onClick={resetValuesModalIsOpen.setTrue}
                         className="text-sm font-semibold leading-6 text-gray-900"
                     >
                         {"Відмінити"}

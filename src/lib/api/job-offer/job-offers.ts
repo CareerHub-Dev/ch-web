@@ -1,8 +1,7 @@
 import { request } from "@/lib/axios";
 import { parsePaginatedResponseAsync } from "../pagination";
 import { JobOfferFeedSchema } from "./schemas";
-import { type AxiosInstance } from "axios";
-import { objectToFormData } from "@/lib/forms";
+import { AxiosInstance } from "axios";
 
 export function getJobOffers(
     instance: AxiosInstance,
@@ -51,16 +50,11 @@ export function getSubscriptionOnJobOffer(instance: AxiosInstance) {
 
 export function createJobOffer(instance: AxiosInstance) {
     return (data: JobOfferForm.JobOffer) => {
-        const formData = objectToFormData(data);
-
         return request({
             method: "POST",
             url: "Company/self/JobOffers",
             instance,
-            data: formData,
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
+            data,
         });
     };
 }

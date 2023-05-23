@@ -59,12 +59,12 @@ namespace JobOfferForm {
         requirements: string;
         responsibilities: string;
         preferences: string;
-        imageFile: string;
-        startDate: string;
-        endDate: string;
+        image?: string;
         jobType: string;
         workFormat: string;
         experienceLevel: string;
+        startDate: string;
+        endDate: string;
         jobPositionId: string;
         tagIds: Array<string>;
     };

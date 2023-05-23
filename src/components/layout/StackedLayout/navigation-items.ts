@@ -29,8 +29,8 @@ export function getUserMenuLinks(role?: UserRole) {
             ];
         case "Company":
             return [
-                { text: "Дошка", Icon: ChartBarSquareIcon, href: "dashboard" },
-                { text: "Вакансії", Icon: BriefcaseIcon, href: "job-offers" },
+                { text: "Дошка", Icon: ChartBarSquareIcon, href: "/me" },
+                { text: "Вакансії", Icon: BriefcaseIcon, href: "/job-offers" },
                 {
                     text: "Налаштування",
                     Icon: Cog6ToothIcon,
