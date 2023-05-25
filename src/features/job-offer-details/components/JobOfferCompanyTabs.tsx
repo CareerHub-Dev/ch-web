@@ -1,7 +1,17 @@
+import { useProtectedQuery } from "@/hooks/useProtectedQuery";
 import { useCompanyJobOfferTabs } from "../hooks/use-company-job-offer-tabs";
+import { getJobOfferApplicationsAmountAsCompany } from "@/lib/api/job-offer";
 import JobOfferCompanyTabButton from "./JobOfferCompanyTabButton";
 
-export default function JobOfferCompanyTabs() {
+export default function JobOfferCompanyTabs({
+    jobOfferId,
+}: {
+    jobOfferId: string;
+}) {
+    const { data: applicationsCount } = useProtectedQuery(
+        ["applications-amount", jobOfferId],
+        getJobOfferApplicationsAmountAsCompany(jobOfferId)
+    );
     const { tabs, currentTab, changeTab, handleSelectTab, isCurrentTab } =
         useCompanyJobOfferTabs();
 
@@ -21,7 +31,9 @@ export default function JobOfferCompanyTabs() {
                     }
                 >
                     {tabs.map((tab) => (
-                        <option key={tab.name}>{tab.name}</option>
+                        <option key={tab.name} value={tab.id}>
+                            {tab.name}
+                        </option>
                     ))}
                 </select>
             </div>
@@ -32,6 +44,11 @@ export default function JobOfferCompanyTabs() {
                             <JobOfferCompanyTabButton
                                 key={tab.name}
                                 {...tab}
+                                count={
+                                    tab.id === "cvs"
+                                        ? applicationsCount
+                                        : undefined
+                                }
                                 isCurrent={isCurrentTab(tab.id)}
                                 onClick={changeTab}
                             />

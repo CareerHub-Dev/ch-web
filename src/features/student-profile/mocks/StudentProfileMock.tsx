@@ -191,7 +191,7 @@ export default function StudentProfileMock() {
                                                     <div className="flex-shrink-0">
                                                         <button
                                                             type="button"
-                                                            className="inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium text-indigo-700 hover:text-indigo-800"
+                                                            className="inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium text-blue-700 hover:text-blue-800"
                                                         >
                                                             <ArrowRightIcon
                                                                 className="-ml-1 mr-0.5 h-5 w-5"

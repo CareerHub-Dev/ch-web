@@ -24,8 +24,8 @@ export default function JobOfferListItem({
     startDate,
     endDate,
 }: CompanyJobOffer) {
-    const viewItemUrl = `/job-offers/${id}?action=view`;
-    const editItemUrl = `/job-offers/${id}?action=edit`;
+    const viewItemUrl = `/job-offers/${id}?tab=info`;
+    const editItemUrl = `/job-offers/${id}/edit`;
     const startDateConverted = new Date(startDate);
     const endDateConverted = new Date(endDate);
     const formattedStartDate = format(startDateConverted, "dd/MM/yyyy");

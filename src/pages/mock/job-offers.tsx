@@ -167,7 +167,7 @@ export default function JobOffersMockPage() {
                                                                                 defaultChecked={
                                                                                     option.checked
                                                                                 }
-                                                                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                                                                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                                                                             />
                                                                             <label
                                                                                 htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
@@ -202,7 +202,7 @@ export default function JobOffersMockPage() {
                             name="search"
                             id="search"
                             placeholder={"Пошук"}
-                            className="block w-full mr-8 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            className="block w-full mr-8 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                         />
                         <div className="flex items-center">
                             <Menu
@@ -331,7 +331,7 @@ export default function JobOffersMockPage() {
                                                                         defaultChecked={
                                                                             option.checked
                                                                         }
-                                                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                                                        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                                                                     />
                                                                     <label
                                                                         htmlFor={`filter-${section.id}-${optionIdx}`}

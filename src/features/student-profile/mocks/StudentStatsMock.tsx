@@ -34,7 +34,7 @@ export default function StudentStatsMock() {
                     className="relative overflow-hidden rounded-lg bg-white px-4 pt-5 pb-12 shadow sm:px-6 sm:pt-6"
                 >
                     <dt>
-                        <div className="absolute rounded-md bg-indigo-500 p-3">
+                        <div className="absolute rounded-md bg-blue-500 p-3">
                             <item.icon
                                 className="h-6 w-6 text-white"
                                 aria-hidden="true"
@@ -52,7 +52,7 @@ export default function StudentStatsMock() {
                             <div className="text-sm">
                                 <a
                                     href="#"
-                                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                                    className="font-medium text-blue-600 hover:text-blue-500"
                                 >
                                     {" "}
                                     Більше

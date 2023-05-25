@@ -51,7 +51,7 @@ export default function SkillAutocompleteInput({
                 {value.length > 0 &&
                 showSuggestions.value &&
                 suggestions.length > 0 ? (
-                    <Combobox.Options className="mt-2 bg-indigo-50 p-2 absolute z-30 w-full rounded-md shadow-lg ring-1 ring-black ring-opacity-5 overflow-y-auto">
+                    <Combobox.Options className="mt-2 bg-blue-50 p-2 absolute z-30 w-full rounded-md shadow-lg ring-1 ring-black ring-opacity-5 overflow-y-auto">
                         {suggestions.map((suggestion, suggestionIndex) => (
                             <Combobox.Option
                                 key={suggestionIndex}
@@ -59,7 +59,7 @@ export default function SkillAutocompleteInput({
                                 className={({ active }) =>
                                     cn(
                                         "cursor-default select-none rounded-md px-2 py-2",
-                                        active && "bg-indigo-600 text-white"
+                                        active && "bg-blue-600 text-white"
                                     )
                                 }
                             >

@@ -25,7 +25,7 @@ export default function FollowedStudent({
     const imageSource = getImageWithDefault(photo, "Student");
 
     return (
-        <li className="relative flex justify-between gap-x-6 p-2 hover:bg-indigo-50 rounded-md transition-all duration-200">
+        <li className="relative flex justify-between gap-x-6 p-2 hover:bg-blue-50 rounded-md transition-all duration-200">
             <div className="flex gap-x-4">
                 <Image
                     width={32}
@@ -38,7 +38,7 @@ export default function FollowedStudent({
                     <p className="text-sm font-semibold leading-6 text-gray-900">
                         <Link
                             href={studentProfileLink}
-                            className="focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-gray-100 transition-all duration-200 rounded-md"
+                            className="focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-100 transition-all duration-200 rounded-md"
                         >
                             <span className="absolute inset-x-0 -top-px bottom-0" />
                             {fullName}
@@ -51,7 +51,7 @@ export default function FollowedStudent({
             </div>
             <div className="flex items-center gap-x-4">
                 <ChevronRightIcon
-                    className="h-5 w-5 flex-none text-indigo-600"
+                    className="h-5 w-5 flex-none text-blue-600"
                     aria-hidden="true"
                 />
             </div>

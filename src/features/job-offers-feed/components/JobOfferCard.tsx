@@ -58,7 +58,7 @@ export default function JobOfferCard({
                     <div className="mt-4 flex items-center gap-x-4 text-xs">
                         <a
                             href={"#"}
-                            className="relative z-10 rounded-full bg-indigo-50 px-3 py-1.5 font-medium text-indigo-600 hover:bg-indigo-100"
+                            className="relative z-10 rounded-full bg-blue-50 px-3 py-1.5 font-medium text-blue-600 hover:bg-blue-100"
                         >
                             {experienceLevel}
                         </a>

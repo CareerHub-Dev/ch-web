@@ -30,7 +30,7 @@ export default function TabButton({
             <span
                 aria-hidden="true"
                 className={cn(
-                    current ? "bg-indigo-500" : "bg-transparent",
+                    current ? "bg-blue-500" : "bg-transparent",
                     "absolute inset-x-0 bottom-0 h-0.5"
                 )}
             />

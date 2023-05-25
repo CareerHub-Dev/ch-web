@@ -6,7 +6,7 @@ export function useCompanyJobOfferTabs() {
     const tabs = useMemo(
         () => [
             { name: "Інформація", id: "info" },
-            { name: "Резюме", id: "cvs", count: 2 },
+            { name: "Резюме", id: "cvs" },
         ],
         []
     );
