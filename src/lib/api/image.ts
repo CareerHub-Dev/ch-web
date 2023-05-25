@@ -21,3 +21,23 @@ export function getImageWithDefault(
     }
     return getDefaultImage(role);
 }
+
+export function getCompanyBanner(imageId: string | undefined | null) {
+    if (typeof imageId === "string") {
+        return getImage(imageId);
+    }
+    return "/company-dummy-banner.png";
+}
+
+export function getJobOfferLogo(
+    logo: string | undefined | null,
+    companyLogo: string | undefined | null
+) {
+    if (typeof logo === "string") {
+        return getImage(logo);
+    }
+    if (typeof companyLogo === "string") {
+        return getImage(companyLogo);
+    }
+    return "/company-dummy-logo.png";
+}

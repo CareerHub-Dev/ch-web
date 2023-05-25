@@ -6,7 +6,7 @@ import CommonLayout from "@/components/layout/CommonLayout";
 import { protectedSsr } from "@/lib/protected-ssr";
 import { getJobOffers } from "@/lib/api/job-offer";
 
-const JobOffersFeedPage: NextPageWithLayout = () => {
+export default function JobOffersFeedPage() {
     const isApplied = false;
     const filter = null;
     const queryKey: Array<string | object> = ["jobOffers"];
@@ -44,11 +44,9 @@ const JobOffersFeedPage: NextPageWithLayout = () => {
             {jobOffersQuery.hasNextPage && <LoadMore onClick={loadMore} />}
         </>
     );
-};
+}
 
 JobOffersFeedPage.getLayout = CommonLayout;
-
-export default JobOffersFeedPage;
 
 export const getServerSideProps = protectedSsr({
     allowedRoles: ["Student"],

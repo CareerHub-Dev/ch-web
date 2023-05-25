@@ -21,6 +21,12 @@ export const CompanyDetailsSchema = CompanyBriefSchema.and(
         email: z.string(),
         banner: z.string().nullish(),
         description: z.string(),
+        links: z.array(
+            z.object({
+                title: z.string(),
+                uri: z.string(),
+            })
+        ),
     })
 );
 

@@ -32,12 +32,12 @@ export function getUserMenuLinks(role?: UserRole) {
                 {
                     text: "Публічний профіль",
                     Icon: ChartBarSquareIcon,
-                    href: "/public",
+                    href: "/public-profile",
                 },
                 {
                     text: "Налаштування",
                     Icon: Cog6ToothIcon,
-                    href: "account-details",
+                    href: "/public-profile/edit",
                 },
             ];
         default:
@@ -74,12 +74,12 @@ export function getNavigationLinks(role?: UserRole) {
             return [
                 {
                     text: "Вакансії",
-                    href: "/job-offers",
+                    href: "/my-job-offers",
                     exact: true,
                 },
                 {
                     text: "Публікації",
-                    href: "/posts",
+                    href: "/my-posts",
                     exact: true,
                 },
                 {

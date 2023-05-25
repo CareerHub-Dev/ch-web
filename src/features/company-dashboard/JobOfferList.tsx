@@ -1,5 +1,5 @@
 import { useProtectedPaginatedQuery } from "@/hooks/useProtectedPaginatedQuery";
-import { getCompanySelfJobOffers } from "@/lib/api/company";
+import { getCompanyJobOffers } from "@/lib/api/company";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import JobOfferListItem from "./JobOfferListItem";
 import JobOfferLoadingSkeleton from "./JobOfferLoadingSkeleton";
@@ -8,8 +8,9 @@ import { Fragment } from "react";
 export default function JobOfferList() {
     const { data, isLoading, isError, error } = useProtectedPaginatedQuery({
         queryKey: ["company-self-job-offers"],
-        getItems: getCompanySelfJobOffers,
+        getItems: getCompanyJobOffers,
         params: {
+            companyId: "self",
             pageSize: 36,
             active: true,
         },

@@ -57,18 +57,6 @@ export function getCompanySelfSubscribersAmount(instance: AxiosInstance) {
     });
 }
 
-export function getCompanySelfJobOffers(
-    instance: AxiosInstance,
-    params: Omit<PaginatedRequestParams, "pageNumber">
-) {
-    return request({
-        instance,
-        url: "Company/self/JobOffers",
-        params,
-        select: parsePaginatedResponseAsync(CompanyJobOffersArraySchema),
-    });
-}
-
 export function getCompanyJobOffers(
     instance: AxiosInstance,
     {
@@ -78,10 +66,13 @@ export function getCompanyJobOffers(
         companyId: string;
     }
 ) {
+    let url = `Student/Companies/${companyId}/JobOffers`;
+    if (companyId === "self") {
+        url = "Company/self/JobOffers";
+    }
     return request({
         instance,
-        prefix: "Student",
-        url: `Companies/${companyId}/JobOffers`,
+        url,
         params,
         select: parsePaginatedResponseAsync(CompanyJobOffersArraySchema),
     });
