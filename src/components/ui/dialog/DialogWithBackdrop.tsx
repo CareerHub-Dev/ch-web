@@ -2,21 +2,34 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { Fragment, ReactNode } from "react";
 import dynamic from "next/dynamic";
+import cn from "classnames";
 
 const ModalPortal = dynamic(() => import("@/components/ui/ModalPortal"), {
     ssr: false,
 });
+
+const panelSizes = {
+    sm: "sm:max-w-sm",
+    md: "sm:max-w-md",
+    lg: "sm:max-w-lg",
+    xl: "sm:max-w-xl",
+    "2xl": "sm:max-w-2xl",
+    "3xl": "sm:max-w-3xl",
+    full: "sm:max-w-full",
+};
 
 export default function DialogWithBackdrop({
     title,
     show,
     onClose,
     children,
+    panelSize = "3xl",
 }: {
     title?: string;
     show: boolean;
     onClose: () => void;
     children: ReactNode;
+    panelSize?: keyof typeof panelSizes;
 }) {
     return (
         <ModalPortal>
@@ -45,7 +58,12 @@ export default function DialogWithBackdrop({
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all w-full sm:my-8 sm:w-full sm:max-w-3xl sm:p-6">
+                                <Dialog.Panel
+                                    className={cn(
+                                        panelSizes[panelSize],
+                                        "relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all w-full sm:my-8 sm:w-full sm:p-6"
+                                    )}
+                                >
                                     <div>
                                         {title === undefined ? null : (
                                             <Dialog.Title

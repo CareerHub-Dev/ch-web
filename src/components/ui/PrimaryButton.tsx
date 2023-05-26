@@ -32,7 +32,7 @@ export default function PrimaryButton({
     return (
         <button
             className={cn(
-                "block font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-color duration-200",
+                "block font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
                 sizeClasses[size],
                 variantClasses[variant],
                 className
