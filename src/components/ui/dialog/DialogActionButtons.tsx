@@ -2,21 +2,25 @@ import cn from "classnames";
 import LoadingSpinner from "../LoadingSpinner";
 
 const commonButtonClasses =
-    "inline-flex w-full justify-center rounded-md border px-4 py-2 text-base font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:w-auto transition-all ease-in-out duration-200 disabled:cursor-not-allowed disabled:opacity-50";
+    "inline-flex w-full justify-center rounded-md border px-4 py-2 text-base font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:w-auto transition-color ease-in-out duration-200 disabled:cursor-not-allowed disabled:opacity-50";
+const colors = {
+    blue: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 text-base",
+    red: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 text-base",
+};
 
 export default function DialogActionButtons({
-    cancelText,
-    confirmText,
+    cancelText = "Відміна",
+    confirmText = "Так",
     confirmationDisabled,
     isLoading,
-    confirmClasses,
+    confirmColor = "blue",
     onCancel,
     onConfirm,
 }: {
-    cancelText: string;
-    confirmText: string;
+    cancelText?: string;
+    confirmText?: string;
     confirmationDisabled?: boolean;
-    confirmClasses?: string;
+    confirmColor?: keyof typeof colors;
     isLoading?: boolean;
     onCancel: () => void;
     onConfirm: () => void;
@@ -36,9 +40,8 @@ export default function DialogActionButtons({
             <button
                 type="button"
                 className={cn(
-                    "mt-3 sm:mt-0",
-                    confirmClasses ||
-                        "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 text-base",
+                    "mt-3 sm:mt-0 text-base",
+                    colors[confirmColor],
                     commonButtonClasses
                 )}
                 onClick={onConfirm}

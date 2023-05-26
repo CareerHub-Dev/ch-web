@@ -1,16 +1,20 @@
 import ListItemEditMenu from "@/components/ui/ListItemEditMenu";
-import { ProjectLink } from "../store/cv-data-store/cv";
 import { ItemListAction } from "@/lib/list-reducer/dialog-actions";
 import { Dispatch } from "react";
 
-export default function ProjectLinkItem({
+export type CompanyLink = {
+    title: string;
+    uri: string;
+};
+
+export default function CompanyLink({
     item,
     itemIndex,
     actionHandler,
 }: {
-    item: ProjectLink;
+    item: CompanyLink;
     itemIndex: number;
-    actionHandler: Dispatch<ItemListAction<ProjectLink>>;
+    actionHandler: Dispatch<ItemListAction<CompanyLink>>;
 }) {
     const createActionHandler = (type: "edit" | "remove") => () => {
         actionHandler({
@@ -21,8 +25,7 @@ export default function ProjectLinkItem({
     };
     const handleEditClick = createActionHandler("edit");
     const handleRemoveClick = createActionHandler("remove");
-
-    const { title, url } = item;
+    const { title, uri } = item;
 
     return (
         <li className="py-4">
@@ -31,7 +34,7 @@ export default function ProjectLinkItem({
                     <a
                         target={"_blank"}
                         rel="noreferrer"
-                        href={url}
+                        href={uri}
                         className="truncate text-sm font-medium text-blue-900 underline"
                     >
                         {title}

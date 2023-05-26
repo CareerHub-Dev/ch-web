@@ -29,7 +29,7 @@ export default function DeleteJobOfferDialog({
                     onClose();
                 }}
                 confirmText={"Видалити"}
-                confirmClasses="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
+                confirmColor="red"
                 onCancel={onClose}
                 cancelText={"Скасувати"}
             />

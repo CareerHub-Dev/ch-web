@@ -9,7 +9,7 @@ import { useReducer } from "react";
 export function useDialogActionsListReducer<TListItem>(options?: {
     initialValue?: ItemListState<TListItem>;
 }) {
-    return useReducer(
+    const [state, dispatch] = useReducer(
         dialogActionsListReducer<TListItem>,
         options?.initialValue || {
             dialog: null,
@@ -17,6 +17,26 @@ export function useDialogActionsListReducer<TListItem>(options?: {
             focusedItemIndex: null,
         }
     );
+    const edit = (item: TListItem, itemIndex: number) => {
+        dispatch({ type: "edit", item, itemIndex });
+    };
+    const add = () => {
+        dispatch({ type: "add" });
+    };
+    const remove = (item: TListItem, itemIndex: number) => {
+        dispatch({ type: "remove", item, itemIndex });
+    };
+    const close = () => {
+        dispatch({ type: "close" });
+    };
+    return {
+        state,
+        dispatch,
+        edit,
+        add,
+        remove,
+        close,
+    };
 }
 
 export function useDialogActionsPaginatedListReducer<TListItem>(options?: {

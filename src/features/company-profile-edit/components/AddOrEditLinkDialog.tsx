@@ -1,19 +1,22 @@
-import { useCvDataStore } from "../../store/cv-data-store";
-import { type ProjectLink } from "../../store/cv-data-store/cv";
 import { useInput } from "@/hooks/useInput";
+import { CompanyLink } from "./CompanyLink";
 import ValidatedInput from "@/components/ui/ValidatedInput";
-import AddOrEditItemModal from "./AddOrEditItemModal";
+import DialogWithBackdrop from "@/components/ui/dialog/DialogWithBackdrop";
+import DialogActionButtons from "@/components/ui/dialog/DialogActionButtons";
 
-export function AddOrEditProjectLinkModal({
+export default function AddOrEditLinkDialog({
+    onAddItem,
+    onEditItem,
     onClose,
     initialPayload,
+    show,
 }: {
     onClose: () => void;
-    initialPayload?: { item: ProjectLink; itemIndex: number };
+    onAddItem: (item: CompanyLink) => void;
+    onEditItem: (item: CompanyLink, itemIndex: number) => void;
+    initialPayload?: { item: CompanyLink; itemIndex: number };
+    show: boolean;
 }) {
-    const modalType = typeof initialPayload === "undefined" ? "add" : "edit";
-    const dispatchProjectLinks = useCvDataStore((s) => s.dispatchProjectLinks);
-
     const titleInput = useInput({
         initialValue: initialPayload?.item.title || "",
         validators: [
@@ -28,9 +31,8 @@ export function AddOrEditProjectLinkModal({
             },
         ],
     });
-
     const urlInput = useInput({
-        initialValue: initialPayload?.item.url || "",
+        initialValue: initialPayload?.item.uri || "",
         validators: [
             (val) =>
                 val.length > 0
@@ -51,37 +53,26 @@ export function AddOrEditProjectLinkModal({
                       },
         ],
     });
-
     const handleConfirm = () => {
         const values = {
             title: titleInput.value,
-            url: urlInput.value,
+            uri: urlInput.value,
         };
 
-        if (!initialPayload) {
-            dispatchProjectLinks({
-                type: "add",
-                item: values,
-            });
+        if (initialPayload === undefined) {
+            onAddItem(values);
         } else {
-            dispatchProjectLinks({
-                type: "edit",
-                itemIndex: initialPayload.itemIndex,
-                newValue: values,
-            });
+            onEditItem(values, initialPayload.itemIndex);
         }
         onClose();
+        titleInput.reset();
+        urlInput.reset();
     };
+    const dialogTitle = initialPayload === undefined ? "Додати" : "Редагувати";
+    const confirmText = initialPayload === undefined ? "Додати" : "Зберегти";
 
     return (
-        <AddOrEditItemModal
-            onClose={onClose}
-            onConfirm={handleConfirm}
-            type={modalType}
-            confirmationDisabled={
-                titleInput.errors.length > 0 || urlInput.errors.length > 0
-            }
-        >
+        <DialogWithBackdrop show={show} onClose={onClose} title={dialogTitle}>
             <div className="mt-4 flex flex-col gap-4">
                 <div>
                     <ValidatedInput
@@ -110,6 +101,11 @@ export function AddOrEditProjectLinkModal({
                     />
                 </div>
             </div>
-        </AddOrEditItemModal>
+            <DialogActionButtons
+                onConfirm={handleConfirm}
+                onCancel={onClose}
+                confirmText={confirmText}
+            />
+        </DialogWithBackdrop>
     );
 }

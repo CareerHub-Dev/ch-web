@@ -12,7 +12,10 @@ export default function ListItemEditMenu({
 }) {
     return (
         <Menu as={"div"} className="relative inline-block text-left">
-            <Menu.Button className="p-2 bg-transparent rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+            <Menu.Button
+                type="button"
+                className="p-2 bg-transparent rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 "
+            >
                 <EllipsisVerticalIcon title="Дії" className="h-6 w-6" />
             </Menu.Button>
 
@@ -43,6 +46,7 @@ export default function ListItemEditMenu({
                     <Menu.Item>
                         {({ active }) => (
                             <button
+                                type="button"
                                 onClick={onRemoveClick}
                                 className={cn(
                                     active && "bg-red-500 text-white",

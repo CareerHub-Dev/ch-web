@@ -5,10 +5,10 @@ import {
     CompanyInFeedArraySchema,
     CompanyDetailsSchema,
     CompanyJobOffersArraySchema,
-    CompanyBriefSchema,
 } from "./schemas";
 
 import { type AxiosInstance } from "axios";
+import { CompanyLink } from "@/features/company-profile-edit/components/CompanyLink";
 
 export function getCompanies(
     instance: AxiosInstance,
@@ -127,6 +127,26 @@ export function getSelfCompany(instance: AxiosInstance) {
         instance,
         prefix: "Company",
         url: "Companies/self",
-        select: (res) => CompanyBriefSchema.parseAsync(res.data),
+        select: (res) => CompanyDetailsSchema.parseAsync(res.data),
     });
+}
+
+export function editCompanyDetail(instance: AxiosInstance) {
+    return (data: { name: string; motto: string; description: string }) =>
+        request({
+            instance,
+            url: "Company/Companies/self/detail",
+            method: "PUT",
+            data,
+        });
+}
+
+export function editCompanyLinks(instance: AxiosInstance) {
+    return (links: CompanyLink[]) =>
+        request({
+            instance,
+            url: "Company/Companies/self/Links",
+            method: "PUT",
+            data: { links },
+        });
 }
