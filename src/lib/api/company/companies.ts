@@ -6,8 +6,7 @@ import {
     CompanyDetailsSchema,
     CompanyJobOffersArraySchema,
 } from "./schemas";
-
-import { type AxiosInstance } from "axios";
+import { AxiosInstance } from "axios";
 import { CompanyLink } from "@/features/company-profile-edit/components/CompanyLink";
 
 export function getCompanies(
@@ -149,4 +148,38 @@ export function editCompanyLinks(instance: AxiosInstance) {
             method: "PUT",
             data: { links },
         });
+}
+
+export function updateCompanyLogo(instance: AxiosInstance) {
+    return (file?: File) => {
+        const data = new FormData();
+        data.append("file", file ?? "undefined");
+
+        return request({
+            instance,
+            url: `Company/Companies/self/logo`,
+            method: "POST",
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            data,
+        });
+    };
+}
+
+export function updateCompanyBanner(instance: AxiosInstance) {
+    return (file?: File) => {
+        const data = new FormData();
+        data.append("file", file ?? "undefined");
+
+        return request({
+            instance,
+            url: `Company/Companies/self/banner`,
+            method: "POST",
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            data,
+        });
+    };
 }

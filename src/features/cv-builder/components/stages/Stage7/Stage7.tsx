@@ -9,7 +9,8 @@ export default function Stage7() {
     const educations = useCvDataStore((s) => s.cvData.educations);
     const dispatchEducations = useCvDataStore((s) => s.dispatchEducations);
     type Education = (typeof educations.items)[number];
-    const [dialogState, dispatch] = useDialogActionsListReducer<Education>();
+    const { state: dialogState, dispatch } =
+        useDialogActionsListReducer<Education>();
 
     const handleAddClick = () =>
         dispatch({

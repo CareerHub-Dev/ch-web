@@ -3,10 +3,12 @@ import DialogWithBackdrop from "@/components/ui/dialog/DialogWithBackdrop";
 
 export default function RemovePhotoModal({
     show,
+    isLoading = false,
     onClose,
     onConfirm,
 }: {
     show: boolean;
+    isLoading?: boolean;
     onClose: () => void;
     onConfirm: () => void;
 }) {
@@ -28,8 +30,9 @@ export default function RemovePhotoModal({
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
                 cancelText={"Відміна"}
+                isLoading={isLoading}
                 confirmText={"Видалити"}
-                confirmClasses="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 text-base"
+                confirmColor="red"
             />
         </DialogWithBackdrop>
     );

@@ -51,7 +51,7 @@ export default function DeleteExperienceForm({
                 confirmationDisabled={isLoading}
                 cancelText={"Відміна"}
                 confirmText={"Видалити"}
-                confirmClasses="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 text-base"
+                confirmColor="red"
                 isLoading={isLoading}
             />
         </>

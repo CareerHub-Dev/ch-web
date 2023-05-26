@@ -5,6 +5,8 @@ import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import DeleteAccountForm from "./DeleteAccountForm";
 import LinksForm from "./LinksForm";
+import LogoEditForm from "./LogoEditForm";
+import BannerEditForm from "./BannerEditForm";
 
 export default function SettingsMock() {
     const { data, isLoading, isError, error } = useProtectedQuery(
@@ -31,6 +33,12 @@ export default function SettingsMock() {
                     motto={data.motto}
                     description={data.description}
                 />
+            </div>
+            <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+                <LogoEditForm logo={data.logo} />
+            </div>
+            <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+                <BannerEditForm banner={data.banner} />
             </div>
             <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                 <LinksForm links={data.links} />

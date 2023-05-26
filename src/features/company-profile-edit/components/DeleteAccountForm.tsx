@@ -1,6 +1,10 @@
 import PrimaryButton from "@/components/ui/PrimaryButton";
 
 export default function DeleteAccountForm() {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    };
+
     return (
         <>
             <div>
@@ -15,7 +19,10 @@ export default function DeleteAccountForm() {
                 </p>
             </div>
 
-            <form className="flex items-start md:col-span-2">
+            <form
+                className="flex items-start md:col-span-2"
+                onSubmit={handleSubmit}
+            >
                 <PrimaryButton type="submit" variant="red">
                     {"Так, видалити акаунт"}
                 </PrimaryButton>
