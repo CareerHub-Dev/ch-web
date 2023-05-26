@@ -10,33 +10,63 @@ export type PostData = {
     images: File[];
 };
 
-export function addPost(instance: AxiosInstance) {
-    return (data: PostData) => {
-        const formData = new FormData();
-        formData.append("text", data.text);
-        data.images.forEach((image) => {
-            formData.append("images", image);
-        });
+export function addOrEditPost(initialPayload?: {
+    id: string;
+    text: string;
+    images: string[];
+}) {
+    return (instance: AxiosInstance) => {
+        const { method, url } = initialPayload
+            ? {
+                  method: "PUT",
+                  url: `Auth/Posts/self/${initialPayload.id}`,
+              }
+            : {
+                  method: "POST",
+                  url: "Auth/Posts/self",
+              };
 
-        return request({
-            instance,
-            url: "Auth/Posts/self",
-            method: "POST",
-            data: formData,
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
+        return (data: PostData) => {
+            const formData = new FormData();
+            formData.append("text", data.text);
+            data.images.forEach((image) => {
+                formData.append("images", image);
+            });
+
+            return request({
+                instance,
+                url,
+                method,
+                data: formData,
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+        };
     };
 }
 
-export function useAddPostMutation() {
+export function useAddOrEditPostMutation(initialPayload?: {
+    id: string;
+    text: string;
+    images: string[];
+}) {
     const toast = useToast();
     const client = useQueryClient();
 
-    return useProtectedMutation(["add-post"], addPost, {
+    const { successMessage, queryKey } = initialPayload
+        ? {
+              successMessage: "Публікацію відредаговано",
+              queryKey: ["posts", "self", initialPayload.id],
+          }
+        : {
+              successMessage: "Публікацію створено",
+              queryKey: ["posts", "self"],
+          };
+
+    return useProtectedMutation(queryKey, addOrEditPost(initialPayload), {
         onSuccess() {
-            toast.success("Публікацію створено");
+            toast.success(successMessage);
             client.invalidateQueries(["posts", "self"]);
         },
         onError(err) {

@@ -69,9 +69,13 @@ export function getControlHint() {
 export function fillThisFieldValidator(message: string) {
     return (value: string) =>
         value.trim().length > 0
-            ? { type: "success" } as const
-            : {
+            ? ({ type: "success" } as const)
+            : ({
                   type: "error",
                   message,
-              } as const;
+              } as const);
+}
+
+export function limitText(text: string, limit: number) {
+    return text.length > limit ? `${text.slice(0, limit)}...` : text;
 }

@@ -42,7 +42,7 @@ export function useDialogActionsListReducer<TListItem>(options?: {
 export function useDialogActionsPaginatedListReducer<TListItem>(options?: {
     initialValue?: PaginatedItemListState<TListItem>;
 }) {
-    return useReducer(
+    const [state, dispatch] = useReducer(
         dialogActionsPaginatedListReducer<TListItem>,
         options?.initialValue || {
             dialog: null,
@@ -51,4 +51,25 @@ export function useDialogActionsPaginatedListReducer<TListItem>(options?: {
             focusedItemPageIndex: null,
         }
     );
+
+    const edit = (item: TListItem, itemIndex: number, pageIndex: number) => {
+        dispatch({ type: "edit", item, itemIndex, pageIndex });
+    };
+    const add = () => {
+        dispatch({ type: "add" });
+    };
+    const remove = (item: TListItem, itemIndex: number, pageIndex: number) => {
+        dispatch({ type: "remove", item, itemIndex, pageIndex });
+    };
+    const close = () => {
+        dispatch({ type: "close" });
+    };
+    return {
+        state,
+        dispatch,
+        edit,
+        add,
+        remove,
+        close,
+    };
 }

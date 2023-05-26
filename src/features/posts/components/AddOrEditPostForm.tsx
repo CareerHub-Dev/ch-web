@@ -1,5 +1,5 @@
 import DialogWithBackdrop from "@/components/ui/dialog/DialogWithBackdrop";
-import { useAddPostMutation } from "../hooks/use-add-post-mutation";
+import { useAddOrEditPostMutation } from "../hooks/use-add-post-mutation";
 import { useInput } from "@/hooks/useInput";
 import { fillThisFieldValidator } from "@/lib/util";
 import PrimaryButton from "@/components/ui/PrimaryButton";
@@ -7,26 +7,33 @@ import ValidatedTextArea from "@/components/ui/ValidatedTextArea";
 
 const validators = [fillThisFieldValidator("Це поле є обов'язковим")];
 
-export default function AddPostForm({
+export default function AddOrEditPostForm({
+    initialPayload,
     onClose,
     show,
 }: {
     onClose: () => void;
     show: boolean;
+    initialPayload?: { id: string; text: string; images: string[] };
 }) {
-    const { mutate, isLoading } = useAddPostMutation();
+    const { mutateAsync, isLoading } = useAddOrEditPostMutation(initialPayload);
     const textInput = useInput({
         validators,
+        initialValue: initialPayload?.text ?? "",
     });
+
+    const dialogTitle = initialPayload ? "Редагувати" : "Додати";
+    const confirmText = initialPayload ? "Зберегти" : "Додати";
     const cannotSave = isLoading || !textInput.isValid;
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        mutate({
+        await mutateAsync({
             text: textInput.value,
             images: [],
         });
         textInput.reset();
+        onClose();
     };
 
     return (
@@ -34,7 +41,7 @@ export default function AddPostForm({
             show={show}
             onClose={onClose}
             panelSize="md"
-            title="Додати публікацію"
+            title={dialogTitle}
         >
             <form onSubmit={handleSubmit}>
                 <ValidatedTextArea
@@ -49,7 +56,7 @@ export default function AddPostForm({
                 />
                 <div className="flex justify-end mt-8 border-t-gray-300">
                     <PrimaryButton type="submit" disabled={cannotSave}>
-                        {"Додати"}
+                        {confirmText}
                     </PrimaryButton>
                 </div>
             </form>
