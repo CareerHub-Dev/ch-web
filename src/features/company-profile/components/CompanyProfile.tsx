@@ -8,6 +8,7 @@ import classNames from "classnames";
 import CompanyProfileSkeleton from "./CompanyProfileSkeleton";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import CompanyJobOffers from "./CompanyJobOffers";
+import CompanyPosts from "./CompanyPosts";
 
 export default function CompanyProfile({
     companyId,
@@ -137,6 +138,8 @@ export default function CompanyProfile({
                                 companyLogo={data.logo}
                                 companyId={companyId ?? "self"}
                             />
+                        ) : currentTab === "posts" ? (
+                            <CompanyPosts companyId={companyId ?? "self"} />
                         ) : (
                             <>
                                 <div className="sm:col-span-2">

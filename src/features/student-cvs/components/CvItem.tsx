@@ -11,7 +11,7 @@ export function CvItem({
     id: string;
     title: string;
     created: string;
-    modified: string | null;
+    modified?: string | null | undefined;
 }) {
     const titleInitials = getTitleInitials(title);
     const backgroundColor = getBackgroundColorForInitials(titleInitials);

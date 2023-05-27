@@ -1,6 +1,8 @@
 import Image from "next/image";
+import Link from "next/link";
 import format from "date-fns/format";
 import { JobOfferInFeed } from "@/lib/api/job-offer/schemas";
+import { useJobOffersFeedStore } from "../store/job-offers-feed-store";
 
 export default function JobOfferCard({
     id,
@@ -14,6 +16,10 @@ export default function JobOfferCard({
     company,
     tags,
 }: JobOfferInFeed) {
+    const addTag = useJobOffersFeedStore((s) => s.addTag);
+    const detailsUrl = `/job-offers/${id}`;
+    const companyUrl = `/companies/${company.id}`;
+
     return (
         <div
             aria-roledescription="job offer"
@@ -31,10 +37,10 @@ export default function JobOfferCard({
             </div>
             <div>
                 <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
-                    <a href={"#"}>
+                    <Link href={detailsUrl}>
                         <span className="absolute inset-0" />
                         {title}
-                    </a>
+                    </Link>
                 </h3>
                 <div className="group relative max-w-xl">
                     <div className="flex items-center gap-x-2 text-xs">
@@ -50,8 +56,9 @@ export default function JobOfferCard({
                     <div className="mt-4 flex items-center gap-x-4 text-xs">
                         {tags.map((tag) => (
                             <a
+                                role="button"
+                                onClick={() => addTag(tag)}
                                 key={tag.id}
-                                href={"#"}
                                 className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
                             >
                                 {tag.name}
@@ -82,10 +89,10 @@ export default function JobOfferCard({
                 <div className="mt-3 flex border-t border-gray-900/5 py-3">
                     <div className="relative flex items-center gap-x-4">
                         <p className="font-semibold text-gray-900 text-sm leading-6">
-                            <a href={"#"}>
+                            <Link href={companyUrl}>
                                 <span className="absolute inset-0" />
                                 {company.name}
-                            </a>
+                            </Link>
                         </p>
                     </div>
                 </div>

@@ -31,7 +31,7 @@ export const AppliedCvSchema = z.object({
     status: z.string(),
     experienceLevel: z.string(),
     created: z.string(),
-    modified: z.string(),
+    modified: z.string().nullish(),
 });
 
 export const AppliedCvsSchema = z.array(AppliedCvSchema);

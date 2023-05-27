@@ -8,6 +8,7 @@ export function useCompanyProfileTabs() {
             [
                 { name: "Про компанію", id: "about" },
                 { name: "Вакансії", id: "job-offers" },
+                { name: "Публікації", id: "posts" },
             ] as const,
         []
     );
