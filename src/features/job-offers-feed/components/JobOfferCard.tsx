@@ -1,5 +1,6 @@
-import { type JobOffer } from "@/lib/schemas/JobOffer";
+import Image from "next/image";
 import format from "date-fns/format";
+import { JobOfferInFeed } from "@/lib/api/job-offer/schemas";
 
 export default function JobOfferCard({
     id,
@@ -12,17 +13,19 @@ export default function JobOfferCard({
     experienceLevel,
     company,
     tags,
-}: JobOffer) {
+}: JobOfferInFeed) {
     return (
         <div
             aria-roledescription="job offer"
             key={id}
-            className="relative isolate flex flex-col gap-8 lg:flex-row"
+            className="relative isolate flex gap-8"
         >
-            <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square lg:w-52 lg:shrink-0">
-                <img
+            <div className="relative aspect-square w-32 h-32 shrink-0 sm:w-32 sm:h-32 lg:w-52 lg:h-52">
+                <Image
                     src={image || "/general.jpg"}
-                    alt=""
+                    alt="jobOffer"
+                    width={300}
+                    height={624}
                     className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
                 />
             </div>

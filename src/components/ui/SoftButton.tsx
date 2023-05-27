@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react";
 import cn from "classnames";
 
-const inferredClassName = {
+const sizes = {
     xs: "rounded px-2 py-1 text-xs",
     sm: "rounded px-2 py-1 text-sm",
     md: "rounded-md px-2.5 py-1.5 text-sm",
@@ -12,9 +12,10 @@ const inferredClassName = {
 export default function SoftButton({
     children,
     size = "md",
+    className,
     ...buttonProps
 }: {
-    size?: keyof typeof inferredClassName;
+    size?: keyof typeof sizes;
     children: ReactNode;
 } & DetailedHTMLProps<
     ButtonHTMLAttributes<HTMLButtonElement>,
@@ -23,8 +24,9 @@ export default function SoftButton({
     return (
         <button
             className={cn(
-                inferredClassName[size],
-                "bg-blue-50 font-semibold text-blue-600 shadow-sm hover:bg-blue-100"
+                sizes[size],
+                "bg-blue-50 font-semibold text-blue-600 shadow-sm hover:bg-blue-100",
+                className
             )}
             {...buttonProps}
         >

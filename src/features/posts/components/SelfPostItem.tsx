@@ -3,7 +3,7 @@ import { BriefPost } from "../hooks/use-self-posts-query";
 import Image from "next/image";
 import { matchUserRole } from "@/lib/enums";
 import { HandThumbUpIcon } from "@heroicons/react/24/solid";
-import ListItemEditMenu from "@/components/ui/ListItemEditMenu";
+import PostEditMenu from "./PostEditMenu";
 import format from "date-fns/format";
 
 export default function SelfPostItem({
@@ -12,10 +12,8 @@ export default function SelfPostItem({
     likes,
     createdDate,
     account,
-    onEdit,
     onRemove,
 }: BriefPost & {
-    onEdit: () => void;
     onRemove: () => void;
 }) {
     const authorAvatarUrl = getImageWithDefault(
@@ -52,10 +50,7 @@ export default function SelfPostItem({
                             </p>
                         </div>
                         <div className="flex flex-shrink-0 self-center">
-                            <ListItemEditMenu
-                                onEditClick={onEdit}
-                                onRemoveClick={onRemove}
-                            />
+                            <PostEditMenu onRemoveClick={onRemove} />
                         </div>
                     </div>
                 </div>

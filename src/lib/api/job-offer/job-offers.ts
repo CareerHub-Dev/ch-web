@@ -20,6 +20,18 @@ export function getJobOffers(
     });
 }
 
+export function getSelfJobOffersAsCompany(
+    instance: AxiosInstance,
+    params: PaginatedRequestParams
+) {
+    return request({
+        instance,
+        url: "/Company/self/JobOffers",
+        params,
+        select: parsePaginatedResponseAsync(JobOfferFeedSchema),
+    });
+}
+
 export function getJobOfferAsCompany(jobOfferId: string) {
     return (instance: AxiosInstance) => {
         return request({

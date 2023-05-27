@@ -16,7 +16,7 @@ import RemovePostDialog from "@/features/posts/components/RemovePostDialog";
 
 export default function CompanyPostsPage() {
     const { data, isLoading, isError, error } = useSelfPostsQuery();
-    const { state, edit, add, remove, close } =
+    const { state, add, remove, close } =
         useDialogActionsPaginatedListReducer<BriefPost>();
     const { dialog, focusedItem } = state;
     const noData =
@@ -32,12 +32,7 @@ export default function CompanyPostsPage() {
                 show={dialog === "remove"}
                 onClose={close}
             />
-            <AddOrEditPostForm
-                key={dialog}
-                initialPayload={dialog === "edit" ? focusedItem : undefined}
-                show={dialog === "edit" || dialog === "add"}
-                onClose={close}
-            />
+            <AddOrEditPostForm show={dialog === "add"} onClose={close} />
 
             <div className="flex flex-wrap flex-col sm:flex-row items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8 py-4">
                 <h1 className="text-base font-semibold leading-7 text-gray-900">
@@ -74,9 +69,6 @@ export default function CompanyPostsPage() {
                                     <SelfPostItem
                                         key={postIdx}
                                         {...post}
-                                        onEdit={() =>
-                                            edit(post, postIdx, pageIdx)
-                                        }
                                         onRemove={() =>
                                             remove(post, postIdx, pageIdx)
                                         }

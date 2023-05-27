@@ -82,11 +82,6 @@ export function getNavigationLinks(role?: UserRole) {
                     href: "/my-posts",
                     exact: true,
                 },
-                {
-                    text: "Резюме",
-                    href: "/cvs",
-                    exact: true,
-                },
             ];
         default:
             return [];

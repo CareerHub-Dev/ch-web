@@ -5,7 +5,7 @@ import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import cn from "classnames";
 
 type Item = {
-    id: string;
+    id: string | null;
     name: string;
 };
 
@@ -17,6 +17,7 @@ export default function ItemSelection<TItem extends Item>({
     errors,
     warnings,
     onBlur,
+    withUnselect,
 }: {
     label?: string;
     items: Array<TItem>;
@@ -25,6 +26,7 @@ export default function ItemSelection<TItem extends Item>({
     errors?: string[];
     warnings?: string[];
     onBlur?: () => void;
+    withUnselect?: TItem;
 }) {
     const listboxRef = useRef(null);
     const [wasFocused, setWasFocused] = useState(false);
@@ -35,6 +37,9 @@ export default function ItemSelection<TItem extends Item>({
     });
     const hasErrors = errors !== undefined && errors.length > 0;
     const hasWarnings = warnings !== undefined && warnings.length > 0;
+    if (withUnselect !== undefined) {
+        items = [withUnselect, ...items];
+    }
     return (
         <Listbox value={selectedItem} onChange={setSelected}>
             {({ open }) => (
@@ -91,50 +96,8 @@ export default function ItemSelection<TItem extends Item>({
                             leaveTo="opacity-0"
                         >
                             <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                {items.map((item) => (
-                                    <Listbox.Option
-                                        key={item.id}
-                                        className={({ active }) =>
-                                            cn(
-                                                active
-                                                    ? "text-white bg-blue-600"
-                                                    : "text-gray-900",
-                                                "relative cursor-pointer select-none py-2 pl-3 pr-9"
-                                            )
-                                        }
-                                        value={item}
-                                    >
-                                        {({ selected, active }) => (
-                                            <>
-                                                <span
-                                                    className={cn(
-                                                        selected
-                                                            ? "font-semibold"
-                                                            : "font-normal",
-                                                        "block truncate"
-                                                    )}
-                                                >
-                                                    {item.name}
-                                                </span>
-
-                                                {selected ? (
-                                                    <span
-                                                        className={cn(
-                                                            active
-                                                                ? "text-white"
-                                                                : "text-blue-600",
-                                                            "absolute inset-y-0 right-0 flex items-center pr-4"
-                                                        )}
-                                                    >
-                                                        <CheckIcon
-                                                            className="h-5 w-5"
-                                                            aria-hidden="true"
-                                                        />
-                                                    </span>
-                                                ) : null}
-                                            </>
-                                        )}
-                                    </Listbox.Option>
+                                {items.map((item, itemIdx) => (
+                                    <ListboxOption key={itemIdx} item={item} />
                                 ))}
                             </Listbox.Options>
                         </Transition>
@@ -152,5 +115,43 @@ export default function ItemSelection<TItem extends Item>({
                 </>
             )}
         </Listbox>
+    );
+}
+
+function ListboxOption<TItem extends Item>({ item }: { item: TItem }) {
+    return (
+        <Listbox.Option
+            className={({ active }) =>
+                cn(
+                    active ? "text-white bg-blue-600" : "text-gray-900",
+                    "relative cursor-pointer select-none py-2 pl-3 pr-9"
+                )
+            }
+            value={item}
+        >
+            {({ selected, active }) => (
+                <>
+                    <span
+                        className={cn(
+                            selected ? "font-semibold" : "font-normal",
+                            "block truncate"
+                        )}
+                    >
+                        {item.name}
+                    </span>
+
+                    {selected ? (
+                        <span
+                            className={cn(
+                                active ? "text-white" : "text-blue-600",
+                                "absolute inset-y-0 right-0 flex items-center pr-4"
+                            )}
+                        >
+                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                    ) : null}
+                </>
+            )}
+        </Listbox.Option>
     );
 }

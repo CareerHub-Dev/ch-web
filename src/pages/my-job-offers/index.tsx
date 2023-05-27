@@ -1,8 +1,9 @@
-import CommonLayout from "@/components/layout/CommonLayout";
 import { protectedSsr } from "@/lib/protected-ssr";
+import CommonLayout from "@/components/layout/CommonLayout";
+import JobOffersFeed from "@/features/job-offers-feed/components/JobOffersFeed";
 
 export default function CompanyJobOffersPage() {
-    return <h1>My Job Offers</h1>;
+    return <JobOffersFeed />;
 }
 
 CompanyJobOffersPage.getLayout = CommonLayout;

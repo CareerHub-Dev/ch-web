@@ -1,27 +1,28 @@
 type PaginatedRequestParams = {
     pageNumber: number;
     pageSize: number;
-    searchTerm?: string;
-    orderByExpression?: string;
+    search?: string;
+    order?: string;
 };
 
 type PaginatedQueryParams = Omit<PaginatedQueryParams, "pageNumber">;
-interface JobOfferFilter {
-    searchTerm?: string;
+
+type JobOfferFilter = {
+    search?: string;
     jobType?: string;
     workFormat?: string;
     experienceLevel?: string;
     jobPositionId?: string;
     tagIds: Array<string>;
-}
+};
 
-interface Tag {
+type Tag = {
     id: string;
     name: string;
-}
+};
 
 namespace JobOffersFeed {
-    interface JobOffer {
+    type JobOffer = {
         id: string;
         companyId: string;
         companyName: string;
@@ -30,11 +31,11 @@ namespace JobOffersFeed {
         amountSubscribers: number;
         amountAppliedCVs: number;
         tags: Array<Tag>;
-    }
+    };
 }
 
 namespace JobOfferDetails {
-    interface JobOffer {
+    type JobOffer = {
         id: string;
         companyId: string;
         companyName: string;
