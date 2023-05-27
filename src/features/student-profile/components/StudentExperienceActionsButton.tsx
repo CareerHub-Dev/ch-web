@@ -12,7 +12,7 @@ export default function StudentExperienceActionsButton({
 }) {
     return (
         <Menu as="div" className="relative flex-none">
-            <Menu.Button className="-m-2.5 block rounded-full p-2.5 text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            <Menu.Button className="-m-2.5 block rounded-full p-2.5 text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                 <span className="sr-only">{"Показати опції"}</span>
                 <EllipsisVerticalIcon className="h-5 w-5" aria-hidden="true" />
             </Menu.Button>

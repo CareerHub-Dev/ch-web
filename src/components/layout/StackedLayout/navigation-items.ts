@@ -4,7 +4,6 @@ import {
     DocumentIcon,
     UserCircleIcon,
     ChartBarSquareIcon,
-    BriefcaseIcon,
 } from "@heroicons/react/24/outline";
 
 export function getUserMenuLinks(role?: UserRole) {
@@ -29,12 +28,16 @@ export function getUserMenuLinks(role?: UserRole) {
             ];
         case "Company":
             return [
-                { text: "Дошка", Icon: ChartBarSquareIcon, href: "dashboard" },
-                { text: "Вакансії", Icon: BriefcaseIcon, href: "job-offers" },
+                { text: "Дошка", Icon: ChartBarSquareIcon, href: "/me" },
+                {
+                    text: "Публічний профіль",
+                    Icon: ChartBarSquareIcon,
+                    href: "/public-profile",
+                },
                 {
                     text: "Налаштування",
                     Icon: Cog6ToothIcon,
-                    href: "account-details",
+                    href: "/public-profile/edit",
                 },
             ];
         default:
@@ -64,6 +67,19 @@ export function getNavigationLinks(role?: UserRole) {
                 {
                     text: "Студенти",
                     href: "/students",
+                    exact: true,
+                },
+            ];
+        case "Company":
+            return [
+                {
+                    text: "Вакансії",
+                    href: "/my-job-offers",
+                    exact: true,
+                },
+                {
+                    text: "Публікації",
+                    href: "/my-posts",
                     exact: true,
                 },
             ];

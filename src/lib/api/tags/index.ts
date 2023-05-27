@@ -1,10 +1,14 @@
-import { request } from '../../axios';
+import { request } from "../../axios";
+import { AxiosInstance } from "axios";
 
-import { type AxiosInstance } from 'axios';
-
-export const getTags = (instance: AxiosInstance) => {
-  return request({
-    instance,
-    url: 'Auth/Tags',
-  });
-};
+export function getTags(search: string) {
+    return (instance: AxiosInstance) => {
+        return request({
+            instance,
+            url: "Auth/Tags",
+            params: {
+                search,
+            },
+        });
+    };
+}

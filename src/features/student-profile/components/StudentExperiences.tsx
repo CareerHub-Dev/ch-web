@@ -24,7 +24,7 @@ export default function StudentExperiences({
         params: { accountId, page: 1, pageSize: 36 },
     });
 
-    const [state, dispatch] =
+    const { state, dispatch } =
         useDialogActionsPaginatedListReducer<Experience>();
     const { dialog, focusedItem } = state;
 

@@ -1,6 +1,6 @@
 import JobOfferForm from "@/features/job-offer-form/JobOfferForm";
 import CommonLayout from "@/components/layout/CommonLayout";
-import { protectedSsr } from "@/lib/protected-ssr";
+// import { protectedSsr } from "@/lib/protected-ssr";
 
 export default function AddJobOfferPage() {
     return (
@@ -12,6 +12,6 @@ export default function AddJobOfferPage() {
 
 AddJobOfferPage.getLayout = CommonLayout;
 
-export const getServerSideProps = protectedSsr({
-    allowedRoles: ["Company"],
-});
+// export const getServerSideProps = protectedSsr({
+//     allowedRoles: ["Company"],
+// });

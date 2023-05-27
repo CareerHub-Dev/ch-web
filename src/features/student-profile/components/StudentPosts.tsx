@@ -1,5 +1,5 @@
+import { getPostsFromAccount } from "@/features/posts/hooks/use-self-posts-query";
 import { useProtectedPaginatedQuery } from "@/hooks/useProtectedPaginatedQuery";
-import { getPostsFromAccount } from "@/lib/api/posts";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import { Fragment } from "react";
 

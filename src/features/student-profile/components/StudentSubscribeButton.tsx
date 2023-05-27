@@ -15,7 +15,7 @@ const statusMap = {
     true: {
         text: "Ви підписані",
         className:
-            "border-indigo-600 bg-indigo-600 hover:bg-indigo-500 text-white",
+            "border-blue-600 bg-blue-600 hover:bg-blue-500 text-white",
         Icon: CheckCircleIcon,
     },
     false: {
@@ -98,7 +98,7 @@ export default function StudentSubscribeButton({
             type="button"
             onClick={changeSubscription}
             className={cn(
-                "border inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-medium shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200",
+                "border inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-medium shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all duration-200",
                 className
             )}
         >

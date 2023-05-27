@@ -1,8 +1,8 @@
 export type ItemListState<TItem> =
     | {
           dialog: null;
-          focusedItem: null;
-          focusedItemIndex: null;
+          focusedItem: null | TItem;
+          focusedItemIndex: null | number;
       }
     | {
           dialog: "add";
@@ -32,7 +32,7 @@ export function dialogActionsListReducer<TItem>(
 ): ItemListState<TItem> {
     switch (action.type) {
         case "close":
-            return { dialog: null, focusedItem: null, focusedItemIndex: null };
+            return { ...state, dialog: null };
         case "add":
             return { dialog: "add", focusedItem: null, focusedItemIndex: null };
         case "edit":
@@ -55,9 +55,9 @@ export function dialogActionsListReducer<TItem>(
 export type PaginatedItemListState<TItem> =
     | {
           dialog: null;
-          focusedItem: null;
-          focusedItemIndex: null;
-          focusedItemPageIndex: null;
+          focusedItem: null | TItem;
+          focusedItemIndex: null | number;
+          focusedItemPageIndex: null | number;
       }
     | {
           dialog: "add";
@@ -91,10 +91,8 @@ export function dialogActionsPaginatedListReducer<TItem>(
     switch (action.type) {
         case "close":
             return {
+                ...state,
                 dialog: null,
-                focusedItem: null,
-                focusedItemIndex: null,
-                focusedItemPageIndex: null,
             };
         case "add":
             return {

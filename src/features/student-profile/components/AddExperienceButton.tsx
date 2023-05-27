@@ -20,7 +20,7 @@ export default function AddExperienceButton() {
             </DialogWithBackdrop>
             <button
                 type="button"
-                className="rounded-full p-1 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-full p-1 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 onClick={isModalOpen.setTrue}
             >
                 <PlusIcon className="h-5 w-5" aria-hidden="true" />

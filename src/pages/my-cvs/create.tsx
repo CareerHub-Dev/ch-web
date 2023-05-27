@@ -4,18 +4,25 @@ import { protectedSsr } from "@/lib/protected-ssr";
 import { useJobDirectionsQuery } from "@/hooks/requests/job-directions";
 import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 // import CenteredLoadingSpinner from '@/components/ui/CenteredLoadingSpinner';
-// import parseUnknownError from '@/lib/parse-unknown-error';
+import parseUnknownError from "@/lib/parse-unknown-error";
 
 function CreateCvPage() {
-    const { isLoading: isLoadingJobDirections, isError: isErrorJobDirections } =
-        useJobDirectionsQuery();
+    const {
+        isLoading: isLoadingJobDirections,
+        isError: isErrorJobDirections,
+        error,
+    } = useJobDirectionsQuery();
 
     if (isLoadingJobDirections) {
         return <CenteredLoadingSpinner />;
     }
 
     if (isErrorJobDirections) {
-        return <div>Помилка завантаження</div>;
+        return (
+            <p className="text-center text-red-500">{`Помилка завантаження: ${parseUnknownError(
+                error
+            )}`}</p>
+        );
     }
 
     return <CvBuilder />;

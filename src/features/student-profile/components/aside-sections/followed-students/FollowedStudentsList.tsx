@@ -75,7 +75,7 @@ export default function FollowedStudents({
             {thereAreSubscriptions ? (
                 <div className="mt-6">
                     <button
-                        className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-gray-100 transition-all duration-200"
+                        className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-100 transition-all duration-200"
                         onClick={modalIsOpen.setTrue}
                     >
                         {"Дивитися більше"}

@@ -2,7 +2,7 @@ import {
     ExclamationCircleIcon,
     ExclamationTriangleIcon,
 } from "@heroicons/react/20/solid";
-import { type ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 import cn from "classnames";
 
 const defaultClasses = "focus:border-blue-500 focus:ring-blue-500";
@@ -24,6 +24,7 @@ export default function ValidatedInput({
     wasBlurred,
     placeholder,
     disabled,
+    name,
 }: Inputs.StringInput & {
     id: string;
     label?: string;
@@ -31,6 +32,7 @@ export default function ValidatedInput({
     onBlur: () => void;
     placeholder?: string;
     disabled?: boolean;
+    name?: string;
 }) {
     const hasErrors = wasBlurred && errors.length > 0;
     const hasWarnings = wasBlurred && warnings.length > 0;
@@ -40,14 +42,14 @@ export default function ValidatedInput({
 
     return (
         <>
-            {label && (
+            {label ? (
                 <label
                     htmlFor={id}
                     className="block sm:text-sm font-medium text-gray-700 mb-1"
                 >
                     {label}
                 </label>
-            )}
+            ) : null}
             <div>
                 <div className="relative rounded-md shadow-sm">
                     <input
@@ -66,6 +68,7 @@ export default function ValidatedInput({
                         onBlur={onBlur}
                         placeholder={placeholder}
                         disabled={disabled}
+                        name={name}
                         aria-invalid={hasErrors ? "true" : "false"}
                         aria-describedby={hasErrors ? `${id}-error` : undefined}
                     />

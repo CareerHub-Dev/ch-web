@@ -1,12 +1,9 @@
-import { Post } from "@/lib/api/posts/schemas";
 import Link from "next/link";
 import Image from "next/image";
 import { HandThumbUpIcon } from "@heroicons/react/24/outline";
 import { getImage } from "@/lib/api/image";
-
-function limitText(text: string, limit: number) {
-    return text.length > limit ? `${text.slice(0, limit)}...` : text;
-}
+import { limitText } from "@/lib/util";
+import { Post } from "@/features/posts/hooks/use-self-posts-query";
 
 export default function RecentPost({ id, text, account, likes }: Post) {
     const { name, image, role, id: accountId } = account;

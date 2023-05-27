@@ -1,80 +1,45 @@
-import useSession from '@/hooks/useSession';
-import { useQuery } from '@tanstack/react-query';
-import { fetchJobOfferDetails } from '@/lib/api/remote/jobOffers';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import GeneralInfo from '@/components/offers/details/GeneralInfo';
-import JobOfferTitle from '@/components/offers/details/JobOfferTitle';
-import JobOfferContent from '@/components/offers/details/JobOfferContent';
-import { protectedSsr } from '@/lib/protected-ssr';
+import { useRouter } from "next/router";
+import { InferGetServerSidePropsType } from "next";
+import { protectedSsr } from "@/lib/protected-ssr";
+import { UserRole } from "@/lib/schemas/UserRole";
+import CompanyJobOfferPage from "@/features/job-offer-details/pages/CompanyJobOfferPage";
+import StudentJobOfferPage from "@/features/job-offer-details/pages/StudentJobOfferPage";
+import CommonLayout from "@/components/layout/CommonLayout";
 
-const JobOfferDetailPage = () => {
-  const { data: session } = useSession();
-  const token = session?.jwtToken as string;
-  const { jobOfferId } = useRouter().query;
-  const jobOfferQuery = useQuery(
-    ['jobOfferDetails', jobOfferId],
-    fetchJobOfferDetails({
-      token,
-      jobOfferId: jobOfferId as string,
-    }),
-    {
-      enabled: !!token,
-      onError: (err: any) => {
-        alert && alert(err.message);
-      },
+export default function JobOfferDetailPage({
+    role,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+    const router = useRouter();
+    const { jobOfferId } = router.query;
+
+    if (!(typeof jobOfferId === "string")) {
+        return (
+            <p className="text-center text-red-600">
+                {"Помилка при завантаженні вакансії"}
+            </p>
+        );
     }
-  );
 
-  if (jobOfferQuery.isLoading) {
-    return (
-      <div className="text-center">
-        <LoadingSpinner />
-      </div>
-    );
-  }
+    if (role === "Company") {
+        return <CompanyJobOfferPage jobOfferId={jobOfferId} />;
+    }
 
-  if (jobOfferQuery.isError) {
-    return (
-      <div className="text-center">
-        <p>Помилка при завантаженні вакансії</p>
-      </div>
-    );
-  }
+    return <StudentJobOfferPage />;
+}
 
-  const jobOffer = jobOfferQuery.data as JobOfferDetails.JobOffer;
+JobOfferDetailPage.getLayout = CommonLayout;
 
-  return (
-    <>
-      <Head>
-        <title>{jobOffer.title}</title>
-        <meta
-          name="description"
-          content={`${jobOffer.companyName}; Пропозиція: ${jobOffer.title}`}
-        />
-      </Head>
-      <JobOfferTitle title={jobOffer.title} />
-      <GeneralInfo
-        jobOfferId={jobOffer.id}
-        companyId={jobOffer.companyId}
-        companyName={jobOffer.companyName}
-        startDate={jobOffer.startDate}
-        endDate={jobOffer.endDate}
-        tags={jobOffer.tags}
-        workFormat={jobOffer.workFormat}
-        experienceLevel={jobOffer.experienceLevel}
-      />
-      <JobOfferContent
-        overview={jobOffer.overview}
-        requirements={jobOffer.requirements}
-        responsibilities={jobOffer.responsibilities}
-      />
-    </>
-  );
-};
-export default JobOfferDetailPage;
-
-export const getServerSideProps = protectedSsr({
-  allowedRoles: ['Student'],
+export const getServerSideProps = protectedSsr<{
+    role: UserRole;
+}>({
+    allowedRoles: ["Student", "Company"],
+    getProps: async (context) => {
+        const { session } = context;
+        const { role } = session;
+        return {
+            props: {
+                role,
+            },
+        };
+    },
 });

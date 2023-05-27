@@ -55,7 +55,7 @@ export default function TabMenu() {
                 <select
                     id="tabs"
                     name="tabs"
-                    className="block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                    className="block w-full rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                     defaultValue={
                         currentTab === "posts" ? "posts" : tabs.at(0)!.query
                     }

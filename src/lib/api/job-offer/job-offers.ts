@@ -1,8 +1,12 @@
 import { request } from "@/lib/axios";
 import { parsePaginatedResponseAsync } from "../pagination";
-import { JobOfferFeedSchema } from "./schemas";
-import { type AxiosInstance } from "axios";
-import { objectToFormData } from "@/lib/forms";
+import {
+    AppliedCvsSchema,
+    JobOfferFeedSchema,
+    JobOfferSchema,
+} from "./schemas";
+import { AxiosInstance } from "axios";
+import { z } from "zod";
 
 export function getJobOffers(
     instance: AxiosInstance,
@@ -14,6 +18,53 @@ export function getJobOffers(
         params,
         select: parsePaginatedResponseAsync(JobOfferFeedSchema),
     });
+}
+
+export function getSelfJobOffersAsCompany(
+    instance: AxiosInstance,
+    params: PaginatedRequestParams
+) {
+    return request({
+        instance,
+        url: "/Company/self/JobOffers",
+        params,
+        select: parsePaginatedResponseAsync(JobOfferFeedSchema),
+    });
+}
+
+export function getJobOfferAsCompany(jobOfferId: string) {
+    return (instance: AxiosInstance) => {
+        return request({
+            instance,
+            method: "GET",
+            url: `Company/self/JobOffers/${jobOfferId}`,
+            select: (res) => JobOfferSchema.parseAsync(res.data),
+        });
+    };
+}
+
+export function getJobOfferApplications(
+    instance: AxiosInstance,
+    { jobOfferId, ...params }: PaginatedRequestParams & { jobOfferId: string }
+) {
+    return request({
+        instance,
+        method: "GET",
+        url: `Company/self/JobOffers/${jobOfferId}/CVs`,
+        params,
+        select: parsePaginatedResponseAsync(AppliedCvsSchema),
+    });
+}
+
+export function getJobOfferApplicationsAmountAsCompany(jobOfferId: string) {
+    return (instance: AxiosInstance) => {
+        return request({
+            instance,
+            method: "GET",
+            url: `Company/self/JobOffers/${jobOfferId}/amount-applied-cvs`,
+            select: (res) => z.number().parse(res.data),
+        });
+    };
 }
 
 export function unsubscribeStudentFromJobOffer(instance: AxiosInstance) {
@@ -51,16 +102,11 @@ export function getSubscriptionOnJobOffer(instance: AxiosInstance) {
 
 export function createJobOffer(instance: AxiosInstance) {
     return (data: JobOfferForm.JobOffer) => {
-        const formData = objectToFormData(data);
-
         return request({
             method: "POST",
             url: "Company/self/JobOffers",
             instance,
-            data: formData,
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
+            data,
         });
     };
 }

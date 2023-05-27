@@ -1,61 +1,35 @@
 import { useCvDataStore } from "../../store/cv-data-store";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import ImageCrop from "@/components/ui/ImageCrop/v2";
-import PhotoDragAndDropInput from "../PhotoDragAndDropInput";
+import PhotoDragAndDropInput from "@/components/ui/PhotoDragAndDropInput";
+import useImageCrop from "@/hooks/useImageCrop";
 
-export default function PhotoEditDialog(props: { onClose: () => void }) {
+export default function PhotoEditDialog({
+    onClose,
+    show,
+}: {
+    onClose: () => void;
+    show: boolean;
+}) {
+    const { temporaryPhoto, load, changeCrop, isLoaded } = useImageCrop();
     const changePhoto = useCvDataStore((s) => s.changePhoto);
-    const [temporaryPhoto, setTemporaryPhoto] = useState<{
-        source: File;
-        sourceUrl: string;
-        cropped: Blob;
-    }>();
-
-    const cannotSave = !temporaryPhoto;
-
-    const handlePhotoLoaded = ({
-        photoSource,
-        croppedPhotoBlob,
-    }: {
-        photoSource: File;
-        croppedPhotoBlob: Blob;
-    }) => {
-        if (temporaryPhoto?.sourceUrl)
-            URL.revokeObjectURL(temporaryPhoto.sourceUrl);
-
-        setTemporaryPhoto({
-            source: photoSource,
-            sourceUrl: URL.createObjectURL(photoSource),
-            cropped: croppedPhotoBlob,
-        });
-    };
-
-    const handleChageCrop = (val: Blob) => {
-        setTemporaryPhoto((prev) => {
-            if (!prev) return prev;
-            return {
-                ...prev,
-                cropped: val,
-            };
-        });
-    };
 
     const handleSaveClick = () => {
-        if (cannotSave) return;
+        if (!isLoaded) return;
 
         changePhoto({
             sourceFileName: temporaryPhoto.source.name,
             sourceFileType: temporaryPhoto.source.type,
             croppedImage: temporaryPhoto.cropped,
         });
-        props.onClose();
+        onClose();
     };
 
     return (
-        <Transition appear show as={Fragment}>
-            <Dialog as="div" className="relative z-10 " onClose={props.onClose}>
+        <Transition appear show={show} as={Fragment}>
+            <Dialog as="div" className="relative z-10 " onClose={onClose}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -91,7 +65,7 @@ export default function PhotoEditDialog(props: { onClose: () => void }) {
                                         <button
                                             type="button"
                                             className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                                            onClick={props.onClose}
+                                            onClick={onClose}
                                         >
                                             <span className="sr-only">
                                                 Закрити
@@ -102,14 +76,14 @@ export default function PhotoEditDialog(props: { onClose: () => void }) {
                                             />
                                         </button>
                                     </div>
-                                    {cannotSave ? (
+                                    {!isLoaded ? (
                                         <PhotoDragAndDropInput
-                                            onPhotoLoaded={handlePhotoLoaded}
+                                            onPhotoLoaded={load}
                                         />
                                     ) : (
                                         <ImageCrop
                                             src={temporaryPhoto.sourceUrl}
-                                            onChangeCrop={handleChageCrop}
+                                            onChangeCrop={changeCrop}
                                             fileType={
                                                 temporaryPhoto.source.type
                                             }
@@ -122,14 +96,14 @@ export default function PhotoEditDialog(props: { onClose: () => void }) {
                                         type="button"
                                         className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:col-start-2 sm:text-sm disabled:cursor-not-allowed disabled:opacity-50"
                                         onClick={handleSaveClick}
-                                        disabled={cannotSave}
+                                        disabled={!isLoaded}
                                     >
                                         Зберегти
                                     </button>
                                     <button
                                         type="button"
                                         className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:col-start-1 sm:mt-0 sm:text-sm"
-                                        onClick={props.onClose}
+                                        onClick={onClose}
                                     >
                                         Відміна
                                     </button>

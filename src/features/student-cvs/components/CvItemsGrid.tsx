@@ -8,7 +8,7 @@ export function CvItemsGrid({
         id: string;
         title: string;
         created: string;
-        modified: string | null;
+        modified?: string | null | undefined;
     }[];
 }) {
     return (

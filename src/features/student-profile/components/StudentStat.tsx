@@ -42,7 +42,7 @@ export default function StudentStat({
             </DialogWithBackdrop>
             <div className="relative overflow-hidden rounded-lg bg-white px-4 pt-5 pb-12 shadow sm:px-6 sm:pt-6">
                 <dt>
-                    <div className="absolute rounded-md bg-indigo-500 p-3">
+                    <div className="absolute rounded-md bg-blue-500 p-3">
                         <Icon
                             className="h-6 w-6 text-white"
                             aria-hidden="true"
@@ -60,7 +60,7 @@ export default function StudentStat({
                         <div className="text-sm">
                             <button
                                 type="button"
-                                className="font-medium text-indigo-600 hover:text-indigo-500"
+                                className="font-medium text-blue-600 hover:text-blue-500"
                                 onClick={modalIsOpen.setTrue}
                             >
                                 {" Більше"}

@@ -16,7 +16,7 @@ export default function WorkExperiences() {
         (s) => s.dispatchWorkExperiences
     );
 
-    const [state, dispatch] = useDialogActionsListReducer<WorkExperience>();
+    const { state, dispatch } = useDialogActionsListReducer<WorkExperience>();
     const { dialog, focusedItem, focusedItemIndex } = state;
 
     const handleAddClick = () =>
