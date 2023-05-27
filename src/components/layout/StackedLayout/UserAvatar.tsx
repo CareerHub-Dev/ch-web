@@ -1,15 +1,15 @@
 import { useSelfAvatarQuery } from "@/hooks/useSelfAvatarQuery";
-import { getImage } from "@/lib/api/image";
+import { getImageWithDefault } from "@/lib/api/image";
 import { useBoolean } from "usehooks-ts";
+import useSession from "@/hooks/useSession";
 import Image from "next/image";
-import defaultAvatar from "@/resources/images/default-avatar.png";
 import cn from "classnames";
 
 export default function UserAvatar() {
     const { data, isLoading } = useSelfAvatarQuery();
+    const { data: sessionData } = useSession();
     const imageMightBeLoading = useBoolean(true);
-
-    const imageSource = data ? getImage(data) : defaultAvatar;
+    const imageUrl = getImageWithDefault(data, sessionData?.role ?? "Student");
 
     return (
         <span
@@ -23,7 +23,7 @@ export default function UserAvatar() {
                     className="rounded-full overflow-hidden aspect-square"
                     width={32}
                     height={32}
-                    src={imageSource}
+                    src={imageUrl}
                     alt="Ваш аватар"
                     onLoadingComplete={imageMightBeLoading.setFalse}
                 />
