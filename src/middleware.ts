@@ -1,5 +1,8 @@
-import { NextResponse } from "next/server";
-import { NextRequest, NextFetchEvent } from "next/server";
+import {
+    type NextRequest,
+    type NextFetchEvent,
+    NextResponse,
+} from "next/server";
 import { parseSessionFromNextCookies } from "./lib/middleware/sessionMiddleware";
 
 export async function middleware(req: NextRequest, _event: NextFetchEvent) {

@@ -1,10 +1,10 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { LocalGateway } from "@/lib/api/account";
-import { type SessionData } from "@/lib/schemas/SessionData";
+import { SessionData } from "@/lib/schemas/SessionData";
 import { createContext, ReactNode, useReducer } from "react";
 import createAxiosInstance from "@/lib/axios/create-instance";
-import axios, { type AxiosInstance } from "axios";
+import axios, { AxiosInstance } from "axios";
 
 type SessionContextState =
     | { status: "unauthenticated"; data: null }
@@ -43,10 +43,10 @@ export const SessionContext = createContext<SessionContextData>({
     refreshTokenAsync: () => new Promise(() => {}),
 });
 
-const sessionStateReducer = (
+function sessionStateReducer(
     state: SessionContextState,
     action: SessionContextAction
-): SessionContextState => {
+): SessionContextState {
     switch (action.type) {
         case "UPDATE":
             return {
@@ -61,13 +61,9 @@ const sessionStateReducer = (
         default:
             return { ...state };
     }
-};
+}
 
-export const SessionContextProvider = ({
-    children,
-}: {
-    children: ReactNode;
-}) => {
+export function SessionContextProvider({ children }: { children: ReactNode }) {
     const { replace } = useRouter();
     const [state, dispatch] = useReducer(
         sessionStateReducer,
@@ -142,4 +138,4 @@ export const SessionContextProvider = ({
             {children}
         </SessionContext.Provider>
     );
-};
+}

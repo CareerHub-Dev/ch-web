@@ -1,4 +1,4 @@
-import { type AxiosRequestHeaders, type AxiosInstance } from "axios";
+import { AxiosRequestHeaders, AxiosInstance } from "axios";
 
 export function setupJwtInterceptor({
     instance,

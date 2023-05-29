@@ -4,6 +4,7 @@
     "private": true,
     "scripts": {
         "test": "jest",
+        "test:e2e": "playwright test",
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
@@ -43,6 +44,7 @@
         "zustand": "^4.3.7"
     },
     "devDependencies": {
+        "@playwright/test": "^1.34.3",
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^14.0.0",
         "@types/cookie": "^0.5.1",

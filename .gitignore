@@ -3,6 +3,9 @@
 # vscode logs
 .vscode
 
+# test reports
+playwright-report
+
 # dependencies
 /node_modules
 /.pnp
