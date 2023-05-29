@@ -11,7 +11,7 @@ import LoadMore from "@/components/ui/LoadMore";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import CommonLayout from "@/components/layout/CommonLayout";
 import { protectedSsr } from "@/lib/protected-ssr";
-import { type InferGetServerSidePropsType } from "next/types";
+import { InferGetServerSidePropsType } from "next/types";
 
 const CompanyDetailsPage: NextPageWithLayout<
     InferGetServerSidePropsType<typeof getServerSideProps>

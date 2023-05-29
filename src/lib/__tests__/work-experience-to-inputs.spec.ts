@@ -6,11 +6,11 @@ import {
     experienceLevelOptions,
 } from "../enums";
 import getMonth from "date-fns/getMonth";
+import { getMonthOption } from "../date";
 import {
     WorkExperience,
     WorkExperienceInputValues,
-} from "@/features/cv-builder/store/cv-data-store/cv";
-import { getMonthOption } from "../date";
+} from "@/features/work-experience/types";
 
 describe("workExperienceToInputs", () => {
     it("should return default values if no payload is provided", () => {
