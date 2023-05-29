@@ -14,99 +14,86 @@ import { protectedSsr } from "@/lib/protected-ssr";
 import { InferGetServerSidePropsType } from "next/types";
 
 const CompanyDetailsPage: NextPageWithLayout<
-    InferGetServerSidePropsType<typeof getServerSideProps>
+  InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ companyId }) => {
-    const [jobOfferSearch, setJobOfferSearch] = useState("");
-    const debouncedJobOfferSearch = useDebounce(jobOfferSearch, 500);
+  const [jobOfferSearch, setJobOfferSearch] = useState("");
+  const debouncedJobOfferSearch = useDebounce(jobOfferSearch, 500);
 
-    const params = {
-        companyId,
-        pageSize: 25,
-        searchTerm: debouncedJobOfferSearch,
-    };
+  const params = {
+    companyId,
+    pageSize: 25,
+    searchTerm: debouncedJobOfferSearch,
+  };
 
-    const companyQuery = useProtectedQuery(
-        ["company", companyId],
-        getCompany(companyId)
-    );
-    const companyJobOffersQuery = useProtectedPaginatedQuery({
-        queryKey: ["companyJobOffers", companyId],
-        getItems: getCompanyJobOffers,
-        params,
-    });
+  const companyQuery = useProtectedQuery(
+    ["company", companyId],
+    getCompany(companyId)
+  );
+  const companyJobOffersQuery = useProtectedPaginatedQuery({
+    queryKey: ["companyJobOffers", companyId],
+    getItems: getCompanyJobOffers,
+    params,
+  });
 
-    if (companyQuery.isLoading) {
-        return (
-            <div className="flex justify-center mt-12">
-                <LoadingSpinner />
-            </div>
-        );
-    }
-    if (companyQuery.isError) {
-        return <p>Помилка при завантаженні компанії</p>;
-    }
-    const { id, name, motto, description, logo, banner } = companyQuery.data;
-
+  if (companyQuery.isLoading) {
     return (
-        <div className="max-w-7xl mx-auto bg-white shadow-md rounded-b-lg mb-8">
-            <CompanyBanner imageId={banner} />
-            <div className="p-4">
-                <CompanyHeader
-                    id={id}
-                    name={name}
-                    motto={motto}
-                    companyLogo={logo}
-                />
-                <CompanyDescription description={description} />
-
-                <section className="p-4">
-                    <h3 className="text-2xl font-semibold">Вакансії</h3>
-                    <hr className="my-4" />
-                    <input
-                        type="search"
-                        className="w-full form-input px-4 py-2 text-sm mb-4"
-                        onChange={(e) => setJobOfferSearch(e.target.value)}
-                        value={jobOfferSearch}
-                        placeholder="Пошук"
-                    />
-                    {companyJobOffersQuery.isLoading ? (
-                        <div className="flex justify-center mt-12">
-                            <LoadingSpinner />
-                        </div>
-                    ) : companyJobOffersQuery.isError ? (
-                        <p>Помилка при завантаженні вакансій</p>
-                    ) : companyJobOffersQuery.data.pages.at(0)?.data.length ===
-                      0 ? (
-                        <p>Немає вакансій</p>
-                    ) : (
-                        companyJobOffersQuery.data.pages.map(
-                            (page, pageIndex) => (
-                                <Fragment key={pageIndex}>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                        {page.data.map((item, itemIndex) => (
-                                            <CompanyJobOffersListItem
-                                                key={itemIndex}
-                                                item={item}
-                                            />
-                                        ))}
-                                    </div>
-                                </Fragment>
-                            )
-                        )
-                    )}
-                    {companyJobOffersQuery.isFetchingNextPage ? (
-                        <div className="flex justify-center mt-12">
-                            <LoadingSpinner />
-                        </div>
-                    ) : companyJobOffersQuery.hasNextPage ? (
-                        <LoadMore
-                            onClick={companyJobOffersQuery.fetchNextPage}
-                        />
-                    ) : null}
-                </section>
-            </div>
-        </div>
+      <div className="flex justify-center mt-12">
+        <LoadingSpinner />
+      </div>
     );
+  }
+  if (companyQuery.isError) {
+    return <p>Помилка при завантаженні компанії</p>;
+  }
+  const { id, name, motto, description, logo, banner } = companyQuery.data;
+
+  return (
+    <div className="max-w-7xl mx-auto bg-white shadow-md rounded-b-lg mb-8">
+      <CompanyBanner imageId={banner} />
+      <div className="p-4">
+        <CompanyHeader id={id} name={name} motto={motto} companyLogo={logo} />
+        <CompanyDescription description={description} />
+
+        <section className="p-4">
+          <h3 className="text-2xl font-semibold">Вакансії</h3>
+          <hr className="my-4" />
+          <input
+            type="search"
+            className="w-full form-input px-4 py-2 text-sm mb-4"
+            onChange={(e) => setJobOfferSearch(e.target.value)}
+            value={jobOfferSearch}
+            placeholder="Пошук"
+          />
+          {companyJobOffersQuery.isLoading ? (
+            <div className="flex justify-center mt-12">
+              <LoadingSpinner />
+            </div>
+          ) : companyJobOffersQuery.isError ? (
+            <p>Помилка при завантаженні вакансій</p>
+          ) : companyJobOffersQuery.data.pages.at(0)?.data.length === 0 ? (
+            <p>Немає вакансій</p>
+          ) : (
+            companyJobOffersQuery.data.pages.map((page, pageIndex) => (
+              <Fragment key={pageIndex}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {page.data.map((item, itemIndex) => (
+                    <CompanyJobOffersListItem key={itemIndex} item={item} />
+                  ))}
+                </div>
+              </Fragment>
+            ))
+          )}
+          {companyJobOffersQuery.isFetchingNextPage ? (
+            <div className="flex justify-center mt-12">
+              <LoadingSpinner />
+            </div>
+          ) : companyJobOffersQuery.hasNextPage ? (
+            <LoadMore onClick={companyJobOffersQuery.fetchNextPage} />
+          ) : null}
+        </section>
+      </div>
+    </div>
+  );
 };
 
 CompanyDetailsPage.getLayout = CommonLayout;
@@ -114,14 +101,14 @@ CompanyDetailsPage.getLayout = CommonLayout;
 export default CompanyDetailsPage;
 
 export const getServerSideProps = protectedSsr<{ companyId: string }>({
-    allowedRoles: ["Student", "Company"],
-    getProps: async (context) => {
-        const companyId = context.query.companyId;
-        if (typeof companyId === "string") {
-            return {
-                props: { companyId },
-            };
-        }
-        return { notFound: true };
-    },
+  allowedRoles: ["Student", "Company"],
+  getProps: async (context) => {
+    const companyId = context.query.companyId;
+    if (typeof companyId === "string") {
+      return {
+        props: { companyId },
+      };
+    }
+    return { notFound: true };
+  },
 });

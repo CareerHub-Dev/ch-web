@@ -1,5 +1,5 @@
-import Image, { StaticImageData } from 'next/image';
-import Link from 'next/link';
+import Image, { StaticImageData } from "next/image";
+import Link from "next/link";
 
 const EditPageHeader = ({
   avatarData,
@@ -20,7 +20,7 @@ const EditPageHeader = ({
             src={avatarData}
             width={48}
             height={48}
-            alt={'Твій аватар'}
+            alt={"Твій аватар"}
             className="rounded-full overflow-hidden aspect-square"
           />
         </span>

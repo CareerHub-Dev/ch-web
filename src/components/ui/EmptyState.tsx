@@ -1,6 +1,4 @@
-export default function EmptyState(props: {
-  noItemsText: string;
-}) {
+export default function EmptyState(props: { noItemsText: string }) {
   return (
     <div className="text-center">
       <svg

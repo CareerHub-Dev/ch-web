@@ -1,11 +1,11 @@
-import { getImage } from '@/lib/api/image';
-import Image from 'next/image';
+import { getImage } from "@/lib/api/image";
+import Image from "next/image";
 
 const CompanyLogo: React.FC<{
   imageId?: string | null;
   companyName: string;
 }> = ({ imageId, companyName }) => {
-  const imageSrc = imageId ? getImage(imageId) : '/company-dummy-logo.png';
+  const imageSrc = imageId ? getImage(imageId) : "/company-dummy-logo.png";
 
   return (
     <Image

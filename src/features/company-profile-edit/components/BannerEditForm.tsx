@@ -12,103 +12,100 @@ import { getCompanyBanner } from "@/lib/api/image";
 import RemovePhotoModal from "@/features/photo-crop/RemovePhotoModal";
 
 export default function BannerEditForm({
-    banner,
+  banner,
 }: {
-    banner: string | null | undefined;
+  banner: string | null | undefined;
 }) {
-    const toast = useToast();
-    const imageUpload = useImageUpload();
-    const deleteDialogIsOpen = useBoolean(false);
-    const { mutate, isLoading } = useProtectedMutation(
-        ["update-banner"],
-        updateCompanyLogo,
-        {
-            onSuccess: () => {
-                toast.success("Зміни збережено");
-            },
-            onError: (error) => {
-                toast.error(parseUnknownError(error));
-            },
-        }
+  const toast = useToast();
+  const imageUpload = useImageUpload();
+  const deleteDialogIsOpen = useBoolean(false);
+  const { mutate, isLoading } = useProtectedMutation(
+    ["update-banner"],
+    updateCompanyLogo,
+    {
+      onSuccess: () => {
+        toast.success("Зміни збережено");
+      },
+      onError: (error) => {
+        toast.error(parseUnknownError(error));
+      },
+    }
+  );
+  const cannotSubmit = isLoading || imageUpload.data === undefined;
+  const imageSource =
+    imageUpload.data?.croppedPhotoUrl ?? getCompanyBanner(banner);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (imageUpload.data === undefined) {
+      return;
+    }
+    const { data } = imageUpload;
+    mutate(
+      new File([data.croppedPhoto], data.sourceFileName, {
+        type: data.sourceFileType,
+      })
     );
-    const cannotSubmit = isLoading || imageUpload.data === undefined;
-    const imageSource =
-        imageUpload.data?.croppedPhotoUrl ?? getCompanyBanner(banner);
+  };
+  const handleCancelClick = () => {};
+  const handleRemove = () => {
+    mutate(undefined);
+  };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (imageUpload.data === undefined) {
-            return;
-        }
-        const { data } = imageUpload;
-        mutate(
-            new File([data.croppedPhoto], data.sourceFileName, {
-                type: data.sourceFileType,
-            })
-        );
-    };
-    const handleCancelClick = () => {};
-    const handleRemove = () => {
-        mutate(undefined);
-    };
+  return (
+    <>
+      <RemovePhotoModal
+        isLoading={isLoading}
+        show={deleteDialogIsOpen.value}
+        onClose={deleteDialogIsOpen.setFalse}
+        onConfirm={handleRemove}
+      />
+      <div>
+        <h2 className="text-base font-semibold leading-7 text-black">
+          {"Баннер компанії"}
+        </h2>
 
-    return (
-        <>
-            <RemovePhotoModal
-                isLoading={isLoading}
-                show={deleteDialogIsOpen.value}
-                onClose={deleteDialogIsOpen.setFalse}
-                onConfirm={handleRemove}
+        <p className="mt-1 text-sm leading-6 text-gray-400">
+          {
+            "Завантажте баннер компанії. Баннер буде відображатися на сторінці компанії."
+          }
+        </p>
+      </div>
+
+      <form className="md:col-span-2" onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+          <div className="col-span-full flex items-center gap-x-8">
+            <Image
+              src={imageSource}
+              alt="Company"
+              width={1024}
+              height={128}
+              className="h-[128px] w-[1024px] flex-none rounded-md bg-gray-800 object-cover"
             />
-            <div>
-                <h2 className="text-base font-semibold leading-7 text-black">
-                    {"Баннер компанії"}
-                </h2>
+            <SecondaryButton
+              type="button"
+              onClick={deleteDialogIsOpen.setTrue}
+              disabled={isLoading}
+            >
+              {"Видалити"}
+            </SecondaryButton>
+          </div>
 
-                <p className="mt-1 text-sm leading-6 text-gray-400">
-                    {
-                        "Завантажте баннер компанії. Баннер буде відображатися на сторінці компанії."
-                    }
-                </p>
-            </div>
+          <div className="mt-8 flex gap-4">
+            <PrimaryButton type="submit" disabled={cannotSubmit}>
+              {isLoading ? (
+                <LoadingSpinner className="text-white h-5 w-5" />
+              ) : (
+                "Зберегти"
+              )}
+            </PrimaryButton>
 
-            <form className="md:col-span-2" onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-                    <div className="col-span-full flex items-center gap-x-8">
-                        <Image
-                            src={imageSource}
-                            alt="Company"
-                            width={1024}
-                            height={128}
-                            className="h-[128px] w-[1024px] flex-none rounded-md bg-gray-800 object-cover"
-                        />
-                        <SecondaryButton
-                            type="button"
-                            onClick={deleteDialogIsOpen.setTrue}
-                            disabled={isLoading}
-                        >
-                            {"Видалити"}
-                        </SecondaryButton>
-                    </div>
-
-                    <div className="mt-8 flex gap-4">
-                        <PrimaryButton type="submit" disabled={cannotSubmit}>
-                            {isLoading ? (
-                                <LoadingSpinner className="text-white h-5 w-5" />
-                            ) : (
-                                "Зберегти"
-                            )}
-                        </PrimaryButton>
-
-                        <SecondaryButton
-                            type="button"
-                            onClick={handleCancelClick}
-                        >
-                            {"Відмінити"}
-                        </SecondaryButton>
-                    </div>
-                </div>
-            </form>
-        </>
-    );
+            <SecondaryButton type="button" onClick={handleCancelClick}>
+              {"Відмінити"}
+            </SecondaryButton>
+          </div>
+        </div>
+      </form>
+    </>
+  );
 }

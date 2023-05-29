@@ -3,11 +3,11 @@ import CommonLayout from "@/components/layout/CommonLayout";
 import JobOffersFeed from "@/features/job-offers-feed/components/JobOffersFeed";
 
 export default function CompanyJobOffersPage() {
-    return <JobOffersFeed />;
+  return <JobOffersFeed />;
 }
 
 CompanyJobOffersPage.getLayout = CommonLayout;
 
 export const getServerSideProps = protectedSsr({
-    allowedRoles: ["Company"],
+  allowedRoles: ["Company"],
 });

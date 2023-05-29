@@ -1,13 +1,13 @@
-import { useCvAssistanceStore } from '@/features/cv-builder/store/cv-assistance-store'
-import AssistanceAlert from '../../AssistantAlert'
+import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
+import AssistanceAlert from "../../AssistantAlert";
 
 export default function Stage4Tips() {
-  const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled)
+  const isAssistEnabled = useCvAssistanceStore((s) => s.isAssistanceEnabled);
 
   return (
     <>
       {isAssistEnabled && (
-        <div className='mt-6'>
+        <div className="mt-6">
           <AssistanceAlert>
             <p>
               Подумай про те, як твої цілі співвідносяться з твоїми навичками:
@@ -19,7 +19,7 @@ export default function Stage4Tips() {
             <br />
             <p>Також може бути корисно вказати:</p>
 
-            <ul className='list-disc'>
+            <ul className="list-disc">
               <li>Системи контролю версій</li>
               <li>Методології</li>
               <li>Сервіси</li>
@@ -29,5 +29,5 @@ export default function Stage4Tips() {
         </div>
       )}
     </>
-  )
+  );
 }

@@ -1,11 +1,11 @@
-import { useCvUiStore } from '../../store/cv-ui-store';
-import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import { Fragment } from 'react';
-import CVPreview from '../old-preview/CvPreview';
+import { useCvUiStore } from "../../store/cv-ui-store";
+import { Dialog, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Fragment } from "react";
+import CVPreview from "../old-preview/CvPreview";
 
 export function PreviewModal() {
-  const isOpen = useCvUiStore((s) => s.currentModal) === 'preview';
+  const isOpen = useCvUiStore((s) => s.currentModal) === "preview";
   const closeModal = useCvUiStore((s) => s.closeModal);
 
   return (

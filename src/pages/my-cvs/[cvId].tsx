@@ -4,8 +4,8 @@ import { protectedSsr } from "@/lib/protected-ssr";
 import { StudentCvDetails } from "@/lib/api/cvs/schemas";
 
 const EditCvPage: NextPageWithLayout = function () {
-    // TODO: fetch initial data from API
-    return <CvBuilder initialData={{} as StudentCvDetails} />;
+  // TODO: fetch initial data from API
+  return <CvBuilder initialData={{} as StudentCvDetails} />;
 };
 
 EditCvPage.getLayout = CommonLayout;
@@ -13,5 +13,5 @@ EditCvPage.getLayout = CommonLayout;
 export default EditCvPage;
 
 export const getServerSideProps = protectedSsr({
-    allowedRoles: ["Student"],
+  allowedRoles: ["Student"],
 });

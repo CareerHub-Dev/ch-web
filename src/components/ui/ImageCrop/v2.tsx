@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { centerAspectCrop, Crop as CropUtil } from '@/lib/images';
-import { useCallback, useRef, useState, type SyntheticEvent } from 'react';
+import { centerAspectCrop, Crop as CropUtil } from "@/lib/images";
+import { useCallback, useRef, useState, type SyntheticEvent } from "react";
 import ReactCrop, {
   PercentCrop,
   type Crop,
   type PixelCrop,
-} from 'react-image-crop';
+} from "react-image-crop";
 
 export default function ImageCrop({
   src,
@@ -69,7 +69,7 @@ export default function ImageCrop({
 
 const ONE_TO_ONE_ASPECT = 1;
 const DEFAULT_PHOTO_CROP: PercentCrop = {
-  unit: '%',
+  unit: "%",
   x: 25,
   y: 25,
   width: 50,

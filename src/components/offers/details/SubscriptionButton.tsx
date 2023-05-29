@@ -1,20 +1,20 @@
-import useSession from '@/hooks/useSession';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import useSession from "@/hooks/useSession";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   fetchJobOfferSubscriptionStatus,
   changeSubscriptionStatus,
-} from '@/lib/api/remote/jobOffers';
-import { CheckIcon } from '@heroicons/react/24/outline';
-import LinkButton from '@/components/ui/LinkButton';
+} from "@/lib/api/remote/jobOffers";
+import { CheckIcon } from "@heroicons/react/24/outline";
+import LinkButton from "@/components/ui/LinkButton";
 
-import classes from './GeneralInfo.module.scss';
+import classes from "./GeneralInfo.module.scss";
 
 const SubscriptionButton = ({ jobOfferId }: { jobOfferId: string }) => {
   const { data: session } = useSession();
   const token = session?.jwtToken as string;
   const queryClient = useQueryClient();
   const subscriptionStatusQuery = useQuery(
-    ['jobOffer', jobOfferId, 'subscriptions', 'self'],
+    ["jobOffer", jobOfferId, "subscriptions", "self"],
     fetchJobOfferSubscriptionStatus({
       token,
       jobOfferId,
@@ -26,7 +26,7 @@ const SubscriptionButton = ({ jobOfferId }: { jobOfferId: string }) => {
   const isFollowed = subscriptionStatusQuery.data;
 
   const subscriptionMutation = useMutation(
-    ['jobOffer', jobOfferId, 'subscribe'],
+    ["jobOffer", jobOfferId, "subscribe"],
     changeSubscriptionStatus({
       accessToken: token,
       jobOfferId,
@@ -38,24 +38,24 @@ const SubscriptionButton = ({ jobOfferId }: { jobOfferId: string }) => {
       },
       onMutate: () => {
         const cachedStatus = queryClient.getQueryData([
-          'jobOffer',
+          "jobOffer",
           jobOfferId,
-          'subscriptions',
-          'self',
+          "subscriptions",
+          "self",
         ]);
         const cachedAmount = queryClient.getQueryData([
-          'jobOffer',
+          "jobOffer",
           jobOfferId,
-          'subscriptions',
-          'amount',
+          "subscriptions",
+          "amount",
         ]);
         const newStatus = !cachedStatus;
         queryClient.setQueryData(
-          ['jobOffer', jobOfferId, 'subscriptions', 'self'],
+          ["jobOffer", jobOfferId, "subscriptions", "self"],
           newStatus
         );
         queryClient.setQueryData(
-          ['jobOffer', jobOfferId, 'subscriptions', 'amount'],
+          ["jobOffer", jobOfferId, "subscriptions", "amount"],
           (_: any) =>
             cachedStatus
               ? --(cachedAmount as number)
@@ -64,11 +64,11 @@ const SubscriptionButton = ({ jobOfferId }: { jobOfferId: string }) => {
 
         return () => {
           queryClient.setQueryData(
-            ['jobOffer', jobOfferId, 'subscriptions', 'self'],
+            ["jobOffer", jobOfferId, "subscriptions", "self"],
             cachedStatus
           );
           queryClient.setQueryData(
-            ['jobOffer', jobOfferId, 'subscriptions', 'amount'],
+            ["jobOffer", jobOfferId, "subscriptions", "amount"],
             cachedAmount
           );
         };
@@ -76,19 +76,19 @@ const SubscriptionButton = ({ jobOfferId }: { jobOfferId: string }) => {
       onSuccess: (_data, _variables, restoreCache) => {
         restoreCache && restoreCache();
         queryClient.setQueryData(
-          ['jobOffer', jobOfferId, 'subscriptions', 'self'],
+          ["jobOffer", jobOfferId, "subscriptions", "self"],
           (prev: any) => !(prev as boolean)
         );
         queryClient.setQueryData(
-          ['jobOffer', jobOfferId, 'subscriptions', 'amount'],
+          ["jobOffer", jobOfferId, "subscriptions", "amount"],
           (prev: any) => (isFollowed ? --(prev as number) : ++(prev as number))
         );
       },
       onSettled: () => {
         queryClient.invalidateQueries([
-          'jobOffer',
+          "jobOffer",
           jobOfferId,
-          'subscriptions',
+          "subscriptions",
         ]);
       },
     }
@@ -105,9 +105,9 @@ const SubscriptionButton = ({ jobOfferId }: { jobOfferId: string }) => {
         style="dark-blue-secondary"
         additionalClasses={classes.btn}
       >
-        <span className={classes['btn-content']}>
+        <span className={classes["btn-content"]}>
           <CheckIcon />
-          {'Підписаний'}
+          {"Підписаний"}
         </span>
       </LinkButton>
     );
@@ -118,7 +118,7 @@ const SubscriptionButton = ({ jobOfferId }: { jobOfferId: string }) => {
       style="light-blue-primary"
       additionalClasses={classes.btn}
     >
-      {'Підписатися'}
+      {"Підписатися"}
     </LinkButton>
   );
 };

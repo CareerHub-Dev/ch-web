@@ -6,48 +6,44 @@ import useImageCrop from "@/hooks/useImageCrop";
 import { LoadedPhotoData } from "@/hooks/useImageUpload";
 
 export default function ChangePhotoModal({
-    show,
-    onClose,
-    onConfirm,
+  show,
+  onClose,
+  onConfirm,
 }: {
-    show: boolean;
-    onClose: () => void;
-    onConfirm: (value: LoadedPhotoData) => void;
+  show: boolean;
+  onClose: () => void;
+  onConfirm: (value: LoadedPhotoData) => void;
 }) {
-    const { temporaryPhoto, load, changeCrop, isLoaded } = useImageCrop();
+  const { temporaryPhoto, load, changeCrop, isLoaded } = useImageCrop();
 
-    const handleConfirm = () => {
-        if (!isLoaded) return;
+  const handleConfirm = () => {
+    if (!isLoaded) return;
 
-        onConfirm({
-            sourceFileName: temporaryPhoto.source.name,
-            sourceFileType: temporaryPhoto.source.type,
-            croppedImage: temporaryPhoto.cropped,
-        });
-        onClose();
-    };
-    return (
-        <DialogWithBackdrop
-            title={"Змінити фото"}
-            onClose={onClose}
-            show={show}
-        >
-            {!isLoaded ? (
-                <PhotoDragAndDropInput onPhotoLoaded={load} />
-            ) : (
-                <ImageCrop
-                    src={temporaryPhoto.sourceUrl}
-                    onChangeCrop={changeCrop}
-                    fileType={temporaryPhoto.source.type}
-                />
-            )}
-            <DialogActionButtons
-                onConfirm={handleConfirm}
-                onCancel={onClose}
-                confirmationDisabled={!isLoaded}
-                cancelText={"Відміна"}
-                confirmText={"Змінити"}
-            />
-        </DialogWithBackdrop>
-    );
+    onConfirm({
+      sourceFileName: temporaryPhoto.source.name,
+      sourceFileType: temporaryPhoto.source.type,
+      croppedImage: temporaryPhoto.cropped,
+    });
+    onClose();
+  };
+  return (
+    <DialogWithBackdrop title={"Змінити фото"} onClose={onClose} show={show}>
+      {!isLoaded ? (
+        <PhotoDragAndDropInput onPhotoLoaded={load} />
+      ) : (
+        <ImageCrop
+          src={temporaryPhoto.sourceUrl}
+          onChangeCrop={changeCrop}
+          fileType={temporaryPhoto.source.type}
+        />
+      )}
+      <DialogActionButtons
+        onConfirm={handleConfirm}
+        onCancel={onClose}
+        confirmationDisabled={!isLoaded}
+        cancelText={"Відміна"}
+        confirmText={"Змінити"}
+      />
+    </DialogWithBackdrop>
+  );
 }

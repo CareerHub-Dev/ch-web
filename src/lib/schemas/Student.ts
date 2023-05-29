@@ -1,23 +1,23 @@
 import { z } from "zod";
 
 const StudentBriefSchema = z.object({
+  id: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.string(),
+  isFollowed: z.boolean().nullish(),
+  photo: z.string().nullish(),
+  studentGroup: z.object({
     id: z.string(),
-    firstName: z.string(),
-    lastName: z.string(),
-    email: z.string(),
-    isFollowed: z.boolean().nullish(),
-    photo: z.string().nullish(),
-    studentGroup: z.object({
-        id: z.string(),
-        name: z.string(),
-    }),
+    name: z.string(),
+  }),
 });
 
 const StudentSchema = StudentBriefSchema.and(
-    z.object({
-        phone: z.string().nullish(),
-        birthDate: z.string().nullish(),
-    })
+  z.object({
+    phone: z.string().nullish(),
+    birthDate: z.string().nullish(),
+  })
 );
 export default StudentSchema;
 

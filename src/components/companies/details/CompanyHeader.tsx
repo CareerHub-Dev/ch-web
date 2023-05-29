@@ -1,6 +1,6 @@
-import CompanyInfo from './CompanyInfo';
-import CompanyLogo from './CompanyLogo';
-import CompanyStats from './CompanyStats';
+import CompanyInfo from "./CompanyInfo";
+import CompanyLogo from "./CompanyLogo";
+import CompanyStats from "./CompanyStats";
 
 const CompanyHeader = ({
   id,

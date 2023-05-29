@@ -1,14 +1,14 @@
-import { useInput } from '@/hooks/useInput';
-import useToast from '@/hooks/useToast';
-import { forgotPassword, resetPassword } from '@/lib/api/account';
-import parseUnknownError from '@/lib/parse-unknown-error';
-import { getEmailValidity, getPasswordValidity } from '@/lib/util';
-import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
-import { FormEventHandler, useRef } from 'react';
-import { AuthField } from './AuthField';
+import { useInput } from "@/hooks/useInput";
+import useToast from "@/hooks/useToast";
+import { forgotPassword, resetPassword } from "@/lib/api/account";
+import parseUnknownError from "@/lib/parse-unknown-error";
+import { getEmailValidity, getPasswordValidity } from "@/lib/util";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { FormEventHandler, useRef } from "react";
+import { AuthField } from "./AuthField";
 
-import classes from './forms.module.scss';
+import classes from "./forms.module.scss";
 
 export const ForgotPasswordForm = () => {
   const router = useRouter();
@@ -18,8 +18,8 @@ export const ForgotPasswordForm = () => {
     validators: [
       (val) =>
         getEmailValidity(val)
-          ? { type: 'success' }
-          : { type: 'error', message: 'Перевірте коректність поштової адреси' },
+          ? { type: "success" }
+          : { type: "error", message: "Перевірте коректність поштової адреси" },
     ],
   });
   const newPasswordInputRef = useRef<HTMLInputElement>(null);
@@ -27,8 +27,8 @@ export const ForgotPasswordForm = () => {
     validators: [
       (val) =>
         getPasswordValidity(val)
-          ? { type: 'success' }
-          : { type: 'error', message: 'Невалідний пароль' },
+          ? { type: "success" }
+          : { type: "error", message: "Невалідний пароль" },
     ],
   });
   const newPasswordRepeatInputRef = useRef<HTMLInputElement>(null);
@@ -36,16 +36,16 @@ export const ForgotPasswordForm = () => {
     validators: [
       (val) =>
         getPasswordValidity(val)
-          ? { type: 'success' }
-          : { type: 'error', message: 'Невалідний пароль' },
+          ? { type: "success" }
+          : { type: "error", message: "Невалідний пароль" },
       (val) =>
         val === newPasswordInput.value
-          ? { type: 'success' }
-          : { type: 'error', message: 'Паролі не співпадають' },
+          ? { type: "success" }
+          : { type: "error", message: "Паролі не співпадають" },
     ],
   });
   const forgotPasswordMutation = useMutation(
-    ['forgotPassword'],
+    ["forgotPassword"],
     forgotPassword,
     {
       onSuccess: (data: any) => {
@@ -56,9 +56,9 @@ export const ForgotPasswordForm = () => {
       },
     }
   );
-  const resetPasswordMutation = useMutation(['resetPassword'], resetPassword, {
+  const resetPasswordMutation = useMutation(["resetPassword"], resetPassword, {
     onSuccess: () => {
-      router.push('/auth/login');
+      router.push("/auth/login");
     },
   });
 
@@ -68,7 +68,7 @@ export const ForgotPasswordForm = () => {
   const validationHandler = () => {
     emailInput.blur();
     if (emailInput.isValid) {
-      toast.setCurrent('Відправляємо листа...');
+      toast.setCurrent("Відправляємо листа...");
       forgotPasswordMutation.mutate(emailInput.value);
     } else {
       emailInputRef.current!.focus();
@@ -85,7 +85,7 @@ export const ForgotPasswordForm = () => {
       newPasswordInput.isValid &&
       newPasswordRepeatInput.isValid
     ) {
-      toast.setCurrent('Оновлюємо пароль...');
+      toast.setCurrent("Оновлюємо пароль...");
       resetPasswordMutation.mutate({
         password: newPasswordInput.value,
         token: resetTokenInput.value,
@@ -131,9 +131,9 @@ export const ForgotPasswordForm = () => {
         <input
           id="submitButton"
           type="submit"
-          className={classes['auth-button']}
+          className={classes["auth-button"]}
           value={
-            forgotPasswordMutationPassed ? 'Підтвердити' : 'Відправити лист'
+            forgotPasswordMutationPassed ? "Підтвердити" : "Відправити лист"
           }
         />
       </div>

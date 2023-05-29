@@ -4,16 +4,16 @@ import { getStudent } from "@/lib/api/student";
 import { type Student } from "@/lib/schemas/Student";
 
 export default function useStudentQuery({
-    accountId,
-    ...options
+  accountId,
+  ...options
 }: {
-    accountId: string;
+  accountId: string;
 } & Omit<UseQueryOptions<Student>, "queryKey" | "queryFn">) {
-    return useProtectedQuery(["student", accountId], getStudent(accountId), {
-        initialData: options?.initialData,
-        onError: options?.onError,
-        onSuccess: options?.onSuccess,
-    });
+  return useProtectedQuery(["student", accountId], getStudent(accountId), {
+    initialData: options?.initialData,
+    onError: options?.onError,
+    onSuccess: options?.onSuccess,
+  });
 }
 
 export type UseStudentQueryResult = ReturnType<typeof useStudentQuery>;

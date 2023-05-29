@@ -1,6 +1,6 @@
-import { type ReactNode } from 'react';
-import { useOnClickOutside } from 'usehooks-ts';
-import { useRef } from 'react';
+import { type ReactNode } from "react";
+import { useOnClickOutside } from "usehooks-ts";
+import { useRef } from "react";
 
 const Overlay = ({
   children,

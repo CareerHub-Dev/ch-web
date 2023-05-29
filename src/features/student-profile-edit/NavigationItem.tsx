@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router';
-import cn from 'classnames';
+import { useRouter } from "next/router";
+import cn from "classnames";
 
 const NavigationItem = ({
   title,
@@ -18,7 +18,7 @@ const NavigationItem = ({
   return (
     <button
       className={cn(
-        'pl-4 pr-24 py-2 text-left hover:bg-lightBlue rounded-md ease-in duration-200 relative',
+        "pl-4 pr-24 py-2 text-left hover:bg-lightBlue rounded-md ease-in duration-200 relative",
         isActive && activeClassName
       )}
       onClick={onClick}

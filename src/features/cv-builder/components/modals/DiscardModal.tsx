@@ -1,13 +1,13 @@
-import { useCvDataStore } from '../../store/cv-data-store';
-import { useCvUiStore } from '../../store/cv-ui-store';
-import { useCvQueryData } from '@/hooks/useCvQuery';
-import { ConfirmCancelDialog } from '@/components/ui/ConfirmCancelDialog';
+import { useCvDataStore } from "../../store/cv-data-store";
+import { useCvUiStore } from "../../store/cv-ui-store";
+import { useCvQueryData } from "@/hooks/useCvQuery";
+import { ConfirmCancelDialog } from "@/components/ui/ConfirmCancelDialog";
 
 export function DiscardModal() {
   const cvId = useCvDataStore((s) => s.cvId);
   const closeModal = useCvUiStore((s) => s.closeModal);
   const discard = useCvDataStore((s) => s.discardChanges);
-  const isOpen = useCvUiStore((s) => s.currentModal) === 'discard';
+  const isOpen = useCvUiStore((s) => s.currentModal) === "discard";
 
   const cvData = useCvQueryData(cvId);
 

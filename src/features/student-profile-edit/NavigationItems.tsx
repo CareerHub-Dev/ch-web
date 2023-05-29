@@ -1,4 +1,4 @@
-import NavigationItem from './NavigationItem';
+import NavigationItem from "./NavigationItem";
 
 const NavigationItems = ({
   items,

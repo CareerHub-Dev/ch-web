@@ -1,4 +1,4 @@
-import { createPortal } from 'react-dom';
+import { createPortal } from "react-dom";
 
 const ForgotPasswordModal = ({
   onClose,
@@ -7,12 +7,12 @@ const ForgotPasswordModal = ({
   onClose: () => void;
 }) => {
   const close = (event: any) => {
-    if (event.target.id === 'forgotPasswordModal') {
+    if (event.target.id === "forgotPasswordModal") {
       onClose();
     }
   };
 
-  if (typeof document === 'undefined') {
+  if (typeof document === "undefined") {
     return null;
   }
 
@@ -24,7 +24,7 @@ const ForgotPasswordModal = ({
     >
       <div className=" mt-12 p-8 rounded-xl bg-white shadow-md">Forgot psw</div>
     </div>,
-    document.getElementById('modal')!
+    document.getElementById("modal")!
   );
 };
 export default ForgotPasswordModal;

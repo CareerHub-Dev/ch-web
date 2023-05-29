@@ -1,18 +1,18 @@
-import { useProtectedQuery } from '@/hooks/useProtectedQuery';
+import { useProtectedQuery } from "@/hooks/useProtectedQuery";
 import {
   getCompanySubscribersAmount,
   getCompanyJobOffersAmount,
-} from '@/lib/api/company';
-import CompanyStat from './CompanyStat';
-import FollowButton from './FollowButton';
+} from "@/lib/api/company";
+import CompanyStat from "./CompanyStat";
+import FollowButton from "./FollowButton";
 
 const CompanyStats = ({ companyId }: { companyId: string }) => {
   const { data: subscribers } = useProtectedQuery(
-    ['company', companyId, 'subscriptions', 'amount'],
+    ["company", companyId, "subscriptions", "amount"],
     getCompanySubscribersAmount(companyId)
   );
   const { data: jobOffers } = useProtectedQuery(
-    ['company', companyId, 'jobOffers', 'amount'],
+    ["company", companyId, "jobOffers", "amount"],
     getCompanyJobOffersAmount(companyId)
   );
 

@@ -1,4 +1,4 @@
-import { ConfirmCancelDialog } from '@/components/ui/ConfirmCancelDialog';
+import { ConfirmCancelDialog } from "@/components/ui/ConfirmCancelDialog";
 
 export default function RemoveItemModal({
   title,
@@ -14,7 +14,7 @@ export default function RemoveItemModal({
   return (
     <ConfirmCancelDialog
       title={title}
-      confirmText={'Так, видалити'}
+      confirmText={"Так, видалити"}
       cancelText="Ні"
       onClose={onClose}
       onConfirm={onConfirm}

@@ -1,6 +1,6 @@
-import { type ReactNode } from 'react';
-import AuthRouting from './AuthRouting';
-import classes from './FormWrapper.module.scss';
+import { type ReactNode } from "react";
+import AuthRouting from "./AuthRouting";
+import classes from "./FormWrapper.module.scss";
 
 const FormWrapper = ({ children }: { children: ReactNode }) => (
   <div className={classes.wrapper}>

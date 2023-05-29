@@ -7,39 +7,39 @@ import StudentJobOfferPage from "@/features/job-offer-details/pages/StudentJobOf
 import CommonLayout from "@/components/layout/CommonLayout";
 
 export default function JobOfferDetailPage({
-    role,
+  role,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-    const router = useRouter();
-    const { jobOfferId } = router.query;
+  const router = useRouter();
+  const { jobOfferId } = router.query;
 
-    if (!(typeof jobOfferId === "string")) {
-        return (
-            <p className="text-center text-red-600">
-                {"Помилка при завантаженні вакансії"}
-            </p>
-        );
-    }
+  if (!(typeof jobOfferId === "string")) {
+    return (
+      <p className="text-center text-red-600">
+        {"Помилка при завантаженні вакансії"}
+      </p>
+    );
+  }
 
-    if (role === "Company") {
-        return <CompanyJobOfferPage jobOfferId={jobOfferId} />;
-    }
+  if (role === "Company") {
+    return <CompanyJobOfferPage jobOfferId={jobOfferId} />;
+  }
 
-    return <StudentJobOfferPage />;
+  return <StudentJobOfferPage />;
 }
 
 JobOfferDetailPage.getLayout = CommonLayout;
 
 export const getServerSideProps = protectedSsr<{
-    role: UserRole;
+  role: UserRole;
 }>({
-    allowedRoles: ["Student", "Company"],
-    getProps: async (context) => {
-        const { session } = context;
-        const { role } = session;
-        return {
-            props: {
-                role,
-            },
-        };
-    },
+  allowedRoles: ["Student", "Company"],
+  getProps: async (context) => {
+    const { session } = context;
+    const { role } = session;
+    return {
+      props: {
+        role,
+      },
+    };
+  },
 });

@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import { centerAspectCrop, cropImage } from '@/lib/images';
+import { centerAspectCrop, cropImage } from "@/lib/images";
 import {
   useCallback,
   useEffect,
   useRef,
   useState,
   type SyntheticEvent,
-} from 'react';
-import ReactCrop, { type Crop, type PixelCrop } from 'react-image-crop';
+} from "react";
+import ReactCrop, { type Crop, type PixelCrop } from "react-image-crop";
 
 export default function ImageCrop({
   src,
@@ -22,7 +22,7 @@ export default function ImageCrop({
 }) {
   const cropImgRef = useRef<HTMLImageElement>(null);
   const [crop, setCrop] = useState<Crop>({
-    unit: '%',
+    unit: "%",
     x: 25,
     y: 25,
     width: 50,

@@ -1,16 +1,16 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { getImage } from '@/lib/api/image';
-import defaultJobOfferLogo from '@/resources/images/general.jpg';
-import format from 'date-fns/format';
+import Image from "next/image";
+import Link from "next/link";
+import { getImage } from "@/lib/api/image";
+import defaultJobOfferLogo from "@/resources/images/general.jpg";
+import format from "date-fns/format";
 
-import { type CompanyJobOffer } from '@/lib/api/company/schemas';
+import { type CompanyJobOffer } from "@/lib/api/company/schemas";
 
 const CompanyJobOffersListItem = ({ item }: { item: CompanyJobOffer }) => {
   const jobOfferPreviewSource = item.image
     ? getImage(item.image)
     : defaultJobOfferLogo;
-  const readableEndDate = format(new Date(item.endDate), 'dd.MM.yyyy');
+  const readableEndDate = format(new Date(item.endDate), "dd.MM.yyyy");
 
   return (
     <div className="p-4 rounded-xl border border-x-primaryGray w-full flex gap-4 bg-lightGray">

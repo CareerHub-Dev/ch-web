@@ -1,5 +1,5 @@
-import { useProtectedQuery } from './useProtectedQuery';
-import { useQueryClient } from '@tanstack/react-query';
+import { useProtectedQuery } from "./useProtectedQuery";
+import { useQueryClient } from "@tanstack/react-query";
 
 export type CvQueryData = {
   id: string;
@@ -45,9 +45,9 @@ export function useCvQuery({
   initialData: CvQueryData;
 }) {
   return useProtectedQuery(
-    ['cv', cvId],
+    ["cv", cvId],
     async () => ({
-      title: 'string',
+      title: "string",
     }),
     {
       initialData,
@@ -58,5 +58,5 @@ export function useCvQuery({
 export function useCvQueryData(cvId: string | null) {
   const queryClient = useQueryClient();
   if (!cvId) return null;
-  return queryClient.getQueryData(['cv', cvId]) as CvQueryData;
+  return queryClient.getQueryData(["cv", cvId]) as CvQueryData;
 }
