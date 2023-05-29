@@ -85,10 +85,15 @@ export type StringInputAction =
           value?: StringInputBaseProperties;
       };
 
+type StringInputReducerFn = (
+    state: StringInput,
+    action: StringInputAction
+) => StringInput;
+
 export function makeStringInputReducer(
     validators: Array<Inputs.Validator<string>>
-): (state: StringInput, action: StringInputAction) => StringInput {
-    return (state: StringInput, action: StringInputAction): StringInput => {
+): StringInputReducerFn {
+    return (state, action) => {
         switch (action.type) {
             case "CHANGE":
                 return {
