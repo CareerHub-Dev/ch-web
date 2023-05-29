@@ -1,8 +1,8 @@
-import ReactDOM from 'react-dom';
-import { useRef } from 'react';
+import ReactDOM from "react-dom";
+import { useRef } from "react";
 
-import cn from 'classnames';
-import classes from './Modal.module.sass';
+import cn from "classnames";
+import classes from "./Modal.module.sass";
 
 const Modal = ({ children, onModalClose, onBackdropClick = undefined }) => {
   const modalRef = useRef(null);
@@ -21,7 +21,7 @@ const Modal = ({ children, onModalClose, onBackdropClick = undefined }) => {
     }
   };
 
-  if (typeof document === 'undefined') {
+  if (typeof document === "undefined") {
     return null;
   }
 
@@ -32,7 +32,7 @@ const Modal = ({ children, onModalClose, onBackdropClick = undefined }) => {
     >
       <div ref={modalRef}>{children}</div>
     </div>,
-    document.querySelector('#modal')
+    document.querySelector("#modal")
   );
 };
 export default Modal;

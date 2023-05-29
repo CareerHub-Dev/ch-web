@@ -5,25 +5,24 @@ import { type NextApiResponse } from "next";
 import { type ServerResponse } from "http";
 
 type CookieItem = {
-    name: string;
-    value: unknown;
-    options: Omit<CookieSerializeOptions, "sameSite" | "path" | "secure">;
+  name: string;
+  value: unknown;
+  options: Omit<CookieSerializeOptions, "sameSite" | "path" | "secure">;
 };
 
 function serializeCookieItem(item: CookieItem): string {
-    const { name, value, options } = item;
-    const cookieOptions: CookieSerializeOptions = {
-        ...options,
-        path: "/",
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-        httpOnly: options.httpOnly ?? true,
-        expires:
-            options.expires ?? new Date(Date.now() + (options.maxAge ?? 1000)),
-    };
-    const stringValue =
-        typeof value === "object" ? JSON.stringify(value) : String(value);
-    return serialize(name, stringValue, cookieOptions);
+  const { name, value, options } = item;
+  const cookieOptions: CookieSerializeOptions = {
+    ...options,
+    path: "/",
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    httpOnly: options.httpOnly ?? true,
+    expires: options.expires ?? new Date(Date.now() + (options.maxAge ?? 1000)),
+  };
+  const stringValue =
+    typeof value === "object" ? JSON.stringify(value) : String(value);
+  return serialize(name, stringValue, cookieOptions);
 }
 /**
  * Sets multiple `cookies` using the `res` object.
@@ -35,11 +34,11 @@ function serializeCookieItem(item: CookieItem): string {
  * - `sameSite` will be set to `'lax'`
  */
 function setCookies(
-    res: NextApiResponse | ServerResponse,
-    cookies: Array<CookieItem>
+  res: NextApiResponse | ServerResponse,
+  cookies: Array<CookieItem>
 ) {
-    const cookiesToSet = cookies.map(serializeCookieItem);
-    res.setHeader("Set-Cookie", cookiesToSet);
+  const cookiesToSet = cookies.map(serializeCookieItem);
+  res.setHeader("Set-Cookie", cookiesToSet);
 }
 
 /**
@@ -48,10 +47,10 @@ function setCookies(
  * @param name - the name of the cookie to delete
  */
 function deleteCookie(res: NextApiResponse | ServerResponse, name: string) {
-    res.setHeader(
-        "Set-Cookie",
-        `${name}=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`
-    );
+  res.setHeader(
+    "Set-Cookie",
+    `${name}=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`
+  );
 }
 
 /**
@@ -59,7 +58,7 @@ function deleteCookie(res: NextApiResponse | ServerResponse, name: string) {
  * @param res - the response object
  */
 export function cleanSessionCookies(res: NextApiResponse | ServerResponse) {
-    deleteCookie(res, "ch-http");
+  deleteCookie(res, "ch-http");
 }
 
 /**
@@ -72,27 +71,27 @@ export function cleanSessionCookies(res: NextApiResponse | ServerResponse) {
  * @param backendResponse - the response object from the remote backend
  */
 function cookieMiddleware(
-    res: NextApiResponse | ServerResponse,
-    backendResponse: unknown
+  res: NextApiResponse | ServerResponse,
+  backendResponse: unknown
 ) {
-    const sessionData = SessionDataSchema.safeParse(backendResponse);
+  const sessionData = SessionDataSchema.safeParse(backendResponse);
 
-    if (!sessionData.success) {
-        throw new Error("Unable to parse session data");
-    }
-    const validatedData = sessionData.data;
+  if (!sessionData.success) {
+    throw new Error("Unable to parse session data");
+  }
+  const validatedData = sessionData.data;
 
-    setCookies(res, [
-        {
-            name: "ch-http",
-            value: validatedData,
-            options: {
-                httpOnly: true,
-                expires: new Date(validatedData.refreshTokenExpires),
-            },
-        },
-    ]);
+  setCookies(res, [
+    {
+      name: "ch-http",
+      value: validatedData,
+      options: {
+        httpOnly: true,
+        expires: new Date(validatedData.refreshTokenExpires),
+      },
+    },
+  ]);
 
-    return validatedData;
+  return validatedData;
 }
 export default cookieMiddleware;

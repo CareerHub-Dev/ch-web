@@ -5,49 +5,54 @@ import { useWorkExperienceInputs } from "@/features/work-experience/hooks/use-wo
 import { WorkExperience } from "@/features/work-experience/types";
 
 export default function AddOrEditWorkExperienceModal({
-    onClose,
-    initialPayload,
+  onClose,
+  initialPayload,
 }: {
-    onClose: () => void;
-    initialPayload?: { item: WorkExperience; itemIndex: number };
+  onClose: () => void;
+  initialPayload?: { item: WorkExperience; itemIndex: number };
 }) {
-    const dispatchWorkExperiences = useCvDataStore(
-        (s) => s.dispatchWorkExperiences
-    );
-    const workExperienceInputs = useWorkExperienceInputs(initialPayload?.item);
-    const { blurAll, thereAreSomeInvalidInputs, thereAreSomeBlurredErrors, values } = workExperienceInputs;
-    const formType = !initialPayload ? "add" : "edit";
+  const dispatchWorkExperiences = useCvDataStore(
+    (s) => s.dispatchWorkExperiences
+  );
+  const workExperienceInputs = useWorkExperienceInputs(initialPayload?.item);
+  const {
+    blurAll,
+    thereAreSomeInvalidInputs,
+    thereAreSomeBlurredErrors,
+    values,
+  } = workExperienceInputs;
+  const formType = !initialPayload ? "add" : "edit";
 
-    const handleConfirm = () => {
-        if (thereAreSomeBlurredErrors) return;
-        if (thereAreSomeInvalidInputs) {
-            blurAll();
-            return;
-        }
+  const handleConfirm = () => {
+    if (thereAreSomeBlurredErrors) return;
+    if (thereAreSomeInvalidInputs) {
+      blurAll();
+      return;
+    }
 
-        if (!initialPayload) {
-            dispatchWorkExperiences({
-                type: "add",
-                item: values,
-            });
-        } else {
-            dispatchWorkExperiences({
-                type: "edit",
-                itemIndex: initialPayload.itemIndex,
-                newValue: values,
-            });
-        }
-        onClose();
-    };
+    if (!initialPayload) {
+      dispatchWorkExperiences({
+        type: "add",
+        item: values,
+      });
+    } else {
+      dispatchWorkExperiences({
+        type: "edit",
+        itemIndex: initialPayload.itemIndex,
+        newValue: values,
+      });
+    }
+    onClose();
+  };
 
-    return (
-        <AddOrEditItemModal
-            onClose={onClose}
-            onConfirm={handleConfirm}
-            type={formType}
-            confirmationDisabled={thereAreSomeBlurredErrors}
-        >
-            <WorkExperienceForm {...workExperienceInputs} />
-        </AddOrEditItemModal>
-    );
+  return (
+    <AddOrEditItemModal
+      onClose={onClose}
+      onConfirm={handleConfirm}
+      type={formType}
+      confirmationDisabled={thereAreSomeBlurredErrors}
+    >
+      <WorkExperienceForm {...workExperienceInputs} />
+    </AddOrEditItemModal>
+  );
 }

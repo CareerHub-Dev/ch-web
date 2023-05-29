@@ -1,11 +1,11 @@
-import { getImage } from '@/lib/api/image';
-import Image from 'next/image';
-import classes from './CompanyLogo.module.scss';
+import { getImage } from "@/lib/api/image";
+import Image from "next/image";
+import classes from "./CompanyLogo.module.scss";
 
 const CompanyLogo: React.FC<{
   imageId?: string | null;
 }> = ({ imageId }) => {
-  const logo = imageId ? getImage(imageId) : '/company-dummy-logo.png';
+  const logo = imageId ? getImage(imageId) : "/company-dummy-logo.png";
 
   return (
     <Image

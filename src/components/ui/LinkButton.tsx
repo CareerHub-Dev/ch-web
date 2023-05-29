@@ -1,22 +1,22 @@
-import Link from 'next/link';
-import cn from 'classnames';
-import classes from './LinkButton.module.scss';
+import Link from "next/link";
+import cn from "classnames";
+import classes from "./LinkButton.module.scss";
 
 const LinkButton: React.FC<{
   link?: string;
   onClick?: AnyFn;
   style?:
-    | 'dark-blue-primary'
-    | 'light-blue-primary'
-    | 'dark-blue-secondary'
-    | 'lgbt';
+    | "dark-blue-primary"
+    | "light-blue-primary"
+    | "dark-blue-secondary"
+    | "lgbt";
   additionalClasses?: string | Array<string>;
   disabled?: boolean;
   children: React.ReactNode;
 }> = ({
   link,
   onClick,
-  style = 'dark-blue-primary',
+  style = "dark-blue-primary",
   additionalClasses,
   children,
   disabled = false,

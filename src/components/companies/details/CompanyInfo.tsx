@@ -1,4 +1,4 @@
-import CompanyLinks from './CompanyLinks';
+import CompanyLinks from "./CompanyLinks";
 
 const CompanyInfo = ({
   companyId,

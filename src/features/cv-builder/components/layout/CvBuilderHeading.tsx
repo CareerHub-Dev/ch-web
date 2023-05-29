@@ -1,5 +1,5 @@
-import CvActionButtons from './CvActionButtons';
-import CvAssistanceSwitcher from './CvAssistanceSwitcher';
+import CvActionButtons from "./CvActionButtons";
+import CvAssistanceSwitcher from "./CvAssistanceSwitcher";
 
 export default function CvBuilderHeading() {
   return (

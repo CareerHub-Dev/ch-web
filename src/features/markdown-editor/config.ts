@@ -10,63 +10,63 @@ import { $convertFromMarkdownString } from "@lexical/markdown";
 import { PLAYGROUND_TRANSFORMERS } from "./plugins/markdown-transformers";
 
 function prepopulatedText() {
-    const root = $getRoot();
-    const paragraph = $createParagraphNode();
-    paragraph.append($createTextNode(""));
-    root.append(paragraph);
+  const root = $getRoot();
+  const paragraph = $createParagraphNode();
+  paragraph.append($createTextNode(""));
+  root.append(paragraph);
 }
 
 function prepopulatedMarkdownContent(content: string) {
-    const root = $getRoot();
-    root.clear().append(
-        $createCodeNode("markdown").append($createTextNode(content))
-    );
+  const root = $getRoot();
+  root
+    .clear()
+    .append($createCodeNode("markdown").append($createTextNode(content)));
 
-    const firstChild = root.getFirstChild();
-    if (firstChild !== null) {
-        $convertFromMarkdownString(
-            firstChild.getTextContent(),
-            PLAYGROUND_TRANSFORMERS
-        );
-    }
+  const firstChild = root.getFirstChild();
+  if (firstChild !== null) {
+    $convertFromMarkdownString(
+      firstChild.getTextContent(),
+      PLAYGROUND_TRANSFORMERS
+    );
+  }
 }
 
 const baseEditorConfig = {
-    theme,
-    onError(error: unknown) {
-        throw error;
-    },
-    nodes: [
-        HeadingNode,
-        ListNode,
-        ListItemNode,
-        QuoteNode,
-        CodeNode,
-        CodeHighlightNode,
-        TableNode,
-        TableCellNode,
-        TableRowNode,
-        AutoLinkNode,
-        LinkNode,
-    ],
+  theme,
+  onError(error: unknown) {
+    throw error;
+  },
+  nodes: [
+    HeadingNode,
+    ListNode,
+    ListItemNode,
+    QuoteNode,
+    CodeNode,
+    CodeHighlightNode,
+    TableNode,
+    TableCellNode,
+    TableRowNode,
+    AutoLinkNode,
+    LinkNode,
+  ],
 };
 
 export function deriveConfig(namespace: string): InitialConfigType {
-    return {
-        ...baseEditorConfig,
-        editorState: prepopulatedText,
-        namespace,
-    };
+  return {
+    ...baseEditorConfig,
+    editorState: prepopulatedText,
+    namespace,
+  };
 }
 
 export function deriveReadonlyConfig(
-    namespace: string,
-    content: string
+  namespace: string,
+  content: string
 ): InitialConfigType {
-    return {
-        ...baseEditorConfig,
-        editable: false,
-        editorState: prepopulatedMarkdownContent.bind(null, content),
-        namespace,
-    };
+  return {
+    ...baseEditorConfig,
+    editable: false,
+    editorState: prepopulatedMarkdownContent.bind(null, content),
+    namespace,
+  };
 }

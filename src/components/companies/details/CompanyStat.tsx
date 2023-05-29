@@ -1,4 +1,4 @@
-import cn from 'classnames';
+import cn from "classnames";
 
 const CompanyStat = ({
   value,
@@ -14,10 +14,10 @@ const CompanyStat = ({
       className={cn(
         `flex flex-col justify-center items-center text-center rounded-lg 
         text-white bg-lightBlueAccent px-8 py-2`,
-        noValue && 'animate-pulse'
+        noValue && "animate-pulse"
       )}
     >
-      <p>{noValue ? '...' : value}</p>
+      <p>{noValue ? "..." : value}</p>
       <label>{title}</label>
     </div>
   );

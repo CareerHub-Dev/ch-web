@@ -1,4 +1,4 @@
 export enum CvTemplateLanguage {
-    En = "EN",
-    Ua = "UA",
+  En = "EN",
+  Ua = "UA",
 }

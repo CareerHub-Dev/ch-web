@@ -1,4 +1,4 @@
-import { ToastContainer as Container } from 'react-toastify';
+import { ToastContainer as Container } from "react-toastify";
 
 const ToastContainer = () => {
   return (

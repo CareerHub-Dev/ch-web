@@ -6,26 +6,26 @@ import { useQueryClient } from "@tanstack/react-query";
 import { AxiosInstance } from "axios";
 
 export function removePost(instance: AxiosInstance) {
-    return (postId: string) => {
-        return request({
-            instance,
-            url: `Auth/Posts/self/${postId}`,
-            method: "DELETE",
-        });
-    };
+  return (postId: string) => {
+    return request({
+      instance,
+      url: `Auth/Posts/self/${postId}`,
+      method: "DELETE",
+    });
+  };
 }
 
 export function useRemovePostMutation() {
-    const toast = useToast();
-    const client = useQueryClient();
+  const toast = useToast();
+  const client = useQueryClient();
 
-    return useProtectedMutation(["posts", "self"], removePost, {
-        onSuccess() {
-            toast.success("Публікацію видалено");
-            client.invalidateQueries(["posts", "self"]);
-        },
-        onError(err) {
-            toast.error("Помилка: " + parseUnknownError(err));
-        },
-    });
+  return useProtectedMutation(["posts", "self"], removePost, {
+    onSuccess() {
+      toast.success("Публікацію видалено");
+      client.invalidateQueries(["posts", "self"]);
+    },
+    onError(err) {
+      toast.error("Помилка: " + parseUnknownError(err));
+    },
+  });
 }

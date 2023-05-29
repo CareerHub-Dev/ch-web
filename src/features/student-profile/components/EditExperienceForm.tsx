@@ -9,58 +9,58 @@ import { useQueryClient } from "@tanstack/react-query";
 import { WorkExperience } from "@/features/work-experience/types";
 
 export default function EditExperienceForm({
-    updatedItem,
-    onCancel,
-    onSuccess,
+  updatedItem,
+  onCancel,
+  onSuccess,
 }: {
-    updatedItem: (WorkExperience & { id: string }) | undefined;
-    onSuccess: () => void;
-    onCancel: () => void;
+  updatedItem: (WorkExperience & { id: string }) | undefined;
+  onSuccess: () => void;
+  onCancel: () => void;
 }) {
-    const toast = useToast();
-    const queryClient = useQueryClient();
-    const { mutate, isLoading } = useProtectedMutation(
-        ["update-experience", updatedItem?.id],
-        updateStudentWorkExperience,
-        {
-            onSuccess() {
-                toast.success("Досвід успішно оновлено");
-                queryClient.invalidateQueries(["student-experiences", "self"]);
-                onSuccess();
-            },
-            onError(err) {
-                toast.error("Помилка: " + parseUnknownError(err));
-            },
-        }
-    );
-    const workExperienceInputs = useWorkExperienceInputs(updatedItem);
-    const {
-        thereAreSomeBlurredErrors,
-        thereAreSomeInvalidInputs,
-        blurAll,
-        values,
-    } = workExperienceInputs;
+  const toast = useToast();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useProtectedMutation(
+    ["update-experience", updatedItem?.id],
+    updateStudentWorkExperience,
+    {
+      onSuccess() {
+        toast.success("Досвід успішно оновлено");
+        queryClient.invalidateQueries(["student-experiences", "self"]);
+        onSuccess();
+      },
+      onError(err) {
+        toast.error("Помилка: " + parseUnknownError(err));
+      },
+    }
+  );
+  const workExperienceInputs = useWorkExperienceInputs(updatedItem);
+  const {
+    thereAreSomeBlurredErrors,
+    thereAreSomeInvalidInputs,
+    blurAll,
+    values,
+  } = workExperienceInputs;
 
-    const handleConfirm = () => {
-        if (updatedItem === undefined) return;
-        if (thereAreSomeInvalidInputs) {
-            blurAll();
-            return;
-        }
-        mutate({ ...values, id: updatedItem.id });
-    };
+  const handleConfirm = () => {
+    if (updatedItem === undefined) return;
+    if (thereAreSomeInvalidInputs) {
+      blurAll();
+      return;
+    }
+    mutate({ ...values, id: updatedItem.id });
+  };
 
-    return (
-        <>
-            <WorkExperienceForm {...workExperienceInputs} />
-            <DialogActionButtons
-                onConfirm={handleConfirm}
-                onCancel={onCancel}
-                confirmationDisabled={thereAreSomeBlurredErrors || isLoading}
-                cancelText={"Відміна"}
-                confirmText={"Зберегти"}
-                isLoading={isLoading}
-            />
-        </>
-    );
+  return (
+    <>
+      <WorkExperienceForm {...workExperienceInputs} />
+      <DialogActionButtons
+        onConfirm={handleConfirm}
+        onCancel={onCancel}
+        confirmationDisabled={thereAreSomeBlurredErrors || isLoading}
+        cancelText={"Відміна"}
+        confirmText={"Зберегти"}
+        isLoading={isLoading}
+      />
+    </>
+  );
 }

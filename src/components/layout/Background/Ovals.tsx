@@ -1,16 +1,16 @@
-import { useWindowSize, useIsomorphicLayoutEffect } from 'usehooks-ts';
-import classes from './Background.module.scss';
+import { useWindowSize, useIsomorphicLayoutEffect } from "usehooks-ts";
+import classes from "./Background.module.scss";
 
 export function Ovals() {
   const { width, height } = useWindowSize();
 
   useIsomorphicLayoutEffect(() => {
-    const canvas = document.getElementsByTagName('canvas')[0]?.getContext('2d');
+    const canvas = document.getElementsByTagName("canvas")[0]?.getContext("2d");
     const shiftStep = 5;
     const radiusStep = Math.round(
       Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) / 30
     );
-    canvas!.strokeStyle = 'rgba(255,255,255,1)';
+    canvas!.strokeStyle = "rgba(255,255,255,1)";
     canvas!.lineWidth = 3;
     let ovalCount = 11;
 
@@ -29,7 +29,7 @@ export function Ovals() {
       canvas!.stroke();
     }
 
-    if (window.matchMedia('screen and (min-width: 768px)').matches) {
+    if (window.matchMedia("screen and (min-width: 768px)").matches) {
       for (let i = 0; i < 11; ++i) {
         canvas!.beginPath();
         canvas!.ellipse(

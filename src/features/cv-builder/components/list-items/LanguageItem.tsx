@@ -1,7 +1,7 @@
-import ListItemEditMenu from '@/components/ui/ListItemEditMenu';
-import { type ForeignLanguage } from '../../store/cv-data-store/cv';
-import { type ItemListAction } from '@/lib/list-reducer/dialog-actions';
-import { type Dispatch } from 'react';
+import ListItemEditMenu from "@/components/ui/ListItemEditMenu";
+import { type ForeignLanguage } from "../../store/cv-data-store/cv";
+import { type ItemListAction } from "@/lib/list-reducer/dialog-actions";
+import { type Dispatch } from "react";
 
 export default function LanguageItem({
   item,
@@ -12,15 +12,15 @@ export default function LanguageItem({
   itemIndex: number;
   actionHandler: Dispatch<ItemListAction<ForeignLanguage>>;
 }) {
-  const createActionHandler = (type: 'edit' | 'remove') => () => {
+  const createActionHandler = (type: "edit" | "remove") => () => {
     actionHandler({
       type,
       itemIndex,
       item,
     });
   };
-  const handleEditClick = createActionHandler('edit');
-  const handleRemoveClick = createActionHandler('remove');
+  const handleEditClick = createActionHandler("edit");
+  const handleRemoveClick = createActionHandler("remove");
 
   const { name, languageLevel } = item;
 

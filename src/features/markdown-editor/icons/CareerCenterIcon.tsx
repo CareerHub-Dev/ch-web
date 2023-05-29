@@ -1,4 +1,8 @@
-export default function CareerCenterIcon({ className }: { className?: string }) {
+export default function CareerCenterIcon({
+  className,
+}: {
+  className?: string;
+}) {
   return (
     <svg
       version="1.0"

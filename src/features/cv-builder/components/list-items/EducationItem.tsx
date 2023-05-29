@@ -1,8 +1,8 @@
-import { type Education } from '../../store/cv-data-store/cv';
-import { type ItemListAction } from '@/lib/list-reducer/dialog-actions';
-import { CalendarIcon } from '@heroicons/react/20/solid';
-import { type Dispatch } from 'react';
-import ListItemEditMenu from '@/components/ui/ListItemEditMenu';
+import { type Education } from "../../store/cv-data-store/cv";
+import { type ItemListAction } from "@/lib/list-reducer/dialog-actions";
+import { CalendarIcon } from "@heroicons/react/20/solid";
+import { type Dispatch } from "react";
+import ListItemEditMenu from "@/components/ui/ListItemEditMenu";
 
 export default function EducationItem({
   item,
@@ -13,17 +13,17 @@ export default function EducationItem({
   itemIndex: number;
   dispatchAction: Dispatch<ItemListAction<Education>>;
 }) {
-  const createActionHandler = (type: 'edit' | 'remove') => () => {
+  const createActionHandler = (type: "edit" | "remove") => () => {
     dispatchAction({
       type,
       itemIndex,
       item,
     });
   };
-  const handleEditClick = createActionHandler('edit');
-  const handleRemoveClick = createActionHandler('remove');
+  const handleEditClick = createActionHandler("edit");
+  const handleRemoveClick = createActionHandler("remove");
 
-  const displayedEndYear = item.isCurrent ? 'досі' : item.endYear;
+  const displayedEndYear = item.isCurrent ? "досі" : item.endYear;
   return (
     <li>
       <a className="block hover:bg-gray-50">

@@ -1,10 +1,10 @@
-import { getImage } from '@/lib/api/image';
-import Image from 'next/image';
+import { getImage } from "@/lib/api/image";
+import Image from "next/image";
 
 const CompanyBanner: React.FC<{
   imageId?: string | null;
 }> = ({ imageId }) => {
-  const banner = imageId ? getImage(imageId) : '/company-dummy-banner.png';
+  const banner = imageId ? getImage(imageId) : "/company-dummy-banner.png";
 
   return (
     <Image

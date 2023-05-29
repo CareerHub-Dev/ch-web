@@ -1,9 +1,9 @@
-import CompanyInfoBlock from './CompanyInfoBlock';
-import { BriefcaseIcon, UserGroupIcon } from '@heroicons/react/24/outline';
-import CompanyLogo from './CompanyLogo';
-import Link from 'next/link';
+import CompanyInfoBlock from "./CompanyInfoBlock";
+import { BriefcaseIcon, UserGroupIcon } from "@heroicons/react/24/outline";
+import CompanyLogo from "./CompanyLogo";
+import Link from "next/link";
 
-import { type CompanyInFeed } from '@/lib/api/company/schemas';
+import { type CompanyInFeed } from "@/lib/api/company/schemas";
 
 const CompanyCard = ({ company }: { company: CompanyInFeed }) => {
   return (

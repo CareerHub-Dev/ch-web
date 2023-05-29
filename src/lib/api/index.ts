@@ -1,6 +1,6 @@
 export const backendServerUrl = process.env.BACKEND_SERVER_URL;
 export const backendApiBaseUrl = `${backendServerUrl}/api`;
-export const localGatewayUrl = '/api';
+export const localGatewayUrl = "/api";
 
 export const retrieveErrorMessage = (responseData: any) => {
   if (responseData.message) {
@@ -15,5 +15,5 @@ export const retrieveErrorMessage = (responseData: any) => {
   if (responseData.title) {
     return responseData.title;
   }
-  return 'Невідома помилка';
+  return "Невідома помилка";
 };

@@ -1,6 +1,6 @@
-import { type ReactNode } from 'react';
-import { createPortal } from 'react-dom';
-import classes from './ModalWithBackdrop.module.scss';
+import { type ReactNode } from "react";
+import { createPortal } from "react-dom";
+import classes from "./ModalWithBackdrop.module.scss";
 
 const Backdrop: React.FC<{ onClose: AnyFn; overrideClassName?: string }> = ({
   onClose,
@@ -28,11 +28,11 @@ const ModalWithBackdrop: React.FC<{
   overrideBackdropClass?: string;
   children: ReactNode;
 }> = ({ onClose, overrideOverlayClass, overrideBackdropClass, children }) => {
-  if (typeof document === 'undefined') {
+  if (typeof document === "undefined") {
     return null;
   }
 
-  const portalElement = document.getElementById('modal');
+  const portalElement = document.getElementById("modal");
   return (
     <>
       {createPortal(
@@ -40,13 +40,13 @@ const ModalWithBackdrop: React.FC<{
           onClose={onClose}
           overrideClassName={overrideBackdropClass}
         />,
-        portalElement!,
+        portalElement!
       )}
       {createPortal(
         <ModalOverlay overrideClassName={overrideOverlayClass}>
           {children}
         </ModalOverlay>,
-        portalElement!,
+        portalElement!
       )}
     </>
   );

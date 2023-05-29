@@ -37,8 +37,10 @@ function fetchSkills(searchTerm: string, type: "hard" | "soft") {
 }
 
 export function useSkillsQuery(searchTerm: string, type: "hard" | "soft") {
-  return useQuery(["skills", searchTerm, type], () =>
-    fetchSkills(searchTerm, type), {
+  return useQuery(
+    ["skills", searchTerm, type],
+    () => fetchSkills(searchTerm, type),
+    {
       enabled: searchTerm.length > 0,
     }
   );

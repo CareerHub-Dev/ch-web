@@ -7,31 +7,31 @@ import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 import parseUnknownError from "@/lib/parse-unknown-error";
 
 function CreateCvPage() {
-    const {
-        isLoading: isLoadingJobDirections,
-        isError: isErrorJobDirections,
-        error,
-    } = useJobDirectionsQuery();
+  const {
+    isLoading: isLoadingJobDirections,
+    isError: isErrorJobDirections,
+    error,
+  } = useJobDirectionsQuery();
 
-    if (isLoadingJobDirections) {
-        return <CenteredLoadingSpinner />;
-    }
+  if (isLoadingJobDirections) {
+    return <CenteredLoadingSpinner />;
+  }
 
-    if (isErrorJobDirections) {
-        return (
-            <p className="text-center text-red-500">{`Помилка завантаження: ${parseUnknownError(
-                error
-            )}`}</p>
-        );
-    }
+  if (isErrorJobDirections) {
+    return (
+      <p className="text-center text-red-500">{`Помилка завантаження: ${parseUnknownError(
+        error
+      )}`}</p>
+    );
+  }
 
-    return <CvBuilder />;
+  return <CvBuilder />;
 }
 
 CreateCvPage.getLayout = CommonLayout;
 
 export const getServerSideProps = protectedSsr({
-    allowedRoles: ["Student"],
+  allowedRoles: ["Student"],
 });
 
 export default CreateCvPage;

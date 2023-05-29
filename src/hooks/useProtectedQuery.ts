@@ -1,10 +1,10 @@
-import useSession from './useSession';
+import useSession from "./useSession";
 import {
   useQuery,
   type UseQueryOptions,
   type QueryKey,
-} from '@tanstack/react-query';
-import { type AxiosInstance } from 'axios';
+} from "@tanstack/react-query";
+import { type AxiosInstance } from "axios";
 
 export function useProtectedQuery<
   TQueryKey extends QueryKey = QueryKey,
@@ -16,11 +16,11 @@ export function useProtectedQuery<
   queryFn: (instance: AxiosInstance) => Promise<TQueryFnData>,
   options?: Omit<
     UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
-    'queryFn' | 'queryKey'
+    "queryFn" | "queryKey"
   >
 ) {
   const { axios, status } = useSession();
-  const isAuthenticated = status === 'authenticated';
+  const isAuthenticated = status === "authenticated";
   const enabled = !!options?.enabled
     ? isAuthenticated && options.enabled
     : isAuthenticated;

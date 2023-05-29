@@ -1,7 +1,7 @@
-import { FooterLink } from './FooterLink';
-import TelegramIcon from '@/components/icons/TelegramIcon';
-import cn from 'classnames';
-import FacebookIcon from '@/components/icons/FacebookIcon';
+import { FooterLink } from "./FooterLink";
+import TelegramIcon from "@/components/icons/TelegramIcon";
+import cn from "classnames";
+import FacebookIcon from "@/components/icons/FacebookIcon";
 
 export function Footer({ className }: { className?: string }) {
   const currentYear = new Date().getFullYear();
@@ -10,7 +10,7 @@ export function Footer({ className }: { className?: string }) {
   return (
     <footer
       className={cn(
-        'w-full px-4 py-8 bg-white border bg-opacity-60',
+        "w-full px-4 py-8 bg-white border bg-opacity-60",
         className
       )}
     >
@@ -19,7 +19,7 @@ export function Footer({ className }: { className?: string }) {
           <li className="flex items-center">
             <FooterLink
               item={{
-                href: '/',
+                href: "/",
                 text: copyRight,
               }}
             />

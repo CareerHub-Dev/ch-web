@@ -1,4 +1,4 @@
-import { notEmpty } from '@/lib/util';
+import { notEmpty } from "@/lib/util";
 
 export const PlainParagraph: React.FC<{
   title: string;
