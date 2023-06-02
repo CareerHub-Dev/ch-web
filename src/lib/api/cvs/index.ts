@@ -1,8 +1,7 @@
 import { type AxiosInstance } from "axios";
 import { request } from "../../axios";
 import { parsePaginatedResponseAsync } from "../pagination";
-import { CvDetailsSchema, CvsArraySchema } from "./schemas";
-import { objectToFormData } from "@/lib/forms";
+import { CvsArraySchema } from "./schemas";
 import { WorkExperience } from "@/features/work-experience/types";
 
 type CvsRequestParams = Pick<PaginatedRequestParams, "pageSize"> & {
@@ -26,7 +25,7 @@ export type CvModificationData = {
     university: string;
     city: string;
     country: string;
-    speciality: string;
+    specialty: string;
     degree: string;
     startDate: string;
     endDate: string;
@@ -46,41 +45,123 @@ export function getStudentOwnCvs(
   });
 }
 
-export function getStudentOwnCv(cvId: string) {
-  return (instance: AxiosInstance) =>
-    request({
-      instance,
-      url: `/Student/self/CVs/${cvId}`,
-      select: (response) => CvDetailsSchema.parseAsync(response.data),
-    });
+// function formDataFromCvModificationData(data: CvModificationData) {
+//   const formData = new FormData();
+//   formData.append("experienceLevel", data.experienceLevel);
+//   formData.append("title", data.title);
+//   formData.append("jobPositionId", data.jobPositionId);
+//   formData.append("templateLanguage", data.templateLanguage);
+//   formData.append("lastName", data.lastName);
+//   formData.append("firstName", data.firstName);
+//   formData.append("goals", data.goals);
+//   data.hardSkills.forEach((skill) => {
+//     formData.append("hardSkills", skill);
+//   });
+//   data.softSkills.forEach((skill) => {
+//     formData.append("softSkills", skill);
+//   });
+//   data.foreignLanguages.forEach((language) => {
+//     formData.append("foreignLanguages", JSON.stringify(language));
+//   });
+//   data.projectLinks.forEach((link) => {
+//     formData.append("projectLinks", JSON.stringify(link));
+//   });
+//   data.educations.forEach((education) => {
+//     formData.append("educations", JSON.stringify(education));
+//   });
+//   data.experiences.forEach((experience) => {
+//     formData.append("experiences", JSON.stringify(experience));
+//   });
+//   return formData;
+// }
+
+export function createOrModifyCv(instance: AxiosInstance) {
+  return async ({
+    id,
+    photo,
+    ...data
+  }: CvModificationData & { id: string | null }) => {
+    if (id === null) {
+      id = await request({
+        method: "POST",
+        url: "Student/self/CVs/without-photo",
+        data,
+        instance,
+      });
+    } else {
+      await request({
+        method: "PUT",
+        url: `Student/self/Cvs/${id}`,
+        data,
+        instance,
+      });
+    }
+    try {
+      const formData = new FormData();
+      formData.append("file", photo ?? "");
+
+      await request({
+        method: "POST",
+        url: `Student/self/Cvs/${id}/photo`,
+        data,
+        instance,
+      });
+    } catch (_e) {
+      // TODO: handle possible errors with image post
+    }
+  };
 }
 
 export function createCv(instance: AxiosInstance) {
-  return (body: CvModificationData) => {
-    const formData = objectToFormData(body);
-
-    return request({
+  return async ({ photo, ...data }: CvModificationData) => {
+    const cvId: string = await request({
       method: "POST",
-      prefix: "Student",
-      url: "self/Cvs",
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      url: "Student/self/CVs/without-photo",
+      data,
       instance,
     });
+
+    try {
+      if (photo !== undefined) {
+        const formData = new FormData();
+        formData.append("file", photo);
+        await request({
+          method: "POST",
+          url: `Student/self/CVs/${cvId}/photo`,
+          data: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          instance,
+        });
+      }
+    } catch (_e) {
+      // TODO: handle possible errors with image post
+    }
+
+    return cvId;
   };
 }
 
 export function modifyCv(instance: AxiosInstance) {
-  return ({
+  return async ({
     id,
+    photo,
     ...data
-  }: Omit<CvModificationData, "photo"> & { id: string }) => {
-    return request({
+  }: CvModificationData & { id: string }) => {
+    await request({
       method: "PUT",
-      prefix: "Student",
-      url: `self/Cvs/${id}`,
+      url: `Student/self/Cvs/${id}`,
+      data,
+      instance,
+    });
+
+    const formData = new FormData();
+    formData.append("file", photo ?? "");
+
+    await request({
+      method: "POST",
+      url: `Student/self/Cvs/${id}/photo`,
       data,
       instance,
     });

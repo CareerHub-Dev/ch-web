@@ -205,11 +205,11 @@ export namespace Crop {
 }
 
 export function fileUrlToImage(fileUrl: string) {
-  return new Promise<HTMLImageElement>((resolve, _reject) => {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image();
     image.src = fileUrl;
     image.onload = () => resolve(image);
-    image.onerror = () => _reject(new Error("Failed to load image"));
+    image.onerror = () => reject(new Error("Failed to load image"));
   });
 }
 

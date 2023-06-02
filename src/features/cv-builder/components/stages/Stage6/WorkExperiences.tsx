@@ -31,20 +31,22 @@ export default function WorkExperiences() {
 
   return (
     <>
-      {dialog === null ? null : dialog === "remove" ? (
-        <RemoveItemModal
-          onClose={handleDialogClose}
-          onConfirm={() => {
-            dispatchWorkExperiences({
-              type: "remove",
-              itemIndex: focusedItemIndex,
-            });
-            handleDialogClose();
-          }}
-          title="Видалити?"
-          descriptionText={`Опит роботи ${focusedItem.title} буде видалено зі списку`}
-        />
-      ) : dialog === "edit" ? (
+      <RemoveItemModal
+        onClose={handleDialogClose}
+        onConfirm={() => {
+          dispatchWorkExperiences({
+            type: "remove",
+            itemIndex: focusedItemIndex ?? 0,
+          });
+          handleDialogClose();
+        }}
+        title="Видалити?"
+        descriptionText={`Опит роботи ${
+          focusedItem?.title
+        } буде видалено зі списку`}
+        show={dialog === "remove"}
+      />
+      {dialog === "edit" ? (
         <AddOrEditWorkExperienceModal
           onClose={handleDialogClose}
           initialPayload={{
@@ -52,9 +54,9 @@ export default function WorkExperiences() {
             itemIndex: focusedItemIndex,
           }}
         />
-      ) : (
+      ) : dialog === "add" ? (
         <AddOrEditWorkExperienceModal onClose={handleDialogClose} />
-      )}
+      ) : null}
 
       <div className="sm:border-t sm:border-gray-200 sm:pt-5 sm:flex sm:items-center">
         <div className="sm:flex-auto">

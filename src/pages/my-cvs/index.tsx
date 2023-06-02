@@ -1,6 +1,5 @@
 import CommonLayout from "@/components/layout/CommonLayout";
 import { AddCvButton } from "@/features/student-cvs/components/AddCvButton";
-import { CvItemsGrid } from "@/features/student-cvs/components/CvItemsGrid";
 import { CvItemsSearch } from "@/features/student-cvs/components/CvItemsSearch";
 import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 import LoadMore from "@/components/ui/LoadMore";
@@ -9,6 +8,7 @@ import { useState } from "react";
 import { useDebounce } from "usehooks-ts";
 import { getStudentOwnCvs } from "@/lib/api/cvs";
 import { protectedSsr } from "@/lib/protected-ssr";
+import CvItemsList from "@/features/student-cvs/components/CvItemsList";
 
 function StudentCVsPage() {
   const [search, setSearch] = useState("");
@@ -41,7 +41,7 @@ function StudentCVsPage() {
         <CenteredLoadingSpinner />
       ) : (
         <>
-          <CvItemsGrid items={cvsToDisplay} />
+          <CvItemsList items={cvsToDisplay} />
           {isFetchingNextPage ? (
             <CenteredLoadingSpinner />
           ) : hasNextPage ? (

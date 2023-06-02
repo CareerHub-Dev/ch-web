@@ -1,4 +1,4 @@
-import { ConfirmCancelDialog } from "@/components/ui/ConfirmCancelDialog";
+import ConfirmCancelDialog from "@/components/ui/ConfirmCancelDialog";
 import { ReactNode } from "react";
 
 export default function AddOrEditItemModal({

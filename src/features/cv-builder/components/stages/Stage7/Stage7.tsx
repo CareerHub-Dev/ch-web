@@ -24,6 +24,20 @@ export default function Stage7() {
 
   return (
     <>
+      <RemoveItemModal
+        onClose={handleDialogClose}
+        onConfirm={() => {
+          dispatchEducations({
+            type: "remove",
+            itemIndex: dialogState.focusedItemIndex ?? 0,
+          });
+          handleDialogClose();
+        }}
+        title="Видалити освіту?"
+        descriptionText={`Освіта ${dialogState.focusedItem?.specialty} буде видалена зі списку`}
+        show={dialogState.dialog === "remove"}
+      />
+
       {dialogState.dialog === "add" ? (
         <AddOrEditEducationModal onClose={handleDialogClose} />
       ) : dialogState.dialog === "edit" ? (
@@ -33,19 +47,6 @@ export default function Stage7() {
             item: dialogState.focusedItem,
             itemIndex: dialogState.focusedItemIndex,
           }}
-        />
-      ) : dialogState.dialog === "remove" ? (
-        <RemoveItemModal
-          onClose={handleDialogClose}
-          onConfirm={() => {
-            dispatchEducations({
-              type: "remove",
-              itemIndex: dialogState.focusedItemIndex,
-            });
-            handleDialogClose();
-          }}
-          title="Видалити освіту?"
-          descriptionText={`Освіта ${dialogState.focusedItem.speciality} буде видалена зі списку`}
         />
       ) : null}
       <div className="space-y-6 sm:space-y-5">

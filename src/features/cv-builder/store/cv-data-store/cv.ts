@@ -1,7 +1,9 @@
 import { getStringInput } from "@/lib/string-input";
 import { getArrayInput } from "@/lib/array-input/v2";
-import { StudentCvDetails } from "@/lib/api/cvs/schemas";
 import { WorkExperience } from "@/features/work-experience/types";
+import { CvDetails } from "@/features/student-cvs/hooks/use-cv-details-query";
+import { ExperienceLevel } from "@/lib/enums";
+import { EXPERIENCE_LEVELS } from "../../components/mocks/job-directions";
 
 type StringInput = Inputs.StringInput;
 type ArrayInput<T> = Inputs.ArrayInput<T>;
@@ -20,7 +22,7 @@ export type Education = {
   university: string;
   city: string;
   country: string;
-  speciality: string;
+  specialty: string;
   degree: string;
   startYear: string;
   endYear: string;
@@ -95,11 +97,12 @@ export function getEmptyCvData(): CvData {
   };
 }
 
-export function restoreToCvQueryData(data: StudentCvDetails): CvData {
+export function restoreToCvQueryData(data: CvDetails): CvData {
   const mappedEducations = data.educations.map((item) => {
     const { startDate, endDate, ...otherProperties } = item;
     const startYear = new Date(startDate).getFullYear().toString();
-    const endYear = new Date(endDate).getFullYear().toString();
+    const endDateObject = endDate ? new Date(endDate) : new Date();
+    const endYear = endDateObject.getFullYear().toString();
 
     return {
       startYear,
@@ -111,13 +114,42 @@ export function restoreToCvQueryData(data: StudentCvDetails): CvData {
 
   return {
     ...data,
-    workDirection: { value: null, wasChanged: false, wasBlurred: false },
-    jobPosition: { value: null, wasChanged: false, wasBlurred: false },
-    title: getStringInput({ value: data.title }),
+    jobPosition: {
+      value: data.jobPosition,
+      wasChanged: false,
+      wasBlurred: false,
+    },
+    workDirection: {
+      value: {
+        ...data.jobDirection,
+        recomendedTemplateLanguage: matchTemplateLanguage(data.templateLanguage)
+          .id,
+      },
+      wasChanged: false,
+      wasBlurred: false,
+    },
+    title: getStringInput({
+      value: data.title,
+      wasChanged: true,
+      wasBlurred: true,
+    }),
     templateLanguage: matchTemplateLanguage(data.templateLanguage),
-    firstName: getStringInput(),
-    lastName: getStringInput(),
-    goals: getStringInput({ value: data.goals }),
+    firstName: getStringInput({
+      value: data.firstName,
+      wasChanged: true,
+      wasBlurred: true,
+    }),
+    lastName: getStringInput({
+      value: data.lastName,
+      wasChanged: true,
+      wasBlurred: true,
+    }),
+    goals: getStringInput({
+      value: data.goals,
+      wasChanged: true,
+      wasBlurred: true,
+    }),
+    // TODO: handle workExperiences transformation
     workExperiences: getArrayInput({ initialItems: [] }),
     foreignLanguages: getArrayInput({
       initialItems: data.foreignLanguages,
@@ -126,22 +158,54 @@ export function restoreToCvQueryData(data: StudentCvDetails): CvData {
     educations: getArrayInput({
       initialItems: mappedEducations,
     }),
-    photo: data.photo,
+    photo: data.photo ?? null,
     hardSkills: getArrayInput(),
     softSkills: getArrayInput(),
-    experienceLevel: { value: null, wasChanged: false, wasBlurred: false },
+    experienceLevel: {
+      value: experienceLevelToOption(
+        matchExperienceLevel(data.experienceLevel)
+      ),
+      wasChanged: false,
+      wasBlurred: false,
+    },
   };
 }
 
 export function matchTemplateLanguage(val: string): TemplateLanguage {
   switch (val.toUpperCase()) {
     case "UA":
-      return TEMPLATE_LANGUAGES[0]!;
-    case "EN":
       return TEMPLATE_LANGUAGES[1]!;
+    case "EN":
+      return TEMPLATE_LANGUAGES[0]!;
     default:
       return TEMPLATE_LANGUAGES[0]!;
   }
+}
+
+export function matchExperienceLevel(val: string): ExperienceLevel {
+  switch (val.toUpperCase()) {
+    case "TRAINEE":
+      return ExperienceLevel.Trainee;
+    case "INTERN":
+      return ExperienceLevel.Intern;
+    case "JUNIOR":
+      return ExperienceLevel.Junior;
+    case "MIDDLE":
+      return ExperienceLevel.Middle;
+    case "SENIOR":
+      return ExperienceLevel.Senior;
+    default:
+      return ExperienceLevel.Trainee;
+  }
+}
+
+export function experienceLevelToOption(val: ExperienceLevel): {
+  id: string;
+  name: string;
+} {
+  return (
+    EXPERIENCE_LEVELS.find((item) => item.id === val) ?? EXPERIENCE_LEVELS[0]!
+  );
 }
 
 export const TEMPLATE_LANGUAGES = [

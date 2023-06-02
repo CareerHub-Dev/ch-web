@@ -1,7 +1,6 @@
 import { localGatewayAxiosInstance, request } from "../../axios";
-
-import { type SessionData } from "@/lib/schemas/SessionData";
-import { type AxiosInstance } from "axios";
+import { SessionData } from "@/lib/schemas/SessionData";
+import { AxiosInstance } from "axios";
 
 export namespace LocalGateway {
   export function authenticate(data: { email: string; password: string }) {

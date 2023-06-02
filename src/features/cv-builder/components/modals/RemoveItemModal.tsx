@@ -1,27 +1,29 @@
-import { ConfirmCancelDialog } from "@/components/ui/ConfirmCancelDialog";
+import DialogActionButtons from "@/components/ui/dialog/DialogActionButtons";
+import DialogWithBackdrop from "@/components/ui/dialog/DialogWithBackdrop";
 
 export default function RemoveItemModal({
   title,
   descriptionText,
   onClose,
   onConfirm,
+  show,
 }: {
   title: string;
   descriptionText: string;
   onClose: () => void;
   onConfirm: () => void;
+  show: boolean;
 }) {
   return (
-    <ConfirmCancelDialog
-      title={title}
-      confirmText={"Так, видалити"}
-      cancelText="Ні"
-      onClose={onClose}
-      onConfirm={onConfirm}
-      confirmClasses="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
-      show
-    >
+    <DialogWithBackdrop title={title} onClose={onClose} show={show}>
       <p className="mt-4 text-sm text-gray-500">{descriptionText}</p>
-    </ConfirmCancelDialog>
+      <DialogActionButtons
+        onConfirm={onConfirm}
+        onCancel={onClose}
+        cancelText={"Відміна"}
+        confirmText={"Так, видалити"}
+        confirmColor="red"
+      />
+    </DialogWithBackdrop>
   );
 }

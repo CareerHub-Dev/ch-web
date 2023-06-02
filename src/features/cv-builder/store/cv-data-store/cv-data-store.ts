@@ -1,5 +1,4 @@
-import { CvQueryData } from "@/hooks/useCvQuery";
-import { StudentCvDetails } from "@/lib/api/cvs/schemas";
+import { CvDetails } from "@/features/student-cvs/hooks/use-cv-details-query";
 import { arrayInputReducer, ArrayInputAction } from "@/lib/array-input/v2";
 import { makeStringInputReducer, StringInputAction } from "@/lib/string-input";
 import { create } from "zustand";
@@ -19,8 +18,10 @@ import { WorkExperience } from "@/features/work-experience/types";
 export type CvDataStore = {
   cvId: null | string;
   cvData: CvData;
-  reInit: (newData: StudentCvDetails | null) => void;
-  discardChanges: (lastSave: CvData | CvQueryData | null) => void;
+  noWorkExperience: boolean;
+  currentStage: StageNumber;
+  reInit: (newData: CvDetails | null) => void;
+  discardChanges: (lastSave: CvData | CvDetails | null) => void;
   dispatchTitle: (value: StringInputAction) => void;
   changeTemplateLanguage: (value: TemplateLanguage) => void;
   changeJobPosition: (value: { id: string; name: string } | null) => void;
@@ -50,9 +51,7 @@ export type CvDataStore = {
     sourceFileType: string;
   }) => void;
   removePhoto: () => void;
-  noWorkExperience: boolean;
   toggleNoWorkExperience: () => void;
-  currentStage: StageNumber;
   goToStage: (num: StageNumber) => void;
 };
 
@@ -79,7 +78,7 @@ export const useCvDataStore = create<CvDataStore>()(
             return;
           }
           if (typeof lastSave.title === "string") {
-            state.cvData = restoreToCvQueryData(lastSave as CvQueryData);
+            state.cvData = restoreToCvQueryData(lastSave as CvDetails);
           }
           state.cvData = lastSave as CvData;
         }),

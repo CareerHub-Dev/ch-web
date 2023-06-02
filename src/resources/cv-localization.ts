@@ -13,7 +13,7 @@ export const cvTemplateLocalization = new LocalizedStrings({
     workingExperience: "Working experience",
     otherExperience: "Other experience",
     education: "Education",
-    speciality: "Speciality",
+    specialty: "Specialty",
     degree: "Degree",
     jobType: {
       dev: "Developer",
@@ -37,7 +37,7 @@ export const cvTemplateLocalization = new LocalizedStrings({
     workingExperience: "Досвід роботи",
     otherExperience: "Інший досвід",
     education: "Освіта",
-    speciality: "Спеціальність",
+    specialty: "Спеціальність",
     degree: "Науковий ступінь",
     jobType: {
       dev: "Розробник",

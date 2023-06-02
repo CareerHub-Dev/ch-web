@@ -12,7 +12,6 @@ import { experienceLevelOptions } from "@/lib/enums";
 
 export default function JobPositionSelection() {
   const items = useJobDirectionsQueryData();
-
   const selectedDirection = useCvDataStore((s) => s.cvData.workDirection);
   const setSelectedDirection = useCvDataStore((s) => s.changeWorkDirection);
   const handleDirectionBlur = useCvDataStore((s) => s.blurWorkDirection);
@@ -35,7 +34,7 @@ export default function JobPositionSelection() {
     isLoading,
     isError,
   } = useJobPositionsByJobDirectionQuery(selectedDirection?.value?.id || "", {
-    enabled: selectedDirection !== null,
+    enabled: selectedDirection.value !== null,
   });
 
   const directionHasError =

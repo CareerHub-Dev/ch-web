@@ -42,14 +42,16 @@ export default function Stage5() {
 
   return (
     <>
-      {dialog === null ? null : dialog === "remove" ? (
-        <RemoveItemModal
-          onClose={handleClose}
-          onConfirm={handleRemoveItem}
-          title="Видалити мову?"
-          descriptionText={`Мова ${focusedLanguage.name} буде видалена зі списку`}
-        />
-      ) : dialog === "edit" ? (
+      <RemoveItemModal
+        onClose={handleClose}
+        onConfirm={handleRemoveItem}
+        show={dialog === "remove"}
+        title="Видалити мову?"
+        descriptionText={`Мова ${
+          focusedLanguage?.name
+        } буде видалена зі списку`}
+      />
+      {dialog === "edit" ? (
         <AddOrEditLanguageModal
           onClose={handleClose}
           initialPayload={{
@@ -57,9 +59,9 @@ export default function Stage5() {
             itemIndex: focusedLanguageIndex,
           }}
         />
-      ) : (
+      ) : dialog === "add" ? (
         <AddOrEditLanguageModal onClose={handleClose} />
-      )}
+      ) : null}
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h3 className="text-xl font-semibold text-gray-900">Іноземні мови</h3>

@@ -17,10 +17,15 @@ export default function Stage1() {
   const lastNameActions = useCvDataStore(getLastNameActions);
   const { isLoading } = useSelfStudentQuery({
     onSuccess: (data) => {
-      firstNameActions.force(data.firstName);
-      lastNameActions.force(data.lastName);
+      if (!firstName.wasChanged) {
+        firstNameActions.force(data.firstName);
+      }
+      if (!lastName.wasChanged) {
+        lastNameActions.force(data.lastName);
+      }
     },
     retry: false,
+    enabled: !firstName.wasChanged || !lastName.wasChanged,
   });
 
   return (

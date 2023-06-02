@@ -36,10 +36,15 @@ export default function useToast() {
     toastRef.current = toast(text, { ...options, isLoading: true });
   };
 
+  const clearCurrent = () => {
+    toast.dismiss(toastRef.current);
+  };
+
   return {
     success,
     error,
     warning,
     setCurrent,
+    clearCurrent,
   };
 }
