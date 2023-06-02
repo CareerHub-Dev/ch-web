@@ -15,19 +15,21 @@ export default function ProjectLinks() {
 
   return (
     <>
-      {dialog === null ? null : dialog === "remove" ? (
-        <RemoveItemModal
-          onClose={close}
-          onConfirm={() =>
-            dispatchProjectLinks({
-              type: "remove",
-              itemIndex: focusedItemIndex,
-            })
-          }
-          title="Видалити посилання?"
-          descriptionText={`Посилання ${focusedItem.title} буде видалено зі списку`}
-        />
-      ) : dialog === "edit" ? (
+      <RemoveItemModal
+        onClose={close}
+        onConfirm={() =>
+          dispatchProjectLinks({
+            type: "remove",
+            itemIndex: focusedItemIndex ?? 0,
+          })
+        }
+        title="Видалити посилання?"
+        descriptionText={`Посилання ${
+          focusedItem?.title
+        } буде видалено зі списку`}
+        show={dialog === "remove"}
+      />
+      {dialog === "edit" ? (
         <AddOrEditProjectLinkModal
           onClose={close}
           initialPayload={{
@@ -35,9 +37,9 @@ export default function ProjectLinks() {
             itemIndex: focusedItemIndex,
           }}
         />
-      ) : (
+      ) : dialog === "add" ? (
         <AddOrEditProjectLinkModal onClose={close} />
-      )}
+      ) : null}
 
       <div className="sm:border-t sm:border-gray-200 sm:pt-5 sm:flex sm:items-center">
         <div className="sm:flex-auto">

@@ -206,7 +206,7 @@ function educationToPlainObject(val: Education): {
   university: string;
   city: string;
   country: string;
-  speciality: string;
+  specialty: string;
   degree: string;
   startDate: string;
   endDate: string;

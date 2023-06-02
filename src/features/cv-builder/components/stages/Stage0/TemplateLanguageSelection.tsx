@@ -9,6 +9,7 @@ export default function TemplateLanguageSelection() {
   const setTemplateLanguage = useCvDataStore((s) => s.changeTemplateLanguage);
   const selectedWorkDirection = useCvDataStore((s) => s.cvData.workDirection);
   const workDirectionIsSelected = selectedWorkDirection.value !== null;
+
   const templateLanguageDoesNotMatchRecommended =
     workDirectionIsSelected &&
     selectedTemplateLanguage.id !==

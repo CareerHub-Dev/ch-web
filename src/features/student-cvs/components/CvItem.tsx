@@ -1,8 +1,9 @@
-import { getReadableDateFromString } from "@/lib/util";
-import cn from "classnames";
-import { CvItemActionsButton } from "./CvItemActionsButton";
 
-export function CvItem({
+import { getReadableDateFromString } from "@/lib/util";
+import { CvItemActionsButton } from "./CvItemActionsButton";
+import cn from "classnames";
+
+export default function CvItem({
   id,
   title,
   created,
@@ -25,7 +26,7 @@ export function CvItem({
       <div
         className={cn(
           backgroundColor,
-          "flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md"
+          "flex-shrink-0 flex items-center justify-center w-16 text-white text-lg font-medium rounded-l-md"
         )}
       >
         {titleInitials}

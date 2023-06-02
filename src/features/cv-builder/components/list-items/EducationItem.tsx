@@ -1,7 +1,7 @@
-import { type Education } from "../../store/cv-data-store/cv";
-import { type ItemListAction } from "@/lib/list-reducer/dialog-actions";
+import { Education } from "../../store/cv-data-store/cv";
+import { ItemListAction } from "@/lib/list-reducer/dialog-actions";
 import { CalendarIcon } from "@heroicons/react/20/solid";
-import { type Dispatch } from "react";
+import { Dispatch } from "react";
 import ListItemEditMenu from "@/components/ui/ListItemEditMenu";
 
 export default function EducationItem({
@@ -31,7 +31,7 @@ export default function EducationItem({
           <div className="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
             <div className="truncate">
               <div className="flex text-sm">
-                <p className="truncate font-semibold text-gray-900">{`${item.speciality}, ${item.degree}`}</p>
+                <p className="truncate font-semibold text-gray-900">{`${item.specialty}, ${item.degree}`}</p>
                 <p className="ml-1 flex-shrink-0 font-normal text-gray-500">
                   {`(${item.university}, ${item.city}, ${item.country})`}
                 </p>

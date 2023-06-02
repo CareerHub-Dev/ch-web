@@ -31,8 +31,8 @@ export default function AddOrEditEducationModal({
     initialValue: initialPayload?.item.city ?? "",
     validators: [fillThisFieldValidator],
   });
-  const speciality = useInput({
-    initialValue: initialPayload?.item.speciality ?? "",
+  const specialty = useInput({
+    initialValue: initialPayload?.item.specialty ?? "",
     validators: [fillThisFieldValidator],
   });
   const [degree, setDegree] = useState(
@@ -55,7 +55,7 @@ export default function AddOrEditEducationModal({
   const timePeriodIsInvalid =
     !educationIsCurrent.value &&
     (startYearInt > endYearInt || startYearInt > currentYear);
-  const allInputs = [university, country, city, speciality, startYear, endYear];
+  const allInputs = [university, country, city, specialty, startYear, endYear];
   const thereAreSomeErrors =
     allInputs.some((item) => item.errors.length > 0) || timePeriodIsInvalid;
 
@@ -67,7 +67,7 @@ export default function AddOrEditEducationModal({
       university: university.value,
       country: country.value,
       city: city.value,
-      speciality: speciality.value,
+      specialty: specialty.value,
       degree: degree.id,
       startYear: startYear.value.id,
       endYear: endYear.value.id,
@@ -145,15 +145,15 @@ export default function AddOrEditEducationModal({
         <div className="col-span-6 sm:col-span-3">
           <ValidatedInput
             label="Спеціальність, повна назва"
-            id="speciality"
-            value={speciality.value}
-            onChange={speciality.change}
-            placeholder={placeholders.speciality}
-            onBlur={speciality.blur}
-            warnings={speciality.warnings}
-            errors={speciality.errors}
-            wasBlurred={speciality.wasBlurred}
-            wasChanged={speciality.wasChanged}
+            id="specialty"
+            value={specialty.value}
+            onChange={specialty.change}
+            placeholder={placeholders.specialty}
+            onBlur={specialty.blur}
+            warnings={specialty.warnings}
+            errors={specialty.errors}
+            wasBlurred={specialty.wasBlurred}
+            wasChanged={specialty.wasChanged}
           />
         </div>
 
@@ -250,21 +250,21 @@ function mapPlaceholders(localeId: string) {
         university: "Харківський національний університет радіоелектроніки",
         country: "Україна",
         city: "Харків",
-        speciality: "Інформаційні системи та технології",
+        specialty: "Інформаційні системи та технології",
       };
     case "en":
       return {
         university: "Kharkiv National University of Radioelectronics",
         country: "Ukraine",
         city: "Kharkiv",
-        speciality: "Information Systems and Technologies",
+        specialty: "Information Systems and Technologies",
       };
     default:
       return {
         university: "Kharkiv National University of Radioelectronics",
         country: "Ukraine",
         city: "Kharkiv",
-        speciality: "Information Systems and Technologies",
+        specialty: "Information Systems and Technologies",
       };
   }
 }

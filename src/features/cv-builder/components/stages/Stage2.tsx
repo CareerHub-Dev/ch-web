@@ -1,4 +1,4 @@
-import { ConfirmCancelDialog } from "@/components/ui/ConfirmCancelDialog";
+import ConfirmCancelDialog from "@/components/ui/ConfirmCancelDialog";
 import { useCvAssistanceStore } from "@/features/cv-builder/store/cv-assistance-store";
 import { getPhotoDetails, useCvDataStore } from "../../store/cv-data-store";
 import { getImage } from "@/lib/api/image";
@@ -33,7 +33,7 @@ export default function Stage2() {
         cancelText={"Ні"}
         confirmText={"Так"}
         show={removePhotoModalIsOpen.value}
-        confirmClasses="bg-red-600 text-white focus:ring-red-500"
+        confirmColor="red"
       />
 
       <div className="space-y-6 sm:space-y-5">

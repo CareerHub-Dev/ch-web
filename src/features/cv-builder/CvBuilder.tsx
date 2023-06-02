@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import StageView from "./components//layout/StageView";
 import StageButonsPanel from "./components//layout/StageButtonsPanel";
 import CvBuilderHeading from "./components/layout/CvBuilderHeading";
-import { type StudentCvDetails } from "@/lib/api/cvs/schemas";
+import { CvDetails } from "../student-cvs/hooks/use-cv-details-query";
 
 const ModalView = dynamic(() => import("./components/layout/ModalView"), {
   ssr: false,
@@ -13,7 +13,7 @@ const ModalView = dynamic(() => import("./components/layout/ModalView"), {
 export default function CvBuilder({
   initialData,
 }: {
-  initialData?: StudentCvDetails;
+  initialData?: CvDetails;
 }) {
   const cvId = initialData?.id ?? null;
   const storedCvId = useCvDataStore((s) => s.cvId);

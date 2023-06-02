@@ -76,7 +76,7 @@ export default function CVPreview() {
               return (
                 <li key={index}>
                   <h2>{`${item.university}, ${item.city}, ${item.country}`}</h2>
-                  <p>{`${cvTemplateLocalization.speciality}: ${item.speciality}, ${cvTemplateLocalization.degree}: ${item.degree}`}</p>
+                  <p>{`${cvTemplateLocalization.specialty}: ${item.specialty}, ${cvTemplateLocalization.degree}: ${item.degree}`}</p>
                   <p>{`${startYear} - ${endYear}`}</p>
                 </li>
               );

@@ -8,29 +8,31 @@ import { useRouter } from "next/router";
 import useProtectedMutation from "@/hooks/useProtectedMutation";
 import useToast from "@/hooks/useToast";
 import { useQueryClient } from "@tanstack/react-query";
-import { createCv } from "@/lib/api/cvs";
-import { type ChangeEvent } from "react";
-import { ConfirmCancelDialog } from "@/components/ui/ConfirmCancelDialog";
-import ModalLoading from "@/components/ui/Modal/ModalLoading";
+import DialogWithBackdrop from "@/components/ui/dialog/DialogWithBackdrop";
+import DialogActionButtons from "@/components/ui/dialog/DialogActionButtons";
+import { createOrModifyCv } from "@/lib/api/cvs";
+import ValidatedInput from "@/components/ui/ValidatedInput";
 
 export function SaveModal() {
+  const router = useRouter();
   const cvId = useCvDataStore((s) => s.cvId);
   const closeModal = useCvUiStore((s) => s.closeModal);
   const isOpen = useCvUiStore((s) => s.currentModal) === "save";
   const title = useCvDataStore((state) => state.cvData.title);
   const dispatchTitle = useCvDataStore((s) => s.dispatchTitle);
   const toast = useToast();
-  const router = useRouter();
   const queryClient = useQueryClient();
   const cvData = useCvDataStore((s) => s.cvData);
-  const titleValue = title.value;
   const mutationKey = [cvId === null ? "create-cv" : `modify-cv-${cvId}`];
   const stage0 = useCvDataStore(getStageCompletionStatus(0));
-  const cvCanBeSaved = stage0 === "complete" || stage0 === "hasWarnings";
+  const cvCanBeSaved =
+    stage0 === "complete" ||
+    stage0 === "hasWarnings" ||
+    (title.errors.length > 0 && title.wasBlurred);
 
-  const { mutate, isLoading, isSuccess } = useProtectedMutation(
+  const { mutate, isLoading } = useProtectedMutation(
     mutationKey,
-    createCv,
+    createOrModifyCv,
     {
       onSuccess: () => {
         queryClient.refetchQueries(["student-own-cvs"]);
@@ -47,43 +49,58 @@ export function SaveModal() {
     }
   );
 
-  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatchTitle({ type: "CHANGE", value: e.target.value });
+  const handleTitleChange = (value: string) => {
+    dispatchTitle({ type: "CHANGE", value });
+  };
+
+  const handleTitleBlur = () => {
+    dispatchTitle({ type: "BLUR" });
   };
 
   const handleConfirm = () => {
+    dispatchTitle({ type: "BLUR" });
+
+    if (title.errors.length > 0) {
+      return;
+    }
     const transformedData = transformCvDataToDto(cvData);
     if (transformedData === null) {
       toast.error("Не можна зберегти резюме без обраної позиції");
       return;
     }
-    mutate(transformedData);
+    console.log(transformedData.title);
+
+    if (transformedData.title.length === 0) {
+      return;
+    }
+    mutate({ ...transformedData, id: cvId });
   };
 
   return (
-    <ConfirmCancelDialog
+    <DialogWithBackdrop
       title="Зберегти резюме"
       show={isOpen}
       onClose={closeModal}
-      confirmText="Зберегти"
-      cancelText="Не зараз"
-      onConfirm={handleConfirm}
-      confirmationDisabled={!cvCanBeSaved}
     >
-      <ModalLoading show={isLoading || isSuccess} />
       <div className="mt-4 flex flex-col gap-1">
         <label htmlFor="cvTitleInput" className="text-gray-500">
           Назва
         </label>
-        <input
-          id="cvTitleInput"
-          className="px-4 py-2 rounded-md bg-gray-100 outline-none border-2 border-solid focus:border-blue-500 transition-all ease-in-out duration-200"
-          type="text"
-          placeholder="Дайте цьому резюме назву"
-          value={titleValue}
+        <ValidatedInput
           onChange={handleTitleChange}
+          onBlur={handleTitleBlur}
+          id="title"
+          name="title"
+          {...title}
         />
       </div>
-    </ConfirmCancelDialog>
+      <DialogActionButtons
+        confirmText="Зберегти"
+        confirmationDisabled={isLoading || !cvCanBeSaved}
+        isLoading={isLoading}
+        onConfirm={handleConfirm}
+        onCancel={closeModal}
+      />
+    </DialogWithBackdrop>
   );
 }

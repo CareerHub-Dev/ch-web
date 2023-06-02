@@ -1,44 +1,38 @@
 ## Getting Started
 
-Before you start make sure you have `pnpm` installed. You can also use `make` to build the project, however it is optional.
-Before you run the project you may define these Environment Variables:
+Before you start make sure you have `pnpm` installed.
+Before you run the project you have to define these Environment Variables:
 * BACKEND_SERVER_URL,
 * BACKEND_IMAGE_DOMAIN,
 * REACT_EDITOR
 
-##### Note: NextJS has a built-in support for this, you just need to create a file named `.env.local` in project's root directory
+##### Note: NextJS has a built-in support for this, and to override values specified in `.env.local`, you may create `.env` file in project's root directory
 ---
-To run dev server:
-
+Start dev server:
 ```bash
-make dev
-```
-or
-```bash
-pnpm i;pnpm dev
+pnpm dev
 ```
 ---
-To build and run prod server:
+Start production build:
 ```bash
-make prod
+pnpm build
 ```
-or
+---
+Start production server:
 ```bash
-pnpm i;pnpm build;pnpm start
+pnpm start
 ```
-
-Open [http://127.0.0.1:3000/](http://127.0.0.1:3000/) with a browser to see the result.
+The app will start at port 3000
 
 ---
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Running tests
+---
+Run jest and react tests:
+```bash
+pnpm test
+```
+---
+Run end-to-end tests:
+```bash
+pnpm test:e2e
+```
