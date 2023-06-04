@@ -37,6 +37,7 @@ export default function QueryAutoCompleteCombobox<TItem>({
 
   const handleComboboxItemSelected = (item: TItem) => {
     onSubmit(item);
+    setSearch("");
   };
 
   return (
@@ -54,7 +55,6 @@ export default function QueryAutoCompleteCombobox<TItem>({
             autoComplete="off"
             className="w-full rounded-md border bg-white py-2 pl-3 pr-10 shadow-sm focus:outline-none focus:ring-1 sm:text-sm disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 focus:border-blue-500 focus:ring-blue-500 border-gray-300"
             onChange={handleSearchChange}
-            displayValue={getItemName}
             placeholder={!disabled ? placeholder : ""}
           />
           <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500">

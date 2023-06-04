@@ -113,57 +113,12 @@ export function getCvMutationData(
   store: CvDataStore
 ): CvModificationData | null {
   const { cvData } = store;
-
-  let photo: File | undefined;
-  if (
-    cvData.photo !== null &&
-    typeof cvData.photo === "object" &&
-    "croppedPhoto" in cvData.photo
-  ) {
-    photo = new File([cvData.photo.croppedPhoto], cvData.photo.sourceFileName, {
-      type: cvData.photo.sourceFileType,
-    });
-  }
-
-  if (
-    cvData.experienceLevel.value === null ||
-    cvData.jobPosition.value === null
-  ) {
-    return null;
-  }
-
-  return {
-    experienceLevel: cvData.experienceLevel.value.id,
-    title: cvData.title.value,
-    jobPositionId: cvData.jobPosition.value.id,
-    templateLanguage: cvData.templateLanguage.id,
-    lastName: cvData.lastName.value,
-    firstName: cvData.firstName.value,
-    photo,
-    goals: cvData.goals.value,
-    hardSkills: cvData.hardSkills.items,
-    softSkills: cvData.softSkills.items,
-    foreignLanguages: cvData.foreignLanguages.items,
-    projectLinks: cvData.projectLinks.items,
-    educations: cvData.educations.items.map(educationToPlainObject),
-    experiences: cvData.workExperiences.items,
-  };
+  return transformCvDataToDto(cvData);
 }
 
 export function transformCvDataToDto(
   cvData: CvData
 ): CvModificationData | null {
-  let photo: File | undefined;
-  if (
-    cvData.photo !== null &&
-    typeof cvData.photo === "object" &&
-    "croppedPhoto" in cvData.photo
-  ) {
-    photo = new File([cvData.photo.croppedPhoto], cvData.photo.sourceFileName, {
-      type: cvData.photo.sourceFileType,
-    });
-  }
-
   if (
     cvData.experienceLevel.value === null ||
     cvData.jobPosition.value === null
@@ -171,14 +126,13 @@ export function transformCvDataToDto(
     return null;
   }
 
-  return {
+  const data = {
     experienceLevel: cvData.experienceLevel.value.id,
     title: cvData.title.value,
     jobPositionId: cvData.jobPosition.value.id,
     templateLanguage: cvData.templateLanguage.id,
     lastName: cvData.lastName.value,
     firstName: cvData.firstName.value,
-    photo,
     goals: cvData.goals.value,
     hardSkills: cvData.hardSkills.items,
     softSkills: cvData.softSkills.items,
@@ -187,6 +141,24 @@ export function transformCvDataToDto(
     educations: cvData.educations.items.map(educationToPlainObject),
     experiences: cvData.workExperiences.items,
   };
+
+  if (
+    cvData.photo !== null &&
+    typeof cvData.photo === "object" &&
+    "croppedPhoto" in cvData.photo
+  ) {
+    const photo = new File(
+      [cvData.photo.croppedPhoto],
+      cvData.photo.sourceFileName,
+      {
+        type: cvData.photo.sourceFileType,
+      }
+    );
+
+    Object.assign(data, { photo });
+  }
+
+  return data;
 }
 
 function summarizeInputs(...inputs: Inputs.BaseInput[]) {

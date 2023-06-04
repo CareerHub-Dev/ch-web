@@ -6,6 +6,7 @@ import axios, {
 } from "axios";
 import { Agent } from "https";
 import { backendApiBaseUrl, localGatewayUrl } from "../api";
+import { convertParams } from "./convert-params";
 
 const defaultHeaders = { "Content-Type": "application/json" };
 
@@ -78,6 +79,10 @@ export async function request<TSelected = any>({
   if (prefix) {
     options.url = `${prefix}/${options.url}`;
   }
+  if (options.params) {
+    options.params = convertParams(options.params);
+  }
+
   return instance({ method, ...options })
     .then(select)
     .catch(requestErrorHandler);
