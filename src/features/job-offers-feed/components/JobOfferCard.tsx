@@ -3,6 +3,7 @@ import Link from "next/link";
 import format from "date-fns/format";
 import { JobOfferInFeed } from "@/lib/api/job-offer/schemas";
 import { useJobOffersFeedStore } from "../store/job-offers-feed-store";
+import { getImage } from "@/lib/api/image";
 
 export default function JobOfferCard({
   id,
@@ -19,6 +20,8 @@ export default function JobOfferCard({
   const addTag = useJobOffersFeedStore((s) => s.addTag);
   const detailsUrl = `/job-offers/${id}`;
   const companyUrl = `/companies/${company.id}`;
+  const imageSrc =
+    image === undefined || image === null ? "/general.jpg" : getImage(image);
 
   return (
     <div
@@ -28,7 +31,7 @@ export default function JobOfferCard({
     >
       <div className="relative aspect-square w-32 h-32 shrink-0 sm:w-32 sm:h-32 lg:w-52 lg:h-52">
         <Image
-          src={image || "/general.jpg"}
+          src={imageSrc}
           alt="jobOffer"
           width={300}
           height={624}

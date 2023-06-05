@@ -6,8 +6,8 @@ import { useJobOffersFeedStore } from "../store/job-offers-feed-store";
 import cn from "classnames";
 
 const sortOptions = [
-  { name: "Спочатку нові", id: SortExpression.StartDateAsc },
-  { name: "Спочатку старі", id: SortExpression.StartDateDesc },
+  { name: "Спочатку нові", id: SortExpression.StartDateDesc },
+  { name: "Спочатку старі", id: SortExpression.StartDateAsc },
 ];
 
 export default function JobOfferSortMenu() {

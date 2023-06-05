@@ -10,22 +10,8 @@ export type PostData = {
   images: File[];
 };
 
-export function addOrEditPost(initialPayload?: {
-  id: string;
-  text: string;
-  images: string[];
-}) {
+export function addPost() {
   return (instance: AxiosInstance) => {
-    const { method, url } = initialPayload
-      ? {
-          method: "PUT",
-          url: `Auth/Posts/self/${initialPayload.id}`,
-        }
-      : {
-          method: "POST",
-          url: "Auth/Posts/self",
-        };
-
     return (data: PostData) => {
       const formData = new FormData();
       formData.append("text", data.text);
@@ -35,8 +21,8 @@ export function addOrEditPost(initialPayload?: {
 
       return request({
         instance,
-        url,
-        method,
+        url: "Auth/Posts/self",
+        method: "POST",
         data: formData,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -46,28 +32,16 @@ export function addOrEditPost(initialPayload?: {
   };
 }
 
-export function useAddOrEditPostMutation(initialPayload?: {
-  id: string;
-  text: string;
-  images: string[];
-}) {
+export function useAddPostMutation() {
   const toast = useToast();
   const client = useQueryClient();
+  const successMessage = "Публікацію створено";
+  const queryKey = ["posts", "self"];
 
-  const { successMessage, queryKey } = initialPayload
-    ? {
-        successMessage: "Публікацію відредаговано",
-        queryKey: ["posts", "self", initialPayload.id],
-      }
-    : {
-        successMessage: "Публікацію створено",
-        queryKey: ["posts", "self"],
-      };
-
-  return useProtectedMutation(queryKey, addOrEditPost(initialPayload), {
+  return useProtectedMutation(queryKey, addPost(), {
     onSuccess() {
       toast.success(successMessage);
-      client.invalidateQueries(["posts", "self"]);
+      client.invalidateQueries(queryKey);
     },
     onError(err) {
       toast.error("Помилка: " + parseUnknownError(err));

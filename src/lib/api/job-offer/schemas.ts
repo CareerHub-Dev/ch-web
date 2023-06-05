@@ -62,3 +62,4 @@ export const JobOfferFeedSchema = z.array(JobOfferInFeedSchema);
 
 export type JobOfferInFeed = z.infer<typeof JobOfferInFeedSchema>;
 export type JobOfferFeed = z.infer<typeof JobOfferFeedSchema>;
+export type AppliedCv = z.infer<typeof AppliedCvSchema>;

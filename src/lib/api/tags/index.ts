@@ -3,7 +3,7 @@ import { AxiosInstance } from "axios";
 
 export function getTags(search: string) {
   return (instance: AxiosInstance) => {
-    return request({
+    return request<Tag[]>({
       instance,
       url: "Auth/Tags",
       params: {

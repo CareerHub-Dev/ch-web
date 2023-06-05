@@ -9,6 +9,7 @@ import CompanyProfileSkeleton from "./CompanyProfileSkeleton";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import CompanyJobOffers from "./CompanyJobOffers";
 import CompanyPosts from "./CompanyPosts";
+import CompanySubscribeButton from "./CompanySubscribeButton";
 
 export default function CompanyProfile({
   companyId,
@@ -79,12 +80,7 @@ export default function CompanyProfile({
                         {"Редагувати"}
                       </Link>
                     ) : (
-                      <button
-                        type="button"
-                        className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                      >
-                        Subscrive
-                      </button>
+                      <CompanySubscribeButton companyId={companyId} />
                     )}
                   </div>
                 </div>

@@ -6,6 +6,9 @@ import {
 import { useJobOffersFeedStore } from "../store/job-offers-feed-store";
 import { selectFilters } from "../store/job-offers-feed-store/selectors";
 import ItemSelection from "@/components/ui/ItemsSelection";
+import LargeBadge from "@/components/ui/LargeBadge";
+import QueryAutoCompleteCombobox from "@/components/ui/QueryAutocompleteCombobox";
+import { getTags } from "@/lib/api/tags";
 
 export default function JobOfferDesktopFilters() {
   const {
@@ -15,6 +18,9 @@ export default function JobOfferDesktopFilters() {
     setJobType,
     experienceLevel,
     setExperienceLevel,
+    tags,
+    removeTag,
+    addTag,
   } = useJobOffersFeedStore(selectFilters);
 
   const filters = [
@@ -53,6 +59,29 @@ export default function JobOfferDesktopFilters() {
           />
         </div>
       ))}
+      <div>
+        <QueryAutoCompleteCombobox
+          placeholder="Пошук тегів"
+          queryKey="tags"
+          queryFn={getTags}
+          label={"Теги"}
+          onSubmit={(tag) => addTag(tag)}
+          getItemName={(tag) => tag.name}
+        />
+        <div className="flex flex-wrap gap-2 mt-2">
+          {tags.length !== 0 ? (
+            tags.map((tag, tagIdx) => (
+              <LargeBadge
+                key={tagIdx}
+                onRemove={() => removeTag(tag)}
+                name={tag.name}
+              />
+            ))
+          ) : (
+            <p className="text-sm text-gray-500">{"Не обрано тегів"}</p>
+          )}
+        </div>
+      </div>
     </form>
   );
 }

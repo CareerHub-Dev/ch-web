@@ -3,7 +3,7 @@ import RecentPostSkeleton from "./RecentPostSkeleton";
 import RecentPost from "./RecentPost";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import { Fragment } from "react";
-import { getPostsFromFollowedAccounts } from "@/features/posts/hooks/use-self-posts-query";
+import { getPostsFromFollowedAccounts } from "@/features/posts/hooks/use-posts-of-followed-accounts-query";
 
 export default function RecentPosts() {
   const { data, isLoading, isError, error } = useProtectedPaginatedQuery({
@@ -17,8 +17,6 @@ export default function RecentPosts() {
     !isError &&
     data.pages.length > 0 &&
     data.pages.at(0)?.data.length === 0;
-
-  const thereAreSomePosts = !isLoading && !isError && !thereAreNoPosts;
 
   return (
     <>
@@ -45,13 +43,6 @@ export default function RecentPosts() {
           )}
         </ul>
       </div>
-      {thereAreSomePosts ? (
-        <div className="mt-6">
-          <button className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-100 transition-all duration-200">
-            {"Дивитися більше"}
-          </button>
-        </div>
-      ) : null}
     </>
   );
 }

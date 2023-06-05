@@ -1,6 +1,6 @@
 import { JobOffersFeedStore } from "./job-offers-feed-store";
 
-type QueryParams = { search: string; order: string } & Partial<{
+type QueryParams = { search: string; order: string, tagIds: string[] } & Partial<{
   workFormat: string;
   jobType: string;
   experienceLevel: string;
@@ -15,6 +15,7 @@ export function selectQueryParams(store: JobOffersFeedStore) {
     jobType: store.jobType.id,
     experienceLevel: store.experienceLevel.id,
     jobPositionId: store.jobPosition.id,
+    tagIds: store.tags.map((tag) => tag.id),
   };
 
   return Object.fromEntries(
@@ -32,5 +33,8 @@ export function selectFilters(store: JobOffersFeedStore) {
     setExperienceLevel: store.setExperienceLevel,
     jobPosition: store.jobPosition,
     setJobPositionId: store.setJobPosition,
+    tags: store.tags,
+    removeTag: store.removeTag,
+    addTag: store.addTag,
   };
 }

@@ -24,7 +24,7 @@ export default function JobOfferDetailPage({
     return <CompanyJobOfferPage jobOfferId={jobOfferId} />;
   }
 
-  return <StudentJobOfferPage />;
+  return <StudentJobOfferPage jobOfferId={jobOfferId} />;
 }
 
 JobOfferDetailPage.getLayout = CommonLayout;

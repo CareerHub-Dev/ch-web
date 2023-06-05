@@ -91,7 +91,7 @@ export function createOrModifyCv(instance: AxiosInstance) {
     } else {
       await request({
         method: "PUT",
-        url: `Student/self/Cvs/${id}`,
+        url: `Student/self/CVs/${id}`,
         data,
         instance,
       });
@@ -102,7 +102,7 @@ export function createOrModifyCv(instance: AxiosInstance) {
 
       await request({
         method: "POST",
-        url: `Student/self/Cvs/${id}/photo`,
+        url: `Student/self/CVs/${id}/photo`,
         data,
         instance,
       });

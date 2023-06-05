@@ -1,53 +1,24 @@
-import SoftButton from "@/components/ui/SoftButton";
 import JobOffersFeedLayout from "./JobOffersFeedLayout";
-import JobOffersList from "./JobOffersList";
-import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
-import parseUnknownError from "@/lib/parse-unknown-error";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import { useJobOffersQuery } from "../hooks/use-job-offers-query";
+import useSession from "@/hooks/useSession";
+import JobOffersFeedTabs from "./JobOffersFeedTabs";
+import CommonJobOffersFeed from "./CommonJobOffersFeed";
+import { useJobOffersFeedTabs } from "../hooks/use-job-offers-feed-tabs";
+import RecommendedJobOffersFeed from "./RecommendedJobOffersFeed";
 
 export default function JobOffersFeed() {
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useJobOffersQuery();
+  const { currentTab } = useJobOffersFeedTabs();
+  const { data: sessionData, status: sessionStatus } = useSession();
 
-  const loadMore = () => {
-    if (hasNextPage) {
-      fetchNextPage();
-    }
-  };
+  const isStudent =
+    sessionStatus === "authenticated" && sessionData.role === "Student";
 
   return (
     <JobOffersFeedLayout>
-      {isLoading ? (
-        <CenteredLoadingSpinner />
-      ) : isError ? (
-        <p className="text-center text-red-600">{parseUnknownError(error)}</p>
+      {isStudent ? <JobOffersFeedTabs /> : null}
+      {isStudent && currentTab === "recommended" ? (
+        <RecommendedJobOffersFeed />
       ) : (
-        <>
-          <JobOffersList data={data} />
-          {hasNextPage || isFetchingNextPage ? (
-            <div className="flex items-center justify-center mt-6 mb-12">
-              <SoftButton
-                size="md"
-                className="flex items-center justify-center"
-                onClick={loadMore}
-                disabled={isFetchingNextPage}
-              >
-                {isFetchingNextPage ? (
-                  <LoadingSpinner className="text-blue-600 h-5 mr-1.5" />
-                ) : null}
-                {"Завантажити більше"}
-              </SoftButton>
-            </div>
-          ) : null}
-        </>
+        <CommonJobOffersFeed />
       )}
     </JobOffersFeedLayout>
   );

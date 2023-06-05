@@ -35,17 +35,6 @@ export const BriefPostArraySchema = z.array(BriefPostSchema);
 export type Post = z.infer<typeof PostSchema>;
 export type BriefPost = z.infer<typeof BriefPostSchema>;
 
-export function getPostsFromFollowedAccounts(
-  instance: AxiosInstance,
-  params: Omit<PaginatedRequestParams, "pageNumber">
-) {
-  return request({
-    instance,
-    url: `/Student/Posts/followed-accounts`,
-    params,
-    select: parsePaginatedResponseAsync(PostArraySchema),
-  });
-}
 
 export function getPostsFromAccount(
   instance: AxiosInstance,

@@ -1,21 +1,19 @@
 import { getImage, getImageWithDefault } from "@/lib/api/image";
-import { BriefPost } from "../hooks/use-self-posts-query";
+import { Post } from "../hooks/use-self-posts-query";
 import Image from "next/image";
 import { matchUserRole } from "@/lib/enums";
 import { HandThumbUpIcon } from "@heroicons/react/24/solid";
 import format from "date-fns/format";
 import ImageCarousel from "@/components/ui/ImageCarousel";
-import PostEditMenu from "./PostEditMenu";
 
-export default function SelfPostItem({
+export default function PostItem({
   id,
   text,
   likes,
   createdDate,
   account,
   images,
-  onRemove,
-}: BriefPost & { onRemove: () => void }) {
+}: Post) {
   const authorAvatarUrl = getImageWithDefault(
     account.image,
     matchUserRole(account.role)
@@ -47,9 +45,6 @@ export default function SelfPostItem({
                 </time>
               </p>
             </div>
-            <div className="flex flex-shrink-0 self-center">
-              <PostEditMenu onRemoveClick={onRemove} />
-            </div>
           </div>
         </div>
         <p className="mt-2 space-y-4 text-sm text-gray-700">{text}</p>
@@ -60,12 +55,11 @@ export default function SelfPostItem({
             <span className="inline-flex items-center text-sm">
               <button
                 type="button"
-                disabled
-                className="inline-flex space-x-2 text-gray-400"
+                className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
               >
                 <HandThumbUpIcon className="h-5 w-5" aria-hidden="true" />
                 <span className="font-medium text-gray-900">{likes}</span>
-                <span className="sr-only">{"Вподобайки"}</span>
+                <span className="sr-only">likes</span>
               </button>
             </span>
           </div>

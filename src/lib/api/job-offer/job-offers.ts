@@ -20,6 +20,18 @@ export function getJobOffers(
   });
 }
 
+export function getRecommendedJobOffers(
+  instance: AxiosInstance,
+  params: PaginatedRequestParams
+) {
+  return request({
+    instance,
+    url: "/Student/JobOffers/recomended",
+    params,
+    select: parsePaginatedResponseAsync(JobOfferFeedSchema),
+  });
+}
+
 export function getSelfJobOffersAsCompany(
   instance: AxiosInstance,
   params: PaginatedRequestParams
@@ -38,6 +50,17 @@ export function getJobOfferAsCompany(jobOfferId: string) {
       instance,
       method: "GET",
       url: `Company/self/JobOffers/${jobOfferId}`,
+      select: (res) => JobOfferSchema.parseAsync(res.data),
+    });
+  };
+}
+
+export function getJobOfferAsStudent(jobOfferId: string) {
+  return (instance: AxiosInstance) => {
+    return request({
+      instance,
+      method: "GET",
+      url: `Student/JobOffers/${jobOfferId}`,
       select: (res) => JobOfferSchema.parseAsync(res.data),
     });
   };
