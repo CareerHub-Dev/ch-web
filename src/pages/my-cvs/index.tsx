@@ -3,25 +3,17 @@ import { AddCvButton } from "@/features/student-cvs/components/AddCvButton";
 import { CvItemsSearch } from "@/features/student-cvs/components/CvItemsSearch";
 import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 import LoadMore from "@/components/ui/LoadMore";
-import { useProtectedPaginatedQuery } from "@/hooks/useProtectedPaginatedQuery";
 import { useState } from "react";
 import { useDebounce } from "usehooks-ts";
-import { getStudentOwnCvs } from "@/lib/api/cvs";
 import { protectedSsr } from "@/lib/protected-ssr";
 import CvItemsList from "@/features/student-cvs/components/CvItemsList";
+import { useCvsQuery } from "@/features/student-cvs/hooks/use-cvs-query";
 
-function StudentCVsPage() {
+export default function StudentCVsPage() {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 200);
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useProtectedPaginatedQuery({
-      queryKey: ["student-own-cvs", debouncedSearch],
-      getItems: getStudentOwnCvs,
-      params: {
-        pageSize: 36,
-        search: debouncedSearch,
-      },
-    });
+    useCvsQuery(debouncedSearch);
 
   const cvsToDisplay = data?.pages.flatMap((page) => page.data) ?? [];
 
@@ -54,8 +46,6 @@ function StudentCVsPage() {
 }
 
 StudentCVsPage.getLayout = CommonLayout;
-
-export default StudentCVsPage;
 
 export const getServerSideProps = protectedSsr({
   allowedRoles: ["Student"],

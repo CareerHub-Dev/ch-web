@@ -1,6 +1,6 @@
 import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 import PrimaryButton from "@/components/ui/PrimaryButton";
-import AddOrEditPostForm from "@/features/posts/components/AddOrEditPostForm";
+import AddOrEditPostForm from "@/features/posts/components/AddPostForm";
 import RemovePostDialog from "@/features/posts/components/RemovePostDialog";
 import SelfPostItem from "@/features/posts/components/SelfPostItem";
 import {

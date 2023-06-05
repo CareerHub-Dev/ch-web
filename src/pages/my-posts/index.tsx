@@ -1,5 +1,5 @@
 import CommonLayout from "@/components/layout/CommonLayout";
-import AddOrEditPostForm from "@/features/posts/components/AddOrEditPostForm";
+import AddOrEditPostForm from "@/features/posts/components/AddPostForm";
 import { protectedSsr } from "@/lib/protected-ssr";
 import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 import parseUnknownError from "@/lib/parse-unknown-error";

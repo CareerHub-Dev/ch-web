@@ -1,24 +1,37 @@
+import SoftButton from "@/components/ui/SoftButton";
 import { getReadableDateFromString } from "@/lib/util";
-import { CvItemActionsButton } from "./CvItemActionsButton";
+import { useJobOfferApplicationMutation } from "../hooks/use-job-offer-application-mutation";
 import cn from "classnames";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
-export default function CvItem({
+export default function CvItemForApplication({
   id,
+  jobOfferId,
   title,
   created,
   modified,
+  onSuccess,
 }: {
   id: string;
+  jobOfferId: string;
   title: string;
   created: string;
   modified?: string | null | undefined;
+  onSuccess: () => void;
 }) {
+  const { mutate: applyForJobOffer, isLoading } =
+    useJobOfferApplicationMutation({
+      onSuccess,
+    });
   const titleInitials = getTitleInitials(title);
   const backgroundColor = getBackgroundColorForInitials(titleInitials);
   const dummyLastEditedDate = modified || created;
 
   const readableCreatedDate = getReadableDateFromString(created);
   const readableEditedDate = getReadableDateFromString(dummyLastEditedDate);
+  const handleApplyClick = () => {
+    applyForJobOffer({ jobOfferId, cvId: id });
+  };
 
   return (
     <li className="col-span-1 flex rounded-md shadow-sm">
@@ -41,7 +54,12 @@ export default function CvItem({
           </div>
         </div>
         <div className="flex-shrink-0 pr-2">
-          <CvItemActionsButton id={id} title={title} />
+          <SoftButton disabled={isLoading} onClick={handleApplyClick}>
+            {isLoading ? (
+              <LoadingSpinner className="w-4 h-4 text-blue-500 inline-block mr-2" />
+            ) : null}
+            {"Подати"}
+          </SoftButton>
         </div>
       </div>
     </li>

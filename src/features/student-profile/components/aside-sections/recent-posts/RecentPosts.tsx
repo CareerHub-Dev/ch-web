@@ -3,7 +3,7 @@ import RecentPostSkeleton from "./RecentPostSkeleton";
 import RecentPost from "./RecentPost";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import { Fragment } from "react";
-import { getPostsFromFollowedAccounts } from "@/features/posts/hooks/use-self-posts-query";
+import { getPostsFromFollowedAccounts } from "@/features/posts/hooks/use-posts-of-followed-accounts-query";
 
 export default function RecentPosts() {
   const { data, isLoading, isError, error } = useProtectedPaginatedQuery({

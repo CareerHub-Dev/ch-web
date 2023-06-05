@@ -5,7 +5,7 @@ import parseUnknownError from "@/lib/parse-unknown-error";
 import { Fragment } from "react";
 import StudentPost from "./StudentPost";
 import PrimaryButton from "@/components/ui/PrimaryButton";
-import AddOrEditPostForm from "@/features/posts/components/AddOrEditPostForm";
+import AddOrEditPostForm from "@/features/posts/components/AddPostForm";
 
 export default function StudentPosts({
   accountId,
