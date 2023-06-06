@@ -1,11 +1,12 @@
 import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
-import { usePostsOfFollowedAccountsQuery } from "../hooks/use-posts-of-followed-accounts-query";
+import { useSelfPostsQuery } from "../hooks/use-self-posts-query";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import SoftButton from "@/components/ui/SoftButton";
 import { Fragment } from "react";
-import PostItem from "./PostItem";
+import SelfPostItem from "./SelfPostItem";
+import { useRemovePostMutation } from "../hooks/use-remove-post-mutation";
 
-export default function PostsFromFollowedAccount() {
+export default function StudentOwnPosts() {
   const {
     data,
     isLoading,
@@ -14,10 +15,15 @@ export default function PostsFromFollowedAccount() {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = usePostsOfFollowedAccountsQuery();
+  } = useSelfPostsQuery();
+  const removeMutation = useRemovePostMutation();
 
   const handleLoadMoreClick = () => {
     fetchNextPage();
+  };
+
+  const handleRemoval = (postId: string) => {
+    removeMutation.mutate(postId);
   };
 
   if (isLoading) {
@@ -38,14 +44,16 @@ export default function PostsFromFollowedAccount() {
     return <p className="text-center text-gray-500">{"Немає постів"}</p>;
   }
 
-  console.log(data);
-
   return (
     <ul role="list" className="space-y-4 mt-8">
       {data?.pages.map((page, pageIndex) => (
         <Fragment key={pageIndex}>
           {page.data.map((item) => (
-            <PostItem key={item.id} {...item} />
+            <SelfPostItem
+              key={item.id}
+              {...item}
+              onRemove={() => handleRemoval(item.id)}
+            />
           ))}
         </Fragment>
       ))}

@@ -1,9 +1,9 @@
 import classNames from "classnames";
-import { usePostsTabsForStudent } from "../hooks/use-posts-tabs-for-student";
+import { useStudentFeedTabs } from "../hooks/use-student-feed-tabs";
 
-export default function PostsTabsForStudent() {
+export default function StudentFeedTabs() {
   const { tabs, changeTab, isCurrentTab, handleSelectTab } =
-    usePostsTabsForStudent();
+    useStudentFeedTabs();
   return (
     <div>
       <div className="sm:hidden">

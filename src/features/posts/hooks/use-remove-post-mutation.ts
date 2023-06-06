@@ -1,6 +1,7 @@
 import useProtectedMutation from "@/hooks/useProtectedMutation";
 import useToast from "@/hooks/useToast";
 import { request } from "@/lib/axios";
+import { removeFromPaginatedCache } from "@/lib/paginated-cache";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import { useQueryClient } from "@tanstack/react-query";
 import { AxiosInstance } from "axios";
@@ -18,14 +19,30 @@ export function removePost(instance: AxiosInstance) {
 export function useRemovePostMutation() {
   const toast = useToast();
   const client = useQueryClient();
+  const queryKey = ["posts", "self"];
 
-  return useProtectedMutation(["posts", "self"], removePost, {
-    onSuccess() {
-      toast.success("Публікацію видалено");
-      client.invalidateQueries(["posts", "self"]);
+  return useProtectedMutation(["remove-post"], removePost, {
+    onMutate: (postId) => {
+      const cachedStatus = client.getQueryData(queryKey);
+      client.setQueryData(
+        queryKey,
+        removeFromPaginatedCache(cachedStatus, postId)
+      );
+
+      return () => {
+        client.setQueryData(queryKey, cachedStatus);
+      };
     },
-    onError(err) {
-      toast.error("Помилка: " + parseUnknownError(err));
+    onError: (error, _variables, restoreCache) => {
+      if (restoreCache) {
+        restoreCache();
+      }
+      toast.error(
+        "Помилка при видаленні публікації: " + parseUnknownError(error)
+      );
+    },
+    onSettled: () => {
+      client.invalidateQueries(queryKey);
     },
   });
 }

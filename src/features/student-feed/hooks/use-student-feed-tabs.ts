@@ -2,11 +2,12 @@ import { useShallowTabs } from "@/hooks/useShallowTabs";
 import { useMemo } from "react";
 import { ChangeEvent } from "react";
 
-export function usePostsTabsForStudent() {
+export function useStudentFeedTabs() {
   const tabs = useMemo(
     () => [
       { name: "Підписки", id: "followed" },
       { name: "Мої публікації", id: "self" },
+      { name: "Мої подання", id: "applications-reviews"}
     ],
     []
   );

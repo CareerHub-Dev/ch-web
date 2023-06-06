@@ -1,18 +1,15 @@
-import {
-  CheckCircleIcon,
-  ClockIcon,
-  NoSymbolIcon,
-} from "@heroicons/react/24/outline";
+import { CheckCircleIcon, NoSymbolIcon } from "@heroicons/react/24/outline";
 import {
   ReviewStatus,
   matchReviewStatus,
   reviewStatusToLocalizedString,
 } from "@/lib/enums";
 import format from "date-fns/format";
-import { StudentApplicationReview } from "@/features/student-applications/hooks/use-student-reviews-query";
+import { StudentApplicationReview } from "../hooks/use-student-reviews-query";
+import { ClockIcon } from "@heroicons/react/24/outline";
 import cn from "classnames";
 import Link from "next/link";
-import ReviewActionsButton from "@/features/student-applications/components/ReviewActionsButton";
+import ReviewActionsButton from "./ReviewActionsButton";
 
 const statusInferredProps = {
   [ReviewStatus.Success]: {
@@ -23,11 +20,11 @@ const statusInferredProps = {
   [ReviewStatus.InProgress]: { className: "text-blue-500", icon: ClockIcon },
 };
 
-export default function JobOfferApplicationItemForStudent({
+export default function StudentApplicationReviewItem({
   status,
   created,
-  jobOffer,
   cv,
+  jobOffer,
   onViewClick,
 }: StudentApplicationReview & { onViewClick: () => void }) {
   const jobOfferUrl = `/job-offers/${jobOffer.id}`;

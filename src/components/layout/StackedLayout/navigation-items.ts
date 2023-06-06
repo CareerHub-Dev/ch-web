@@ -51,7 +51,7 @@ export function getNavigationLinks(role?: UserRole) {
       return [
         {
           text: "Стрічка",
-          href: "/posts",
+          href: "/feed",
           exact: true,
         },
         {

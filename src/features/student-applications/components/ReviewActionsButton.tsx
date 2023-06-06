@@ -3,12 +3,10 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import { Fragment } from "react";
 import cn from "classnames";
 
-export default function ListItemEditMenu({
-  onEditClick,
-  onRemoveClick,
+export default function ReviewActionsButton({
+  onViewClick,
 }: {
-  onEditClick: () => void;
-  onRemoveClick: () => void;
+  onViewClick: () => void;
 }) {
   return (
     <Menu as={"div"} className="relative inline-block text-left">
@@ -33,27 +31,13 @@ export default function ListItemEditMenu({
             {({ active }) => (
               <button
                 type="button"
-                onClick={onEditClick}
+                onClick={onViewClick}
                 className={cn(
-                  active && "bg-blue-500 text-white",
+                  active ? "bg-blue-500 text-white" : "",
                   "group flex w-full items-center rounded-md px-2 py-2 text-sm"
                 )}
               >
-                Редагувати
-              </button>
-            )}
-          </Menu.Item>
-          <Menu.Item>
-            {({ active }) => (
-              <button
-                type="button"
-                onClick={onRemoveClick}
-                className={cn(
-                  active && "bg-red-500 text-white",
-                  "group flex w-full items-center rounded-md px-2 py-2 text-sm"
-                )}
-              >
-                Видалити
+                {"Детальніше"}
               </button>
             )}
           </Menu.Item>

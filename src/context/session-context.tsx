@@ -5,6 +5,7 @@ import { SessionData } from "@/lib/schemas/SessionData";
 import { createContext, ReactNode, useReducer } from "react";
 import createAxiosInstance from "@/lib/axios/create-instance";
 import axios, { AxiosInstance } from "axios";
+// import { useBoolean } from "usehooks-ts";
 
 type SessionContextState =
   | { status: "unauthenticated"; data: null }
@@ -65,10 +66,26 @@ function sessionStateReducer(
 
 export function SessionContextProvider({ children }: { children: ReactNode }) {
   const { replace } = useRouter();
+  //   const oneSignalInitialized = useBoolean(false);
   const [state, dispatch] = useReducer(
     sessionStateReducer,
     sessionContextInitialState
   );
+
+  //   const initializeOneSignal = async () => {
+  //     if (oneSignalInitialized.value) {
+  //       return;
+  //     }
+
+  //     oneSignalInitialized.setTrue();
+  //     await OneSignal.init({
+  //       appId: process.env.ONE_SIGNAL_APP_ID,
+  //       notifyButton: {
+  //         enable: true,
+  //       },
+  //       allowLocalhostAsSecureOrigin: true,
+  //     });
+  //   };
 
   useQuery({
     queryKey: ["session"],
@@ -102,6 +119,7 @@ export function SessionContextProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     logoutMutation.mutate();
+    // oneSignalInitialized.setFalse();
     replace("/auth/login");
   };
 
@@ -117,6 +135,7 @@ export function SessionContextProvider({ children }: { children: ReactNode }) {
 
   const login = (data: SessionData) => {
     dispatch({ type: "UPDATE", data });
+    // initializeOneSignal();
   };
 
   const instance = createAxiosInstance({

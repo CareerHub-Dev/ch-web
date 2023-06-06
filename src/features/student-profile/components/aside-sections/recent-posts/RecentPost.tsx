@@ -1,22 +1,26 @@
 import Link from "next/link";
 import Image from "next/image";
 import { HandThumbUpIcon } from "@heroicons/react/24/outline";
-import { getImage } from "@/lib/api/image";
+import { getImageWithDefault } from "@/lib/api/image";
 import { limitText } from "@/lib/util";
 import { Post } from "@/features/posts/hooks/use-self-posts-query";
+import { matchUserRole } from "@/lib/enums";
 
 export default function RecentPost({ id, text, account, likes }: Post) {
   const { name, image, role, id: accountId } = account;
+  const matchedRole = matchUserRole(role);
 
   const avatarPath =
     image !== null
-      ? getImage(image)
+      ? getImageWithDefault(image, matchedRole)
       : role === "student"
       ? "/default-avatar.png"
       : "/company-dummy-logo.png";
 
   const profilePath =
-    role === "student" ? `/students/${accountId}` : `/companies/${accountId}`;
+    matchedRole === "Student"
+      ? `/students/${accountId}`
+      : `/companies/${accountId}`;
 
   const postPath = `/posts/${id}`;
 

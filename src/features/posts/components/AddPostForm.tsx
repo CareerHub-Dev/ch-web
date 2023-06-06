@@ -36,7 +36,7 @@ export default function AddPostForm({
     e.preventDefault();
     await mutateAsync({
       text: textInput.value,
-      images: [],
+      images: imagesInput.data.map((image) => image.file),
     });
     textInput.reset();
     imagesInput.reset();
@@ -53,6 +53,7 @@ export default function AddPostForm({
       panelSize="xl"
       title={dialogTitle}
     >
+      <hr className="my-4 border-t-gray-300" />
       <form onSubmit={handleSubmit}>
         <label htmlFor="text" id="text-label" className="font-normal text-base">
           {"Текст"}
@@ -67,10 +68,7 @@ export default function AddPostForm({
           warnings={textInput.warnings}
           onBlur={textInput.blur}
         />
-
-        <hr className="my-8 border-t-gray-300" />
-        <h2 className="font-normal text-base">{"Зображення"}</h2>
-
+        <h2 className="font-normal text-base mt-4">{"Зображення"}</h2>
         <MultipleImagesInput onPhotoLoaded={imagesInput.add} />
         <ul
           id="images-list"
