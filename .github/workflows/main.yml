@@ -16,7 +16,7 @@ jobs:
      with:
        version: '8.5.1'
    - name: Install dependencies
-     run: pnpm i --no-frozen-lockfile
+     run: pnpm i
    - name: Install Playwright Browsers
      run: pnpm dlx playwright install --with-deps
    - name: Run Jest tests
