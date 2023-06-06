@@ -165,14 +165,6 @@ export default function StackedLayout(props: { children: ReactNode }) {
                       <div className="flex-shrink-0">
                         <UserAvatar />
                       </div>
-                      <div className="ml-3">
-                        <div className="text-base font-medium text-gray-800">
-                          {"Username"}
-                        </div>
-                        <div className="text-sm font-medium text-gray-500">
-                          {"User email"}
-                        </div>
-                      </div>
                       <button
                         type="button"
                         className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"

@@ -5,7 +5,7 @@ import parseUnknownError from "@/lib/parse-unknown-error";
 import { Fragment } from "react";
 import StudentPost from "./StudentPost";
 import PrimaryButton from "@/components/ui/PrimaryButton";
-import AddOrEditPostForm from "@/features/posts/components/AddPostForm";
+import AddPostForm from "@/features/posts/components/AddPostForm";
 
 export default function StudentPosts({
   accountId,
@@ -23,10 +23,10 @@ export default function StudentPosts({
   });
 
   return (
-    <div className="my-4 sm:max-h-[45vh]">
+    <div className="my-4">
       {isSelf ? (
         <div className="flex justify-end mb-4">
-          <AddOrEditPostForm
+          <AddPostForm
             show={isAddFormOpen.value}
             onClose={isAddFormOpen.setFalse}
           />
@@ -41,7 +41,7 @@ export default function StudentPosts({
       ) : data.pages?.at(0)?.data.length === 0 ? (
         <p className="text-center">{"Нічого не знайдено"}</p>
       ) : (
-        <ul className="flex flex-col divide-y divide-gray-200 gap-4">
+        <ul className="flex flex-col divide-y divide-gray-200 gap-4 mb-12">
           {data.pages.map((page, pageIndex) => (
             <Fragment key={pageIndex}>
               {page.data.map((item) => (

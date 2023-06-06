@@ -10,25 +10,23 @@ export type PostData = {
   images: File[];
 };
 
-export function addPost() {
-  return (instance: AxiosInstance) => {
-    return (data: PostData) => {
-      const formData = new FormData();
-      formData.append("text", data.text);
-      data.images.forEach((image) => {
-        formData.append("images", image);
-      });
+export function addPost(instance: AxiosInstance) {
+  return (data: PostData) => {
+    const formData = new FormData();
+    formData.append("text", data.text);
+    data.images.forEach((image) => {
+      formData.append("images", image);
+    });
 
-      return request({
-        instance,
-        url: "Auth/Posts/self",
-        method: "POST",
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-    };
+    return request({
+      instance,
+      url: "Auth/Posts/self",
+      method: "POST",
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   };
 }
 
@@ -38,7 +36,7 @@ export function useAddPostMutation() {
   const successMessage = "Публікацію створено";
   const queryKey = ["posts", "self"];
 
-  return useProtectedMutation(queryKey, addPost(), {
+  return useProtectedMutation(queryKey, addPost, {
     onSuccess() {
       toast.success(successMessage);
       client.invalidateQueries(queryKey);

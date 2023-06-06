@@ -53,7 +53,9 @@ export default function SelfPostItem({
           </div>
         </div>
         <p className="mt-2 space-y-4 text-sm text-gray-700">{text}</p>
-        <ImageCarousel imageSources={imageSources} />
+        {imageSources.length !== 0 ? (
+          <ImageCarousel imageSources={imageSources} />
+        ) : null}
 
         <div className="mt-6 flex justify-between space-x-8">
           <div className="flex space-x-6">

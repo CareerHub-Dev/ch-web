@@ -37,6 +37,7 @@
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "react-image-crop": "^10.0.9",
+        "react-onesignal": "^2.0.4",
         "react-toastify": "^9.1.2",
         "sass": "^1.62.0",
         "usehooks-ts": "^2.9.1",

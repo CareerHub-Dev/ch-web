@@ -29,7 +29,7 @@ export default function ImageCarousel({
         src={imageSources[currentImageIndex]!}
         alt={`публікація-${currentImageIndex + 1}`}
         width={1024}
-        height={256}
+        height={1024}
         className="mx-auto w-auto max-h-64 rounded-2xl"
       />
       {displayGoLeftButton ? (

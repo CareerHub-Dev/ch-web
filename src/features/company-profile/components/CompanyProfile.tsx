@@ -140,6 +140,7 @@ export default function CompanyProfile({
                           {data.links.map((link, linkIdx) => (
                             <li key={linkIdx}>
                               <a
+                                className="text-blue-600 hover:text-blue-500 underline underline-offset-2"
                                 href={link.uri}
                                 target="_blank"
                                 rel="noreferrer"
