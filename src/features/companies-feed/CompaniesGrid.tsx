@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import CompanyCard from "./CompanyCard";
-
 import { InfiniteData } from "@tanstack/react-query";
 import { PaginatedResponse } from "@/lib/api/pagination";
 import { CompanyInFeedArray } from "@/lib/api/company/schemas";
