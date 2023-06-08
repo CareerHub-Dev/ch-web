@@ -46,7 +46,7 @@ export const initialJobOffersFeedState: JobOffersFeedState = {
   tags: [],
   tagsSearch: "",
   mobileFiltersOpen: false,
-  sortExpression: SortExpression.StartDateAsc,
+  sortExpression: SortExpression.StartDateDesc,
 };
 
 export const useJobOffersFeedStore = create<JobOffersFeedStore>()(

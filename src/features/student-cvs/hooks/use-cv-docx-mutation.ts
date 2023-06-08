@@ -1,29 +1,40 @@
 import { request } from "@/lib/axios";
 import { AxiosInstance } from "axios";
 import useToast from "@/hooks/useToast";
+import useSession from "@/hooks/useSession";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import useProtectedMutation from "@/hooks/useProtectedMutation";
+import { UserRole } from "@/lib/schemas/UserRole";
 
-function requestCvDocxFile(instance: AxiosInstance) {
-  return (cvId: string) => {
-    return request({
-      instance,
-      method: "GET",
-      url: `/Student/self/CVs/${cvId}/word`,
-      responseType: "blob",
-      select: (res) => {
-        if (!(res.data instanceof Blob)) {
-          throw new Error("Неочікувана відповідь від серверу");
-        }
-        return res.data;
-      },
-    });
+function requestCvDocxFile(role: UserRole) {
+  return (instance: AxiosInstance) => {
+    return (cvId: string) => {
+      const url =
+        role === "Student"
+          ? `/Student/self/CVs/${cvId}/word`
+          : `/Company/CVs/${cvId}/word`;
+      return request({
+        instance,
+        method: "GET",
+        url,
+        responseType: "blob",
+        select: (res) => {
+          if (!(res.data instanceof Blob)) {
+            throw new Error("Неочікувана відповідь від серверу");
+          }
+          return res.data;
+        },
+      });
+    };
   };
 }
 
 export function useCvDocxMutation(fileName?: string) {
   const toast = useToast();
-  return useProtectedMutation(["cvDocx"], requestCvDocxFile, {
+  const session = useSession();
+  const role = session.data?.role ?? "Student";
+
+  return useProtectedMutation(["cvDocx"], requestCvDocxFile(role), {
     onMutate: () => {
       toast.setCurrent("Завантаження файлу...");
     },

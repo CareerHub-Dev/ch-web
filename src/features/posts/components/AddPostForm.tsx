@@ -99,9 +99,9 @@ export default function AddPostForm({
           ))}
         </ul>
         <div className="flex justify-end mt-8 border-t-gray-300">
-          <PrimaryButton type="submit" disabled={cannotSave}>
+          <PrimaryButton type="submit" disabled={cannotSave} className="flex items-center">
             {isLoading ? (
-              <LoadingSpinner className="inline-block mr-2 text-blue-500" />
+              <LoadingSpinner className="inline-block mx-2 text-white h-4 w-4" />
             ) : null}
             {confirmText}
           </PrimaryButton>

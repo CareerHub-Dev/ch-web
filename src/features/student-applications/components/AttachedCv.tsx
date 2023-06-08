@@ -9,7 +9,7 @@ export default function AttachedCv({
   id: string;
   title: string;
 }) {
-  const { isLoading, mutate } = useCvDocxMutation(id);
+  const { isLoading, mutate } = useCvDocxMutation(title);
   return (
     <dd className="mt-1 text-sm text-gray-900">
       <div className="rounded-md border border-gray-200">

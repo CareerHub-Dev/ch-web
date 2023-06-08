@@ -10,12 +10,7 @@ export default function RecentPost({ id, text, account, likes }: Post) {
   const { name, image, role, id: accountId } = account;
   const matchedRole = matchUserRole(role);
 
-  const avatarPath =
-    image !== null
-      ? getImageWithDefault(image, matchedRole)
-      : role === "student"
-      ? "/default-avatar.png"
-      : "/company-dummy-logo.png";
+  const avatarPath = getImageWithDefault(image, matchedRole);
 
   const profilePath =
     matchedRole === "Student"

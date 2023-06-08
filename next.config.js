@@ -11,6 +11,10 @@ const nextConfig = {
   images: {
     domains: [process.env.BACKEND_IMAGE_DOMAIN],
   },
+  i18n: {
+    locales: ["uk"],
+    defaultLocale: "uk",
+  },
 };
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({

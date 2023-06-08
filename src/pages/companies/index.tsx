@@ -6,10 +6,10 @@ import LoadMore from "@/components/ui/LoadMore";
 import { protectedSsr } from "@/lib/protected-ssr";
 import CommonLayout from "@/components/layout/CommonLayout";
 import parseUnknownError from "@/lib/parse-unknown-error";
-import CompaniesGrid from "@/components/companies/feed/CompaniesGrid";
+import CompaniesGrid from "@/features/companies-feed/CompaniesGrid";
 import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 
-function CompaniesFeedPage() {
+export default function CompaniesFeedPage() {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 200);
 
@@ -71,8 +71,6 @@ function CompaniesFeedPage() {
 }
 
 CompaniesFeedPage.getLayout = CommonLayout;
-
-export default CompaniesFeedPage;
 
 export const getServerSideProps = protectedSsr({
   allowedRoles: ["Student", "Company"],
