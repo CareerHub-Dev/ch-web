@@ -1,7 +1,7 @@
 import { request } from "@/lib/axios";
 import { parsePaginatedResponseAsync } from "../pagination";
 import {
-  AppliedCvsSchema,
+  AppliedCvsWithStudentSchema,
   JobOfferFeedSchema,
   JobOfferSchema,
 } from "./schemas";
@@ -75,7 +75,7 @@ export function getJobOfferApplications(
     method: "GET",
     url: `Company/self/JobOffers/${jobOfferId}/CVs`,
     params,
-    select: parsePaginatedResponseAsync(AppliedCvsSchema),
+    select: parsePaginatedResponseAsync(AppliedCvsWithStudentSchema),
   });
 }
 

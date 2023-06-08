@@ -17,8 +17,9 @@ import { Background } from "../Background";
 export default function StackedLayout(props: { children: ReactNode }) {
   const { pathname, replace } = useRouter();
   const { data: session, status, logout } = useSession();
-  const links = getNavigationLinks(session?.role);
-  const menuLinks = getUserMenuLinks(session?.role);
+  const role = session?.role;
+  const links = getNavigationLinks(role);
+  const menuLinks = getUserMenuLinks(role);
 
   const handleLogoutClick = () => {
     logout();
@@ -67,13 +68,15 @@ export default function StackedLayout(props: { children: ReactNode }) {
                 <div className="hidden sm:ml-6 sm:flex sm:items-center">
                   {status === "authenticated" ? (
                     <>
-                      <button
-                        type="button"
-                        className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                      >
-                        <span className="sr-only">View notifications</span>
-                        <BellIcon className="h-6 w-6" aria-hidden="true" />
-                      </button>
+                      {role === "Student" ? (
+                        <button
+                          type="button"
+                          className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        >
+                          <span className="sr-only">View notifications</span>
+                          <BellIcon className="h-6 w-6" aria-hidden="true" />
+                        </button>
+                      ) : null}
 
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
@@ -165,13 +168,15 @@ export default function StackedLayout(props: { children: ReactNode }) {
                       <div className="flex-shrink-0">
                         <UserAvatar />
                       </div>
-                      <button
-                        type="button"
-                        className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                      >
-                        <span className="sr-only">View notifications</span>
-                        <BellIcon className="h-6 w-6" aria-hidden="true" />
-                      </button>
+                      {role === "Student" ? (
+                        <button
+                          type="button"
+                          className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        >
+                          <span className="sr-only">View notifications</span>
+                          <BellIcon className="h-6 w-6" aria-hidden="true" />
+                        </button>
+                      ) : null}
                     </div>
                     <div className="mt-3 space-y-1">
                       {menuLinks.map((link, linkIndex) => (
