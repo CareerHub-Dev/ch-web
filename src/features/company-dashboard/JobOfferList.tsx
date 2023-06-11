@@ -2,8 +2,8 @@ import { useProtectedPaginatedQuery } from "@/hooks/useProtectedPaginatedQuery";
 import { getCompanyJobOffers } from "@/lib/api/company";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import JobOfferListItem from "./JobOfferListItem";
-import JobOfferLoadingSkeleton from "./JobOfferLoadingSkeleton";
 import { Fragment } from "react";
+import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 
 export default function JobOfferList() {
   const { data, isLoading, isError, error } = useProtectedPaginatedQuery({
@@ -17,13 +17,7 @@ export default function JobOfferList() {
   });
 
   if (isLoading) {
-    return (
-      <ul className="divide-y divide-gray-200">
-        {Array.from({ length: 10 }).map((_, index) => (
-          <JobOfferLoadingSkeleton key={index} />
-        ))}
-      </ul>
-    );
+    return <CenteredLoadingSpinner />;
   }
 
   if (isError) {

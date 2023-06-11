@@ -1,25 +1,21 @@
 import useToast from "@/hooks/useToast";
 import { useInput } from "@/hooks/useInput";
 import useProtectedMutation from "@/hooks/useProtectedMutation";
-import { createJobOffer } from "@/lib/api/job-offer";
+import { updateJobOffer } from "@/lib/api/job-offer";
 import parseUnknownError from "@/lib/parse-unknown-error";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useMemo } from "react";
 import MarkdownEditor from "../markdown-editor/MarkdownEditor";
 import { deriveConfig } from "../markdown-editor/config";
-import { PhotoIcon } from "@heroicons/react/24/solid";
-import { useBoolean } from "usehooks-ts";
 import { fillThisFieldValidator } from "@/lib/util";
-import SecondaryButton from "@/components/ui/SecondaryButton";
-import RemovePhotoModal from "../photo-crop/RemovePhotoModal";
-import Image from "next/image";
-import { useImageUpload } from "@/hooks/useImageUpload";
-import ChangePhotoModal from "../photo-crop/ChangePhotoModal";
 import ValidatedInput from "@/components/ui/ValidatedInput";
 import ValidatedTextArea from "@/components/ui/ValidatedTextArea";
 import ItemSelection from "@/components/ui/ItemsSelection";
 import {
   experienceLevelOptions,
   jobTypeOptions,
+  matchExperienceLevel,
+  matchJobType,
+  matchWorkFormat,
   workFormatOptions,
 } from "@/lib/enums";
 import { useObjectInput } from "@/hooks/useObjectInput";
@@ -34,12 +30,24 @@ import useTagIds from "./use-tag-ids";
 import QueryAutoCompleteCombobox from "@/components/ui/QueryAutocompleteCombobox";
 import useEditor from "@/hooks/useEditor";
 import { getTags } from "@/lib/api/tags";
-import AddTagDialog from "../tags/AddTagDialog";
-import PrimaryButton from "@/components/ui/PrimaryButton";
+import { JobOfferDetails } from "@/lib/api/job-offer/schemas";
 
-const editorConfig = deriveConfig("overview");
-
-export default function JobOfferForm() {
+export default function EditJobOfferDetailsForm({
+  id: jobOfferId,
+  jobPosition,
+  jobDirection,
+  title,
+  overview,
+  requirements,
+  responsibilities,
+  preferences,
+  jobType,
+  tags,
+  workFormat,
+  experienceLevel,
+  startDate,
+  endDate,
+}: JobOfferDetails) {
   const toast = useToast();
   const {
     data: jobDirections,
@@ -59,7 +67,7 @@ export default function JobOfferForm() {
     },
   });
   const selectedJobDirection = useObjectInput({
-    initialValue: jobDirections?.at(0) ?? { id: "0", name: "Не обрано" },
+    initialValue: jobDirection,
   });
   const {
     data: jobPositions,
@@ -80,65 +88,71 @@ export default function JobOfferForm() {
     },
   });
   const selectedJobPosition = useObjectInput({
-    initialValue: jobPositions?.at(0) ?? { id: "0", name: "Не обрано" },
+    initialValue: jobPosition,
   });
-  const changePhotoModalIsOpen = useBoolean(false);
-  const removePhotoModalIsOpen = useBoolean(false);
-  const addTagDialogIsOpen = useBoolean(false);
   const titleInput = useInput({
+    initialValue: title,
     validators: [fillThisFieldValidator("Заповніть це поле")],
   });
+  const overviewEditorConfig = useMemo(
+    () => deriveConfig("overview", overview),
+    [overview]
+  );
   const overviewEditor = useEditor([]);
-  const photo = useImageUpload();
   const requirementsInput = useInput({
+    initialValue: requirements,
     validators: [fillThisFieldValidator("Заповніть це поле")],
   });
   const responsibilitiesInput = useInput({
+    initialValue: responsibilities,
     validators: [fillThisFieldValidator("Заповніть це поле")],
   });
   const additionalInfoInput = useInput({
+    initialValue: preferences,
     validators: [fillThisFieldValidator("Заповніть це поле")],
   });
-  const jobType = useObjectInput({
-    initialValue: jobTypeOptions.at(0)!,
+  const jobTypeInput = useObjectInput({
+    initialValue: matchJobType(jobType),
   });
-  const workFormat = useObjectInput({
-    initialValue: workFormatOptions.at(0)!,
+  const workFormatInput = useObjectInput({
+    initialValue: matchWorkFormat(workFormat),
   });
-  const experienceLevel = useObjectInput({
-    initialValue: experienceLevelOptions.at(0)!,
+  const experienceLevelInput = useObjectInput({
+    initialValue: matchExperienceLevel(experienceLevel),
   });
-  const { startDate, endDate } = useDatepicker({
+
+  const initialStartDate = useMemo(() => new Date(startDate), [startDate]);
+  const initialEndDate = useMemo(() => new Date(endDate), [endDate]);
+  const { startDate: startDateInput, endDate: endDateInput } = useDatepicker({
+    initialStartDate,
+    initialEndDate,
     daysBarrier: 60,
   });
-  const tags = useTagIds();
+  const tagsInput = useTagIds(tags);
 
   const allInputs = [
     titleInput,
     requirementsInput,
     responsibilitiesInput,
     additionalInfoInput,
-    startDate,
-    endDate,
+    startDateInput,
+    endDateInput,
   ];
 
   const someInputIsInvalid = allInputs.some((input) => input.errors.length > 0);
 
   const submitMutation = useProtectedMutation(
-    ["job-offer-form"],
-    createJobOffer,
+    ["job-offer-details-edit", jobOfferId],
+    updateJobOffer,
     {
-      onMutate: () => {
-        toast.setCurrent("Створення вакансії...");
+      onMutate: (variables) => {
+        toast.setCurrent(`Оновлюємо вакансію ${variables.title}`);
       },
       onError: (err) => {
         toast.error(parseUnknownError(err), true);
       },
-      onSuccess: () => {
-        toast.success(`Вакансію ${titleInput.value} створено`, true);
-        allInputs.forEach((input) => input.reset());
-        overviewEditor.reset();
-        photo.reset();
+      onSuccess: (_data, variables) => {
+        toast.success(`Вакансію ${variables.title} оновлено`, true);
       },
     }
   );
@@ -152,64 +166,29 @@ export default function JobOfferForm() {
       return;
     }
     const requestBody = {
+      jobOfferId,
       title: titleInput.value,
       overview: overviewEditor.textRef.current,
       requirements: requirementsInput.value,
       responsibilities: responsibilitiesInput.value,
       preferences: additionalInfoInput.value,
-      jobType: jobType.value.id,
-      workFormat: workFormat.value.id,
-      experienceLevel: experienceLevel.value.id,
-      startDate: startDate.value.toISOString(),
-      endDate: endDate.value.toISOString(),
+      jobType: jobTypeInput.value.id,
+      workFormat: workFormatInput.value.id,
+      experienceLevel: experienceLevelInput.value.id,
+      startDate: startDateInput.value.toISOString(),
+      endDate: endDateInput.value.toISOString(),
       jobPositionId: selectedJobPosition.value.id,
-      tagIds: tags.tagIds,
-    } satisfies JobOfferForm.JobOffer;
-    if (photo.data !== undefined) {
-      const photoFile = new File(
-        [photo.data.croppedPhoto],
-        photo.data.sourceFileName,
-        {
-          type: photo.data.sourceFileType,
-        }
-      );
-
-      Object.assign(requestBody, { image: photoFile });
-    }
-
+      tagIds: tagsInput.tagIds,
+    } satisfies Omit<JobOfferForm.JobOffer, "image"> & { jobOfferId: string };
     submitMutation.mutate(requestBody);
   };
 
   return (
     <>
-      <ChangePhotoModal
-        show={changePhotoModalIsOpen.value}
-        onConfirm={photo.load}
-        onClose={changePhotoModalIsOpen.setFalse}
-      />
-      <RemovePhotoModal
-        show={removePhotoModalIsOpen.value}
-        onConfirm={photo.reset}
-        onClose={removePhotoModalIsOpen.setFalse}
-      />
-      <AddTagDialog
-        show={addTagDialogIsOpen.value}
-        onClose={addTagDialogIsOpen.setFalse}
-      />
-
       <form className="p-8 mb-12" onSubmit={handleSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
-            <h2 className="text-base font-semibold leading-7 text-gray-900">
-              {"Додання вакансії"}
-            </h2>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
-              {
-                "Після відправки цієї форми вакансію буде опубліковано, але ви зможете її редагувати."
-              }
-            </p>
-
-            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-4">
                 <label
                   htmlFor="title"
@@ -239,55 +218,13 @@ export default function JobOfferForm() {
                 <div className="mt-2">
                   <MarkdownEditor
                     id="overview"
-                    config={editorConfig}
+                    config={overviewEditorConfig}
                     textRef={overviewEditor.textRef}
                     onBlur={overviewEditor.blur}
                   />
                 </div>
                 <p className="mt-3 text-sm leading-6 text-gray-600">
                   {"Загальна інформація про вакансію"}
-                </p>
-              </div>
-
-              <div className="col-span-full">
-                <label
-                  htmlFor="photo"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  {"Фото"}
-                </label>
-                <div className="mt-2 flex items-center gap-x-3">
-                  {photo.data === undefined ? (
-                    <PhotoIcon
-                      className="h-24 w-24 text-gray-300"
-                      aria-hidden="true"
-                    />
-                  ) : (
-                    <Image
-                      src={photo.data.croppedPhotoUrl}
-                      width={96}
-                      height={96}
-                      className="rounded-md h-24 w-24"
-                      alt="Фото"
-                    />
-                  )}
-                  <SecondaryButton
-                    type="button"
-                    onClick={changePhotoModalIsOpen.setTrue}
-                  >
-                    {"Замінити"}
-                  </SecondaryButton>
-                  {photo.data !== undefined ? (
-                    <SecondaryButton
-                      type="button"
-                      onClick={removePhotoModalIsOpen.setTrue}
-                    >
-                      {"Видалити"}
-                    </SecondaryButton>
-                  ) : null}
-                </div>
-                <p className="mt-3 text-sm leading-6 text-gray-600">
-                  {"Фото є опціональним"}
                 </p>
               </div>
 
@@ -352,10 +289,10 @@ export default function JobOfferForm() {
                 <div className="mt-2">
                   <ItemSelection
                     items={jobTypeOptions}
-                    selectedItem={jobType.value}
-                    setSelected={jobType.change}
-                    errors={jobType.errors}
-                    warnings={jobType.warnings}
+                    selectedItem={jobTypeInput.value}
+                    setSelected={jobTypeInput.change}
+                    errors={jobTypeInput.errors}
+                    warnings={jobTypeInput.warnings}
                   />
                 </div>
               </div>
@@ -370,10 +307,10 @@ export default function JobOfferForm() {
                 <div className="mt-2">
                   <ItemSelection
                     items={workFormatOptions}
-                    selectedItem={workFormat.value}
-                    setSelected={workFormat.change}
-                    errors={workFormat.errors}
-                    warnings={workFormat.warnings}
+                    selectedItem={workFormatInput.value}
+                    setSelected={workFormatInput.change}
+                    errors={workFormatInput.errors}
+                    warnings={workFormatInput.warnings}
                   />
                 </div>
               </div>
@@ -388,10 +325,10 @@ export default function JobOfferForm() {
                 <div className="mt-2">
                   <ItemSelection
                     items={experienceLevelOptions}
-                    selectedItem={experienceLevel.value}
-                    setSelected={experienceLevel.change}
-                    errors={experienceLevel.errors}
-                    warnings={experienceLevel.warnings}
+                    selectedItem={experienceLevelInput.value}
+                    setSelected={experienceLevelInput.change}
+                    errors={experienceLevelInput.errors}
+                    warnings={experienceLevelInput.warnings}
                   />
                 </div>
               </div>
@@ -404,7 +341,7 @@ export default function JobOfferForm() {
                   {"Дата початку"}
                 </label>
                 <div className="mt-2">
-                  <DateInput id="startDate" {...startDate} />
+                  <DateInput id="startDate" {...startDateInput} />
                 </div>
               </div>
 
@@ -416,7 +353,7 @@ export default function JobOfferForm() {
                   {"Дата закінчення"}
                 </label>
                 <div className="mt-2">
-                  <DateInput id="endDate" {...endDate} />
+                  <DateInput id="endDate" {...endDateInput} />
                 </div>
               </div>
 
@@ -472,7 +409,7 @@ export default function JobOfferForm() {
 
               <div className="col-span-full">
                 <QueryAutoCompleteCombobox
-                  onSubmit={tags.add}
+                  onSubmit={tagsInput.add}
                   getItemName={(item) => item.name}
                   queryKey={"tags"}
                   queryFn={getTags}
@@ -480,28 +417,21 @@ export default function JobOfferForm() {
                 />
                 <div className="mt-2">
                   <ul className="flex gap-4 flex-wrap">
-                    {tags.tags.length === 0 ? (
+                    {tagsInput.tags.length === 0 ? (
                       <p className="text-gray-700 text-center">
                         {"Немає тегів"}
                       </p>
                     ) : (
-                      tags.tags.map((item, itemIdx) => (
+                      tagsInput.tags.map((item, itemIdx) => (
                         <LargeBadge
                           key={itemIdx}
                           name={item.name}
-                          onRemove={() => tags.remove(item)}
+                          onRemove={() => tagsInput.remove(item)}
                         />
                       ))
                     )}
                   </ul>
                 </div>
-                <PrimaryButton
-                  type="button"
-                  className="mt-4"
-                  onClick={addTagDialogIsOpen.setTrue}
-                >
-                  {"Створити новий тег"}
-                </PrimaryButton>
               </div>
             </div>
           </div>
@@ -512,7 +442,7 @@ export default function JobOfferForm() {
             type="submit"
             className="inline-flex justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
           >
-            {"Додати"}
+            {"Зберегти"}
           </button>
         </div>
       </form>

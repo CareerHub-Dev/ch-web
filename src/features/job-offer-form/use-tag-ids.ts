@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-export default function useTagIds() {
-  const [tags, setTags] = useState<Tag[]>([]);
+export default function useTagIds(initialValue: Tag[] = []) {
+  const [tags, setTags] = useState<Tag[]>(initialValue);
 
   const add = (tag: Tag) => {
     if (tags.find((t) => t.id === tag.id) !== undefined) {

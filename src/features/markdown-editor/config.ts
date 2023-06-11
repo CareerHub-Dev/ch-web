@@ -51,10 +51,18 @@ const baseEditorConfig = {
   ],
 };
 
-export function deriveConfig(namespace: string): InitialConfigType {
+export function deriveConfig(
+  namespace: string,
+  initialContent?: string
+): InitialConfigType {
   return {
     ...baseEditorConfig,
-    editorState: prepopulatedText,
+    editorState: () => {
+      if (initialContent !== undefined) {
+        return prepopulatedMarkdownContent(initialContent);
+      }
+      return prepopulatedText();
+    },
     namespace,
   };
 }

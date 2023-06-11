@@ -39,6 +39,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
         <link rel="manifest" href="/site.webmanifest" />
         <link rel="shortcut icon" href="/favicon.ico"></link>
         <link rel="apple-touch-icon" href="/apple-touch-icon.png"></link>
+        {/* <script
+          src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"
+          async
+        ></script> */}
       </Head>
       <QueryClientProvider client={queryClient}>
         <SessionContextProvider>

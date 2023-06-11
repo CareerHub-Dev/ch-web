@@ -16,6 +16,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { useBoolean } from "usehooks-ts";
 import cn from "classnames";
+import ReviewAcceptDialog from "./ReviewAcceptDialog";
+import ReviewRejectDialog from "./ReviewRejectDialog";
+import CvPreview from "@/features/student-cvs/components/CvPreview";
 
 const statusInferredProps = {
   [ReviewStatus.Success]: {
@@ -27,6 +30,7 @@ const statusInferredProps = {
 };
 
 export default function ApplicationReviewForCompany({
+  id,
   cv,
   student,
   jobOffer,
@@ -49,7 +53,22 @@ export default function ApplicationReviewForCompany({
   const noFeedbackMessage = message === null || message.length === 0;
 
   return (
-    <div className="py-10">
+    <div>
+      <CvPreview
+        cvId={cv.id}
+        show={previewModalIsOpen.value}
+        onClose={previewModalIsOpen.setFalse}
+      />
+      <ReviewAcceptDialog
+        reviewId={id}
+        show={acceptModalIsOpen.value}
+        onClose={acceptModalIsOpen.setFalse}
+      />
+      <ReviewRejectDialog
+        reviewId={id}
+        show={rejectModalIsOpen.value}
+        onClose={rejectModalIsOpen.setFalse}
+      />
       <div className="mx-auto max-w-3xl px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
         <div className="flex items-center space-x-5">
           <div className="flex-shrink-0">

@@ -60,7 +60,7 @@ namespace JobOfferForm {
     requirements: string;
     responsibilities: string;
     preferences: string;
-    image?: string;
+    image?: File | undefined;
     jobType: string;
     workFormat: string;
     experienceLevel: string;

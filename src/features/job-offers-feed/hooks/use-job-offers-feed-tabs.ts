@@ -7,6 +7,7 @@ export function useJobOffersFeedTabs() {
       [
         { name: "Всі вакансії", id: "all" },
         { name: "Рекомендовані", id: "recommended" },
+        { name: "Відстежувані", id: "tracked" },
       ] as const,
     []
   );

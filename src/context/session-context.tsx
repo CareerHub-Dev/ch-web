@@ -2,10 +2,17 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { LocalGateway } from "@/lib/api/account";
 import { SessionData } from "@/lib/schemas/SessionData";
-import { createContext, ReactNode, useReducer } from "react";
+import {
+  createContext,
+  ReactNode,
+  useReducer,
+//   useEffect,
+//   useCallback,
+} from "react";
 import createAxiosInstance from "@/lib/axios/create-instance";
 import axios, { AxiosInstance } from "axios";
 // import { useBoolean } from "usehooks-ts";
+// import OneSignal from "react-onesignal";
 
 type SessionContextState =
   | { status: "unauthenticated"; data: null }
@@ -66,26 +73,25 @@ function sessionStateReducer(
 
 export function SessionContextProvider({ children }: { children: ReactNode }) {
   const { replace } = useRouter();
-  //   const oneSignalInitialized = useBoolean(false);
+//   const oneSignalInitialized = useBoolean(false);
   const [state, dispatch] = useReducer(
     sessionStateReducer,
     sessionContextInitialState
   );
 
-  //   const initializeOneSignal = async () => {
-  //     if (oneSignalInitialized.value) {
-  //       return;
-  //     }
-
-  //     oneSignalInitialized.setTrue();
-  //     await OneSignal.init({
-  //       appId: process.env.ONE_SIGNAL_APP_ID,
-  //       notifyButton: {
-  //         enable: true,
-  //       },
-  //       allowLocalhostAsSecureOrigin: true,
-  //     });
-  //   };
+//   const initializeOneSignal = useCallback(async () => {
+//     if (oneSignalInitialized.value) {
+//       return;
+//     }
+//     await OneSignal.init({
+//       appId: process.env.ONE_SIGNAL_APP_ID,
+//       notifyButton: {
+//         enable: true,
+//       },
+//       allowLocalhostAsSecureOrigin: true,
+//     });
+//     oneSignalInitialized.setTrue();
+//   }, [oneSignalInitialized]);
 
   useQuery({
     queryKey: ["session"],
@@ -137,6 +143,12 @@ export function SessionContextProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "UPDATE", data });
     // initializeOneSignal();
   };
+
+//   useEffect(() => {
+//     if (state.status === "authenticated" && !oneSignalInitialized.value) {
+//       initializeOneSignal();
+//     }
+//   }, [state.status, oneSignalInitialized.value, initializeOneSignal]);
 
   const instance = createAxiosInstance({
     data: state.data,

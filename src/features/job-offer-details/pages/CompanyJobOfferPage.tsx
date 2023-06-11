@@ -3,13 +3,12 @@ import JobOfferGeneralInfo from "../components/JobOfferGeneralInfo";
 import JobOfferAsideInfo from "../components/JobOfferAsideInfo";
 import JobOfferHeader from "../components/JobOfferHeader";
 import { useCompanyJobOfferTabs } from "../hooks/use-company-job-offer-tabs";
-import { useProtectedQuery } from "@/hooks/useProtectedQuery";
-import { getJobOfferAsCompany } from "@/lib/api/job-offer";
 import JobOfferApplications from "../components/JobOfferApplications";
 import JobOfferGeneralInfoSkeleton from "../components/JobOfferGeneralInfoSkeleton";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import JobOfferAsideInfoSkeleton from "../components/JobOfferAsideInfoSkeleton";
 import JobOfferHeaderSkeleton from "../components/JobOfferHeaderSkeleton";
+import { useJobOfferDetailsAsCompanyQuery } from "../hooks/use-job-offer-details-query";
 
 export default function CompanyJobOfferPage({
   jobOfferId,
@@ -22,10 +21,8 @@ export default function CompanyJobOfferPage({
     isLoading,
     isError,
     error,
-  } = useProtectedQuery(
-    ["job-offer", jobOfferId],
-    getJobOfferAsCompany(jobOfferId)
-  );
+  } = useJobOfferDetailsAsCompanyQuery(jobOfferId);
+
   return (
     <>
       {isLoading ? (

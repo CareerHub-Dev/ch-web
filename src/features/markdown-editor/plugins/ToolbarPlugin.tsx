@@ -16,11 +16,11 @@ import TypeItalic from "../icons/TypeItalic";
 import TypeStrikeThrough from "../icons/TypeStrikethrough";
 import TypeUnderline from "../icons/TypeUnderline";
 import cn from "classnames";
-import ToolbarDropdown from "./ToolbarDropdown";
+import ToolbarDropdown, { BlockType, matchBlockType } from "./ToolbarDropdown";
 
 const LowPriority = 1;
 
-const supportedBlockTypes = new Set([
+const supportedBlockTypes = new Set<BlockType>([
   "paragraph",
   "quote",
   "code",
@@ -30,23 +30,10 @@ const supportedBlockTypes = new Set([
   "ol",
 ]);
 
-// const blockTypeToBlockName = {
-//     code: "Блок коду",
-//     h1: "Великий заголовок",
-//     h2: "Маленький заголовок",
-//     h3: "Заголовок",
-//     h4: "Заголовок",
-//     h5: "Заголовок",
-//     ol: "Нумерований список",
-//     paragraph: "Звичайний",
-//     quote: "Цитата",
-//     ul: "Маркований список",
-// };
-
 export default function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext();
   const toolbarRef = useRef(null);
-  const [blockType, setBlockType] = useState("paragraph");
+  const [blockType, setBlockType] = useState<BlockType>("paragraph");
   const [_selectedElementKey, setSelectedElementKey] = useState<string | null>(
     null
   );
@@ -76,7 +63,7 @@ export default function ToolbarPlugin() {
           const type = $isHeadingNode(element)
             ? element.getTag()
             : element.getType();
-          setBlockType(type);
+          setBlockType(matchBlockType(type));
         }
       }
       setIsBold(selection.hasFormat("bold"));

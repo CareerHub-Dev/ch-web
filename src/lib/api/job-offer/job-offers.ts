@@ -7,6 +7,7 @@ import {
 } from "./schemas";
 import { AxiosInstance } from "axios";
 import { z } from "zod";
+import { objectToFormData } from "@/lib/forms";
 
 export function getJobOffers(
   instance: AxiosInstance,
@@ -46,12 +47,13 @@ export function getSelfJobOffersAsCompany(
 
 export function getJobOfferAsCompany(jobOfferId: string) {
   return (instance: AxiosInstance) => {
-    return request({
+    const data = request({
       instance,
       method: "GET",
       url: `Company/self/JobOffers/${jobOfferId}`,
       select: (res) => JobOfferSchema.parseAsync(res.data),
     });
+    return data;
   };
 }
 
@@ -124,12 +126,58 @@ export function getSubscriptionOnJobOffer(instance: AxiosInstance) {
 }
 
 export function createJobOffer(instance: AxiosInstance) {
-  return (data: JobOfferForm.JobOffer) => {
-    return request({
+  return async (data: JobOfferForm.JobOffer) => {
+    const jobOfferId = await request<string>({
       method: "POST",
       url: "Company/self/JobOffers",
       instance,
       data,
+    });
+
+    if (data.image !== undefined) {
+      try {
+        await request({
+          method: "POST",
+          url: `Company/self/JobOffers/${jobOfferId}/image`,
+          instance,
+          data: objectToFormData({ file: data.image }),
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      } catch (_e) {
+        // ignore
+      }
+    }
+  };
+}
+
+export function updateJobOffer(instance: AxiosInstance) {
+  return ({
+    jobOfferId,
+    ...data
+  }: Omit<JobOfferForm.JobOffer, "image"> & { jobOfferId: string }) => {
+    return request({
+      method: "PUT",
+      url: `Company/self/JobOffers/${jobOfferId}/detail`,
+      instance,
+      data,
+    });
+  };
+}
+
+export function updateJobOfferImage(instance: AxiosInstance) {
+  return (data: { jobOfferId: string; image: File | null }) => {
+    const formData = new FormData();
+    formData.append("file", data.image ?? "");
+    return request({
+      method: "POST",
+      url: `Company/self/JobOffers/${data.jobOfferId}/image`,
+      instance,
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
   };
 }

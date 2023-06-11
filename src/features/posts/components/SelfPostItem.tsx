@@ -21,6 +21,7 @@ export default function SelfPostItem({
     matchUserRole(account.role)
   );
   const imageSources = images?.map((image) => getImage(image));
+  const formattedDateTime = format(new Date(createdDate), "yyyy-MM-dd, HH:mm");
 
   return (
     <li className="bg-white px-4 py-6 shadow rounded-lg sm:p-6">
@@ -42,9 +43,7 @@ export default function SelfPostItem({
               </p>
 
               <p className="text-sm text-gray-500">
-                <time dateTime={createdDate}>
-                  {format(new Date(createdDate), "LLLL d, yyyy")}
-                </time>
+                <time dateTime={createdDate}>{formattedDateTime}</time>
               </p>
             </div>
             <div className="flex flex-shrink-0 self-center">

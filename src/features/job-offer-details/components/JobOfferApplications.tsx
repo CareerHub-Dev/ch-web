@@ -18,7 +18,6 @@ export default function JobOfferApplications({
       pageSize: 36,
     },
   });
-
   const noItems =
     data?.pages.at(0)?.data === undefined ||
     data?.pages.at(0)?.data.length === 0;

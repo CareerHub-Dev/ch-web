@@ -1,4 +1,5 @@
-import CommonLayout from "@/components/layout/CommonLayout";
+import StackedLayout from "@/components/layout/StackedLayout";
+import ApplicationLayout from "@/features/student-applications/components/ApplicationLayout";
 import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 import parseUnknownError from "@/lib/parse-unknown-error";
 import { protectedSsr } from "@/lib/protected-ssr";
@@ -13,19 +14,33 @@ export default function ApplicationReviewPage({
     useReviewAsCompanyQuery(applicationId);
 
   if (isLoading) {
-    return <CenteredLoadingSpinner />;
+    return (
+      <StackedLayout>
+        <CenteredLoadingSpinner />
+      </StackedLayout>
+    );
   }
 
   if (isError) {
     return (
-      <p className="text-center text-red-600">{parseUnknownError(error)}</p>
+      <StackedLayout>
+        <p className="text-center text-red-600">{parseUnknownError(error)}</p>
+      </StackedLayout>
     );
   }
 
-  return <ApplicationReviewForCompany {...data} />;
+  return (
+    <ApplicationLayout
+      applicationId={data.id}
+      applicationTitle={data.cv.title}
+      jobOfferId={data.jobOffer.id}
+      jobOfferTitle={data.jobOffer.title}
+      studentFullName={`${data.student.firstName} ${data.student.lastName}`}
+    >
+      <ApplicationReviewForCompany {...data} />
+    </ApplicationLayout>
+  );
 }
-
-ApplicationReviewPage.getLayout = CommonLayout;
 
 export const getServerSideProps = protectedSsr<{
   applicationId: string;

@@ -13,3 +13,13 @@ export const experienceLevelOptions = [
   { name: "Middle", id: ExperienceLevel.Middle },
   { name: "Senior", id: ExperienceLevel.Senior },
 ] as { id: string; name: string }[];
+
+export function matchExperienceLevel(value: string): {
+  id: string;
+  name: string;
+} {
+  return (
+    experienceLevelOptions.find((option) => option.id === value) ??
+    experienceLevelOptions[0]!
+  );
+}

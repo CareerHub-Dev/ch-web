@@ -11,7 +11,7 @@ import { convertParams } from "./convert-params";
 const defaultHeaders = { "Content-Type": "application/json" };
 
 const httpsAgent = new Agent({
-  rejectUnauthorized: process.env.NODE_ENV === "development" ? false : true,
+  rejectUnauthorized: false,
 });
 
 export const localGatewayAxiosInstance = axios.create({

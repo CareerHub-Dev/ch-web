@@ -9,3 +9,9 @@ export const jobTypeOptions = [
   { id: JobType.PartTime, name: "Part time" },
   { id: JobType.Contract, name: "Контракт" },
 ] as { id: string; name: string }[];
+
+export function matchJobType(value: string): { id: string; name: string } {
+  return (
+    jobTypeOptions.find((option) => option.id === value) ?? jobTypeOptions[0]!
+  );
+}

@@ -50,19 +50,19 @@ export default function JobOfferHeader({
             >
               {"Продовжити термін"}
             </a>
-            <a
-              href="#"
+            <Link
+              href={editUrl}
               className="hidden text-sm font-semibold leading-6 text-gray-900 sm:block"
             >
               {"Редагувати"}
-            </a>
-            <a
-              role="button"
+            </Link>
+            <button
+              type="button"
               onClick={deleteDialogIsOpen.setTrue}
               className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             >
               {"Видалити"}
-            </a>
+            </button>
 
             <Menu as="div" className="relative sm:hidden">
               <Menu.Button className="-m-3 block p-3">
