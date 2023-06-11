@@ -3,8 +3,10 @@ import { Post } from "../hooks/use-self-posts-query";
 import Image from "next/image";
 import { matchUserRole } from "@/lib/enums";
 import { HandThumbUpIcon } from "@heroicons/react/24/solid";
+import { HandThumbUpIcon as HandThumbUpIconOutline } from "@heroicons/react/24/outline";
 import format from "date-fns/format";
 import ImageCarousel from "@/components/ui/ImageCarousel";
+import { usePostLikedStatusMutation } from "../hooks/use-post-liked-status-query";
 
 export default function PostItem({
   id,
@@ -13,12 +15,19 @@ export default function PostItem({
   createdDate,
   account,
   images,
+  isLiked,
 }: Post) {
   const authorAvatarUrl = getImageWithDefault(
     account.image,
     matchUserRole(account.role)
   );
   const imageSources = images?.map((image) => getImage(image));
+  const formattedDateTime = format(new Date(createdDate), "yyyy-MM-dd, HH:mm");
+  const { currentStatus: isLikedStatus, mutation } = usePostLikedStatusMutation({
+    postId: id,
+    initialValue: isLiked,
+    account
+  });
 
   return (
     <li className="bg-white px-4 py-6 shadow rounded-lg sm:p-6">
@@ -40,9 +49,7 @@ export default function PostItem({
               </p>
 
               <p className="text-sm text-gray-500">
-                <time dateTime={createdDate}>
-                  {format(new Date(createdDate), "LLLL d, yyyy")}
-                </time>
+                <time dateTime={createdDate}>{formattedDateTime}</time>
               </p>
             </div>
           </div>
@@ -57,9 +64,17 @@ export default function PostItem({
             <span className="inline-flex items-center text-sm">
               <button
                 type="button"
+                onClick={() => mutation.mutate(id)}
                 className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
               >
-                <HandThumbUpIcon className="h-5 w-5" aria-hidden="true" />
+                {isLikedStatus ? (
+                  <HandThumbUpIcon className="h-5 w-5" aria-hidden="true" />
+                ) : (
+                  <HandThumbUpIconOutline
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  />
+                )}
                 <span className="font-medium text-gray-900">{likes}</span>
                 <span className="sr-only">likes</span>
               </button>

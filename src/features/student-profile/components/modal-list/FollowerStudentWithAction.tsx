@@ -1,36 +1,57 @@
-const person = {
-  name: "Leslie Alexander",
-  email: "leslie.alexander@example.com",
-  imageUrl: "/default-avatar.png",
-  href: "#",
-};
-export default function FollowerStudentWithAction() {
+import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
+import Image from "next/image";
+import { getImageWithDefault } from "@/lib/api/image";
+import { StudentSubscriber } from "@/lib/api/student/schemas";
+
+export default function FollowerStudentWithAction({
+  id,
+  firstName,
+  lastName,
+  photo,
+  email,
+  studentGroup,
+}: StudentSubscriber) {
+  const imageUrl = getImageWithDefault(photo, "Student");
+  const fullName = `${firstName} ${lastName}`;
+  const profileUrl = `/students/${id}`;
+
   return (
-    <li
-      key={person.email}
-      className="flex items-center justify-between gap-x-6 py-5"
-    >
-      <div className="flex gap-x-4">
-        <img
+    <li className="relative flex justify-between py-5">
+      <div className="flex gap-x-4 pr-6 sm:w-1/2 sm:flex-none">
+        <Image
+          width={48}
+          height={48}
           className="h-12 w-12 flex-none rounded-full bg-gray-50"
-          src={person.imageUrl}
-          alt=""
+          src={imageUrl}
+          alt={fullName}
         />
         <div className="min-w-0 flex-auto">
           <p className="text-sm font-semibold leading-6 text-gray-900">
-            {person.name}
+            <Link href={profileUrl}>
+              <span className="absolute inset-x-0 -top-px bottom-0" />
+              {fullName}
+            </Link>
           </p>
-          <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-            {person.email}
+          <p className="mt-1 flex text-xs leading-5 text-gray-500">
+            <a
+              href={`mailto:${email}`}
+              className="relative truncate hover:underline"
+            >
+              {email}
+            </a>
           </p>
         </div>
       </div>
-      <a
-        href={person.href}
-        className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-      >
-        View
-      </a>
+      <div className="flex items-center justify-between gap-x-4 sm:w-1/2 sm:flex-none">
+        <div className="hidden sm:block">
+          <p className="text-sm leading-6 text-gray-900">{studentGroup.name}</p>
+        </div>
+        <ChevronRightIcon
+          className="h-5 w-5 flex-none text-gray-400"
+          aria-hidden="true"
+        />
+      </div>
     </li>
   );
 }

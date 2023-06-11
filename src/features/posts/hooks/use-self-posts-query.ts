@@ -15,7 +15,7 @@ export const PostSchema = z.object({
   account: z.object({
     id: z.string(),
     name: z.string(),
-    image: z.string().nullish(),
+    image: z.string().nullable(),
     role: z.string(),
   }),
   isLiked: z.boolean(),

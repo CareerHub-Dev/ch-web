@@ -12,3 +12,14 @@ export function getTags(search: string) {
     });
   };
 }
+
+export function addTag(instance: AxiosInstance) {
+  return (name: string) => {
+    return request({
+      instance,
+      url: "Company/Tags",
+      method: "POST",
+      data: { name },
+    });
+  };
+}

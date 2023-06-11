@@ -21,10 +21,12 @@ export default function ValidatedTextArea({
   onChange,
   onBlur,
   wasBlurred,
+  disabled,
 }: Inputs.StringInput & {
   id: string;
   onChange: (value: string) => void;
   onBlur: () => void;
+  disabled?: boolean;
 }) {
   const hasErrors = wasBlurred && errors.length > 0;
   const hasWarnings = wasBlurred && warnings.length > 0;
@@ -47,11 +49,12 @@ export default function ValidatedTextArea({
         <textarea
           id={id}
           name={id}
-          rows={3}
-          className="block w-full resize-none border-0 py-3 focus:ring-0 sm:text-sm"
+          rows={4}
+          className="block w-full resize-none border-0 py-3 focus:ring-0 sm:text-sm disabled:text-gray-300"
           value={value}
           onChange={handleChange}
           onBlur={onBlur}
+          disabled={disabled}
         />
 
         {/* Spacer element to match the height of the toolbar */}

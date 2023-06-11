@@ -4,6 +4,7 @@ import JobOffersFeedTabs from "./JobOffersFeedTabs";
 import CommonJobOffersFeed from "./CommonJobOffersFeed";
 import { useJobOffersFeedTabs } from "../hooks/use-job-offers-feed-tabs";
 import RecommendedJobOffersFeed from "./RecommendedJobOffersFeed";
+import TrackedJobOffersFeed from "./TrackedJobOffersFeed";
 
 export default function JobOffersFeed() {
   const { currentTab } = useJobOffersFeedTabs();
@@ -17,6 +18,8 @@ export default function JobOffersFeed() {
       {isStudent ? <JobOffersFeedTabs /> : null}
       {isStudent && currentTab === "recommended" ? (
         <RecommendedJobOffersFeed />
+      ) : isStudent && currentTab === "tracked" ? (
+        <TrackedJobOffersFeed />
       ) : (
         <CommonJobOffersFeed />
       )}

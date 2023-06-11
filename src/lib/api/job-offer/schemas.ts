@@ -19,11 +19,17 @@ export const JobOfferSchema = z.object({
     id: z.string(),
     name: z.string(),
   }),
+  jobDirection: z.object({
+    id: z.string(),
+    name: z.string(),
+  }),
   overview: z.string(),
   requirements: z.string(),
   responsibilities: z.string(),
   preferences: z.string(),
 });
+
+export type JobOfferDetails = z.infer<typeof JobOfferSchema>;
 
 export const AppliedCvSchema = z.object({
   id: z.string(),
@@ -75,6 +81,7 @@ export const JobOfferInFeedSchema = z.object({
   ),
   amountSubscribers: z.number(),
   amountAppliedCVs: z.number(),
+  isFollowed: z.boolean().nullish(),
 });
 export const JobOfferFeedSchema = z.array(JobOfferInFeedSchema);
 

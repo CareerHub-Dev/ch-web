@@ -3,6 +3,7 @@ import { z } from "zod";
 import { request } from "@/lib/axios";
 import { useProtectedQuery } from "@/hooks/useProtectedQuery";
 import { useQueryClient } from "@tanstack/react-query";
+import useSession from "@/hooks/useSession";
 
 const CvDetailsSchema = z.object({
   id: z.string(),
@@ -66,7 +67,7 @@ const CvDetailsSchema = z.object({
 
 export type CvDetails = z.infer<typeof CvDetailsSchema>;
 
-function getStudentOwnCv(cvId: string) {
+export function getStudentOwnCv(cvId: string) {
   return (instance: AxiosInstance) =>
     request({
       instance,
@@ -75,8 +76,22 @@ function getStudentOwnCv(cvId: string) {
     });
 }
 
+export function getCvDetailsAsCompany(cvId: string) {
+  return (instance: AxiosInstance) =>
+    request({
+      instance,
+      url: `/Company/CVs/${cvId}`,
+      select: (response) => CvDetailsSchema.parseAsync(response.data),
+    });
+}
+
 export function useCvDetailsQuery(cvId: string) {
-  return useProtectedQuery(["cv-details", cvId], getStudentOwnCv(cvId));
+  const session = useSession();
+  const role = session?.data?.role ?? "Student";
+  const queryFn =
+    role === "Student" ? getStudentOwnCv(cvId) : getCvDetailsAsCompany(cvId);
+
+  return useProtectedQuery(["cv-details", cvId], queryFn);
 }
 
 export function useCvQueryData(cvId: string | null) {

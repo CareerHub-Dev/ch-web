@@ -23,12 +23,34 @@ import ListOl from "../icons/ListOl";
 import ChatSquareQuote from "../icons/ChatSquareQuote";
 import CodeIcon from "../icons/CodeIcon";
 
+export const blockTypeToBlockName = {
+  code: "Блок коду",
+  h1: "Великий заголовок",
+  h2: "Маленький заголовок",
+  h3: "Заголовок",
+  h4: "Заголовок",
+  h5: "Заголовок",
+  ol: "Нумерований список",
+  paragraph: "Звичайний",
+  quote: "Цитата",
+  ul: "Маркований список",
+};
+
+export type BlockType = keyof typeof blockTypeToBlockName;
+
+export function matchBlockType(type: string): BlockType {
+  if (type in blockTypeToBlockName) {
+    return type as BlockType;
+  }
+  return "paragraph";
+}
+
 export default function ToolbarDropdown({
   editor,
   currentBlockType,
 }: {
   editor: LexicalEditor;
-  currentBlockType: string;
+  currentBlockType: BlockType;
 }) {
   const formatParagraph = () => {
     if (currentBlockType !== "paragraph") {
@@ -151,7 +173,7 @@ export default function ToolbarDropdown({
           type="button"
           className="inline-flex w-full justify-center gap-x-1.5 text-sm font-semibold text-gray-900 hover:text-gray-800"
         >
-          {currentBlockType}
+          {blockTypeToBlockName[currentBlockType]}
           <ChevronDownIcon
             className="-mr-1 h-5 w-5 text-gray-400"
             aria-hidden="true"

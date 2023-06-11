@@ -40,6 +40,11 @@ export const StudentSubscriberSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   photo: z.string().nullish(),
+  email: z.string(),
+  studentGroup: z.object({
+    id: z.string(),
+    name: z.string(),
+  }),
 });
 
 export const StudentSubscribersArraySchema = z.array(StudentSubscriberSchema);

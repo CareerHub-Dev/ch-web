@@ -1,4 +1,6 @@
 import useSession from "@/hooks/useSession";
+import { useBoolean } from "usehooks-ts";
+import NotificationsModal from "./NotificationsModal";
 import Image from "next/image";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -14,12 +16,16 @@ import AuthLinksMobile from "./AuthLinksMobile";
 import { getNavigationLinks, getUserMenuLinks } from "./navigation-items";
 import { Background } from "../Background";
 
-export default function StackedLayout(props: { children: ReactNode }) {
+export default function StackedLayout(props: {
+  children: ReactNode;
+  breadCrumbs?: ReactNode;
+}) {
   const { pathname, replace } = useRouter();
   const { data: session, status, logout } = useSession();
   const role = session?.role;
   const links = getNavigationLinks(role);
   const menuLinks = getUserMenuLinks(role);
+  const notificationsModalIsOpen = useBoolean(false);
 
   const handleLogoutClick = () => {
     logout();
@@ -28,7 +34,17 @@ export default function StackedLayout(props: { children: ReactNode }) {
 
   return (
     <div className="min-h-full">
-      <Disclosure as="nav" className="bg-white shadow-sm">
+      <NotificationsModal
+        show={notificationsModalIsOpen.value}
+        onClose={notificationsModalIsOpen.setFalse}
+      />
+      <Disclosure
+        as="nav"
+        className={cn(
+          "bg-white",
+          props.breadCrumbs === undefined ? "border-b border-gray-200" : ""
+        )}
+      >
         {({ open }) => (
           <>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -71,6 +87,7 @@ export default function StackedLayout(props: { children: ReactNode }) {
                       {role === "Student" ? (
                         <button
                           type="button"
+                          onClick={notificationsModalIsOpen.setTrue}
                           className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         >
                           <span className="sr-only">View notifications</span>
@@ -171,6 +188,7 @@ export default function StackedLayout(props: { children: ReactNode }) {
                       {role === "Student" ? (
                         <button
                           type="button"
+                          onClick={notificationsModalIsOpen.setTrue}
                           className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         >
                           <span className="sr-only">View notifications</span>
@@ -204,6 +222,7 @@ export default function StackedLayout(props: { children: ReactNode }) {
           </>
         )}
       </Disclosure>
+      {props.breadCrumbs === undefined ? null : props.breadCrumbs}
 
       <main className="py-10">
         <Background />
