@@ -37,6 +37,7 @@ export default function QueryAutoCompleteCombobox<TItem>({
 
   const handleComboboxItemSelected = (item: TItem) => {
     onSubmit(item);
+    console.log("item", item);
     setSearch("");
   };
 
