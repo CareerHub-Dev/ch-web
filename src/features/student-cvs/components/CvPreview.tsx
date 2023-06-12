@@ -20,7 +20,7 @@ const inferredProps = {
     at: "в",
   },
   EN: {
-    hardSkills: "Head skills",
+    hardSkills: "Hard skills",
     softSkills: "Soft skills",
     foreignLanguages: "Foreign languages",
     workingExperience: "Working experience",

@@ -11,6 +11,7 @@ import Image from "next/image";
 import { getImageWithDefault } from "@/lib/api/image";
 import ChangePhotoModal from "@/features/photo-crop/ChangePhotoModal";
 import RemovePhotoModal from "@/features/photo-crop/RemovePhotoModal";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function LogoEditForm({
   logo,
@@ -18,6 +19,7 @@ export default function LogoEditForm({
   logo: string | null | undefined;
 }) {
   const toast = useToast();
+  const client = useQueryClient();
   const imageUpload = useImageUpload();
   const cropDialogIsOpen = useBoolean(false);
   const deleteDialogIsOpen = useBoolean(false);
@@ -26,6 +28,7 @@ export default function LogoEditForm({
     updateCompanyLogo,
     {
       onSuccess: () => {
+        client.invalidateQueries(["self-avatar"]);
         toast.success("Зміни збережено");
       },
       onError: (error) => {
@@ -49,7 +52,7 @@ export default function LogoEditForm({
       })
     );
   };
-  const handleCancelClick = () => {};
+
   const handleRemove = () => {
     mutate(undefined);
   };
@@ -113,10 +116,6 @@ export default function LogoEditForm({
                 "Зберегти"
               )}
             </PrimaryButton>
-
-            <SecondaryButton type="button" onClick={handleCancelClick}>
-              {"Відмінити"}
-            </SecondaryButton>
           </div>
         </div>
       </form>

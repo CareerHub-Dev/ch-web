@@ -24,10 +24,13 @@ export function useProtectedPaginatedQuery<
   ) => Promise<PaginatedResponse<Array<TItem>>>;
 } & Omit<
   UseInfiniteQueryOptions<PaginatedResponse<Array<TItem>>>,
-  "queryKey" | "queryFn" | "getNextPageParam" | "enabled"
+  "queryKey" | "queryFn" | "getNextPageParam"
 >) {
   const { axios, status } = useSession();
-
+  let enabled = status === "authenticated";
+  if (options !== undefined && options.enabled !== undefined) {
+    enabled = enabled && options.enabled;
+  }
   return useInfiniteQuery<
     PaginatedResponse<Array<TItem>>,
     unknown,
@@ -41,7 +44,7 @@ export function useProtectedPaginatedQuery<
         pageNumber: pageParam,
       }),
     {
-      enabled: status === "authenticated",
+      enabled,
       getNextPageParam: (lastPage) => {
         if (!lastPage.pagination) {
           return undefined;

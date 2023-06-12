@@ -17,6 +17,7 @@ import useProtectedMutation from "@/hooks/useProtectedMutation";
 import { useQueryClient } from "@tanstack/react-query";
 import useToast from "@/hooks/useToast";
 import { removeFromPaginatedCache } from "@/lib/paginated-cache";
+import useSession from "@/hooks/useSession";
 
 const notificationSchema = z.object({
   id: z.string(),
@@ -150,6 +151,7 @@ export default function NotificationsModal({
   show: boolean;
   onClose: () => void;
 }) {
+  const session = useSession();
   const {
     data,
     isLoading,
@@ -164,6 +166,7 @@ export default function NotificationsModal({
     params: {
       pageSize: 20,
     },
+    enabled: session.data?.role === "Student",
   });
 
   const noItems =
