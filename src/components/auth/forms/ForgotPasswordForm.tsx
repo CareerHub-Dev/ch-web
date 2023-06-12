@@ -1,17 +1,13 @@
 import { useInput } from "@/hooks/useInput";
 import useToast from "@/hooks/useToast";
-import { forgotPassword, resetPassword } from "@/lib/api/account";
+import { forgotPassword } from "@/lib/api/account";
 import parseUnknownError from "@/lib/parse-unknown-error";
-import { getEmailValidity, getPasswordValidity } from "@/lib/util";
+import { getEmailValidity } from "@/lib/util";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import { FormEventHandler, useRef } from "react";
 import { AuthField } from "./AuthField";
 
-import classes from "./forms.module.scss";
-
 export const ForgotPasswordForm = () => {
-  const router = useRouter();
   const toast = useToast();
   const emailInputRef = useRef<HTMLInputElement>(null);
   const emailInput = useInput({
@@ -22,97 +18,37 @@ export const ForgotPasswordForm = () => {
           : { type: "error", message: "Перевірте коректність поштової адреси" },
     ],
   });
-  const newPasswordInputRef = useRef<HTMLInputElement>(null);
-  const newPasswordInput = useInput({
-    validators: [
-      (val) =>
-        getPasswordValidity(val)
-          ? { type: "success" }
-          : { type: "error", message: "Невалідний пароль" },
-    ],
-  });
-  const newPasswordRepeatInputRef = useRef<HTMLInputElement>(null);
-  const newPasswordRepeatInput = useInput({
-    validators: [
-      (val) =>
-        getPasswordValidity(val)
-          ? { type: "success" }
-          : { type: "error", message: "Невалідний пароль" },
-      (val) =>
-        val === newPasswordInput.value
-          ? { type: "success" }
-          : { type: "error", message: "Паролі не співпадають" },
-    ],
-  });
   const forgotPasswordMutation = useMutation(
     ["forgotPassword"],
     forgotPassword,
     {
-      onSuccess: (data: any) => {
-        toast.success(data.message);
+      onMutate: () => {
+        toast.setCurrent("Відправляємо листа...");
+      },
+      onSuccess: () => {
+        toast.success("Перевірте вашу пошту", true);
       },
       onError: (e) => {
-        toast.error(parseUnknownError(e));
+        toast.error(parseUnknownError(e), true);
       },
     }
   );
-  const resetPasswordMutation = useMutation(["resetPassword"], resetPassword, {
-    onSuccess: () => {
-      router.push("/auth/login");
-    },
-  });
-
-  const resetTokenInputRef = useRef<HTMLInputElement>(null);
-  const resetTokenInput = useInput();
-
-  const validationHandler = () => {
-    emailInput.blur();
-    if (emailInput.isValid) {
-      toast.setCurrent("Відправляємо листа...");
-      forgotPasswordMutation.mutate(emailInput.value);
-    } else {
-      emailInputRef.current!.focus();
-    }
-  };
-
-  const resetPasswordHandler = () => {
-    resetTokenInput.blur();
-    newPasswordInput.blur();
-    newPasswordRepeatInput.blur();
-
-    if (
-      resetTokenInput.isValid &&
-      newPasswordInput.isValid &&
-      newPasswordRepeatInput.isValid
-    ) {
-      toast.setCurrent("Оновлюємо пароль...");
-      resetPasswordMutation.mutate({
-        password: newPasswordInput.value,
-        token: resetTokenInput.value,
-      });
-    } else if (!resetTokenInput.isValid) {
-      resetTokenInputRef.current!.focus();
-    } else if (!newPasswordInput.isValid) {
-      newPasswordInputRef.current!.focus();
-    } else {
-      newPasswordRepeatInputRef.current!.focus();
-    }
-  };
-
   const forgotPasswordMutationPassed = forgotPasswordMutation.isSuccess;
 
   const formSubmissionHandler: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    if (!forgotPasswordMutationPassed) {
-      validationHandler();
-      return;
+    emailInput.blur();
+    if (emailInput.isValid) {
+      forgotPasswordMutation.mutate(emailInput.value);
+    } else {
+      emailInputRef.current!.focus();
     }
-    resetPasswordHandler();
+    return;
   };
 
   return (
     <form onSubmit={formSubmissionHandler} id="forgottenPasswrodForm">
-      <div className={classes.fields} id="authFieldsDiv">
+      <div>
         {!forgotPasswordMutationPassed && (
           <AuthField
             ref={emailInputRef}
@@ -126,16 +62,19 @@ export const ForgotPasswordForm = () => {
             errorMessage="Перевірте коректність поштової адреси"
           />
         )}
-
-        {forgotPasswordMutationPassed && <p>Passed! Check your inbox</p>}
-        <input
-          id="submitButton"
-          type="submit"
-          className={classes["auth-button"]}
-          value={
-            forgotPasswordMutationPassed ? "Підтвердити" : "Відправити лист"
-          }
-        />
+        {forgotPasswordMutationPassed ? (
+          <p className="mt-4 text-base text-gray-900 text-center py-12">
+            {"Перевірте пошту та перейдіть за посиланням"}
+          </p>
+        ) : (
+          <button
+            type="submit"
+            disabled={forgotPasswordMutation.isLoading}
+            className="mt-4 flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all ease-in-out duration-200 disabled:opacity-50 disabled:cursor-wait"
+          >
+            {"Відправити лист"}
+          </button>
+        )}
       </div>
     </form>
   );
