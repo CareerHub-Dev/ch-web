@@ -11,13 +11,18 @@ export function getArrayInput<TItem>(): ArrayInput<TItem>;
 export function getArrayInput<TItem>(options: {
   initialItems: Array<TItem>;
 }): ArrayInput<TItem>;
+export function getArrayInput<TItem>(options?: {
+  initialItems: Array<TItem>;
+  wasChanged: boolean;
+}): ArrayInput<TItem>;
 
 export function getArrayInput<TItem>(options?: {
   initialItems: Array<TItem>;
+  wasChanged?: boolean;
 }): ArrayInput<TItem> {
   return {
     items: options?.initialItems ?? [],
-    wasChanged: false,
+    wasChanged: options?.wasChanged ?? false,
     errors: [],
     warnings: [],
   };

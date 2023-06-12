@@ -27,3 +27,22 @@ export function useMultipleImagesUpload() {
     remove,
   };
 }
+
+export function useSingleImageUpload() {
+  const [data, setData] = useState<{ file: File; url: string }>();
+
+  const reset = () => {
+    setData(undefined);
+  };
+
+  const change = (file: File) => {
+    const item = { file, url: URL.createObjectURL(file) };
+    setData(item);
+  };
+
+  return {
+    data,
+    change,
+    reset,
+  };
+}

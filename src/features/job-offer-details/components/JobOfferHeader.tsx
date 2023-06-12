@@ -44,12 +44,6 @@ export default function JobOfferHeader({
             </h1>
           </div>
           <div className="flex items-center gap-x-4 sm:gap-x-6">
-            <a
-              href="#"
-              className="hidden text-sm font-semibold leading-6 text-gray-900 sm:block"
-            >
-              {"Продовжити термін"}
-            </a>
             <Link
               href={editUrl}
               className="hidden text-sm font-semibold leading-6 text-gray-900 sm:block"
@@ -83,19 +77,6 @@ export default function JobOfferHeader({
                 leaveTo="transform opacity-0 scale-95"
               >
                 <Menu.Items className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        type="button"
-                        className={classNames(
-                          active ? "bg-gray-50" : "",
-                          "block w-full px-3 py-1 text-left text-sm leading-6 text-gray-900"
-                        )}
-                      >
-                        {"Продовжити термін"}
-                      </button>
-                    )}
-                  </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
                       <Link

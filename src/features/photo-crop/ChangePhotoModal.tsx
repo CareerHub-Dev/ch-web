@@ -14,7 +14,7 @@ export default function ChangePhotoModal({
   onClose: () => void;
   onConfirm: (value: LoadedPhotoData) => void;
 }) {
-  const { temporaryPhoto, load, changeCrop, isLoaded } = useImageCrop();
+  const { temporaryPhoto, load, changeCrop, isLoaded, reset } = useImageCrop();
 
   const handleConfirm = () => {
     if (!isLoaded) return;
@@ -31,11 +31,19 @@ export default function ChangePhotoModal({
       {!isLoaded ? (
         <PhotoDragAndDropInput onPhotoLoaded={load} />
       ) : (
-        <ImageCrop
-          src={temporaryPhoto.sourceUrl}
-          onChangeCrop={changeCrop}
-          fileType={temporaryPhoto.source.type}
-        />
+        <>
+          <ImageCrop
+            src={temporaryPhoto.sourceUrl}
+            onChangeCrop={changeCrop}
+            fileType={temporaryPhoto.source.type}
+          />
+          <button
+            onClick={reset}
+            className="block text-center mx-auto bg-transparent px-2 py-1.5 text-sm text-blue-600 hover:underline hover:underline-offset-2"
+          >
+            {"Прибрати поточне фото"}
+          </button>
+        </>
       )}
       <DialogActionButtons
         onConfirm={handleConfirm}

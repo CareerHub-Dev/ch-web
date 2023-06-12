@@ -53,9 +53,6 @@ export default function LinksForm({
     e.preventDefault();
     mutate(items);
   };
-  const handleCancelClick = () => {
-    resetItems(links);
-  };
 
   return (
     <>
@@ -121,10 +118,6 @@ export default function LinksForm({
               "Зберегти"
             )}
           </PrimaryButton>
-
-          <SecondaryButton type="button" onClick={handleCancelClick}>
-            {"Відмінити"}
-          </SecondaryButton>
         </div>
       </form>
     </>

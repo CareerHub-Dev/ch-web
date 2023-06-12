@@ -15,6 +15,31 @@ import AuthLinks from "./AuthLinks";
 import AuthLinksMobile from "./AuthLinksMobile";
 import { getNavigationLinks, getUserMenuLinks } from "./navigation-items";
 import { Background } from "../Background";
+import { AxiosInstance } from "axios";
+import { request } from "@/lib/axios";
+import { z } from "zod";
+import { useProtectedQuery } from "@/hooks/useProtectedQuery";
+
+function getUnviewedNotificationsAmount(instance: AxiosInstance) {
+  return request({
+    instance,
+    method: "GET",
+    url: "Student/Notifications/self/amount-unviewed",
+    select: (res) => z.number().parse(res.data),
+  });
+}
+
+function useUnviewedNotificationsAmountQuery() {
+  const session = useSession();
+  return useProtectedQuery(
+    ["notifications", "amount-unviewed"],
+    getUnviewedNotificationsAmount,
+    {
+      refetchInterval: 3 * 1000,
+      enabled: session.data?.role === "Student",
+    }
+  );
+}
 
 export default function StackedLayout(props: {
   children: ReactNode;
@@ -26,6 +51,11 @@ export default function StackedLayout(props: {
   const links = getNavigationLinks(role);
   const menuLinks = getUserMenuLinks(role);
   const notificationsModalIsOpen = useBoolean(false);
+  const { data: unviewedNotificationsAmount } =
+    useUnviewedNotificationsAmountQuery();
+  const hasUnviewedNotifications =
+    unviewedNotificationsAmount !== undefined &&
+    unviewedNotificationsAmount > 0;
 
   const handleLogoutClick = () => {
     logout();
@@ -88,14 +118,18 @@ export default function StackedLayout(props: {
                         <button
                           type="button"
                           onClick={notificationsModalIsOpen.setTrue}
-                          className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                          className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         >
                           <span className="sr-only">View notifications</span>
+                          {hasUnviewedNotifications ? (
+                            <span className="absolute top-0 right-0 min-w-2.5 min-h-2.5 bg-red-400 rounded-full text-white text-xs px-1">
+                              {unviewedNotificationsAmount}
+                            </span>
+                          ) : null}
                           <BellIcon className="h-6 w-6" aria-hidden="true" />
                         </button>
                       ) : null}
 
-                      {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
                         <div>
                           <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -192,6 +226,11 @@ export default function StackedLayout(props: {
                           className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         >
                           <span className="sr-only">View notifications</span>
+                          {hasUnviewedNotifications ? (
+                            <span className="absolute top-0 right-0 min-w-2.5 min-h-2.5 bg-red-400 rounded-full text-white text-xs px-1">
+                              {unviewedNotificationsAmount}
+                            </span>
+                          ) : null}
                           <BellIcon className="h-6 w-6" aria-hidden="true" />
                         </button>
                       ) : null}

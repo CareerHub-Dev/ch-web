@@ -21,9 +21,11 @@ export function useProtectedQuery<
 ) {
   const { axios, status } = useSession();
   const isAuthenticated = status === "authenticated";
-  const enabled = !!options?.enabled
-    ? isAuthenticated && options.enabled
-    : isAuthenticated;
+  let enabled = isAuthenticated;
+
+  if (options !== undefined && options.enabled !== undefined) {
+    enabled = isAuthenticated && options.enabled;
+  }
 
   return useQuery<TQueryFnData, TError, TData, TQueryKey>({
     ...options,
