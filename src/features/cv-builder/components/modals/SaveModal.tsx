@@ -1,5 +1,6 @@
 import {
   getStageCompletionStatus,
+  someStageHasWarnings,
   transformCvDataToDto,
   useCvDataStore,
 } from "../../store/cv-data-store";
@@ -12,6 +13,7 @@ import DialogWithBackdrop from "@/components/ui/dialog/DialogWithBackdrop";
 import DialogActionButtons from "@/components/ui/dialog/DialogActionButtons";
 import { createOrModifyCv } from "@/lib/api/cvs";
 import ValidatedInput from "@/components/ui/ValidatedInput";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 export function SaveModal() {
   const router = useRouter();
@@ -25,6 +27,8 @@ export function SaveModal() {
   const cvData = useCvDataStore((s) => s.cvData);
   const mutationKey = [cvId === null ? "create-cv" : `modify-cv-${cvId}`];
   const stage0 = useCvDataStore(getStageCompletionStatus(0));
+  const someWarnings = useCvDataStore(someStageHasWarnings);
+
   const cvCanBeSaved =
     stage0 === "complete" ||
     stage0 === "hasWarnings" ||
@@ -82,6 +86,17 @@ export function SaveModal() {
       show={isOpen}
       onClose={closeModal}
     >
+      {someWarnings ? (
+        <div className="flex items-center justify-center space-x-3 py-2 pl-3 pr-2 sm:text-sm">
+          <ExclamationTriangleIcon
+            aria-hidden="true"
+            className="h-5 w-5 text-orange-500"
+          />
+          <span className="text-sm text-orange-500 text-center">
+            {"Пройдено не всі етапи заповнення резюме"}
+          </span>
+        </div>
+      ) : null}
       <div className="mt-4 flex flex-col gap-1">
         <label htmlFor="cvTitleInput" className="text-gray-500">
           Назва

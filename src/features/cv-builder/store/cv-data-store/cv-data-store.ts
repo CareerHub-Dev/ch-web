@@ -53,6 +53,7 @@ export type CvDataStore = {
   removePhoto: () => void;
   toggleNoWorkExperience: () => void;
   goToStage: (num: StageNumber) => void;
+  blurAllStages: () => void;
 };
 
 export const useCvDataStore = create<CvDataStore>()(
@@ -218,7 +219,122 @@ export const useCvDataStore = create<CvDataStore>()(
         set((state) => {
           state.noWorkExperience = !state.noWorkExperience;
         }),
-      goToStage: (num: StageNumber) => set({ currentStage: num }),
+      goToStage: (num: StageNumber) =>
+        set((state) => {
+          switch (state.currentStage) {
+            case 1:
+              state.cvData.firstName = firstNameReducer(
+                state.cvData.firstName,
+                { type: "BLUR" }
+              );
+              state.cvData.lastName = lastNameReducer(state.cvData.lastName, {
+                type: "BLUR",
+              });
+              break;
+            case 2:
+              // do nothing
+              break;
+            case 3:
+              state.cvData.goals = goalsReducer(state.cvData.goals, {
+                type: "BLUR",
+              });
+              break;
+            case 4:
+              state.cvData.hardSkills = arrayInputReducer({
+                input: state.cvData.hardSkills,
+                action: { type: "blur" },
+                validators: [validateArrayInput],
+              });
+              state.cvData.softSkills = arrayInputReducer({
+                input: state.cvData.softSkills,
+                action: { type: "blur" },
+                validators: [validateArrayInput],
+              });
+              break;
+            case 5:
+              state.cvData.foreignLanguages = arrayInputReducer({
+                input: state.cvData.foreignLanguages,
+                action: { type: "blur" },
+                validators: [validateArrayInput],
+              });
+              break;
+            case 6:
+              state.cvData.workExperiences = arrayInputReducer({
+                input: state.cvData.workExperiences,
+                action: { type: "blur" },
+                validators: [
+                  (items) => {
+                    if (state.noWorkExperience)
+                      return { type: "success" } as const;
+                    if (items.length === 0)
+                      return {
+                        type: "warning",
+                        message: "Додайте хоча б один елемент",
+                      } as const;
+                    return { type: "success" } as const;
+                  },
+                ],
+              });
+              break;
+            case 7:
+              state.cvData.educations = arrayInputReducer({
+                input: state.cvData.educations,
+                action: { type: "blur" },
+                validators: [validateArrayInput],
+              });
+              break;
+            default:
+              break;
+          }
+          state.currentStage = num;
+        }),
+      blurAllStages: () =>
+        set((state) => {
+          state.cvData.firstName = firstNameReducer(state.cvData.firstName, {
+            type: "BLUR",
+          });
+          state.cvData.lastName = lastNameReducer(state.cvData.lastName, {
+            type: "BLUR",
+          });
+          state.cvData.goals = goalsReducer(state.cvData.goals, {
+            type: "BLUR",
+          });
+          state.cvData.hardSkills = arrayInputReducer({
+            input: state.cvData.hardSkills,
+            action: { type: "blur" },
+            validators: [validateArrayInput],
+          });
+          state.cvData.softSkills = arrayInputReducer({
+            input: state.cvData.softSkills,
+            action: { type: "blur" },
+            validators: [validateArrayInput],
+          });
+          state.cvData.foreignLanguages = arrayInputReducer({
+            input: state.cvData.foreignLanguages,
+            action: { type: "blur" },
+            validators: [validateArrayInput],
+          });
+          state.cvData.workExperiences = arrayInputReducer({
+            input: state.cvData.workExperiences,
+            action: { type: "blur" },
+            validators: [
+              (items) => {
+                if (state.noWorkExperience) return { type: "success" } as const;
+                if (items.length === 0)
+                  return {
+                    type: "warning",
+                    message: "Додайте хоча б один елемент",
+                  } as const;
+                return { type: "success" } as const;
+              },
+            ],
+          });
+          state.cvData.educations = arrayInputReducer({
+            input: state.cvData.educations,
+            action: { type: "blur" },
+            validators: [validateArrayInput],
+          });
+        }),
     }))
   )
 );

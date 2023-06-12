@@ -12,7 +12,7 @@ export default function StudentStatSearchBox({
   return (
     <div className="relative mt-2 flex items-center">
       <input
-        type="text"
+        type="search"
         name="search"
         id="search"
         value={value}

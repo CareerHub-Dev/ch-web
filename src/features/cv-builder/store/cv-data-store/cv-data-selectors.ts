@@ -79,8 +79,12 @@ export function getStageCompletionStatus(stage: StageNumber) {
         const { foreignLanguages } = store.cvData;
         return summarizeInputs(foreignLanguages);
       case 6:
-        const { projectLinks } = store.cvData;
-        return summarizeInputs(projectLinks);
+        const { projectLinks, workExperiences } = store.cvData;
+        const noWorkExperience = store.noWorkExperience;
+        if (noWorkExperience) {
+          return summarizeInputs(projectLinks);
+        }
+        return summarizeInputs(projectLinks, workExperiences);
       case 7:
         const { educations } = store.cvData;
         return summarizeInputs(educations);
@@ -88,6 +92,35 @@ export function getStageCompletionStatus(stage: StageNumber) {
         return "hasErrors";
     }
   };
+}
+
+export function someStageHasWarnings(store: CvDataStore): boolean {
+  let status: StageCompletionStatus;
+  const { firstName, lastName } = store.cvData;
+  status = summarizeInputs(firstName, lastName);
+  if (status === "hasWarnings") return true;
+  const { goals } = store.cvData;
+  status = summarizeInputs(goals);
+  if (status === "hasWarnings") return true;
+  const { hardSkills, softSkills } = store.cvData;
+  status = summarizeInputs(hardSkills, softSkills);
+  if (status === "hasWarnings") return true;
+  const { foreignLanguages } = store.cvData;
+  status = summarizeInputs(foreignLanguages);
+  if (status === "hasWarnings") return true;
+  const { projectLinks, workExperiences } = store.cvData;
+  const noWorkExperience = store.noWorkExperience;
+  if (noWorkExperience) {
+    status = summarizeInputs(projectLinks);
+    if (status === "hasWarnings") return true;
+  } else {
+    status = summarizeInputs(projectLinks, workExperiences);
+    if (status === "hasWarnings") return true;
+  }
+  const { educations } = store.cvData;
+  status = summarizeInputs(educations);
+  if (status === "hasWarnings") return true;
+  return false;
 }
 
 export function getPhotoDetails(store: CvDataStore) {
