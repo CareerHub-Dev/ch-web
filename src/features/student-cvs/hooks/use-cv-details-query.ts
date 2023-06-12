@@ -60,7 +60,7 @@ const CvDetailsSchema = z.object({
       experienceLevel: z.string(),
       jobLocation: z.string(),
       startDate: z.string(),
-      endDate: z.string().nullish(),
+      endDate: z.string().nullable(),
     })
   ),
 });
@@ -91,7 +91,9 @@ export function useCvDetailsQuery(cvId: string) {
   const queryFn =
     role === "Student" ? getStudentOwnCv(cvId) : getCvDetailsAsCompany(cvId);
 
-  return useProtectedQuery(["cv-details", cvId], queryFn);
+  return useProtectedQuery(["cv-details", cvId], queryFn, {
+    enabled: cvId.length > 0,
+  });
 }
 
 export function useCvQueryData(cvId: string | null) {

@@ -103,11 +103,14 @@ export function createOrModifyCv(instance: AxiosInstance) {
       await request({
         method: "POST",
         url: `Student/self/CVs/${id}/photo`,
-        data,
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
         instance,
       });
-    } catch (_e) {
-      // TODO: handle possible errors with image post
+    } catch (e) {
+      console.error("Photo", photo, e);
     }
   };
 }
@@ -135,8 +138,8 @@ export function createCv(instance: AxiosInstance) {
           instance,
         });
       }
-    } catch (_e) {
-      // TODO: handle possible errors with image post
+    } catch (e) {
+      console.error("Photo", photo, e);
     }
 
     return cvId;

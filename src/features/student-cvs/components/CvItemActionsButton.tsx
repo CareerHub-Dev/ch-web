@@ -1,10 +1,12 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useStudentCvsStore } from "../store/student-cvs-store";
 import { useCvDocxMutation } from "../hooks/use-cv-docx-mutation";
 import Link from "next/link";
 import cn from "classnames";
+import CvPreview from "./CvPreview";
+import { useBoolean } from "usehooks-ts";
 
 export function CvItemActionsButton({
   id,
@@ -15,15 +17,27 @@ export function CvItemActionsButton({
 }) {
   const { isLoading, mutate } = useCvDocxMutation(title);
   const openRemoveCvModal = useStudentCvsStore((s) => s.openRemoveCvModal);
+  const [focusedCvId, setFocusedCvId] = useState("");
+  const previewModalOpen = useBoolean(false);
+
   const handleRemoveClick = () => {
     openRemoveCvModal({ id, title });
   };
   const handleDownloadClick = () => {
     mutate(id);
   };
+  const handlePreviewClick = (previewCvId: string) => {
+    setFocusedCvId(previewCvId);
+    previewModalOpen.setTrue();
+  };
 
   return (
     <>
+      <CvPreview
+        cvId={focusedCvId}
+        show={previewModalOpen.value}
+        onClose={previewModalOpen.setFalse}
+      />
       <Menu as={"div"} className="relative inline-block text-left">
         <Menu.Button className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white bg-transparent text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
           <EllipsisVerticalIcon title="Дії" className="h-5 w-5" />
@@ -51,6 +65,19 @@ export function CvItemActionsButton({
                 >
                   Редагувати
                 </Link>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <button
+                  onClick={handlePreviewClick.bind(null, id)}
+                  className={cn(
+                    active && "bg-blue-500 text-white",
+                    "group flex w-full items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-wait"
+                  )}
+                >
+                  {"Попередній перегляд"}
+                </button>
               )}
             </Menu.Item>
             <Menu.Item>

@@ -57,6 +57,16 @@ export function getJobOfferAsCompany(jobOfferId: string) {
   };
 }
 
+export function deleteJobOffer(instance: AxiosInstance) {
+  return (jobOfferId: string) => {
+    return request({
+      instance,
+      method: "DELETE",
+      url: `Company/self/JobOffers/${jobOfferId}`,
+    });
+  };
+}
+
 export function getJobOfferAsStudent(jobOfferId: string) {
   return (instance: AxiosInstance) => {
     return request({

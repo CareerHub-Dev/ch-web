@@ -116,8 +116,8 @@ export function restoreToCvQueryData(data: CvDetails): CvData {
     ...data,
     jobPosition: {
       value: data.jobPosition,
-      wasChanged: false,
-      wasBlurred: false,
+      wasChanged: true,
+      wasBlurred: true,
     },
     workDirection: {
       value: {
@@ -125,8 +125,8 @@ export function restoreToCvQueryData(data: CvDetails): CvData {
         recomendedTemplateLanguage: matchTemplateLanguage(data.templateLanguage)
           .id,
       },
-      wasChanged: false,
-      wasBlurred: false,
+      wasChanged: true,
+      wasBlurred: true,
     },
     title: getStringInput({
       value: data.title,
@@ -150,23 +150,37 @@ export function restoreToCvQueryData(data: CvDetails): CvData {
       wasBlurred: true,
     }),
     // TODO: handle workExperiences transformation
-    workExperiences: getArrayInput({ initialItems: [] }),
+    workExperiences: getArrayInput({
+      initialItems: data.experiences,
+      wasChanged: true,
+    }),
     foreignLanguages: getArrayInput({
       initialItems: data.foreignLanguages,
+      wasChanged: true,
     }),
-    projectLinks: getArrayInput({ initialItems: data.projectLinks }),
+    projectLinks: getArrayInput({
+      initialItems: data.projectLinks,
+      wasChanged: true,
+    }),
     educations: getArrayInput({
       initialItems: mappedEducations,
+      wasChanged: true,
     }),
     photo: data.photo ?? null,
-    hardSkills: getArrayInput(),
-    softSkills: getArrayInput(),
+    hardSkills: getArrayInput({
+      initialItems: data.hardSkills,
+      wasChanged: true,
+    }),
+    softSkills: getArrayInput({
+      initialItems: data.softSkills,
+      wasChanged: true,
+    }),
     experienceLevel: {
       value: experienceLevelToOption(
         matchExperienceLevel(data.experienceLevel)
       ),
-      wasChanged: false,
-      wasBlurred: false,
+      wasChanged: true,
+      wasBlurred: true,
     },
   };
 }
@@ -212,5 +226,12 @@ export const TEMPLATE_LANGUAGES = [
   { id: "EN", name: "English" },
   { id: "UA", name: "Українська" },
 ];
+
+export function templateLanguageNameById(id: string) {
+  return (
+    TEMPLATE_LANGUAGES.find((item) => item.id === id)?.name ??
+    TEMPLATE_LANGUAGES[0]!.name
+  );
+}
 
 export type TemplateLanguage = (typeof TEMPLATE_LANGUAGES)[number];

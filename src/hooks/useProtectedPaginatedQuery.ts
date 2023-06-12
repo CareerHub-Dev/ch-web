@@ -43,8 +43,15 @@ export function useProtectedPaginatedQuery<
     {
       enabled: status === "authenticated",
       getNextPageParam: (lastPage) => {
-        const { HasNext, CurrentPage } = lastPage.pagination;
-        return HasNext && CurrentPage + 1;
+        if (!lastPage.pagination) {
+          return undefined;
+        }
+        const HasNext = lastPage.pagination.HasNext;
+        const CurrentPage = lastPage.pagination.CurrentPage;
+        if (HasNext) {
+          return CurrentPage + 1;
+        }
+        return undefined;
       },
       ...options,
     }
