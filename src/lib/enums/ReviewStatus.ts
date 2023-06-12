@@ -1,5 +1,5 @@
 export enum ReviewStatus {
-  InProgress = "In Progress",
+  InProgress = "In_progress",
   Success = "Success",
   Rejected = "Rejected",
 }
@@ -19,13 +19,13 @@ export function matchReviewStatus(status: string): ReviewStatus {
 
 export function reviewStatusToLocalizedString(
   status: ReviewStatus,
-  locale: "EN" | "UA" = "UA",
+  locale: "EN" | "UA" = "UA"
 ) {
   switch (status) {
     case ReviewStatus.InProgress:
       return locale === "EN" ? "In Progress" : "В процесі";
     case ReviewStatus.Success:
-      return locale === "EN" ? "Success" : "Успішно";
+      return locale === "EN" ? "Success" : "Прийнято";
     case ReviewStatus.Rejected:
       return locale === "EN" ? "Rejected" : "Відхилено";
     default:

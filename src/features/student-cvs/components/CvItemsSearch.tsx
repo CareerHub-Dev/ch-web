@@ -1,4 +1,6 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
+import Link from "next/link";
 import { ChangeEvent } from "react";
 
 export function CvItemsSearch({
@@ -34,10 +36,17 @@ export function CvItemsSearch({
             id="search"
             value={search}
             onChange={handleSearchChange}
-            className="block w-full rounded-none rounded-l-md border-gray-300 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            className="block w-full border-0 rounded-none rounded-l-md ring-1 ring-inset ring-gray-300 pl-10 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm"
             placeholder="Моє резюме"
           />
         </div>
+        <Link
+          href="/my-cvs/create"
+          className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 sm:text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        >
+          <PlusIcon className="inline-block w-4 h-4" />
+          <span className="hidden sm:inline">{"Створити нове"}</span>
+        </Link>
       </div>
     </div>
   );

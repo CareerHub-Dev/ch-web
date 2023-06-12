@@ -8,7 +8,7 @@ export default function JobOfferSearchBox() {
   };
   return (
     <input
-      type="text"
+      type="search"
       name="search"
       id="search"
       value={search}

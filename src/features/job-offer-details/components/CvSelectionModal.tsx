@@ -8,8 +8,6 @@ import { useState } from "react";
 import { useDebounce } from "usehooks-ts";
 import { useQueryClient } from "@tanstack/react-query";
 import CvItemForApplication from "./CvItemForApplication";
-import Link from "next/link";
-import { PlusIcon } from "@heroicons/react/24/solid";
 
 export default function CvSelectionModal({
   jobOfferId,
@@ -54,13 +52,6 @@ export default function CvSelectionModal({
             ) : (
               <div className="flex flex-col items-center gap-4">
                 <EmptyState noItemsText="Ви поки що не створили жодного резюме" />
-                <Link
-                  href="/my-cvs/create"
-                  className="mt-2 btn-primary rounded-md px-2.5 py-1.5 text-sm"
-                >
-                  <PlusIcon className="inline-block w-4 h-4 text-white" />{" "}
-                  {"Створити"}
-                </Link>
               </div>
             )}
           </div>

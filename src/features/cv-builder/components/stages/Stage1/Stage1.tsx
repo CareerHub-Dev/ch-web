@@ -15,17 +15,23 @@ export default function Stage1() {
   const lastName = useCvDataStore((s) => s.cvData.lastName);
   const firstNameActions = useCvDataStore(getFirstNameActions);
   const lastNameActions = useCvDataStore(getLastNameActions);
+  const queryEnabled =
+    !firstName.wasChanged ||
+    !firstName.wasBlurred ||
+    !lastName.wasChanged ||
+    !lastName.wasBlurred;
+
   const { isLoading } = useSelfStudentQuery({
     onSuccess: (data) => {
       if (!firstName.wasChanged) {
-        firstNameActions.force(data.firstName);
+        firstNameActions.change(data.firstName);
       }
       if (!lastName.wasChanged) {
-        lastNameActions.force(data.lastName);
+        lastNameActions.change(data.lastName);
       }
     },
     retry: false,
-    enabled: !firstName.wasChanged || !lastName.wasChanged,
+    enabled: queryEnabled,
   });
 
   return (
@@ -42,7 +48,7 @@ export default function Stage1() {
 
         <div className="space-y-6 sm:space-y-5 divide-y divide-gray-200">
           <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
-            {isLoading ? (
+            {queryEnabled && isLoading ? (
               <LoadingInput label="Ім'я" />
             ) : (
               <ValidatedInput
@@ -55,7 +61,7 @@ export default function Stage1() {
             )}
           </div>
           <div className="sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
-            {isLoading ? (
+            {queryEnabled && isLoading ? (
               <LoadingInput label="Прізвище" />
             ) : (
               <ValidatedInput

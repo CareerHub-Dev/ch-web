@@ -5,6 +5,7 @@ type ArrayInput<TItem> = Inputs.ArrayInput<TItem>;
 export type ArrayInputAction<TItem> =
   | { type: "add"; item: TItem }
   | { type: "edit"; itemIndex: number; newValue: TItem }
+  | { type: "blur" }
   | { type: "remove"; itemIndex: number };
 
 export function getArrayInput<TItem>(): ArrayInput<TItem>;
@@ -48,6 +49,11 @@ export function arrayInputReducer<TItem>({
       break;
     case "edit":
       if (items[action.itemIndex]) items[action.itemIndex] = action.newValue;
+      break;
+    case "blur":
+      // do nothing, just validate
+      break;
+    default:
       break;
   }
 
