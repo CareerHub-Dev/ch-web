@@ -292,6 +292,7 @@ function ApplicationItem({
   id,
   created,
   student,
+  jobOffer,
 }: ApplicationReviewDetails) {
   const applicationUrl = `/applications/${id}`;
   const inferredProps = statusInferredProps[matchReviewStatus(status)];
@@ -314,8 +315,9 @@ function ApplicationItem({
             alt={fullName}
           />
           <div className="min-w-0">
-            <p className="text-sm font-semibold leading-6 text-gray-900">
-              {fullName}
+            <p className="text-sm leading-6 text-gray-900">
+              <strong className="font-semibold">{`${jobOffer.title}`}</strong>
+              {` - ${fullName}`}
             </p>
             <p className="flex text-xs leading-5 text-gray-500">
               <a href={`mailto:${email}`} className="relative hover:underline">

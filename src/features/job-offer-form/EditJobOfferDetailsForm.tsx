@@ -161,6 +161,8 @@ export default function EditJobOfferDetailsForm({
     event.preventDefault();
     allInputs.forEach((input) => input.blur());
     overviewEditor.blur();
+    console.log(overviewEditor.textRef.current);
+    
     const { hasErrors: overviewEditorHasErrors } = overviewEditor.validate();
     if (someInputIsInvalid || overviewEditorHasErrors) {
       return;

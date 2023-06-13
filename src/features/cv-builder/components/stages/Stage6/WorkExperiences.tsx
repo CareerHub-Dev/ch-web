@@ -18,6 +18,10 @@ export default function WorkExperiences() {
 
   const { state, dispatch } = useDialogActionsListReducer<WorkExperience>();
   const { dialog, focusedItem, focusedItemIndex } = state;
+  const displayWarning =
+    !noWorkExperience &&
+    workExperiences.wasChanged &&
+    workExperiences.warnings.length !== 0;
 
   const handleAddClick = () =>
     dispatch({
@@ -41,9 +45,7 @@ export default function WorkExperiences() {
           handleDialogClose();
         }}
         title="Видалити?"
-        descriptionText={`Опит роботи ${
-          focusedItem?.title
-        } буде видалено зі списку`}
+        descriptionText={`Опит роботи ${focusedItem?.title} буде видалено зі списку`}
         show={dialog === "remove"}
       />
       {dialog === "edit" ? (
@@ -92,7 +94,10 @@ export default function WorkExperiences() {
           </ul>
         </div>
       ) : (
-        <NoItems text="Немає досвіду" status="default" />
+        <NoItems
+          text="Досвід не додано"
+          status={displayWarning ? "hasWarning" : "default"}
+        />
       )}
 
       <div className="flex h-5 items-center">

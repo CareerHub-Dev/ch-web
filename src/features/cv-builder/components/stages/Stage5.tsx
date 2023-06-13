@@ -47,9 +47,7 @@ export default function Stage5() {
         onConfirm={handleRemoveItem}
         show={dialog === "remove"}
         title="Видалити мову?"
-        descriptionText={`Мова ${
-          focusedLanguage?.name
-        } буде видалена зі списку`}
+        descriptionText={`Мова ${focusedLanguage?.name} буде видалена зі списку`}
       />
       {dialog === "edit" ? (
         <AddOrEditLanguageModal
@@ -94,7 +92,13 @@ export default function Stage5() {
           </ul>
         </div>
       ) : (
-        <EmptyState noItemsText="Інозмених мов не додано" />
+        <EmptyState
+          withWarning={
+            foreignLanguages.wasChanged &&
+            foreignLanguages.warnings.length !== 0
+          }
+          noItemsText="Інозмених мов не додано"
+        />
       )}
 
       {isAssistEnabled && (
