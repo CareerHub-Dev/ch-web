@@ -38,7 +38,7 @@ export function arrayInputReducer<TItem>({
   action: ArrayInputAction<TItem>;
   validators: Array<Inputs.Validator<Array<TItem>>>;
 }): ArrayInput<TItem> {
-  let { items, errors, warnings } = { ...input };
+  let { items } = { ...input };
 
   switch (action.type) {
     case "add":
@@ -59,8 +59,8 @@ export function arrayInputReducer<TItem>({
 
   const newInput: ArrayInput<TItem> = {
     items,
-    errors,
-    warnings,
+    errors: [],
+    warnings: [],
     wasChanged: true,
   };
 
