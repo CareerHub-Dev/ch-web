@@ -105,7 +105,7 @@ export default function SingleImageInput({
               </label>
               <p className="pl-1">або перетягніть сюди</p>
             </div>
-            <p className="text-xs text-gray-500">PNG або JPG не більше 10МБ</p>
+            <p className="text-xs text-gray-500">PNG або JPG не більше 2МБ</p>
           </div>
         </div>
       </div>
