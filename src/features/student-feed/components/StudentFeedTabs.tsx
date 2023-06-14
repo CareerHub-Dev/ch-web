@@ -30,7 +30,7 @@ export default function StudentFeedTabs() {
           aria-label="Tabs"
         >
           {tabs.map((tab, tabIdx) => (
-            <a
+            <button
               type="button"
               key={tab.name}
               onClick={() => changeTab(tab.id)}
@@ -52,7 +52,7 @@ export default function StudentFeedTabs() {
                   "absolute inset-x-0 bottom-0 h-0.5"
                 )}
               />
-            </a>
+            </button>
           ))}
         </nav>
       </div>

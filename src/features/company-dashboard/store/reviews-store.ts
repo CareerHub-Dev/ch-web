@@ -36,7 +36,7 @@ export type ReviewsFeedStore = {
 
 export const initialReviewsFeedState = {
   order: "created DESC",
-  statusFilter: statusFilters[0]!,
+  statusFilter: statusFilters[3]!,
 } satisfies ReviewsFeedState;
 
 export const useReviewsFeedStore = create<ReviewsFeedStore>()(

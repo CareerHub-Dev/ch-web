@@ -11,7 +11,11 @@ const NavigationItem = ({
   onClick: () => void;
 }) => {
   const { query } = useRouter();
-  const isActive = query.section === section;
+  const noCurrentSection = typeof query.section !== "string";
+  const isActive =
+    noCurrentSection && section === "general"
+      ? true
+      : query.section === section;
   const activeClassName =
     "bg-lightGray before:content-[''] before:block before:-left-2 before:top-0 before:h-full before:border-l-4 before:border-primaryBlue before:absolute before:rounded-md";
 

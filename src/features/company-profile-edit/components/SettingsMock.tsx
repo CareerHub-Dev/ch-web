@@ -3,7 +3,6 @@ import { getSelfCompany } from "@/lib/api/company";
 import GeneralInfoForm from "./GeneralInfoForm";
 import CenteredLoadingSpinner from "@/components/ui/CenteredLoadingSpinner";
 import parseUnknownError from "@/lib/parse-unknown-error";
-import DeleteAccountForm from "./DeleteAccountForm";
 import LinksForm from "./LinksForm";
 import LogoEditForm from "./LogoEditForm";
 import BannerEditForm from "./BannerEditForm";
@@ -41,10 +40,10 @@ export default function SettingsMock() {
       <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
         <LinksForm links={data.links} />
       </div>
-
+      {/* 
       <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
         <DeleteAccountForm />
-      </div>
+      </div> */}
     </div>
   );
 }

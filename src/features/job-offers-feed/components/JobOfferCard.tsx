@@ -21,7 +21,7 @@ export default function JobOfferCard({
   const detailsUrl = `/job-offers/${id}`;
   const companyUrl = `/companies/${company.id}`;
   const imageSrc =
-    image === undefined || image === null ? "/general.jpg" : getImage(image);
+    image === undefined || image === null ? "/company-dummy-logo.png" : getImage(image);
 
   return (
     <div

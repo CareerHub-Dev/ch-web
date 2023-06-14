@@ -43,7 +43,7 @@ export default function ProjectLinks() {
         <div className="sm:flex-auto">
           <h4 className="text-lg font-medium text-gray-900">Посилання</h4>
           <p className="mt-2 text-sm text-gray-700">
-            Додайте посилання на свої проєкти
+            Додайте посилання на свої сертифікати або проєкти
           </p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">

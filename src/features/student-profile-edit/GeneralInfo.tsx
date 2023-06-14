@@ -152,13 +152,13 @@ function GeneralInfo({ initialData }: { initialData: any }) {
       </form>
       <div className="flex flex-row-reverse mt-4 mb-4">
         <button
-          className={"btn-primary p-2 w-40 ml-2 bg-primaryBlue"}
+          className={"btn-primary rounded-md p-2 w-40 ml-2 bg-primaryBlue"}
           onClick={save}
           disabled={cannotSubmit}
         >
           Зберегти
         </button>
-        <button className="btn-primary p-2 w-40" onClick={cancel}>
+        <button className="btn-primary rounded-md p-2 w-40" onClick={cancel}>
           Скасувати
         </button>
       </div>

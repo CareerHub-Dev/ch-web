@@ -149,7 +149,12 @@ export default function ApplicationReviewForCompany({
                       {"Електронна пошта"}
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900">
-                      {student.email}
+                      <a
+                        className="relative hover:underline"
+                        href={`mailto:${student.email}`}
+                      >
+                        {student.email}
+                      </a>
                     </dd>
                   </div>
                   <div className="sm:col-span-2">

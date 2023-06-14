@@ -99,13 +99,6 @@ export default function LogoEditForm({
             >
               {"Змінити логотип"}
             </SecondaryButton>
-            <SecondaryButton
-              type="button"
-              onClick={deleteDialogIsOpen.setTrue}
-              disabled={isLoading}
-            >
-              {"Видалити логотип"}
-            </SecondaryButton>
           </div>
 
           <div className="mt-8 flex gap-4">
@@ -115,6 +108,14 @@ export default function LogoEditForm({
               ) : (
                 "Зберегти"
               )}
+            </PrimaryButton>
+            <PrimaryButton
+              type="button"
+              variant="red"
+              onClick={deleteDialogIsOpen.setTrue}
+              disabled={isLoading}
+            >
+              {"Видалити"}
             </PrimaryButton>
           </div>
         </div>

@@ -92,6 +92,7 @@ export function usePostLikedStatusMutation({
   const postLikedStatusQueryKey = ["post", postId, "liked"];
   const postOfFollowedAccountsQueryKey = ["posts-of-followed-accounts"];
   const postsOfAccountQueryKey = ["posts-of-account", account.id];
+  const exactPostQueryKey = ["post", postId];
 
   const toast = useToast();
   const queryClient = useQueryClient();
@@ -112,6 +113,7 @@ export function usePostLikedStatusMutation({
         await queryClient.cancelQueries({
           queryKey: postOfFollowedAccountsQueryKey,
         });
+        await queryClient.cancelQueries({ queryKey: exactPostQueryKey });
 
         const cachedStatus = queryClient.getQueryData(
           postLikedStatusQueryKey
@@ -121,6 +123,7 @@ export function usePostLikedStatusMutation({
         const cachedPostsFromAccount = queryClient.getQueryData(
           postsOfAccountQueryKey
         );
+        const cachedExactPost = queryClient.getQueryData(exactPostQueryKey);
 
         const newStatus = !cachedStatus;
         const newAmountInPostsFromFollowedAccounts =
@@ -141,6 +144,19 @@ export function usePostLikedStatusMutation({
           newAmountInPostsFromFollowedAccounts
         );
         queryClient.setQueryData(postsOfAccountQueryKey, newPostsFromAccount);
+        try {
+          const newExactPost = structuredClone(cachedExactPost) as Post;
+          if (newStatus) {
+            ++newExactPost.likes;
+            newExactPost.isLiked = true;
+          } else {
+            --newExactPost.likes;
+            newExactPost.isLiked = false;
+          }
+          queryClient.setQueryData(exactPostQueryKey, newExactPost);
+        } catch (_error) {
+          // ignore
+        }
 
         return () => {
           queryClient.setQueryData(postLikedStatusQueryKey, cachedStatus);
@@ -152,12 +168,14 @@ export function usePostLikedStatusMutation({
             postsOfAccountQueryKey,
             cachedPostsFromAccount
           );
+          queryClient.setQueryData(exactPostQueryKey, cachedExactPost);
         };
       },
       onSettled: () => {
         queryClient.invalidateQueries(postLikedStatusQueryKey);
         queryClient.invalidateQueries(postOfFollowedAccountsQueryKey);
         queryClient.invalidateQueries(postsOfAccountQueryKey);
+        queryClient.invalidateQueries(exactPostQueryKey);
       },
       onError: (_error, _variables, restoreCache) => {
         restoreCache && restoreCache();

@@ -26,7 +26,7 @@ export default function EducationItem({
   const displayedEndYear = item.isCurrent ? "досі" : item.endYear;
   return (
     <li>
-      <a className="block hover:bg-gray-50">
+      <div className="block hover:bg-gray-50">
         <div className="flex items-center px-4 py-4 sm:px-6">
           <div className="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
             <div className="truncate">
@@ -54,7 +54,7 @@ export default function EducationItem({
             />
           </div>
         </div>
-      </a>
+      </div>
     </li>
   );
 }

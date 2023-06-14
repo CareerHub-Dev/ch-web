@@ -17,8 +17,15 @@ export default function AddOrEditLinkDialog({
   initialPayload?: { item: CompanyLink; itemIndex: number };
   show: boolean;
 }) {
+  const titleInitialValue = initialPayload?.item.title || "";
+  const uriInitialValue = initialPayload?.item.uri || "";
+
+  console.log(initialPayload);
+  console.log(titleInitialValue);
+  console.log(uriInitialValue);
+
   const titleInput = useInput({
-    initialValue: initialPayload?.item.title || "",
+    initialValue: titleInitialValue,
     validators: [
       (val) => {
         return val.length > 0
@@ -31,7 +38,7 @@ export default function AddOrEditLinkDialog({
     ],
   });
   const urlInput = useInput({
-    initialValue: initialPayload?.item.uri || "",
+    initialValue: uriInitialValue,
     validators: [
       (val) =>
         val.length > 0

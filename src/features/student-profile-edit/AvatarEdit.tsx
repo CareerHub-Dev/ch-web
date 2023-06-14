@@ -42,6 +42,7 @@ export default function AvatarEdit({
           });
         } else {
           queryClient.invalidateQueries(["selfStudent"]);
+          queryClient.invalidateQueries(["self-avatar"]);
         }
         toast.success("Фото успішно оновлено");
         avatarUpload.reset();
@@ -111,7 +112,7 @@ export default function AvatarEdit({
             className="btn-flat p-2 m-2 w-[256px] mx-auto tracking-wider border border-primaryGray flex gap-2 items-center justify-center"
             onClick={editPopupIsOpen.toggle}
           >
-            <PencilIcon />
+            <PencilIcon className="h-6 w-6" />
             Редагувати
           </button>
           <div
@@ -152,13 +153,13 @@ export default function AvatarEdit({
             />
             <div className="flex flex-row-reverse mt-4 mb-4">
               <button
-                className="btn-primary p-2 w-40 ml-2 bg-primaryBlue"
+                className="btn-primary rounded-md p-2 w-40 ml-2 bg-primaryBlue"
                 onClick={saveNewAvatar}
               >
                 Зберегти
               </button>
               <button
-                className="btn-primary p-2 w-40"
+                className="btn-primary rounded-md p-2 w-40"
                 onClick={cancelNewAvatar}
               >
                 Скасувати

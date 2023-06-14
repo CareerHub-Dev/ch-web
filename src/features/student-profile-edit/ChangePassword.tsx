@@ -99,15 +99,15 @@ function ChangePassword() {
       </form>
       <div className="flex flex-row-reverse mt-4 mb-4">
         <button
-          className="btn-primary p-2 w-40 ml-2 bg-primaryBlue"
+          className="btn-primary rounded-md p-2 w-40 ml-2 bg-primaryBlue"
           onClick={save}
           disabled={cannotSubmit || mutation.isLoading}
         >
           Оновити пароль
         </button>
         <Link
-          href="/auth/login"
-          className="block text-center btn-primary p-2 w-40"
+          href="/auth/forgot-password"
+          className="block text-center btn-primary rounded-md p-2 w-40"
         >
           Я забув пароль
         </Link>

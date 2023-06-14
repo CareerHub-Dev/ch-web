@@ -109,6 +109,8 @@ function Notificationitem({
   const handleSetViewed = (notificationId: string) => {
     mut.mutate(notificationId);
   };
+  const imageSource =
+    image === null ? "/android-chrome-192x192.png" : getImage(image);
   return (
     <li className="pointer-events-auto w-full rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
       <div className="p-4">
@@ -118,7 +120,7 @@ function Notificationitem({
               className="h-10 w-10 rounded-md"
               width={40}
               height={40}
-              src={getImage(image ?? "/android-chrome-192x192.png")}
+              src={imageSource}
               alt={limitText(ukMessage, 10)}
             />
           </div>

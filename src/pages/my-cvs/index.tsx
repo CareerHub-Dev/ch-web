@@ -28,7 +28,7 @@ export default function StudentCVsPage() {
           <AddCvButton />
         </div>
       </div>
-      <CvItemsSearch search={search} setSearch={setSearch} />
+      <CvItemsSearch search={search} setSearch={setSearch} withAddButton={false} />
       {isLoading ? (
         <CenteredLoadingSpinner />
       ) : (

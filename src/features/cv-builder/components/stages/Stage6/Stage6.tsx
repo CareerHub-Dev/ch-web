@@ -23,8 +23,8 @@ export default function Stage6() {
         <div className="mt-6 flex flex-col gap-4">
           <AssistanceAlert>
             <p>
-              Ще можна залишити корисні посилання на власні проекти для
-              демонстрації.
+              Ще можна залишити корисні посилання на свої сертифікати або власні
+              проєкти для демонстрації.
             </p>
           </AssistanceAlert>
           <AssistanceAlert type="warning">

@@ -57,7 +57,8 @@ export default function LinksForm({
   return (
     <>
       <AddOrEditLinkDialog
-        show={dialog === "add" || dialog === "edit"}
+        key={dialog}
+        show={dialog === "add"}
         onClose={close}
         onAddItem={addItem}
         onEditItem={editItem}
@@ -100,6 +101,7 @@ export default function LinksForm({
                       itemIndex={itemIndex}
                       item={item}
                       actionHandler={dispatch}
+                      editItem={editItem}
                     />
                   ))}
                 </ul>

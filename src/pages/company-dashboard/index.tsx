@@ -319,11 +319,7 @@ function ApplicationItem({
               <strong className="font-semibold">{`${jobOffer.title}`}</strong>
               {` - ${fullName}`}
             </p>
-            <p className="flex text-xs leading-5 text-gray-500">
-              <a href={`mailto:${email}`} className="relative hover:underline">
-                {email}
-              </a>
-            </p>
+            <p className="flex text-xs leading-5 text-gray-500">{email}</p>
           </div>
         </div>
         <div>
