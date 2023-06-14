@@ -3,7 +3,7 @@ import { useInput } from "@/hooks/useInput";
 import useProtectedMutation from "@/hooks/useProtectedMutation";
 import { createJobOffer } from "@/lib/api/job-offer";
 import parseUnknownError from "@/lib/parse-unknown-error";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useState } from "react";
 import MarkdownEditor from "../markdown-editor/MarkdownEditor";
 import { deriveConfig } from "../markdown-editor/config";
 import { PhotoIcon } from "@heroicons/react/24/solid";
@@ -58,6 +58,7 @@ export default function JobOfferForm() {
       }
     },
   });
+  const [counter, setCounter] = useState(0);
   const selectedJobDirection = useObjectInput({
     initialValue: jobDirections?.at(0) ?? { id: "0", name: "Не обрано" },
   });
@@ -139,6 +140,7 @@ export default function JobOfferForm() {
         allInputs.forEach((input) => input.reset());
         overviewEditor.reset();
         photo.reset();
+        setCounter((prev) => prev + 1);
       },
     }
   );
@@ -239,6 +241,7 @@ export default function JobOfferForm() {
                 <div className="mt-2">
                   <MarkdownEditor
                     id="overview"
+                    key={counter}
                     config={editorConfig}
                     textRef={overviewEditor.textRef}
                     onBlur={overviewEditor.blur}
